@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ng-transclude и транзакции на уровне UI</title>
+    <link rel="stylesheet" href="./main.css" type="text/css">
+</head>
+<body ng-app="app" ng-controller="main">
+    <checkbox options="storage"></checkbox>
+    <dropdown options="storage">
+        <checkbox options="storage"></checkbox>
+    </dropdown>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.js"></script>
+    <script src="./js/app/app.js"></script>
+    <script src="./js/app/controller/main.js"></script>
+    <script src="./js/app/directive/checkbox.js"></script>
+    <script src="./js/app/directive/dropdown.js"></script>
+    <script src="./js/app/service/storage.js"></script>
+</body>
+</html>

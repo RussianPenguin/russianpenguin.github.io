@@ -1,0 +1,25 @@
+{
+  "name": "angularjs-gapi",
+  "main": "gapi.js",
+  "version": "0.1.1",
+  "homepage": "https://github.com/RussianPenguin/angularjs-gapi",
+  "authors": [
+    "Maksim Zubkov <maksim.v.zubkov@gmail.com>"
+  ],
+  "dependencies": {
+    "angular": "*",
+    "underscore": "*"
+  },
+  "description": "Google JS API wrapper for AngularJS",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Google",
+    "API",
+    "angularjs",
+    "wrapper",
+    "angular"
+  ],
+  "license": "MIT"
+}

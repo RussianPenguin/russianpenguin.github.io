@@ -1,0 +1,21 @@
+<div>
+<label><input type="text" ng-model="query"></label>
+<ul>
+    <li ng-repeat="lecture in lectures"><a href="javascript:void(0)" ng-click="$parent.currentLecture = lecture">({{lecture.id}}) {{lecture.title}}</a> <a href="javascript:void(0)" title="Удалить" ng-click="delete(lecture)">X</a></li>
+</ul>
+</div>
+<div>
+    <form name="newLecture">
+        <label>Title: <input type="text" ng-model="lecture.title" required></label>
+        <label>Description: <input type="text" ng-model="lecture.description" required></label>
+        <button ng-click="save()" ng-disabled="newLecture.$invalid">Сохранить</button>
+    </form>
+</div>
+
+<div>
+    <form name="editLecture">
+        <label>Title: <input type="text" ng-model="currentLecture.title" required></label>
+        <label>Description: <input type="text" ng-model="currentLecture.description" required></label>
+        <button ng-click="currentLecture.$save()" ng-disabled="editLecture.$invalid">Сохранить</button>
+    </form>
+</div>

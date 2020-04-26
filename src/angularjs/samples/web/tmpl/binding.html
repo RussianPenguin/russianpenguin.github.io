@@ -1,0 +1,14 @@
+<form>
+    <div class="form-group">
+        <label><input type="text" ng-model="twoway"><span ng-show="showhide">{{twoway}}</span></label><a href="javascript:void(0)" ng-click="invert()">show/hide</a>
+    </div>
+    <div class="form-group">
+        <label><input type="text" ng-model="twoway"><span sly-prevent-evaluation-when-hidden sly-show="showhide">{{twoway}}</span></label><a href="javascript:void(0)" ng-click="invert()">show/hide</a>
+    </div>
+    <div class="form-group">
+        <label><input type="text" ng-model="oneway">{{::oneway}}</label>
+    </div>
+    <div class="form-group" bindonce>
+        <label><input type="text" ng-model="oneway"><span bo-bind="oneway"></span></label>
+    </div>
+</form>

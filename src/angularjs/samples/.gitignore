@@ -1,0 +1,10 @@
+*~
+vendor
+composer.phar
+web/js/vendor
+node_modules
+bower_components
+web/js/
+!web/js/.gitsave
+web/css/
+!web/css/.gitsave

@@ -1,0 +1,16 @@
+{
+    "name": "Realtime youtube trands",
+    "dependencies": {
+        "jquery": "*",
+        "bootstrap": "*",
+        "angular": "*",
+        "angular-route": "*",
+        "angular-bindonce": "*",
+        "angular-cookies": "*",
+        "underscore": "*",
+        "angular-underscore-module": "*",
+        "intercom": "*",
+        "angular-intercom": "*",
+        "angularjs-gapi": "*"
+    }
+}
