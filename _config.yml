@@ -2,3 +2,5 @@ name: Чтобы не забыть
 title: Чтобы не забыть
 description: Записная книжка рассеянного [в пространстве и времени] программиста
 theme: jekyll-theme-cayman
+permalink: /:categories/:title/
+timezone: Europe/Moscow
