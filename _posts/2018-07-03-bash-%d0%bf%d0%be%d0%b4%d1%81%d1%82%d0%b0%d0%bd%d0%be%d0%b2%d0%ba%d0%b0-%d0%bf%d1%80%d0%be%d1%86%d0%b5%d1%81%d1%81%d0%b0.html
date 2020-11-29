@@ -1,0 +1,85 @@
+---
+layout: post
+title: 'Bash: подстановка процесса'
+date: 2018-07-03 23:20:52.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- bash
+- linux
+meta:
+  _wpcom_is_markdown: '1'
+  timeline_notification: '1530649257'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '19632746832'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2018/07/03/bash-%d0%bf%d0%be%d0%b4%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d1%80%d0%be%d1%86%d0%b5%d1%81%d1%81%d0%b0/"
+excerpt: |-
+  В статье рассматривается механизм командной оболочки linux "подстановка процессов".
+  Этот функционал позволяет минимизировать использование именованных каналов для связи между командами или процессами.
+---
+<p><img class=" size-full wp-image-2451 alignleft" src="{{ site.baseurl }}/assets/images/2018/07/2018-07-03-221415_267x133.png" alt="2018-07-03-22:14:15_267x133" width="267" height="133" />Рассмотрим достаточно полезную штуку в консоли линукса (bash) как подстановка процесса.</p>
+<p>Вообще подстановок в баше достаточно <a href="http://rus-linux.net/nlib.php?name=/MyLDP/BOOKS/Bash-Guide-1.12-ru/bash-guide-03-4.html">много</a> всяких подстановок: результата выполнения команды  арифметических операций, имен файлов, значений переменных и, конечно же, процессов.</p>
+<p>Применима подстановка в первую очередь для того, чтобы избавиться от создания <a href="http://russianpenguin.ru/2014/05/10/linux-%d0%b8%d0%bc%d0%b5%d0%bd%d0%be%d0%b2%d0%b0%d0%bd%d0%bd%d1%8b%d0%b5-%d0%ba%d0%b0%d0%bd%d0%b0%d0%bb%d1%8b/">пайпов</a>.А во вторую - для сохранения внешнего контекста при работе подпроцесса.</p>
+<h2>Избавляемся от пайпов</h2>
+<p>Имеем две команды, которые формируют некоторый список значений и мы хотим сделать diff или любую другую операцию, которая принимает на вход в качестве аргументов имена файлов.</p>
+<p><!--more--></p>
+<p>Начнем с простого примера: хотим сравнить выводы двух команд.</p>
+<p>[code lang=shell]$ sleep $((RANDOM%2)) &amp;&amp; curl -v --silent https://google.com | grep date[/code]</p>
+<p>На месте этой абсурдной команды может быть что угодно: обработка логов, данные телеметрии с сервера и т.п.</p>
+<p>Как сделать diff? Два варианта: перенаправить выводы обеих команд в пайпы и использовать подстановку процессов в форме чтения вывода команды.</p>
+<p>[code]&lt;(command)[/code]</p>
+<p>[code lang=shell]% mkfifo f1<br />
+$ mkfifo f2<br />
+$ sleep $((RANDOM%2)) &amp;&amp; curl -v --silent https://google.com | grep date &gt; f1 &amp;<br />
+$ sleep $((RANDOM%2)) &amp;&amp; curl -v --silent https://google.com | grep date &gt; f2 &amp;<br />
+$ diff f1 f2<br />
+$ rm f1 f2[/code]</p>
+<p>Либо более лаконично.</p>
+<p>[code lang=shell]$ diff &lt;(sleep $((RANDOM%2)) &amp;&amp; curl -v --silent https://google.com | grep date) &lt;(sleep $((RANDOM%2)) &amp;&amp; curl -v --silent https://google.com | grep date)[/code]</p>
+<p>Согласитесь, что второй вариант проще в создании. так как оболочка сама позаботилась о создании и удалении каналов. Другая форма использования перенаправить некоторый stdin на вход другой команды или цепочки команд.</p>
+<p>[code]&gt;(command)[/code]</p>
+<p>Допустим мы хотим записывать логи подключения разных групп устройств из udevadm в разные файлы. Можно запустить два процесса, но зачем?</p>
+<p>[code lang=shell]$ udevadm monitor | tee &gt;(grep card &gt; card.log) &gt;(grep usb &gt; usb.log)[/code]</p>
+<p>Тут не стоит забывать, что множественное перенаправление данных позволительно сделать при помощи tee, который берез stdin и пишет его во все указанные в качестве аргументов файлы.</p>
+<h2>Сохранение контекста</h2>
+<p>Подпроцесс - это одно из ключевых понятий bash и других оболочек.</p>
+<p>[code lang=shell] $ export foo=baz<br />
+$ perl -e 'system "echo foo is \$foo"; $ENV{"foo"}="bar"; system "echo foo is \$foo"'<br />
+$ echo "$foo"[/code]</p>
+<p>Perl запускается как дочерний процесс, родителем которого выступает bash (в нашем случае). Для данного процесса создается новый контекст, в который копируются переменные окружения и модификация контекста процесса не приводит к изменению контекста родителя.</p>
+<p>Это приводит к тому, что модификация контекста внутри цепочки команд не отражается на глобальных переменных.</p>
+<p>[code lang=shell]#!/usr/bin/env bash<br />
+i=0<br />
+sort test | while read line; do<br />
+  i=$(($i+1))<br />
+  echo $i<br />
+done<br />
+echo $i[/code]</p>
+<p>В данном скрипте цикл while запускается как дочерний процесс, а следовательно у нас всегда будет выводиться 0. Хотя внутри самого цикла мы видим инкремент переменной.</p>
+<p>Исправить ситуацию можно при помощи подстановки команд.</p>
+<p>[code lang=shell]#!/usr/bin/env bash<br />
+i=0<br />
+while read line; do<br />
+  i=$(($i+1))<br />
+  echo $i<br />
+done &lt; &lt;(sort test)<br />
+echo $i[/code]</p>
+<h2>Литература</h2>
+<ul>
+<li><a href="http://rus-linux.net/nlib.php?name=/MyLDP/BOOKS/Bash-Guide-1.12-ru/bash-guide-03-4.html">Подстановки, выполняемые командной оболочкой</a></li>
+<li><a href="http://mywiki.wooledge.org/ProcessSubstitution">Process Substitution</a></li>
+<li><a href="http://mywiki.wooledge.org/SubShell">SubShell</a></li>
+</ul>
+<p> </p>

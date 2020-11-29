@@ -1,0 +1,143 @@
+---
+layout: post
+title: 'Часть 5: Подготовка базы данных, миграции (Тестирование ПО)'
+date: 2017-05-08 21:23:18.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- mysql
+- php
+- yii2
+meta:
+  _wpcom_is_markdown: '1'
+  _publicize_job_id: '4833692052'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/05/08/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-5/"
+excerpt: В пятой части цикла "Тестирование ПО" мы научимся работать с базой данных
+  и использовать миграции Yii2.
+---
+<h2><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/"><img class=" size-full wp-image-2015 alignleft" src="{{ site.baseurl }}/assets/images/2017/05/00-title.png" alt="00-title" width="235" height="114" />Оглавление</a></h2>
+<p>Перед вами очередная часть цикла <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Тестирование ПО</a>. В <a href="http://russianpenguin.ru/2017/05/02/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-4/">предыдущей части</a> мы развернули инфраструктуру для работы с проектом на базе Yii2-advanced-template. В этой части мы разберемся как работать с базой данных и что такое миграции.</p>
+<p><!--more--></p>
+<h2>База данных</h2>
+<h3>Подготовка машины</h3>
+<p>Нам потребуется две базы данных. Одну из них мы создали на предыдущем этапе разработки. Вторую добавим сейчас. Поскольку правилом хорошего тона считается наличие отдельной базы данных для запуска тестов. Это правило позволяет достичь повторяемости результатов при непрерывном прогоне кейсов..</p>
+<p>Можно это сделать руками, но проще всего отредактировать конфигурацию <i>config.yaml</i>. Добавим в секции <b>mariadb.databases</b> и <b>mariadb.grants</b> две записи. Одна из них - описание базы. Вторая - права доступа на новую базу.</p>
+<p>[code]mariadb:<br />
+   ...<br />
+   databases:<br />
+       ...<br />
+       mariadbnd_r4j5mttm7uht:<br />
+           name: tdd_tests<br />
+           sql: ''<br />
+   grants:<br />
+       ...<br />
+       mariadbng_puym1vumdrfg:<br />
+           user: tdd<br />
+           table: 'tdd_tests.*'<br />
+           privileges:<br />
+               - ALL[/code]</p>
+<p>Теперь можно запустить провизию машины заново. Либо из командной строки, либо из меню PHPStorm (Tools-&gt;Vagrant-&gt;Provision). Через некоторое время, которое зависит от производительности вашей машины, вы увидите сообщение об успешном завершении команды.</p>
+<p>Как проверить, что все нормально работает? Нужно зайти в систему по ssh. Сделать это можно двумя способами: при помощи команды vagrant ssh в консоли или при помощи меню PHPStorm (Tools-&gt;Start ssh session и в открывшемся окне стоит выбрать vagrant как объект для подключения). Затем подключаемся к консоли mariadb (mysql -u root -p) и вводим команду show databases.</p>
+<p><img class=" size-full wp-image-2000 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/04-show-databases.png" alt="04-show databases" width="289" height="233" /></p>
+<h3>Структура базы</h3>
+<p>Далее потребуется спроектировать схему таблицы user таким образом, чтобы она поддерживала все необходимые базовые возможности по работе с пользователям в yii2. Особо усердствовать на этом этапе мы не будем, а возьмем рекомендованную схему из фреймворка.</p>
+<p><img class=" size-full wp-image-1990 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/01-user-table.png" alt="01-user table" width="298" height="372" /></p>
+<p>Для того, чтобы создать таблицу выше нам потребуется написать <a href="http://www.yiiframework.com/doc-2.0/guide-db-migrations.html">миграцию</a> yii2 (конечно писать мы пока ничего не будем, а возьмем готовый файл, который любезно предоставили нам разработчики advanced template). Но прежде - отредактировать конфигурационные файлы, которые содержат DSN-строки подключения. Это файлы main-local.php и test-local.php из каталога environments/dev/common/config.</p>
+<p>Требуется поменять соответствующие строки таким образом чтобы они указывали на актуальную базу разработчика и на тестовую базу соответственно.</p>
+<p><b>main-local.php</b></p>
+<p>[code lang="php"]'db' =&gt; [<br />
+   'class' =&gt; 'yii\db\Connection',<br />
+   'dsn' =&gt; 'mysql:host=localhost;dbname=tdd',<br />
+   'username' =&gt; 'root',<br />
+   'password' =&gt; 'tdd',<br />
+   'charset' =&gt; 'utf8',<br />
+][/code]</p>
+<p><b>test-local.php</b></p>
+<p>[code lang="php"]'db' =&gt; [<br />
+   'dsn' =&gt; 'mysql:host=localhost;dbname=tdd_tests',<br />
+][/code]</p>
+<h3>Развертывание конфигурации</h3>
+<p>Теперь необходимо полученную конфигурацию развернуть. Сделать это можно несколькими способами:</p>
+<ul>
+<li>вручную скопировать отредактированные файлы в каталог common/config</li>
+<li>запустить провизию машины заново (Эта операция помимо прочего еще и скопирует конфигурационные файлы в нужное место.)</li>
+<li>зайти по ssh на машину и запустить скрипт init.php с нужными параметрами (php init --env=${YII_ENV} --overwrite=y)</li>
+</ul>
+<p>Выберите удобный для себя способ и разверните новую конфигурацию.</p>
+<h2>Миграции</h2>
+<p>Раньше разработчикам приходилось держать схему базы данных отдельно от проекта и по мере надобности вручную вносить изменения. Это довольно однообразный процесс на каждом этапе которого был велик риск получить расхождения схемы в базе и схемы в системе контроля версий.</p>
+<p>Теперь необходимость в этом отпала и большинство современных фреймворков работают с так называемыми <a href="https://en.wikipedia.org/wiki/Schema_migration">миграциями схемы базы данных</a>. Yii2 исключением не является и поддерживает этот <a href="http://www.yiiframework.com/doc-2.0/guide-db-migrations.html">механизм</a>.</p>
+<h3>Создание миграции</h3>
+<p>Для создания миграции существует консольная команда</p>
+<p>[code]yii migrate/create &lt;имя миграции&gt;[/code]</p>
+<p>Разработчики шаблона заботливо создали за нас первую миграцию <i>init</i> которая расположена она в файле <i>console/migrations/m130524_201442_init.php</i>.</p>
+<p>Все хорошо, но есть одно но - данный код предназначен для большинства имеющихся баз и поэтому задуман быть универсальным. У нас же четко определено с какой базой требуется работать. Поэтому нелишним будет изменить ряд столбцов под конкретные цели.</p>
+<ul>
+<li>username для нас не имеет особого значения и он не обязательно должен быть уникальным (во многих проектах его оставляют уникальным и это очень мешает пользователям когда все ники уже заняты)</li>
+<li>created_at - это timestamp с дефолтным значением равным CURRENT_TIMESTAMP</li>
+<li>updated_at - это тоже timestamp со значением CURRENT_TIMESTAMP которое обновляется при каждом обновлении записи</li>
+</ul>
+<p>[code lang="php"]$this-&gt;createTable('{{%user}}', [<br />
+   'id' =&gt; $this-&gt;primaryKey(),<br />
+   'username' =&gt; $this-&gt;string()-&gt;notNull(),<br />
+   'auth_key' =&gt; $this-&gt;string(32)-&gt;notNull(),<br />
+   'password_hash' =&gt; $this-&gt;string()-&gt;notNull(),<br />
+   'password_reset_token' =&gt; $this-&gt;string()-&gt;unique(),<br />
+   'email' =&gt; $this-&gt;string()-&gt;notNull()-&gt;unique(),<br />
+   'status' =&gt; $this-&gt;smallInteger()-&gt;notNull()-&gt;defaultValue(10),<br />
+   'created_at' =&gt; 'timestamp DEFAULT current_timestamp',<br />
+   'updated_at' =&gt; 'timestamp DEFAULT current_timestamp ON UPDATE current_timestamp',<br />
+], $tableOptions);<br />
+$this-&gt;addCommentOnTable('{{%user}}', 'User table');[/code]</p>
+<p>Кратко пройдемся по некоторым моментам</p>
+<ul>
+<li>{{%user}} означает имя таблицы user с добавлением префикса таблиц из конфигурационного файла</li>
+<li>created_at и update_at используют нативный формат записи типа поля поскольку на данный момент SchemaBuilder не очень дружит с полями timestamp и вообще с датой-временем.</li>
+<li>Всегда добавляйте комментарии на таблицы и поля. Это поможет вам ориентироваться в схеме при разрастании проекта.</li>
+</ul>
+<h3>Применение миграции</h3>
+<p>Для применения конкретной миграции (или всех) требуется зайти на виртуальную машину в каталог с проектом (/var/www в нашем случае) и выполнить команду</p>
+<p>[code lang="shell"]php yii migrate/up[/code]</p>
+<p>Система спросит вас о том, действительно ли вы хотите применить миграцию. Отвечаете утвердительно и через некоторое время вам будет показано сообщение об успешном применении нового кода.</p>
+<p><img class=" size-full wp-image-1993 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/02-migrate-up.png" alt="02-migrate up" width="557" height="316" /></p>
+<p>Посмотреть что получилось можно зайдя в консоль mysql и выполнив запрос на отображение схемы таблицы.</p>
+<p>[code]mysql -u tdd -p tdd[/code]</p>
+<p>И сам запрос.</p>
+<p>[code]show create table user;[/code]</p>
+<p>В ответ мы увидим актуальную структуру таблицы user.</p>
+<p><img class=" size-full wp-image-1995 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/03-show-creat-table-user.png" alt="03-show creat table user" width="669" height="523" /></p>
+<h3>Автоматизация</h3>
+<p>Чтобы каждый раз не задумываться о том, запустили мы миграции или нет стоит это дело отдать на откуп скриптам. Можно использовать секциями composer.json <a href="https://getcomposer.org/doc/articles/scripts.md#command-events">post-update-cmd</a> и <a href="https://getcomposer.org/doc/articles/scripts.md#command-events">post-install-cmd</a>, что мы и сделаем.</p>
+<p>[code lang="javascript"]&quot;scripts&quot;: {<br />
+   ...<br />
+   &quot;post-update-cmd&quot;: [<br />
+       &quot;php yii migrate --interactive=0&quot;<br />
+   ],<br />
+   &quot;post-install-cmd&quot;: [<br />
+       &quot;php yii migrate --interactive=0&quot;<br />
+   ]<br />
+}[/code]</p>
+<p>Теперь при выполнении провизии помимо установки зависимостей будут применены изменения к базе данных.</p>
+<h2>Литература</h2>
+<ul>
+<li><a href="http://www.ozon.ru/context/detail/id/31921738/?partner=russianpenguin&amp;from=bar">"Разработка веб-приложений в Yii 2" Марк Сафронов, ISBN: 978-5-97060-252-2</a></li>
+<li><a href="http://www.ozon.ru/context/detail/id/140127024/?partner=russianpenguin&amp;from=bar">Yii2 Application Development Cookbook</a></li>
+</ul>
+<h2>Исходный код</h2>
+<ul>
+<li><a href="https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.2">Код проекта пятой части</a></li>
+</ul>

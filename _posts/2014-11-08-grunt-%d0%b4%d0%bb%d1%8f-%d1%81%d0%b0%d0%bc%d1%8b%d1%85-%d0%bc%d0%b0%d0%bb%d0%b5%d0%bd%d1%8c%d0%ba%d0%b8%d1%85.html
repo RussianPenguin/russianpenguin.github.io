@@ -1,0 +1,116 @@
+---
+layout: post
+title: Grunt для самых маленьких
+date: 2014-11-08 16:06:39.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+tags:
+- css
+- grunt
+- javascript
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_google_plus: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_linkedin: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _edit_last: '13696577'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2014/11/08/grunt-%d0%b4%d0%bb%d1%8f-%d1%81%d0%b0%d0%bc%d1%8b%d1%85-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b8%d1%85/"
+---
+<p>На проекте есть папка с с js и стилями css.</p>
+<p>Нужно все это минифицировать.</p>
+<h3>1 - нам нужен грант (установленный локально).</h3>
+<p>Предполагается, что глобально грант уже установлен.</p>
+<p>Если нет, то</p>
+<p>[code language="shell"] $ sudo yum install nodejs-grunt*[/code]</p>
+<p>Ставим нужное</p>
+<p>[code language="shell"] $ npm install grunt<br />
+$ npm-install grunt-contrib-unglify grunt-contrib-watch grunt-contrib-cssmin grunt-contrib-concat[/code]</p>
+<p>Если не поставить модули локально, то получим ошибку</p>
+<pre>Unable to find local grunt</pre>
+<h3>2 - создаем файл с описанием проекта package.json</h3>
+<p>[code language="javascript"]{<br />
+  &quot;name&quot;: &quot;&lt;project name&gt;&quot;,<br />
+  &quot;version&quot;: &quot;0.1.0&quot;,<br />
+  &quot;devDependencies&quot;: {<br />
+    &quot;grunt&quot;: &quot;~0.4.5&quot;,<br />
+    &quot;grunt-contrib-concat&quot;: &quot;^0.4.0&quot;,<br />
+    &quot;grunt-contrib-cssmin&quot;: &quot;^0.10.0&quot;,<br />
+    &quot;grunt-contrib-uglify&quot;: &quot;^0.5.0&quot;,<br />
+    &quot;grunt-contrib-watch&quot;: &quot;*&quot;<br />
+  },<br />
+  &quot;dependencies&quot;: {<br />
+    &quot;grunt&quot;: &quot;^0.4.5&quot;,<br />
+    &quot;grunt-ts&quot;: &quot;^1.11.13&quot;<br />
+  }<br />
+}[/code]</p>
+<h3>3 - создаем сценарий для работы</h3>
+<p>[code language="javascript"]module.exports = function (grunt) {<br />
+    // 1 - Описываем все выполняемые задачи<br />
+    grunt.initConfig({<br />
+        pkg: grunt.file.readJSON('package.json'),<br />
+        concat: {<br />
+            css: {<br />
+                src: ['src/**/*.css'],<br />
+                dest: 'dist/app.css'<br />
+            },<br />
+            js: {<br />
+                src: ['src/js/**/*.js'],<br />
+                dest: 'dist/app.js'<br />
+            }<br />
+        },<br />
+        cssmin: {<br />
+            css: {<br />
+                src: 'dist/app.css',<br />
+                dest: 'dist/app.min.css'<br />
+            }<br />
+        },<br />
+        uglify: {<br />
+            js: {<br />
+                src: 'dist/app.js',<br />
+                dest: 'dist/app.min.js'<br />
+            }<br />
+        },<br />
+        watch: {<br />
+            css: {<br />
+                files: ['src/css/**/*.css'],<br />
+                tasks: ['concat:css', 'cssmin:css']<br />
+            },<br />
+            js: {<br />
+                files: ['src/js/**/*.js'],<br />
+                tasks: ['concat:js', 'uglify:js']<br />
+            }<br />
+        }<br />
+    });</p>
+<p>    // 2 - Загружаем нужные плагины<br />
+    grunt.loadNpmTasks('grunt-contrib-concat');<br />
+    grunt.loadNpmTasks('grunt-contrib-cssmin');<br />
+    grunt.loadNpmTasks('grunt-contrib-uglify');<br />
+    grunt.loadNpmTasks('grunt-contrib-watch');</p>
+<p>    // 3 - Говорим grunt, что мы хотим сделать, когда напечатаем grunt в терминале.<br />
+    grunt.registerTask('default', ['concat', 'cssmin', 'uglify']);</p>
+<p>};[/code]</p>
+<h3>4 - печатаем grunt в терминали</h3>
+<p>[code langulage="shell"]$ grunt<br />
+Running &quot;concat:js&quot; (concat) task<br />
+File gapi.js created.</p>
+<p>Running &quot;uglify:js&quot; (uglify) task<br />
+&gt;&gt; 1 file created.</p>
+<p>Done, without errors.[/code]</p>

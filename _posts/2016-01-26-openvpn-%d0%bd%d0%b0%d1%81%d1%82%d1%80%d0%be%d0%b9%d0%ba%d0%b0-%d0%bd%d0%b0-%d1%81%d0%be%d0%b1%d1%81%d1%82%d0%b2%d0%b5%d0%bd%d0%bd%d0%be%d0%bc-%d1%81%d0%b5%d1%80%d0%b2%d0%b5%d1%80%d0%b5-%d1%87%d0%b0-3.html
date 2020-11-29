@@ -1,0 +1,62 @@
+---
+layout: post
+title: 'OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.'
+date: 2016-01-26 21:11:32.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- linux
+- openvpn
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '19149732498'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/"
+---
+<p> </p>
+<ul>
+<li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+<li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+<li>OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</li>
+<li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+<li><a href="http://russianpenguin.ru/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</a></li>
+</ul>
+<p> </p>
+<p>Ключи <a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">сгенерировали</a>. Теперь можно запускать сервер.</p>
+<p>Обращаю внимание, что дальше речь пойдет о дефолтной настройке openvpn в режиме роутера. Это тот режим, когда вам нет необходимости интегрировать подключенных клиентов в локальную сеть.</p>
+<p>В случае необхоидмости пустить клиентов в локальную сеть вам потребуется режим моста.</p>
+<p>Поддробнее про разные режимы работы можно почитать в официальной документации: <a href="https://community.openvpn.net/openvpn/wiki/BridgingAndRouting">https://community.openvpn.net/openvpn/wiki/BridgingAndRouting</a>.</p>
+<p>Копируем конфиг сервера</p>
+<p>[code]$ sudo cp /usr/share/doc/openvpn-*/sample/sample-config-files/server.conf /etc/openvpn[/code]</p>
+<p>Теперь нужно отредактировать этот конфиг поправив следующие параметры</p>
+<p>[code]# пути к сертификатам ставим свои<br />
+ca /etc/openvpn/keys/ca.crt<br />
+cert /etc/openvpn/keys/vpn-server.crt<br />
+key /etc/openvpn/keys/vpn-server.key  # This file should be kept secret<br />
+dh /etc/openvpn/keys/dh.pem</p>
+<p># заставляем клиент направлять весь трафик через сервер (чтобы избежать всяких утечек днс-запросов)<br />
+push "redirect-gateway def1 bypass-dhcp"</p>
+<p># пропишем собственные dns<br />
+push "dhcp-option DNS 8.8.8.8"<br />
+push "dhcp-option DNS 8.8.4.4"</p>
+<p># защита от флуда<br />
+tls-auth /etc/openvpn/keys/ta.key 0 # This file is secret</p>
+<p># сразу после запуска у сервера будут отобраны рутовые права (безопасности больше)<br />
+user nobody<br />
+group nobody[/code]</p>
+<p>Если есть желание - можно поправить порт.</p>
+<p>Теперь сервер можно активировать и запустить. Толку от этого пока будет мало. поскольку настройкой брандмауэра мы займемся в следующей части.</p>
+<p>[code]$ sudo systemctl -f enable openvpn@server.service<br />
+$ sudo systemctl start openvpn@server.service[/code]</p>

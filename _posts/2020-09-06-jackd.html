@@ -1,0 +1,81 @@
+---
+layout: post
+title: 'Jackd: Измеряем задержку аудио сигнала в цепочке обработки'
+date: 2020-09-06 16:10:43.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- adc
+- dac
+- аудио
+- jackd
+- linux
+meta:
+  _wpcom_is_markdown: '1'
+  _thumbnail_id: '2559'
+  _publicize_job_id: '48526853598'
+  timeline_notification: '1599397848'
+  _wp_old_slug: jackd-%d0%b8%d0%b7%d0%bc%d0%b5%d1%80%d1%8f%d0%b5%d0%bc-%d0%b7%d0%b0%d0%b4%d0%b5%d1%80%d0%b6%d0%ba%d1%83-%d0%b0%d1%83%d0%b4%d0%b8%d0%be-%d1%81%d0%b8%d0%b3%d0%bd%d0%b0%d0%bb%d0%b0-%d0%b2-%d1%86%d0%b5
+  _coblocks_attr: ''
+  _coblocks_dimensions: ''
+  _coblocks_responsive_height: ''
+  _coblocks_accordion_ie_support: ''
+  amp_status: enabled
+  spay_email: ''
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2020/09/06/jackd/"
+excerpt: Посмотрим как правильно мериться задержками аудиоинтерфейса в Linux.
+---
+<p><!-- wp:image {"align":"right","id":2563,"sizeSlug":"large"} --></p>
+<div class="wp-block-image">
+<figure class="alignright size-large"><img src="{{ site.baseurl }}/assets/images/2020/09/2020-09-06-150215_select-1.png?w=511" alt="" class="wp-image-2563" /></figure>
+</div>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph {"align":"left"} --></p>
+<p class="has-text-align-left">Не секрет, что большинство диванных музыкантов любят мериться минимальной задержкой своей звуковой карты считая, что это задержка сигнала от поступления на вход карты, прохождения через обработку и появления в мониторах.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Но что на самом деле означает эта задержка? Это лишь время, которое будет затрачено на обработку сигнала после поступления его в роутер (в моем случае в роли роутера выступает jackd).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>А как измерить полную задержку вместе со временем на обработку и перевод сигнала в аналог?</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><a href="https://www.systutorials.com/docs/linux/man/1-jack_iodelay/">jack_iodelay</a> - утилита генерирует тестовый сигнал, который можно направить в роутере куда угодно, потом вернуть на вход этой же утилиты и посмотреть в консоли что получится.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Для измерения нам потребуется небольшой патч чтобы соединить один из входов интерфейса с выходом.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>После этого запускаем утилиту, коммутируем нужный вход и выход в роутере и смотрим на результат в консоли.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:image {"id":2561,"sizeSlug":"large"} --></p>
+<figure class="wp-block-image size-large"><img src="{{ site.baseurl }}/assets/images/2020/09/2020-09-06-155051_select.png?w=1024" alt="" class="wp-image-2561" /></figure>
+<p><!-- /wp:image --></p>
+<p><!-- wp:paragraph --></p>
+<p>Общая задержка составляет в среднем 820 фреймов. Чтобы узнать задержку в миллисекундах делим это число на частоту семплирования. (96кГц). Это 8,5мс.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Поле extra loopback latency содержит лаг, который был вызван ЦАП'ом и АЦП.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Задержка зависит и от настроек джека. От количества семплов и периодов на буфер  </p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Для текущего теста 2 периода на буфер и 128 сэмплов. Итого 384. И ~430 фреймов - это задержка на железе. В сумме и получается ~820.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Можно пользоваться опциям -I и -O. Они отдельно позволяют посмотреть задержку по входу и выходу сигнала.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

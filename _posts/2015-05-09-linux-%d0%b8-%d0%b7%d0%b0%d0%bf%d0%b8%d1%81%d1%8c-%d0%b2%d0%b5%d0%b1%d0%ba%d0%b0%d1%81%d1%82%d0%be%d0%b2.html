@@ -1,0 +1,55 @@
+---
+layout: post
+title: Linux и запись вебкастов
+date: 2015-05-09 22:21:56.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- вебинары
+- linux
+- x264
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/05/09/linux-%d0%b8-%d0%b7%d0%b0%d0%bf%d0%b8%d1%81%d1%8c-%d0%b2%d0%b5%d0%b1%d0%ba%d0%b0%d1%81%d1%82%d0%be%d0%b2/"
+---
+<p>Довольно долго искал, чем же можно нормально писать вебинары.</p>
+<p>В итоге остановился на <a title="GitHub - Vokoscreen" href="https://github.com/vkohaupt/vokoscreen">vokoscreen</a>.</p>
+<p><a href="https://russianpenguin.files.wordpress.com/2015/05/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_024.png"><img class="aligncenter size-full wp-image-532" src="{{ site.baseurl }}/assets/images/2015/05/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_024.png" alt="Vokoscreen" width="595" height="309" /></a></p>
+<p>Из достоинств:</p>
+<ul>
+<li>выбор объект для записи (отдельный монитор, отдельное окно, область экрана);</li>
+<li>выбор источника записи звука;</li>
+<li>настройка формата получаемого видео (все равно видео потребует дальнешего редактирование, но приятно);</li>
+<li>простой и безглючный интерфейс.</li>
+</ul>
+<p>Да. Можно и из консоли писать, но при записи неудобно задавать набор опций, которые как раз дают возможность выбирать объект для захвата.</p>
+<p>Даже если запись изначально прошла удачно, то итоговый файл все равно мало пригоден для аплоада на ютуб или куда-нибдь еще (для разрешения 1920х1080 и 60 минутах записи объем итогового файла перевалит далеко за 2 гига).</p>
+<p>Поэтому можно воспользоваться кодемо ffmpeg. Для меня подошли следующие опции.</p>
+<p>[code lang="shell"]ffmpeg -i input.mkv -vcodec libx264 -strict -2 -crf 20 -threads 7 -r 25 output.mp4<br />
+[/code]</p>
+<p>Где:</p>
+<ul>
+<li>-i input.mkv - исходный файл</li>
+<li>-vcodec libx264 - кодек видео x264</li>
+<li>-strict -2 - этот набор опций включает поддержку эекспериментального энкодера aac</li>
+<li>-crf 20 - опция энкодера, которая задает степень сжатия (в мануале - это квантование). от 0 до 51. 0 - лучшее качество картинки, а 51 - наихудшее.</li>
+<li>-threads 7 - количество потоков (равно количество реально-виртуальных ядер минус один. в таком случае можно за компьютером еще что-то делать)</li>
+<li>-r 25 - кадры в секунду для выходного видео</li>
+<li>output.mp4 - куда пишем</li>
+</ul>
+<p>Подробный <a title="FFmpeg and H.264 Encoding Guide" href="https://trac.ffmpeg.org/wiki/Encode/H.264">мануал</a> по кодирования x264.</p>

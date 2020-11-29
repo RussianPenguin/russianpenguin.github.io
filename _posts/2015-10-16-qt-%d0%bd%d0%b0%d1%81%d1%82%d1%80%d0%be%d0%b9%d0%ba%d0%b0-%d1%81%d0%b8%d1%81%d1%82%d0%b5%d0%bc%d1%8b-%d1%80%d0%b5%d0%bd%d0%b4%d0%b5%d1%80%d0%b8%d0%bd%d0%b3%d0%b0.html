@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'Qt: настройка системы рендеринга'
+date: 2015-10-16 22:30:18.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- kde
+- linux
+- qt
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15895268677'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/10/16/qt-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d1%81%d0%b8%d1%81%d1%82%d0%b5%d0%bc%d1%8b-%d1%80%d0%b5%d0%bd%d0%b4%d0%b5%d1%80%d0%b8%d0%bd%d0%b3%d0%b0/"
+---
+<p><a href="https://russianpenguin.files.wordpress.com/2015/10/qt-graphicssystem.png"><img src="{{ site.baseurl }}/assets/images/2015/10/qt-graphicssystem.png?w=150" alt="qt-graphicssystem" width="150" height="120" class="alignleft size-thumbnail wp-image-622" /></a>Линуксоиды разучились пользоваться консолью? :) Сломал себе систему рендерига до такой степени, что кеды показывали лишь черный экран с курсором.</p>
+<p>Поскольку есть лишь консоль, то гугление в линксе на тему расположения конфига, в котором указана система рендеринга показывало лишь результаты, где народ рекомендовал поставить kcm-qt-graphicssystem.<br />
+Все это хорошо, но иксов-то нет.</p>
+<p>А на деле все оказалось очень просто. Этот пресловутый модуль kcm просто правит содержимое файла<br />
+[code]~/.kde/env/qt-graphicssystem.sh[/code]</p>
+<p>В этом файле лишь одна строчка:</p>
+<p>[code]export QT_GRAPHICSSYSTEM=native[/code]</p>
+<p>Файл есть не что иное, как глобальный экспорт переменной в сеансе kde. Нет никаких специальных файлов конфигурации (привет, dconf2!).</p>
+<p>Поэтому если вы угробите свои кеды - просто пропишите другую систему в этот файл: native, raster или opengl.</p>

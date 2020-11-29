@@ -1,0 +1,45 @@
+---
+layout: post
+title: PHPStorm (PyCharm и др.) и XMonad
+date: 2016-02-29 00:24:26.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- java
+- linux
+- xmonad
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20270612244'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2016/02/29/phpstorm-pycharm-%d0%b8-%d0%b4%d1%80-%d0%b8-xmonad/"
+---
+<p><img class="alignleft size-thumbnail wp-image-1210" src="{{ site.baseurl }}/assets/images/2016/02/2016-02-28-234847_708x493.png?w=150" alt="2016-02-28-23:48:47_708x493" width="150" height="104" />После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего.<br />
+Работаю я в xmonad и произошло это после очередной правки конфига под себя.<br />
+В документации сказано, что для java-приложений нужен</p>
+<p>[code]startupHook = setWMName &quot;LG3D&quot;[/code]<br />
+Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран).<br />
+А все оказалось просто: я добавил хук ewmhDesktopsEventHook.</p>
+<p>[code]handleEventHook = do<br />
+  ewmhDesktopsEventHook -- вот он<br />
+  docksEventHook<br />
+  fullscreenEventHook -- Full screen setup[/code]</p>
+<p>Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html">документацию</a> и <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/src/XMonad-Hooks-EwmhDesktops.html">код</a>.</p>
+<p>Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит "xmonad"). <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html">Этот</a> wmname (который lg3d) служит решением для <a href="http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6429775">бага</a> из awt.</p>
+<p>Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в "non reparenting" (не подобрал я нормального перевода :)) окружении.</p>
+<p>Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING.</p>
+<p>Пишем в ~/.bashrc или ~/.profile</p>
+<p>[code]export _JAVA_AWT_WM_NONREPARENTING=1[/code]</p>
+<p>И теперь все хорошо.</p>
+<p><img class=" size-medium wp-image-1243 aligncenter" src="{{ site.baseurl }}/assets/images/2016/02/2016-02-28-235036_708x495.png?w=300" alt="2016-02-28-23:50:36_708x495" width="300" height="210" /></p>

@@ -1,0 +1,191 @@
+---
+layout: post
+title: 'Linux: произвольное падение приложений на mono'
+date: 2017-06-05 14:57:33.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- linux
+- mono
+- repetierhost
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '5794247843'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/06/05/linux-%d0%bf%d1%80%d0%be%d0%b8%d0%b7%d0%b2%d0%be%d0%bb%d1%8c%d0%bd%d0%be%d0%b5-%d0%bf%d0%b0%d0%b4%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bf%d1%80%d0%b8%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8%d0%b9-mono/"
+excerpt: Столкнулся с неочевидной проблемой - раз за разом закрывался RepetierHost
+  и не давал напечатать модель на принтере.
+---
+<p><img class="alignleft size-thumbnail wp-image-2205" src="{{ site.baseurl }}/assets/images/2017/06/53395.png?w=150" alt="53395" width="150" height="150" />Столкнулся со странной проблемой: без сторонней помощи стал закрываться RepetierHost. Ему было все равно печатал он модель, слайсил или просто был открытым. Сам хост я всегда открывал на отдельном воркспейсе и поначалу грешил на то, что какие-то проблемы могут быть у cinnamon, который сейчас использую как дефолтный стол. Если оставить хост отрытым и не менять рабочие столы, не запускать никаких приложений, то все нормально и приложение не отваливалось. Гугл ничего не смог сказать мне про систематический вылеты. Откат на предыдушие версии не помог - они так же вылетали.</p>
+<p>Добавил в repetierHost строки, которые перенаправляли лог запуска в файл и он стал выглядеть вот так.</p>
+<p>[code lang="shell"]#!/usr/bin/env bash<br />
+cd /home/penguin/.soft/RepetierHost<br />
+env LANG=en_US.utf8 mono RepetierHost.exe -home {$HOME}.soft/RepetierHost &amp;&gt; {$HOME}/log&amp;[/code]</p>
+<p>После пары запусков я таки поймал в лог креш приложения. Да, не обращаете внимание на то, что принудительно используется локаль en_US - это решает проблему слайсера Slic3r, который по каким-то причинам отказывается работать с группами объектов названными символами, отличными от латинских.</p>
+<p>[code]/usr/bin/slic3r --load &quot;slic3r_settings.ini&quot; --print-center 100.00,100.00 -o &quot;composition.gcode&quot; &quot;composition.amf&quot;<br />
+Wide character at /usr/lib64/perl5/vendor_perl/Encode.pm line 212.[/code]</p>
+<p>В amf-файле все группы должны иметь латинские имена, а repetier генерирует имена в текущей локали.</p>
+<p>Пойманный трейс выглядит следующим образом.</p>
+<p>[code]Stacktrace:</p>
+<p>at &lt;unknown&gt; &lt;0xffffffff&gt;<br />
+at (wrapper managed-to-native) System.Windows.Forms.X11Keyboard.Xutf8LookupString (intptr,System.Windows.Forms.XEvent&amp;,byte[],int,intptr&amp;,System.Windows.Forms.XLookupStatus&amp;) &lt;0x000a4&gt;<br />
+at System.Windows.Forms.X11Keyboard.LookupString (System.Windows.Forms.XEvent&amp;,int,System.Windows.Forms.XKeySym&amp;,System.Windows.Forms.XLookupStatus&amp;) &lt;0x000bb&gt;<br />
+at System.Windows.Forms.X11Keyboard.EventToVkey (System.Windows.Forms.XEvent) &lt;0x0003f&gt;<br />
+at System.Windows.Forms.X11Keyboard.ToUnicode (int,int,string&amp;) &lt;0x0034f&gt;<br />
+at System.Windows.Forms.X11Keyboard.TranslateMessage (System.Windows.Forms.MSG&amp;) &lt;0x0011f&gt;<br />
+at System.Windows.Forms.XplatUIX11.TranslateMessage (System.Windows.Forms.MSG&amp;) &lt;0x00027&gt;<br />
+at System.Windows.Forms.XplatUI.TranslateMessage (System.Windows.Forms.MSG&amp;) &lt;0x00024&gt;<br />
+at System.Windows.Forms.Application.RunLoop (bool,System.Windows.Forms.ApplicationContext) &lt;0x00d6b&gt;<br />
+at System.Windows.Forms.Application.Run (System.Windows.Forms.ApplicationContext) &lt;0x00047&gt;<br />
+at System.Windows.Forms.Application.Run (System.Windows.Forms.Form) &lt;0x00037&gt;<br />
+at RepetierHost.Program.Main (string[]) &lt;0x0003f&gt;<br />
+at (wrapper runtime-invoke) &lt;Module&gt;.runtime_invoke_void_object (object,intptr,intptr,intptr) &lt;0x000d1&gt;</p>
+<p>Native stacktrace:</p>
+<p>mono(+0xc3794) [0x55d10cc73794]<br />
+mono(+0x11a8ce) [0x55d10ccca8ce]<br />
+mono(+0x3c633) [0x55d10cbec633]<br />
+/lib64/libpthread.so.0(+0x115c0) [0x7f4b23cea5c0]<br />
+/lib64/libc.so.6(strlen+0x26) [0x7f4b23788fe6]<br />
+/lib64/libX11.so.6(_XimLocalUtf8LookupString+0xde) [0x7f4b1870b8fe]<br />
+[0x4249f8b5]</p>
+<p>Debug info from gdb:</p>
+<p>[New LWP 5108]<br />
+[New LWP 5112]<br />
+[New LWP 5116]<br />
+[New LWP 5117]<br />
+[New LWP 5118]<br />
+[New LWP 5119]<br />
+[New LWP 5121]<br />
+[New LWP 5122]<br />
+[New LWP 5123]<br />
+warning: File &quot;/usr/bin/mono-sgen-gdb.py&quot; auto-loading has been declined by your `auto-load safe-path' set to &quot;$debugdir:$datadir/auto-load&quot;.<br />
+To enable execution of this file add<br />
+add-auto-load-safe-path /usr/bin/mono-sgen-gdb.py<br />
+line to your configuration file &quot;/home/penguin/.gdbinit&quot;.<br />
+To completely disable this security protection add<br />
+set auto-load safe-path /<br />
+line to your configuration file &quot;/home/penguin/.gdbinit&quot;.<br />
+For more information about this security protection see the<br />
+&quot;Auto-loading safe path&quot; section in the GDB manual.  E.g., run from the shell:<br />
+info &quot;(gdb)Auto-loading safe path&quot;<br />
+warning: File &quot;/usr/bin/mono-sgen-gdb.py&quot; auto-loading has been declined by your `auto-load safe-path' set to &quot;$debugdir:$datadir/auto-load&quot;.<br />
+[Thread debugging using libthread_db enabled]<br />
+Using host libthread_db library &quot;/lib64/libthread_db.so.1&quot;.<br />
+0x00007f4b23ce9fdb in waitpid () from /lib64/libpthread.so.0<br />
+Id   Target Id         Frame<br />
+* 1    Thread 0x7f4b247fa780 (LWP 5104) &quot;mono&quot; 0x00007f4b23ce9fdb in waitpid () from /lib64/libpthread.so.0<br />
+2    Thread 0x7f4b1c3ff700 (LWP 5108) &quot;mono&quot; 0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+3    Thread 0x7f4b1cb62700 (LWP 5112) &quot;Finalizer&quot; 0x00007f4b23ce8957 in do_futex_wait.constprop () from /lib64/libpthread.so.0<br />
+4    Thread 0x7f4b0c301700 (LWP 5116) &quot;Timer-Scheduler&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+5    Thread 0x7f4b18044700 (LWP 5117) &quot;Timer-Scheduler&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+6    Thread 0x7f4b06eef700 (LWP 5118) &quot;Threadpool work&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+7    Thread 0x7f4b06cee700 (LWP 5119) &quot;Threadpool work&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+8    Thread 0x7f4b05af4700 (LWP 5121) &quot;Threadpool work&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0<br />
+9    Thread 0x7f4b06241700 (LWP 5122) &quot;Threadpool work&quot; 0x00007f4b237f801d in poll () from /lib64/libc.so.6<br />
+10   Thread 0x7f4b04c93700 (LWP 5123) &quot;Threadpool work&quot; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0</p>
+<p>Thread 10 (Thread 0x7f4b04c93700 (LWP 5123)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cd6b9ab in worker_thread ()<br />
+#2  0x000055d10cd661d6 in start_wrapper ()<br />
+#3  0x000055d10ce1af4a in inner_start_thread ()<br />
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 9 (Thread 0x7f4b06241700 (LWP 5122)):<br />
+#0  0x00007f4b237f801d in poll () at /lib64/libc.so.6<br />
+#1  0x000055d10cd6d2f2 in poll_event_wait ()<br />
+#2  0x000055d10cd6e136 in selector_thread ()<br />
+#3  0x000055d10cd661d6 in start_wrapper ()<br />
+#4  0x000055d10ce1af4a in inner_start_thread ()<br />
+#5  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#6  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 8 (Thread 0x7f4b05af4700 (LWP 5121)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cd6b9ab in worker_thread ()<br />
+#2  0x000055d10cd661d6 in start_wrapper ()<br />
+#3  0x000055d10ce1af4a in inner_start_thread ()<br />
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 7 (Thread 0x7f4b06cee700 (LWP 5119)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cd6b9ab in worker_thread ()<br />
+#2  0x000055d10cd661d6 in start_wrapper ()<br />
+#3  0x000055d10ce1af4a in inner_start_thread ()<br />
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 6 (Thread 0x7f4b06eef700 (LWP 5118)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cd6b9ab in worker_thread ()<br />
+#2  0x000055d10cd661d6 in start_wrapper ()<br />
+#3  0x000055d10ce1af4a in inner_start_thread ()<br />
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 5 (Thread 0x7f4b18044700 (LWP 5117)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10ce19a7d in mono_thread_info_sleep ()<br />
+#2  0x000055d10cd6a91e in monitor_thread ()<br />
+#3  0x000055d10cd661d6 in start_wrapper ()<br />
+#4  0x000055d10ce1af4a in inner_start_thread ()<br />
+#5  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#6  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 4 (Thread 0x7f4b0c301700 (LWP 5116)):<br />
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cdefb3f in _wapi_handle_timedwait_signal_handle ()<br />
+#2  0x000055d10ce06304 in wapi_WaitForSingleObjectEx ()<br />
+#3  0x000055d10cd659d8 in mono_wait_uninterrupted.isra.18.constprop ()<br />
+#4  0x000055d10cd65aa3 in ves_icall_System_Threading_WaitHandle_WaitOne_internal ()<br />
+#5  0x00000000420b2604 in  ()<br />
+#6  0x0000000000000002 in  ()<br />
+#7  0x0000000000000001 in  ()<br />
+#8  0x0000000000000064 in  ()<br />
+#9  0x00007f4b1c6a7bb0 in  ()<br />
+#10 0x0000000000000063 in  ()<br />
+#11 0x00007f4b08001960 in  ()<br />
+#12 0x00007f4b1c6a7bb0 in  ()<br />
+#13 0x00007f4b0c300660 in  ()<br />
+#14 0x00007f4b0c3005d0 in  ()<br />
+#15 0x00000000420b23d0 in  ()<br />
+#16 0x0000000000000000 in  ()</p>
+<p>Thread 3 (Thread 0x7f4b1cb62700 (LWP 5112)):<br />
+#0  0x00007f4b23ce8957 in do_futex_wait.constprop () at /lib64/libpthread.so.0<br />
+#1  0x00007f4b23ce8a04 in __new_sem_wait_slow.constprop.0 () at /lib64/libpthread.so.0<br />
+#2  0x00007f4b23ce8aaa in sem_wait@@GLIBC_2.2.5 () at /lib64/libpthread.so.0<br />
+#3  0x000055d10cd877bb in finalizer_thread ()<br />
+#4  0x000055d10cd661d6 in start_wrapper ()<br />
+#5  0x000055d10ce1af4a in inner_start_thread ()<br />
+#6  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#7  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 2 (Thread 0x7f4b1c3ff700 (LWP 5108)):<br />
+#0  0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cde963f in thread_func ()<br />
+#2  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0<br />
+#3  0x00007f4b23803f7f in clone () at /lib64/libc.so.6</p>
+<p>Thread 1 (Thread 0x7f4b247fa780 (LWP 5104)):<br />
+#0  0x00007f4b23ce9fdb in waitpid () at /lib64/libpthread.so.0<br />
+#1  0x000055d10cc73870 in mono_handle_native_sigsegv ()<br />
+#2  0x000055d10ccca8ce in mono_arch_handle_altstack_exception ()<br />
+#3  0x000055d10cbec633 in mono_sigsegv_signal_handler ()<br />
+#4  0x00007f4b23cea5c0 in &lt;signal handler called&gt; () at /lib64/libpthread.so.0<br />
+#5  0x00007f4b23788fe6 in strlen () at /lib64/libc.so.6<br />
+#6  0x00007f4b1870b8fe in _XimLocalUtf8LookupString () at /lib64/libX11.so.6<br />
+#7  0x000000004249f8b5 in  ()<br />
+#8  0x0000000000000000 in  ()</p>
+<p>=================================================================<br />
+Got a SIGSEGV while executing native code. This usually indicates<br />
+a fatal error in the mono runtime or one of the native libraries<br />
+used by your application.<br />
+=================================================================[/code]</p>
+<p>Ок. Теперь уже проще гуглить. Ответ был найден на форуме arch-linux в <a href="https://bbs.archlinux.org/viewtopic.php?id=213818">ветке</a>, которая посвящена keepass: это оказался баг в библиотеке WinForms, который не сильно важен для разработчиков и никто фиксить его пока не будет (<a href="https://bugzilla.xamarin.com/show_bug.cgi?id=41505">оригинальный репорт</a>).</p>
+<p>Временное решение - добавить опцию --verify-all в качестве аргумента mono.</p>
+<p>[code]env LANG=en_US.utf8 mono --verify-all RepetierHost.exe -home {$HOME}.soft/RepetierHost[/code]</p>
+<p>С этой опцией вылетов не наблюдается, но случаются фризы приложения.</p>

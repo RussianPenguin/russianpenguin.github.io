@@ -1,0 +1,61 @@
+---
+layout: post
+title: 'OpenVPN: Настройка на собственном сервере. Часть 4 - конфигурация клиента.'
+date: 2016-01-28 22:02:41.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- linux
+- openvpn
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '19222403916'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/"
+---
+<p>&nbsp;</p>
+<ul>
+<li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+<li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+<li><a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></li>
+<li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+<li>OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</li>
+</ul>
+<p>&nbsp;</p>
+<p>Последняя часть расскажет о том, какие файлы нужно передать клиенту чтобы он мог подключаться к вновь созданному серверу.</p>
+<p>В первой части было сказано, что клиенту потребуются следующие файлы ключей:</p>
+<p>[code] ~/CA/pki/issued/User.crt<br />
+ ~/CA/pki/private/User.key<br />
+ ~/CA/pki/ca.crt<br />
+ /etc/openvpn/keys/ta.key[/code]</p>
+<p>Скопируем их в отдельный каталог. Так же в этом каталоге создадим файл connect.ovpn следующего содержания:</p>
+<p>[code]client<br />
+dev tun<br />
+proto udp<br />
+remote X.X.X.X 1194<br />
+tls-client<br />
+ca &quot;ca.crt&quot;<br />
+tls-auth &quot;ta.key&quot; 1<br />
+cert &quot;User.crt&quot;<br />
+key &quot;User.key&quot;<br />
+remote-cert-tls server<br />
+comp-lzo<br />
+tun-mtu 1500<br />
+mssfix 1450<br />
+verb 3<br />
+nobind[/code]</p>
+<p>Где X.X.X.X - это айпишник вашего сервера.</p>
+<p>Передаем пять этих файлов пользователю и теперь на клиенте можно подключаться:</p>
+<p>[code]$ sudo openvpn connect.ovpn[/code]</p>

@@ -1,0 +1,41 @@
+---
+layout: post
+title: 'Firefox: NS_ERROR_FILE_CORRUPTED'
+date: 2015-04-15 15:31:58.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- ошибки
+- javascript
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/04/15/firefox-ns_error_file_corrupted/"
+---
+<p>Столкнулся сегодня с этой ошибкой в консоли фокса.</p>
+<p>Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage#Storage_location_and_clearing_the_data" title="Storage location and clearing the data">документацию</a>.</p>
+<p>Решается удалением файла [code]webappsstore.sqlite[/code].</p>
+<p>В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя).</p>
+<p>[code lang="javascript"]try {<br />
+    setLocalStorageItem(key, value);<br />
+} catch(e) {<br />
+    if(e.name == &quot;NS_ERROR_FILE_CORRUPTED&quot;) {<br />
+        showMessageSomehow(&quot;Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -&gt; Clear Recent History -&gt; Cookies and set time range to 'Everything'. This will remove the corrupted browser storage across all sites.&quot;);<br />
+    }<br />
+}[/code]</p>
+<p>Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла.</p>

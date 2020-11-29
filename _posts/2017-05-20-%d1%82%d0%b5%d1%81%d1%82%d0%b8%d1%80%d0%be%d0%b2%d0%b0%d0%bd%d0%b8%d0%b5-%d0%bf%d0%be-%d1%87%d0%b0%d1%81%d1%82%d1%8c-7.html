@@ -1,0 +1,227 @@
+---
+layout: post
+title: 'Часть 7: PHPUnit (Тестирование ПО)'
+date: 2017-05-20 22:09:06.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- тестирование по
+- php
+- phpunit
+- yii2
+meta:
+  _wpcom_is_markdown: '1'
+  _oembed_e10adfd3fb4ef75ad6a7d78336ad0b59: "{{unknown}}"
+  _oembed_f21b4267f8b3361a01dbab44a937bfdf: "{{unknown}}"
+  _oembed_6e3ea1875ff45b1e4d70251ac1c67f69: "{{unknown}}"
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '5258740271'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/05/20/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-7/"
+excerpt: В этой части мы разберемся что такое PHPUnit и как наш пример из 6 части
+  превратить в полноценные тесты.
+---
+<h2><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/"><img class="alignleft size-thumbnail wp-image-2166" src="{{ site.baseurl }}/assets/images/2017/05/php-unit-logo-big.jpg?w=150" alt="php-unit-logo-big" width="150" height="108" />Оглавление</a></h2>
+<p>Продолжаем <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">цикл</a> статей по разработке веб-приложений с использованием методологии TDD.</p>
+<p>Ранее утверждалось, что для понимания того, как функционирует тот или иной фреймворк или технология нужно сначала попытаться реализовать похожий функционал самостоятельно. И только затем пытаться использовать уже существующие наработки.</p>
+<p>В предыдущей части мы попытались создать собственный минималистичный код, который осуществляет тестирование проекта. Если продолжать и дальше, то в конечном счете можно довести имеющиеся наработки до вида, годного для использования в маленьких или не очень проектах. Но так делать не стоит ибо современная индустрия разработки требует высокой скорости создания продуктов и высокого их качества. Тратить усилия на поддержание уже не раз придуманного и реализованного, но своего - это не совсем хорошая идея. Поэтому в этой главе мы познакомимся с PHPUnit и научимся правильно его применять вместе с yii.</p>
+<p><!--more--></p>
+<p>Это немного удивительно, но предыдущие наработки можно легко использовать лишь изменив родительский класс для <em>UserTest</em> с <em>\common\tests\TestCase</em> на <em>\PHPUnit\Framework\TestCase</em> и несколько изменив порядок запуска тестов.</p>
+<p>[code lang="php"]namespace common\tests\unit;</p>
+<p>use common\models\User;<br />
+use \PHPUnit\Framework\TestCase;</p>
+<p>class UserTest extends TestCase<br />
+{<br />
+  // код без изменений<br />
+}[/code]</p>
+<p>Помимо изменения родительского класса мы еще и убрали подключение файла _bootstrap.php. Запуск тестов будет выглядеть так, как показано ниже.</p>
+<p>[code]composer exec -v -- &quot;phpunit --bootstrap common/tests/_bootstrap.php common/tests/unit&quot;[/code]</p>
+<p><strong>Примечание</strong>: кавычки нужны из-за неправильной обработки передаваемых в команду аргументов. Эта <a href="https://github.com/composer/composer/issues/5632">ошибка</a> уже исправлена, но ее портирование в composer будет выполнено только после того как разработчики проекта откажутся от поддержки версий php ниже 5.5.</p>
+<p>Здесь мы вызываем исполняемый скрипт phpunit, который расположен в каталоге <em>vendor/bin</em> и передаем ему несколько аргументов.</p>
+<ul>
+<li><em>--bootstrap common/tests/_bootstrap.php</em> - указывает, что перед запуском тестов фреймворк обязан запустить файл, переданный как часть опции. В нашем случае он отвечает за инициализацию окружения так же, как и в случае с <em>unitSuite.php</em>.</li>
+<li><em>common/tests/unit</em> - этот аргумент обозначает каталог, в котором phpunit будет искать тесты</li>
+</ul>
+<p>Результат выполнения это восемь точек, каждая из которых обозначает успешно выполненный тест. Если тест не выполнен, то вместо точки мы увидим букву F, а ниже будет следовать расшифровка, в которой написано, какой тест упал (во втором примере поломан первый тест).</p>
+<p>[gallery ids="2158,2157" type="rectangular"]</p>
+<p>Конечно же каждый раз писать подобную командную строку не очень удобно. И PHPUnit предусмотрена возможность конфигурирования. Один из этих способов - использование xml-файла настроек, с которым мы работали в рамках предыдущей лекции. О средствах интеграции phpunit и yii, которые существую мы поговорим на одной из следующих лекций. Создадим файл настроек phpunit.xml и разместим его в каталоге с конфигурацией тестового окружения environments/dev/. После этого нужно выполнить провизию машины или скопировать файл phpunit.xml в корень проекта (как описывалось ранее).</p>
+<p><strong>phpunit.xml</strong></p>
+<p>[code lang="xml"]&lt;phpunit xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:noNamespaceSchemaLocation=&quot;http://schema.phpunit.de/5.7/phpunit.xsd&quot; bootstrap=&quot;common/tests/_bootstrap.php&quot;&gt;<br />
+   &lt;testsuites&gt;<br />
+       &lt;testsuite name=&quot;Core functionality&quot;&gt;<br />
+           &lt;directory&gt;common/tests/unit&lt;/directory&gt;<br />
+       &lt;/testsuite&gt;<br />
+   &lt;/testsuites&gt;<br />
+   &lt;filter&gt;<br />
+       &lt;whitelist processUncoveredFilesFromWhitelist=&quot;true&quot;&gt;<br />
+           &lt;directory suffix=&quot;.php&quot;&gt;models&lt;/directory&gt;<br />
+       &lt;/whitelist&gt;<br />
+   &lt;/filter&gt;<br />
+&lt;/phpunit&gt;[/code]</p>
+<p>Файл конфигурации - это xml файл, который содержит в себе несколько секций, описывающих определенные аспекты тестирования. Атрибуты тега phpunit <em>xmlns:xsi</em> и <em>xsi:noNamespaceSchemaLocation</em> являются обязательными. Все остальные - это настройки. Самая важная настройка - bootstrap. Она показывает, что за файл нужно выполнить перед запуском тестов. Это тот самый _bootstrap.php, который мы писали выше.</p>
+<p>Внутри phpunit вкладываются элементы testsuites и filter. Первый описывает группы тестов, а второй - список файлов и каталогов, на которых будет проводится анализ покрытия кода тестами. Не будем подробно на них останавливаться поскольку данные теги очень хорошо описаны в официальной документации.</p>
+<p>Таким образом мы говорим фреймворку, что у нас есть только одна группа тестов, которая расположена в каталоге <em>common/tests/unit</em>, и файлы в только этом каталоге нужно анализировать на процент покрытия тестами (если указана соответствующая опция запуска).</p>
+<p>Строка запуска теперь будет выглядеть гораздо лаконичнее. Зайдя через консоль в каталог проекта и выполнив команду ниже мы увидим тот же самый результат, который был получен на предыдущем шаге.</p>
+<p>[code]composer exec -v -- &quot;phpunit -c phpunit.xml&quot;[/code]</p>
+<p>Строго говоря, все возможные опции, которые доступны через аргументы командной строки (посмотреть, какие опции вам доступны можно либо на официальном сайте проекта, либо выполнив composer exec -v -- "phpunit --help") мы можем указывать в конфигурационном файле. Никто не запрещает нам иметь несколько файлов конфигурации в одном проекте и использовать их поочередно, но делать так не стоит.</p>
+<h2>Отличия интеграционных и модульных тестов</h2>
+<p>Стоит сделать очень важное замечание, которое касается описанных выше тестов. Если следовать определениям, то это не совсем модульные тесты, а скорее интеграционные. Суть проста - в большинстве тестов мы используем реализацию модели пользователя, которая является наследником ActiveRecord, а уже она настолько тесно интегрирована с базой данных, что подменить ее объектом-заглушкой очень и очень сложно.</p>
+<p>Смотрите, первый же вызываемый метод setUp() работает с базой, очищая ее и наполняя данными. Дальше идут тесты сохранения пользователя в базу и т.д. Если следовать букве определения, то мы должны разместить тесты модели не в подкаталоге unit, а в подкаталоге integration например, но, увы, это не будет отражать суть того, что же мы тестируем. Поэтому порой приходится идти на некоторые уступки.</p>
+<p>Правильны же модульный тест тестирует только один класс в отрыве от всей остальной инфраструктуры, подменяя все внешние зависимости своими заглушками. Интеграционный же тест проверяет некоторую единицу, которая взаимодействует с различными частями системы.</p>
+<h2>Интеграционные тесты</h2>
+<p>Исторически сложилось, что интеграционное и блочное тестирование не разделяется в yii на два отдельных процесса и запускается одновременно (одна из причин описана в предыдущем разделе - их просто невозможно отделить). Изолировать их запуск можно самостоятельно. В раздел testsuites конфигурационного файла phpunit.xml мы добавим запись еще об одной группе тестов - интеграционной.</p>
+<p>[code lang="xml"]&lt;testsuites&gt;<br />
+   &lt;testsuite name=&quot;Core functionality&quot;&gt;<br />
+       &lt;directory&gt;common/tests/unit&lt;/directory&gt;<br />
+   &lt;/testsuite&gt;<br />
+   &lt;testsuite name=&quot;Integration&quot;&gt;<br />
+       &lt;directory&gt;common/tests/integration&lt;/directory&gt;<br />
+   &lt;/testsuite&gt;<br />
+&lt;/testsuites&gt;[/code]</p>
+<p>С помощью ключа --testsuite название_группы можно запустить конкретную группу тестов.</p>
+<p>[code]composer exec -v -- 'phpunit -c phpunit.xml'<br />
+composer exec -v --  'phpunit -c phpunit.xml --testsuite &quot;Core functionality&quot;'<br />
+composer exec -v -- 'phpunit -c phpunit.xml --testsuite &quot;Integration&quot;'[/code]</p>
+<p>Первая команда запустит все тестовые группы. Вторая и третья только группы с соответствующем именем.</p>
+<h2>Mock-объекты</h2>
+<p>Теперь нам нужно поговорить об очень важной составляющей любых тестов. Об объектах-заглушках. Суть этих элементов в том, чтобы подменять на время некоторую функциональность проекта.</p>
+<p>Например, у нас есть <em>\Yii::$app-&gt;user</em>, который является текущим пользователем системы и содержит в себе процедуры авторизации (процедуры аутентификации происходят в модели <em>LoginForm</em>).</p>
+<p>При тестировании формы одним из аспектов, который обязательно требуется проверить, является наличие вызова метода авторизации из объекта user (чаще всего используется <em>\yii\web\user</em>). Как мы можем это проверить простым способом?<br />
+Никак. Но что если мы сможем подменить объект user на свой? И эта сущность сможет сообщить о том был ли вызов нужно процедуры или нет. Кратко это и есть вся суть mock-объектов - объектов, которые подменяют оригинальный класс на специфический, подконтрольный разработчику. Историю появления и больше сведений можно прочесть в <a href="https://en.wikipedia.org/wiki/Mock_object">википедии</a>.</p>
+<p>Первое, что мы сделаем для тестирования <em>LoginForm</em> - создадим класс тестов.</p>
+<p><img class=" size-full wp-image-2161 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/03-create_class.png" alt="03-create_class" width="610" height="418" /></p>
+<p><strong>common/tests/unit/LoginFormTest.php</strong></p>
+<p>[code lang="php"]namespace common\tests\unit;</p>
+<p>use common\models\LoginForm;<br />
+use yii\web\User;</p>
+<p>class LoginFormTest extends \PHPUnit_Framework_TestCase<br />
+{<br />
+   protected const USER_EMAIL = 'test@test.test';<br />
+   /**<br />
+    * @var string Constant result of \Yii::$app-&gt;security-&gt;generatePasswordHash('test');<br />
+    */<br />
+   protected const PASSWORD_HASH = '$2y$13$PP1EDCr7ujdhTxZT2DV96uM8e2rcdXHY1xAQINCIiB0gOck/VBwN6';</p>
+<p>   public static function setUpBeforeClass()<br />
+   {<br />
+       \Yii::$app-&gt;db-&gt;createCommand('truncate table {{%user}}')-&gt;execute();<br />
+       \Yii::$app-&gt;db-&gt;createCommand('insert into {{%user}} (id, password_hash, username, email, auth_key) values (:id, :password_hash, :username, :email, :auth_key)')<br />
+       -&gt;bindValues([<br />
+           'id' =&gt; 1,<br />
+           'password_hash' =&gt; self::PASSWORD_HASH,<br />
+           'username' =&gt; 'test',<br />
+           'email' =&gt; self::USER_EMAIL,<br />
+           'auth_key' =&gt; str_repeat('s', 32)<br />
+       ])-&gt;execute();<br />
+   }</p>
+<p>   public static function tearDownAfterClass()<br />
+   {<br />
+       \Yii::$app-&gt;db-&gt;createCommand('truncate table {{%user}}')-&gt;execute();<br />
+   }</p>
+<p>   public function testOne()<br />
+   {<br />
+       $user = \common\models\User::findByEmail(self::USER_EMAIL);<br />
+       $this-&gt;assertNotEmpty($user);<br />
+   }<br />
+}[/code]</p>
+<p>Разберем этот код подробно. Метод <em>setUpBeforeClass()</em> выполняется единожды при инициализации класса (аналогично setUp(), который выполняется перед каждым тестом), в нем мы создаем в базе тестового пользователя. <em>tearDownAfterClass()</em> запускается после прохождения всех тестов и в нем мы очищаем за собой базу. Для проверки того, что все идет хорошо мы используем testOne(). Он покажет все ли идет хорошо.</p>
+<p>обратите внимание на то, что мы используем константный хеш. Это нужно для повторяемости тестов. Не используйте рандомные данные в своих кейсах - воспроизвести ошибку будет практически невозможно.</p>
+<p>Запускаем через phpunit способом, который мы изучили ранее и убеждаемся, что ни один тест не упал.</p>
+<p>[code]composer exec -v -- &quot;phpunit -c phpunit.xml&quot;[/code]</p>
+<p>Первый реальный тест, который мы напишем будет проверять валидаторы полей формы.</p>
+<p>[code lang="php"]public function testValidationIsTrue()<br />
+{<br />
+   $loginForm = new LoginForm([<br />
+       'email' =&gt; 'test@test.test',<br />
+       'password' =&gt; \Yii::$app-&gt;security-&gt;generatePasswordHash('test'),<br />
+   ]);<br />
+   $this-&gt;assertTrue($loginForm-&gt;validate());<br />
+}[/code]</p>
+<p>Тест не проходит и показывает, что есть ошибка. Это очевидно поскольку все шаблоны приложений Yii ориентируются на username, а мы в предыдущих частях условились использовать email как уникальный идентификатор пользователя.<br />
+Вашей задачей будет модифицировать <em>LoginForm</em> так, чтобы данный кейс прошел. Да, в процессе работы над проектом у вас будут самостоятельные задания ответы на которые вы сможете подсмотреть в исходном коде прилагаемой к статье.<br />
+А теперь мы хотим проверить, что после успешной аутентификации запускается механизм авторизации. Для этого нужно убедиться, что запускается метод \Yii\web\User::login(). Но как? Здесь нам помогут mock-объекты. На время теста мы подменим актуальный класс на наш, который укажет на то, выполнялся конкретный метод или нет.</p>
+<p>[code lang="php"]<br />
+//...<br />
+use yii\web\User;</p>
+<p>class LoginFormTest extends \PHPUnit_Framework_TestCase<br />
+{<br />
+   //...</p>
+<p>   protected static $_storedEntities = [<br />
+       'user' =&gt; null,<br />
+   ];</p>
+<p>   /**<br />
+    * Add default user to database,<br />
+    * Save original components from engine to temporary storage<br />
+    */<br />
+   public static function setUpBeforeClass()<br />
+   {<br />
+       //...<br />
+       foreach (static::$_storedEntities as $entity =&gt; $value) {<br />
+           static::$_storedEntities[$entity] = \Yii::$app-&gt;get($entity);<br />
+       }<br />
+   }</p>
+<p>   //...</p>
+<p>   /**<br />
+    * Restore original components after every test<br />
+    */<br />
+   protected function tearDown()<br />
+   {<br />
+       foreach (static::$_storedEntities as $entity =&gt; $value) {<br />
+           \Yii::$app-&gt;set($entity, $value);<br />
+       }<br />
+   }</p>
+<p>   //...<br />
+   public function testAuthorizationCall()<br />
+   {<br />
+       $mock = $this-&gt;getMockBuilder(User::class)<br />
+           -&gt;setMethods(['login'])<br />
+           -&gt;disableOriginalConstructor()<br />
+           -&gt;getMock();<br />
+       $mock-&gt;method('login')-&gt;withAnyParameters()-&gt;willReturn(true);<br />
+       \Yii::$app-&gt;set('user', $mock);<br />
+       $loginForm = new LoginForm([<br />
+           'email' =&gt; self::USER_EMAIL,<br />
+           'password' =&gt; 'test',<br />
+       ]);<br />
+       $this-&gt;assertTrue($loginForm-&gt;login());<br />
+   }<br />
+}[/code]</p>
+<p>Рассмотрим метод <em>testAuthorizationCall()</em>.</p>
+<p>[code lang="php"]$this-&gt;getMockBuilder(User::class)[/code]</p>
+<p>Создается mock на базе класса <em>\Yii\web\user</em>. Это значит, что будет использоваться оригинальный класс с сохранением всех его методов.</p>
+<p>[code lang="php"]-&gt;setMethods(['login'])[/code]</p>
+<p>Указываем какие методы будут заменены на новые.</p>
+<p>[code lang="php"]-&gt;disableOriginalConstructor()[/code]</p>
+<p>Отключаем конструктор (так как оригинальный выполняет слишком много действий, которые нам для этого теста не нужны.</p>
+<p>[code lang="php"]-&gt;getMock()[/code]</p>
+<p>Получаем итоговый объект.</p>
+<p>[code lang="php"]$mock-&gt;method('login')-&gt;withAnyParameters()-&gt;willReturn(true)[/code]</p>
+<p>Указываем, что метод <em>login()</em> будучи вызванный с любыми параметрами всегда вернет true.</p>
+<p>[code lang="php"]\Yii::$app-&gt;set('user', $mock);[/code]</p>
+<p>Подменяем оригинального пользователя на нашего.</p>
+<p>А дальше идет простой тест, который будет искать ошибки кейса. И конечно же не стоит забывать о сохранении и восстановлении оригинальных значений. Это делают методы setUpBeforeClass() и teadDown() соответственно.</p>
+<p>На этом мы заканчиваем знакомство с PHPUnit и дальше будем применять его на практике (конечно же заглядывая в документацию).</p>
+<p>В качестве практики попробуйте реализовать еще несколько кейсов тестирования LoginForm. При этом вы можете заметить, что мы не покрыли тестами все пути исполнения кода. Об этой метрике мы поговорим в одной из следующих частей.</p>
+<p><img class=" size-full wp-image-2164 aligncenter" src="{{ site.baseurl }}/assets/images/2017/05/04-success.png" alt="04-success" width="587" height="175" /></p>
+<h2>Исходный код</h2>
+<ul>
+<li><a href="https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.4">Код, который должен у вас получиться после седьмой части</a></li>
+</ul>
+<h2>Литература</h2>
+<ul>
+<li><a href="http://www.ozon.ru/context/detail/id/27702624/?partner=russianpenguin&amp;from=bar">"Phpunit Essentials" Zdenek Machek, ISBN: 9781783283439</a></li>
+<li><a href="https://jtreminio.com/2013/03/unit-testing-tutorial-part-5-mock-methods-and-overriding-constructors/">Unit Testing Tutorial Part V: Mock Methods and Overriding Constructors</a></li>
+<li><a href="https://phpunit.de/manual/current/en/test-doubles.html#test-doubles.mock-objects">PHPUnit manual: Chapter 9. Test Doubles</a></li>
+<li><a href="http://vladimir-ivanov.net/mock-yii2-components/">Mock Yii2 components</a></li>
+</ul>

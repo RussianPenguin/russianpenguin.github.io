@@ -1,0 +1,185 @@
+---
+layout: post
+title: Несколько советов по оптимизации приложений на Angular JS
+date: 2014-10-20 21:14:53.000000000 +04:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+tags:
+- angularjs
+- javascript
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_google_plus: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_linkedin: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _publicize_pending: '1'
+  _edit_last: '13696577'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _oembed_d4fc86ba36c5d58422b8428062fe82f2: "{{unknown}}"
+  _oembed_8d8898db6faec6d658e4ffd1c8642fd8: "{{unknown}}"
+  _oembed_e9c1ea648f272ef43d2a641288e6ea39: "{{unknown}}"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2014/10/20/%d0%bd%d0%b5%d1%81%d0%ba%d0%be%d0%bb%d1%8c%d0%ba%d0%be-%d1%81%d0%be%d0%b2%d0%b5%d1%82%d0%be%d0%b2-%d0%bf%d0%be-%d0%be%d0%bf%d1%82%d0%b8%d0%bc%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d0%b8-%d0%bf%d1%80%d0%b8/"
+---
+## Что нам потребуется.
+
+### AngularJS
+
+Версия \< 1.3
+
+В версии 1.3 появились существенные отличия. Включая однонаправленный биндинг - :: (два двоеточия), но она несовместима с bindonce.
+
+Хотя по скорости ничем не уступает оптимизированному варианту. Если вы используете \>= 1.3, то применяйте готовый однонаправленный биндинг вместо bo-\*
+
+### Bindonce
+
+url: [https://github.com/Pasvaz/bindonce](https://github.com/Pasvaz/bindonce "Bindonce")
+
+Эта библиотека позволяет делать однонаправленный биндинг данных в шаблоны.  
+Если вам не требуется, чтобы какая-то переменная после своего отображения меняла значение (т.е. она не будет его менять в процессе работы), то это однозначно для вас.
+
+Например у нас есть список книг, который приходит с сервера и обновляется целиком (опять же с сервера).  
+Что мы делаем в коде
+
+[code lang="html"]\<div ng-repeat="book in books"\>\<span\>{{book.name}}\</span\>\<div\>[/code]
+
+Имя книги не меняется и мы можем записать так
+
+[code lang="html"]\<div ng-repeat="book in books"\>\<span bo-text="book.name"\>\</span\>\<div\>[/code]
+
+Так как при перезагрузке книг список books будет изменен полностью, то дерево будет перестроено заново и нам не нужно никак заботиться о том, что имя изменится.
+
+Однако, если вы используете sly-repeat (ниже), то его нельзя сочетать с bindonce из-за агрессивного кеширования дерева дом этим самым слайрепитом.
+
+### Scalyr
+
+url: [https://github.com/scalyr/angular](https://github.com/scalyr/angular "Scalyr")
+
+post: [http://blog.scalyr.com/2013/10/31/angularjs-1200ms-to-35ms/](http://blog.scalyr.com/2013/10/31/angularjs-1200ms-to-35ms/ "Blogpost about scalyr")
+
+Эта библиотека позволит вам минимизировать количество одновременно работающих вотчеров путем отключения ненужных. А так же реализовать умный ng-repeat с кешированием созданных dom-элементов (который, увы, не сильно дружит с bindonce. т.е. не дружит вовсе).
+
+## Оптимизации
+
+### Много скрытых элементов на странице
+
+Это одна из ключевых оптимизаций для проекта. Так как нам часто приходится скрывать/показывать разные элементы.
+
+Представим, что у нас есть какой-то код типа нижеследующего.
+
+[code lang="html"]\<div ng-show="condition"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+
+Если не предпринять дополнительных действий, то все то, что написано внутри скрытого дива будет выполняться (!), а это лишние такты процессора и нервные подергивания пользователя.
+
+Что же мы можем сделать?
+
+На помощь нам приходит sly-show+sly-prevent-evaluation-when-hidden. Эта убойная комбинация не будет запускать интерпретацию скрытых элементов.
+
+[code lang="html"]\<div sly-show="condition" sly-prevent-evaluation-when-hidden\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+
+Переписав код таким образом мы получим тот самый профит: снижение нагрузки на клиент-сайд.
+
+Но стоит заметить одну особенность директивы: она в своем решении интерпретировать или нет вложенный код опирается на наличие класса ng-hide. При инициализации приложения или перерисовке элементов этого класса нет. Поэтому мы можем увидеть что-то вроде этого:
+
+[![Trace angular application]({{ site.baseurl }}/assets/images/2014/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_092.png?w=300)](https://russianpenguin.files.wordpress.com/2014/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_092.png)
+
+Причина проста: у элементов при инициализации еще нет класса ng-hide. Он появится только после того, как отработают нужны контроллеры, а значит, что отрисовка элемента с нуля всегда будет отрисовывать и интерпретировать все скрываемые элементы (даже если они действительно скрыты).
+
+Решение проблемы: принудительно добавить класс ng-hide всем элементам, которые находятся под связкой sly-show+sly-prevent-evaluation-when-hidden.
+
+[code lang="html"]\<div class="ng-hide"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+
+На этом оптимизация неиспользуемого кода закончена.
+
+### Оптимизация биндингов
+
+Под этим подразумевается однократное добавление в шаблон переменной.
+
+Как в примере bindonce с книгами (выше) нам может не требоваться функционал двунаправленного отображения.
+
+Поэтому все подобные участки мы заменяем однонаправленным биндингом.
+
+```
+{{var}} -\> \<div bo-text=”var”\>\</div\>
+```
+
+Путь оптимизации: вместо элемента создается контейнер, на который выполняется отображение текста элемента. Так как в биндванс не существует шаблонной конструкции для биндинга. Естественно, что там может быть любой тег и не обязательно div. Самое главное - наличие контейнера.
+
+```
+ng-href="text{{var}}" -\> bo-href="’text’ + var"
+```
+
+А так мы оптимизировали ссылки.  
+Важно заметить, что ng-\* и bo-\* работают с биндингами различным образом: если первый работает по внутриангуляровским правилам интепретации, то второй просто выполняет .eval() на строку. Поэтому в bo-\* мы работаем с обычными строками и переменными.
+
+Аналогичным образом работаем и с другими атрибутами. Если есть аналог биндинга.
+
+Если аналога нет, то используем конструкцию bo-attr-\<имя кастомного атрибута\>
+
+[code lang="html"]\<div bo-attr bo-attr-isbn="’{{book.isbn}}’"\>\</div\>[/code]
+
+Здесь кроется еще одна важная особенность обработки атрибутов библиотекой: они рассматриваются как строки. И если в атрибуте текст, что его надо представить в виде текста (то же характерно для любого юиндига bo-\*). Мы привыкли чаще всего работать с числами, но не стоит забывать, что есть еще буквы.
+
+Поэтому если не уверены в содержимом переменной - пишите строковое предствление: _‘{{var}}’_, а не _var_.
+
+### Вложенность элементов
+
+На картинке профайлера (выше) вы можете увидеть гребенку из кучи вложенных вызовов функций. Если мы посмотрим на эти вывовы под микроскопом отладчиком, то увидим, что это рекурсивный обход дерева dom.
+
+Чем меньше у вас уровней вложенности, тем лучше. Особенно это касается кода, который расположен в циклах.
+
+Так что старайтесь сократить вложенности.
+
+### Дополнительная оптимизация при обработке скрытых элементов
+
+У sly-prevent-evaluation-when-hidden есть одна большая проблема: она опирается только на наличие класса ng-hide, что не совсем уместно если видимость элемента контролируется каким-то другим классом.
+
+В таком случае можно (вообще нужно всегда) использовать следующее расширение директивы (подключаем после подключения scalyr).
+
+[code lang="javascript"]/\*\*  
+\* Extended version of slyPreventEvaluationWhenHidden from scalyr.  
+\* This version prevent evaluation not only when element has class ng-hide.  
+\* If element is hidden with "display: none" evaluation is prevented.  
+\*/  
+angular.module('sly')  
+ .directive('slyPreventEvaluationWhenHidden', function () {  
+ return {  
+ restrict: 'A',  
+ // We create a new scope just because it helps segment the gated watchers  
+ // from the parent scope. Unclear if this is that important for perf.  
+ scope: true,  
+ compile: function compile(tElement, tAttrs) {  
+ return {  
+ // We need a separate pre-link function because we want to modify the scope before any of the  
+ // children are passed it.  
+ pre: function preLink(scope, element, attrs) {  
+ scope.$addWatcherGate(function hiddenChecker() {  
+ // Should only return true if the element is not hidden.  
+ return !element.hasClass('ng-hide') && element.is(":visible") ;  
+ }, function hiddenDecider(watchExpression, listener, equality, directiveName) {  
+ // Make an exception for slyShow.. do not gate its watcher.  
+ if (isDefined(directiveName) && (directiveName == 'slyShow'))  
+ return false;  
+ return true;  
+ });  
+ },  
+ };  
+ },  
+ };  
+ });[/code]
+

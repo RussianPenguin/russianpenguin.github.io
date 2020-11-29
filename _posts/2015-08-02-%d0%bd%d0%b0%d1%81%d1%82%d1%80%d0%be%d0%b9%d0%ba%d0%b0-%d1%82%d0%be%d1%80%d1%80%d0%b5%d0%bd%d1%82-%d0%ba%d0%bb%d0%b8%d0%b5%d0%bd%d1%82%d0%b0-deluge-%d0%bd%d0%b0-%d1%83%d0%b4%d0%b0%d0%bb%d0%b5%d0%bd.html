@@ -1,0 +1,115 @@
+---
+layout: post
+title: Настройка торрент-клиента deluge на удаленном сервере
+date: 2015-08-02 20:13:12.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- linux
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '13336590486'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/08/02/%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d1%82%d0%be%d1%80%d1%80%d0%b5%d0%bd%d1%82-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82%d0%b0-deluge-%d0%bd%d0%b0-%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd/"
+---
+<p><a href="https://russianpenguin.files.wordpress.com/2015/08/deluge-bittorrent-client.jpg"><img src="{{ site.baseurl }}/assets/images/2015/08/deluge-bittorrent-client.jpg?w=150" alt="" width="150" height="92" class="alignleft size-thumbnail wp-image-575" /></a>Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.</p>
+<h2>Установка</h2>
+<p>Установка - это самое простое, что может быть.<br />
+[code lang="shell"]$ sudo dnf install deluge-daemon deluge-console[/code]<br />
+Ставим консольный клиент, а так же cli для него.</p>
+<p>Пока все. Клиент готов к работе. Его уже можно включить и пользоваться.</p>
+<p>[code lang="shell"]$ sudo systemctl enable deluge-daemon<br />
+$ sudo systemctl start deluge-daemon[/code]</p>
+<p>Но в такой конфигурации есть много проблем:</p>
+<ul>
+<li>отсутствие логов</li>
+<li>неправильное распределение по портам сервера</li>
+</ul>
+<p>Вам это надо? :)</p>
+<h2>Логи</h2>
+<p>Сразу после установки демон готов к запуску. Но та конфигурация, которую предлагают поставщики дистрибутива - она не совсем удачна. В ней отсутсвует логирование происходящего.</p>
+<p>Для этого нам надо поставить logrotate.<br />
+[code]$ sudo dnf install logrotate[/code]</p>
+<p>Сконфигурировать его для поддержки новых правил ротации. Для этого создадим файл <b>/etc/logrotate.d/deluge</b>примерно следующего содержания</p>
+<p>[code]/var/log/deluge/*.log {<br />
+        rotate 4<br />
+        weekly<br />
+        missingok<br />
+        notifempty<br />
+        compress<br />
+        delaycompress<br />
+        sharedscripts<br />
+        postrotate<br />
+                initctl restart deluged &gt;/dev/null 2&gt;&amp;1 || true<br />
+                initctl restart deluge-web &gt;/dev/null 2&gt;&amp;1 || true<br />
+        endscript<br />
+}[/code]</p>
+<p>А так же папку для хранения логов. И дадим ей нужные права.</p>
+<p>[code]$ sudo mkdir /var/log/deluge/<br />
+$ sudo chown deluge:deluge /var/log/deluge[/code]</p>
+<p>Теперь осталось включить поддержку логов для демона.</p>
+<p>Создаем новое описание демона для systemd в /etc/systemd/system/deluged.service</p>
+<p>[code][Unit]<br />
+Description=Deluge Bittorrent Client Daemon<br />
+After=network.target</p>
+<p>[Service]<br />
+Type=simple<br />
+User=deluge<br />
+Group=deluge<br />
+UMask=007</p>
+<p>ExecStart=/usr/bin/deluged -d -l /var/log/deluge/daemon.log -L warning</p>
+<p>Restart=always<br />
+TimeoutStopSec=300</p>
+<p>[Install]<br />
+WantedBy=multi-user.target[/code]</p>
+<p>Отлично. Осталось настроить iptables и сам deluge.</p>
+<h2>Настройка iptables</h2>
+<p>В ряде случаем достаточно просто открыть нужные порты<br />
+[code]$ sudo iptables -A INPUT -p tcp --dport 56881:56889 -j ACCEPT<br />
+$ sudo iptables -A INPUT -p udp --dport 56881:56889 -j ACCEPT[/code]</p>
+<p>Но в некоторых конфигурациях могут <a href="http://www.linuxquestions.org/questions/showthread.php?p=5145026">наблюдаться</a> проблемы с механизмом conntrack, который помечает ряд пакетов как invalid (особенно это касается dht трафика).</p>
+<p>Поэтому стоит отключить conntrack для всех соединения deluge.</p>
+<p>[code]$ sudo iptables -t raw -I PREROUTING -p udp --dport 56881:57200 -j NOTRACK<br />
+$ sudo iptables -t raw -I OUTPUT -p udp --sport 56881:57200 -j NOTRACK<br />
+$ sudo iptables -t raw -I PREROUTING -p tcp --dport 56881:57200 -j NOTRACK<br />
+$ sudo iptables -t raw -I OUTPUT -p tcp --sport 56881:57200 -j NOTRACK<br />
+$ sudo iptables -I INPUT -p icmp --icmp-type 3 -j ACCEPT<br />
+$ sudo iptables -I INPUT -p icmp --icmp-type 4 -j ACCEPT<br />
+$ sudo iptables -I INPUT -p icmp --icmp-type 11 -j ACCEPT<br />
+$ sudo iptables -I INPUT -p icmp --icmp-type 12 -j ACCEPT[/code]</p>
+<p>В любом случае тепень надо сохранить конфигарцию iptables.</p>
+<p>[code]$ sudo /usr/libexec/iptables/iptables.init save[/code]</p>
+<h2>Локальная авторизация</h2>
+<p>Чтобы мы могли успешно пользоваться deluge-console локальная авторизация должна быть включена для нашего пользователя.</p>
+<p>Т.е. должен быть файл ~/.config/deluge/auth содержащий строку логина-пароля</p>
+<p>[code]localclient:тут_длинный_хеш:10[/code]</p>
+<p>Скопировать этот файл можно из каталога /var/lib/deluge/.config/deluge</p>
+<p>[code]$ sudo cat /var/lib/deluge/.config/deluge/auth &gt;&gt; ~/.config/deluge/auth[/code]</p>
+<h2>Запуск и гонфигурирование демона</h2>
+<p>[code]$ sudo systemctl enable deluged<br />
+$ sudo systemctl start deluged[/code]</p>
+<p>Тем самым мы запустили демона, конфиг которого был описан ранее.</p>
+<p>Осталось его настроить.</p>
+<p>[code]$ deluge-console[/code]</p>
+<p>Вбиваем следующий набор команд</p>
+<p>Заставляем deluge слушать только определенный диапазон портов (который был открыт ранее)<br />
+[code]config -s listen_ports (56881, 56891)[/code]<br />
+Принудительно заставляем демон выходить только через определенный набор портов<br />
+[code]config -s outgoing_ports (56890, 57200)[/code]</p>
+<h2>Все</h2>
+<p>Теперь все. Каталог, в который будут сохраняться торренты - /var/lib/deluge/Downloads</p>
+<p>Дополнительные ссылки:<br />
+<a href="https://wiki.archlinux.org/index.php/Deluge">https://wiki.archlinux.org/index.php/Deluge</a></p>

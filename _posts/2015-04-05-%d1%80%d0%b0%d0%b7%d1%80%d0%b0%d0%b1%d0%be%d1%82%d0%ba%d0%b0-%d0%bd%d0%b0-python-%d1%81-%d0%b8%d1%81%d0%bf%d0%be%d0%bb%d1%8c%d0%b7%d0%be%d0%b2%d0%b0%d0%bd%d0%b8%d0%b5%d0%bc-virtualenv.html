@@ -1,0 +1,86 @@
+---
+layout: post
+title: Разработка на Python с использованием virtualenv
+date: 2015-04-05 18:31:34.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- python
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/04/05/%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b0-%d0%bd%d0%b0-python-%d1%81-%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5%d0%bc-virtualenv/"
+---
+<p><a href="https://virtualenv.readthedocs.org/en/latest/" title="virtualenv">Virtual Environment</a> - полезный инструмент, который позволет держать различные конфигурации зависимостей проектов в разных директориях. Например он решает проблему когда одному приложению требуется версия 1.0 пакета X, а другому - 2.0.</p>
+<h2>vitrualenv</h2>
+<p>Главным инструментов будет virtualenv.<br />
+[code lang="shell"]$ sudo yum install python-virtualenv[/code]</p>
+<h3>Использование</h3>
+<p>Создадим окружение</p>
+<p>[code lang="shell"]$ cd project_dir<br />
+$ virtualenv proj_env[/code]</p>
+<p>Этими командами мы создадим папку proj_env, которая будет содержать наше новое окружение. В этой папке будет набор скриптов и копия интерпретатора python, который будет использоваться в окружении (окружение использует свой интерпретатор, а не общесистемный).</p>
+<p>При создании окружения можно указать, какая версия python нам нужна.</p>
+<p>Возможно, что в системе параллельно стоит как python2, так и python3. Выбирать версию при создании окружения мы можем ключем -p. Если ключ не указан, то будет выбрана версия /usr/bin/python.</p>
+<p>[code lang="shell"]$ virtualenv -p /usr/bin/python3.4 proj_env[/code]</p>
+<p>Для того, чтобы попасть в наше новое окружение используем</p>
+<p>[code lang="shell"]$ source proj_env/bin/activate[/code]</p>
+<p>Теперь мы внутри окружения.</p>
+<p>Определеить это можно по изменившемуся приглашению:</p>
+<p>[code](proj_env)тут_старое_приглашение_из_$PS1[/code]</p>
+<p>Все. Мы внутри окружения. Можно ставить зависимости для нашего приложения.</p>
+<p>[code lang="shell"]$ pip install flask flask-bootsrap rq rq-scheduler pymysql[/code]</p>
+<p>Выйти из окружения можно при помощи</p>
+<p>[code lang="shell"]$ deactivate[/code]</p>
+<p>Теперь мы попали обратно в систему с дефолтными интерпретаторами.</p>
+<h3>Сохранение информации о зависимостях</h3>
+<p>Опция --no-site-packages отключает использование глобально-установленных пакетов, что может быть полезно (сейчас это дефолтное поведение virtualenv).</p>
+<p>Хорошей идей будет сохранить информацию об установленных в окружении пакетов.</p>
+<p>{code lang="shell"]$ pip freeze &gt; requirements.txt[/code]</p>
+<p>После развертывание окружения в новой системе можно поднять все пакеты сразу.</p>
+<p>[code lang="shell"]$ pip install -r requirements.txt[/code]</p>
+<p>Не забываем добавить папку окружения в .gitignore.</p>
+<h2>virtualenverapper</h2>
+<p>Еще один полезный инструмент (скорее для разработчиков, а не для деплоя), который позволяет обращаться со со множеством окружений и переключаться между ними.</p>
+<p>[code lang="shell"]$ sudo yum install python-virtualenvwrapper[/code]</p>
+<h3>Применение</h3>
+<p>Добавляем в .bashrc</p>
+<p>[code lang="shell"]export WORKON_HOME=~/.envs<br />
+source /usr/bin/virtualenvwrapper.sh[/code]</p>
+<p>Теперь можно создавать окружения.</p>
+<p>[code lang="shell"]$ mkvirtualenv proj_env[/code]</p>
+<p>Активировать окружения.</p>
+<p>[code lang="shell"]$ workon proj_env[/code]</p>
+<p>Выходить из окружения можно так же как это делалось в кготом virtualenv.</p>
+<p>[code lang="shell"]$ deactivate[/code]</p>
+<p>Удалять окружения.</p>
+<p>[code lang="shell"]$ rmvirtualenv proj_env[/code]</p>
+<p>При этом все папки окружений будет расположены в одном месте: папке, которая задана через $WORKON_HOME.</p>
+<h3>Дополнительные команды</h3>
+<p>Есть несколько дополнительных команд</p>
+<ul>
+<li>lsvirtualenv - покажет список созданных окружений</li>
+<li>cdvirtualenv - перейдет непосрественно в папку окружения</li>
+<li>cdsitepackages - переведет в site-packages выбранного окруженияч</li>
+<li>lssitepackages - сделает ls для папки site-packages</li>
+</ul>
+<p><a href="http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html" title="Список команд virtualenvwrapper">Посмотреть полный список команд</a>.</p>
+<h2>autoenv</h2>
+<p><a href="https://github.com/kennethreitz/autoenv" title="autoenv">Утилита</a> позволяет активировать окружение при входе в папку, и деактивировать при выходе.</p>
+<p>[code lang="shell"]$ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv<br />
+$ echo 'source ~/.autoenv/activate.sh' &gt;&gt; ~/.bashrc[/code]</p>

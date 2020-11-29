@@ -1,0 +1,111 @@
+---
+layout: post
+title: Fedora+Nvidia=CUDA
+date: 2014-08-23 18:22:16.000000000 +04:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- cuda
+- linux
+- nvidia
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_google_plus: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_linkedin: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _edit_last: '13696577'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2014/08/23/fedoranvidiacuda/"
+---
+<p>Итак. Мы хотим получить рабочую инсталляцию на Fedora (в моем случае - RFRemix и с этим связано несколько багов).</p>
+<p>Для этого нам надо:</p>
+<ol>
+<li>видеокарту nvidia :)</li>
+<li>установленный репозитарий cuda (<a title="CUDA Toolkit downloads" href="https://developer.nvidia.com/cuda-downloads">отсюда</a>)</li>
+<li><a title="Fedora 20 nVidia Drivers Install / Uninstall / Restore Plymouth" href="http://www.if-not-true-then-false.com/2014/fedora-20-nvidia-guide/">заметку о том, как восстановить plymouth после установки драйвером nvidia</a></li>
+</ol>
+<p><strong>1 - Ставим</strong></p>
+<p>[code lang="shell"]# yum install cuda[/code]</p>
+<p>Этот метапакет поставит все, что должно идти в комплекте (включая свежие дрова)</p>
+<p><strong>2 - Удаляем kmod-nvidia</strong></p>
+<p>Если у вас уже были проинсталены дрова невидии, то нужно удалить имеющийся kmod. Так как он может содержать несовместимую с текущими библиотеками версию модуля</p>
+<p>[code lang="shell"]# yum remove kmod-nvidia[/code]</p>
+<p><strong>3 - Пересобираем akmod</strong></p>
+<p>[code lang="shell"]# akmod -kernel $(uname -r)[/code]</p>
+<p>Тут может потребоваться доставить kernel-headers</p>
+<p><strong>4 - Пересобираем initrd</strong></p>
+<p>Для этого воспользуемся dracut</p>
+<p>[code lang="shell"]# dracut --force[/code]</p>
+<p><strong>5 - Ребут :)</strong></p>
+<p><strong>6 - Можно собрать семплы</strong></p>
+<p>Замечу, что делать это надо под рутом или проставив соотвествующие права на папки. Так как мейкфайлы сильно завязаны на относительные пути.</p>
+<p>[code lang="shell"]# cd /usr/local/cuda-6.5/samples/5_Simulations/fluidsGL<br />
+# make[/code]</p>
+<p><strong>7 - А вот тут нас поджидает облом (RFRemix)</strong></p>
+<p>[code lang="shell"]&gt;&gt;&gt; WARNING - libGL.so not found, refer to CUDA Samples release notes for how to find and install them. &lt;&lt;&lt;<br />
+&gt;&gt;&gt; WARNING - libGLU.so not found, refer to CUDA Samples release notes for how to find and install them. &lt;&lt;&lt;<br />
+&gt;&gt;&gt; WARNING - libX11.so not found, refer to CUDA Samples release notes for how to find and install them. &lt;&lt;&lt;<br />
+&gt;&gt;&gt; WARNING - libXi.so not found, refer to CUDA Samples release notes for how to find and install them. &lt;&lt;&lt;<br />
+&gt;&gt;&gt; WARNING - libXmu.so not found, refer to CUDA Samples release notes for how to find and install them. &lt;&lt;&lt;[/code]</p>
+<p>Ага!</p>
+<p>Смотрим в <em>findgllib.mk</em></p>
+<p>[code lang="shell"]ifeq (&quot;$(OSLOWER)&quot;,&quot;linux&quot;)<br />
+   # first search lsb_release<br />
+   DISTRO  = $(shell lsb_release -i -s 2&gt;/dev/null | tr &quot;[:upper:]&quot; &quot;[:lower:]&quot;)<br />
+   DISTVER = $(shell lsb_release -r -s 2&gt;/dev/null)<br />
+   ifeq (&quot;$(DISTRO)&quot;,&quot;&quot;)<br />
+     # second search and parse /etc/issue<br />
+     DISTRO = $(shell more /etc/issue | awk '{print $$1}' | sed '1!d' | sed -e &quot;/^$$/d&quot; 2&gt;/dev/null | tr &quot;[:upper:]&quot; &quot;[:lower:]&quot;)<br />
+     DISTVER= $(shell more /etc/issue | awk '{print $$2}' | sed '1!d' 2&gt;/dev/null<br />
+   endif<br />
+   ifeq (&quot;$(DISTRO)&quot;,&quot;&quot;)<br />
+     # third, we can search in /etc/os-release or /etc/{distro}-release<br />
+     DISTRO = $(shell awk '/ID/' /etc/*-release | sed 's/ID=//' | grep -v &quot;VERSION&quot; | grep -v &quot;ID&quot; | grep -v &quot;DISTRIB&quot;)<br />
+     DISTVER= $(shell awk '/DISTRIB_RELEASE/' /etc/*-release | sed 's/DISTRIB_RELEASE=//' | grep -v &quot;DISTRIB_RELEASE&quot;)<br />
+   endif<br />
+endif</p>
+<p>ifeq (&quot;$(OSUPPER)&quot;,&quot;LINUX&quot;)<br />
+    # $(info) &gt;&gt; findgllib.mk -&gt; LINUX path &lt;&lt;&lt;)<br />
+    # Each set of Linux Distros have different paths for where to find their OpenGL libraries reside<br />
+    UBUNTU_PKG_NAME = &quot;nvidia-340&quot;<br />
+        UBUNTU = $(shell echo $(DISTRO) | grep -i ubuntu &gt;/dev/null 2&gt;&amp;1; echo $$?)<br />
+        FEDORA = $(shell echo $(DISTRO) | grep -i rfremix &gt;/dev/null 2&gt;&amp;1; echo $$?)<br />
+        RHEL   = $(shell echo $(DISTRO) | grep -i red    &gt;/dev/null 2&gt;&amp;1; echo $$?)<br />
+        CENTOS = $(shell echo $(DISTRO) | grep -i centos &gt;/dev/null 2&gt;&amp;1; echo $$?)<br />
+        SUSE   = $(shell echo $(DISTRO) | grep -i suse   &gt;/dev/null 2&gt;&amp;1; echo $$?)[/code]</p>
+<p>Еще раз ага!</p>
+<p>Смотрим как определяется тип дистрибутива.</p>
+<p>Это команда</p>
+<p>[code lang="shell"]awk '/ID/' /etc/*-release | sed 's/ID=//' | grep -v &quot;VERSION&quot; | grep -v &quot;ID&quot; | grep -v &quot;DISTRIB&quot;[/code]</p>
+<p>А у меня она выдает <em>rfremix</em>. А значит такого таргета ни разу нет в списке. :)<br />
+Ну что делать-то? меняем <em>fedora</em> на <em>rfremix</em> в <em>findgllib.mk</em> и радуемся.<br />
+Собралось! Но...</p>
+<p><strong>8 - А что у нас с библиотеками?</strong></p>
+<p>[code lang="shell"]$ ./fluidsGL<br />
+./fluidsGL: error while loading shared libraries: libcufft.so.6.5: cannot open shared object file: No such file or directory[/code]</p>
+<p>Еще раз. У нас для ldconfig не заданы пути, где лежит <em>libcufft.so.6.5</em></p>
+<p>[code lang="shell"]$ find /usr/ -name libcufft.so.6.5<br />
+/usr/local/cuda-6.5/targets/x86_64-linux/lib/libcufft.so.6.5[/code]</p>
+<p>[code lang="shell"]$ grep -R /usr/local/cuda-6.5/targets/x86_64-linux/lib /etc/ld.so.conf.d/[/code]</p>
+<p>Пусто.</p>
+<p>[code lang="shell"]# echo &quot;/usr/local/cuda-6.5/targets/x86_64-linux/lib&quot; &gt; /etc/ld.so.conf.d/cuda-lib64.conf<br />
+# ldconfig[/code]</p>
+<p><strong>9 - Наслаждаемся</strong></p>
+<p><a href="https://russianpenguin.files.wordpress.com/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png"><img class="aligncenter size-medium wp-image-344" src="{{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png?w=300" alt="fluidsGL" width="300" height="221" /></a></p>

@@ -1,0 +1,133 @@
+---
+layout: post
+title: 'Ogre3D: работа с вертексным буфером'
+date: 2014-11-04 19:14:24.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JFF
+tags:
+- графика
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_google_plus: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_linkedin: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _edit_last: '13696577'
+  geo_public: '0'
+  _publicize_pending: '1'
+  _oembed_fb597cc8e90ce53cbbf9ca141e8857f6: "{{unknown}}"
+  _oembed_d1de6c8eec3ea1dd125e08d4517041bd: "{{unknown}}"
+  _oembed_1cd01d93e3e5ecc827408f963a631555: "{{unknown}}"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2014/11/04/ogre3d-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0-%d1%81-%d0%b2%d0%b5%d1%80%d1%82%d0%b5%d0%ba%d1%81%d0%bd%d1%8b%d0%bc-%d0%b1%d1%83%d1%84%d0%b5%d1%80%d0%be%d0%bc/"
+---
+<p>Ура :) Я научился таки работать с вертексным буфером в этом самам огре.</p>
+<p>Как было просто в голом опенглы. Так просто, что даже вспомнить не хочется. :-D</p>
+<p>Теперь же нам надо сделать что-то вроде этого</p>
+<p>[code language="cpp"]void TutorialApplication::createScene(void)<br />
+{</p>
+<p>    /* Зачем дополнительно создавать submesh пока не понял */<br />
+    Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().createManual(&quot;CustomMesh&quot;, &quot;General&quot;);<br />
+    Ogre::SubMesh *subMesh = mesh-&gt;createSubMesh();</p>
+<p>    /* Подготавливаем структуру для трех вершин (треугольник у нас) */<br />
+    mesh-&gt;sharedVertexData = new Ogre::VertexData;<br />
+    mesh-&gt;sharedVertexData-&gt;vertexCount = 3;</p>
+<p>    /* Получаем ссылку на дескриптор буфера (описывает структуру) */<br />
+    Ogre::VertexDeclaration *decl = mesh-&gt;sharedVertexData-&gt;vertexDeclaration;<br />
+    size_t offset = 0;</p>
+<p>    /* первый элемент буфера - это сама вершина (ее координаты) */<br />
+    decl-&gt;addElement(0, offset, Ogre::VET_FLOAT3, Ogre::VES_POSITION);<br />
+    offset += Ogre::VertexElement::getTypeSize(Ogre::VET_FLOAT3);</p>
+<p>    /* вторая часть буфера - нормаль вершины */<br />
+    decl-&gt;addElement(0, offset, Ogre::VET_FLOAT3, Ogre::VES_NORMAL);<br />
+    offset += Ogre::VertexElement::getTypeSize(Ogre::VET_FLOAT3);</p>
+<p>    /* Третья часть - это цвет вершины */<br />
+    decl-&gt;addElement(0, offset, Ogre::VET_COLOUR, Ogre::VES_DIFFUSE);<br />
+    offset += Ogre::VertexElement::getTypeSize(Ogre::VET_COLOUR);</p>
+<p>    /* Генерируем вертексный буфер по описанию, которое выше */<br />
+    Ogre::HardwareVertexBufferSharedPtr vertexBuffer = Ogre::HardwareBufferManager::getSingleton().<br />
+        createVertexBuffer(offset, mesh-&gt;sharedVertexData-&gt;vertexCount, Ogre::HardwareBuffer::HBU_STATIC);</p>
+<p>    // подготавливаем цвета<br />
+    // можно писать цвета руками и использовать не Ogre::VET_COLOUR, а VET_FLOAT3|4 (4 - это если альфаканал нужен)<br />
+    Ogre::RenderSystem* rs = Ogre::Root::getSingleton().getRenderSystem();<br />
+    Ogre::uint32 red, green, blue;<br />
+    rs-&gt;convertColourValue(Ogre::ColourValue(1,0,0,1), &amp;red);<br />
+    rs-&gt;convertColourValue(Ogre::ColourValue(0,1,0,1), &amp;green);<br />
+    rs-&gt;convertColourValue(Ogre::ColourValue(0,0,1,1), &amp;blue);</p>
+<p>    const float sqrt13 = 0.577350269f; /* sqrt(1/3) - это для нормалей */</p>
+<p>    /* блокируем буфер на запись и берем указатель на него */<br />
+    float *pVertex = static_cast&lt;float *&gt;(vertexBuffer-&gt;lock(Ogre::HardwareBuffer::HBL_DISCARD));</p>
+<p>    // Заполняем буфер<br />
+    *pVertex++ = 0.0f; *pVertex++ = 1.0f; *pVertex++ = 0.0f; // вершина<br />
+    *pVertex++ = -sqrt13; *pVertex++ = sqrt13; *pVertex++ = -sqrt13; // нормаль<br />
+    *(*(Ogre::uint32**)&amp;pVertex)++ = red;   //цвета<br />
+    *pVertex++ = -1.0f; *pVertex++ = -1.0f; *pVertex++ = 0.0f; // вершина<br />
+    *pVertex++ = sqrt13; *pVertex++ = sqrt13; *pVertex++ = -sqrt13; // нормаль<br />
+    *(*(Ogre::uint32**)&amp;pVertex)++ = green; // цвета<br />
+    *pVertex++ = 1.0f; *pVertex++ = -1.0f; *pVertex++ = 0.0f; // вершина<br />
+    *pVertex++ = -sqrt13; *pVertex++ = -sqrt13; *pVertex++ = -sqrt13; // нормаль<br />
+    *(*(Ogre::uint32**)&amp;pVertex)++ = blue;  // цвета</p>
+<p>    /* разблокируем */<br />
+    vertexBuffer-&gt;unlock();</p>
+<p>    /* Создаем буфер для индексов */<br />
+    Ogre::HardwareIndexBufferSharedPtr indexBuffer = Ogre::HardwareBufferManager::getSingleton().<br />
+        createIndexBuffer(Ogre::HardwareIndexBuffer::IT_16BIT, mesh-&gt;sharedVertexData-&gt;vertexCount, Ogre::HardwareBuffer::HBU_STATIC);</p>
+<p>    /* Получаем блокировку на запись и пишем индексы в буфер */<br />
+    uint16_t *indices = static_cast&lt;uint16_t *&gt;(indexBuffer-&gt;lock(Ogre::HardwareBuffer::HBL_NORMAL));</p>
+<p>    /* Задаем нужный индексы вершин, которые будет треугольник представлять */<br />
+    indices[0] = 0;<br />
+    indices[1] = 1;<br />
+    indices[2] = 2;</p>
+<p>    /* записали - разблокировали */<br />
+    indexBuffer-&gt;unlock();</p>
+<p>    /* Теперь надо прицепить к нашей геометрии созданный буфер */<br />
+    mesh-&gt;sharedVertexData-&gt;vertexBufferBinding-&gt;setBinding(0, vertexBuffer);<br />
+    subMesh-&gt;useSharedVertices = true;<br />
+    subMesh-&gt;indexData-&gt;indexBuffer = indexBuffer;<br />
+    subMesh-&gt;indexData-&gt;indexCount = mesh-&gt;sharedVertexData-&gt;vertexCount;<br />
+    subMesh-&gt;indexData-&gt;indexStart = 0;</p>
+<p>    /* Если не объявить рамку, то огр не сможет правильно обсчитать сетку<br />
+     * и она будет видна лишь в корневой ноде (если ее туда прицепить),<br />
+     * а в дочерних - не будет.<br />
+     * Для этого можно зачитать http://www.ogre3d.org/forums/viewtopic.php?f=2&amp;t=60200<br />
+     */<br />
+    mesh-&gt;_setBounds(Ogre::AxisAlignedBox(-1, -1, -1, 1, 1, 1));</p>
+<p>    /* нарисовали - грузим */<br />
+    mesh-&gt;load();</p>
+<p>    /*<br />
+     * А теперь нужно задефайнить материал.<br />
+     * Если этого не сделать, то новоиспеченный триангл будет выглядеть белым,<br />
+     * а не многоцветным как задумано выше<br />
+     */<br />
+    Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().create(&quot;Test/ColourTest&quot;, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);<br />
+    material-&gt;getTechnique(0)-&gt;getPass(0)-&gt;setVertexColourTracking(Ogre::TVC_AMBIENT);</p>
+<p>    /* Создаем ноду на базе того, что накодили выше. */<br />
+    Ogre::Entity *entity = mSceneMgr-&gt;createEntity(&quot;CustomEntity&quot;, &quot;CustomMesh&quot;, &quot;General&quot;);<br />
+    entity-&gt;setMaterialName(&quot;Test/ColourTest&quot;, &quot;General&quot;);<br />
+    Ogre::SceneNode *node = mSceneMgr-&gt;getRootSceneNode()-&gt;createChildSceneNode();<br />
+    node-&gt;attachObject(entity);</p>
+<p>    mCamera-&gt;lookAt(Ogre::Vector3(0, 0, 0));<br />
+    mCamera-&gt;setPosition(Ogre::Vector3(0, 10, 50));<br />
+}[/code]</p>
+<p>&nbsp;</p>
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-1_109.png"><img class="aligncenter size-medium wp-image-430" src="{{ site.baseurl }}/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-1_109.png?w=300" alt="Ogre3D - использование вертексного буфера" width="300" height="201" /></a>Чего почитать:</p>
+<ul>
+<li>https://grahamedgecombe.com/blog/custom-meshes-in-ogre3d</li>
+<li>http://www.ogre3d.org/forums/viewtopic.php?f=2&amp;t=60200</li>
+<li>http://www.ogre3d.org/tikiwiki/tiki-index.php?page=Generating+A+Mesh</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

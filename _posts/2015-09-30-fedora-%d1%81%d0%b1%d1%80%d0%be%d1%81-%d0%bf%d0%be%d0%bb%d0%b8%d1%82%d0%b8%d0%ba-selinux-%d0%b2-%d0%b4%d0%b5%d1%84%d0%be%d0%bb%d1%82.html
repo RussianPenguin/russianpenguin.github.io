@@ -1,0 +1,46 @@
+---
+layout: post
+title: 'Fedora: сброс политик SELinux в дефолт'
+date: 2015-09-30 21:11:06.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- linux
+- selinux
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '15332083045'
+  _oembed_ae871caa6ad8c886065dd6bb467d9c2c: "{{unknown}}"
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/09/30/fedora-%d1%81%d0%b1%d1%80%d0%be%d1%81-%d0%bf%d0%be%d0%bb%d0%b8%d1%82%d0%b8%d0%ba-selinux-%d0%b2-%d0%b4%d0%b5%d1%84%d0%be%d0%bb%d1%82/"
+---
+<p><a href="https://russianpenguin.files.wordpress.com/2015/09/getenforce.png"><img class="alignleft size-thumbnail wp-image-609" src="{{ site.baseurl }}/assets/images/2015/09/getenforce.png?w=150" alt="getenforce" width="150" height="55" /></a>SELinux штука очень мощная и полезная. Но вот незадача: иногда ее настроить бывает слишком тяжело. И можно просто довести систему до состояния, когда она не загружается (особенно если играться с политикой доступа к каталогам :)).<br />
+Для таких случаев нужно уметь сбрасывать политики в дефолтное состояние.<br />
+Сначала загружаем систему в failback-режиме (там selinux отключен).</p>
+<p>Теперь<br />
+[code]setenforce 0<br />
+# dnf erase selinux-policy selinux-policy-targeted<br />
+# dnf mv /etc/selinux/targeted{,.backup}<br />
+# reboot[/code]</p>
+<p>После перезагрузки системы selinux будет отключен.</p>
+<p>Нужно поставить пакеты, которые мы удаляли.<br />
+[code]# dnf install selinux-policy selinux-policy-targeted[/code]</p>
+<p>И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим<br />
+[code]SELINUX=disabled[/code]<br />
+на<br />
+[code]SELINUX=enforcing[/code]</p>
+<p>После очередной перезагрузки мы увидим, что с SELinux все хорошо.</p>
+<p>Если же вам повезло и вы можете загрузить систему в нормальном режиме, то шаги выше можно делать без перезагрузок.</p>
+<p><a href="https://docs.fedoraproject.org/en-US/Fedora/21/html/SELinux_Users_and_Administrators_Guide/index.html">Документация</a>.</p>

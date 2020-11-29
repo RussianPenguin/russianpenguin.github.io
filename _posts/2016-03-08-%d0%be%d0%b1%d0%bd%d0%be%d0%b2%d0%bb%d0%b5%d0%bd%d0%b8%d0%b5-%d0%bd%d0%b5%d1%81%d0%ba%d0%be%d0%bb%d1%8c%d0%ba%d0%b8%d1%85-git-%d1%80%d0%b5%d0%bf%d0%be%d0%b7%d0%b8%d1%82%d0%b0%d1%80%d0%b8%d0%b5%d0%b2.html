@@ -1,0 +1,44 @@
+---
+layout: post
+title: Обновление нескольких git-репозитариев в папке
+date: 2016-03-08 23:17:00.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- bash
+- git
+- linux
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '20563362903'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2016/03/08/%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bd%d0%b5%d1%81%d0%ba%d0%be%d0%bb%d1%8c%d0%ba%d0%b8%d1%85-git-%d1%80%d0%b5%d0%bf%d0%be%d0%b7%d0%b8%d1%82%d0%b0%d1%80%d0%b8%d0%b5%d0%b2/"
+---
+<p><img class=" size-thumbnail wp-image-1250 alignleft" src="{{ site.baseurl }}/assets/images/2016/03/2016-03-08-224831_580x134.png?w=150" alt="2016-03-08-22:48:31_580x134" width="150" height="35" /> Порой у нас в каталоге накапливается много-много git-репозитариев, которые хочется обновить в один заход. Для этого есть маленький скрипт, который обновляет все репозитарии, которые сможет найти в папке, переданной в качестве аргумента.</p>
+<p>[code lang="shell"]#!/bin/bash</p>
+<p>if test &quot;$#&quot; -ne 1; then<br />
+    echo &quot;usage: $0 &lt;dirname&gt;&quot;<br />
+		echo &quot;Find and update all git repos in specified folder&quot;<br />
+    exit 1<br />
+fi</p>
+<p>if [ -d $1 ]; then<br />
+	find $1 -type d -name .git | xargs -n 1 dirname | sort | while read line; do echo &quot;Update repo $line&quot; &amp;&amp; pushd `pwd` &gt; /dev/null &amp;&amp; cd $line &amp;&amp; git pull &amp;&amp; popd &gt; /dev/null; done<br />
+else<br />
+	echo &quot;\&quot;$1\&quot; does not exists&quot;<br />
+fi[/code]</p>
+<p>Использование очень простое</p>
+<p>[code lang="shell"]$ gitup ~/projects[/code]</p>
+<p><a href="https://github.com/RussianPenguin/cliUtils">Репозитарий на github</a>.</p>

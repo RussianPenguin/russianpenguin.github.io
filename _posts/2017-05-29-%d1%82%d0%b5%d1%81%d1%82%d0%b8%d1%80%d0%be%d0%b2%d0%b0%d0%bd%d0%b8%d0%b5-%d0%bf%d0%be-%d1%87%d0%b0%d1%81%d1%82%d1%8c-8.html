@@ -1,0 +1,182 @@
+---
+layout: post
+title: 'Часть 8: DBUnit (Тестирование ПО)'
+date: 2017-05-29 20:49:30.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- mysql
+- тестирование по
+- phpunit
+- yii
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '5564539409'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/05/29/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-8/"
+excerpt: В восьмой части цикла тестирование ПО мы познакомимся с очень полезным модулем
+  PHPUnit под названием DBUnit.
+---
+<h2><img class=" size-thumbnail wp-image-2198 alignleft" src="{{ site.baseurl }}/assets/images/2017/05/db.png?w=108" alt="db" width="108" height="150" /><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+<p>Продолжаем серию статей <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Тестирование ПО</a>, которая посвящена разработке ПО с применением методологии TDD.</p>
+<p>В этой части будет рассматривать полезное дополнение к PHPUnit под названием <a href="https://phpunit.de/manual/current/en/database.html">DBUnit</a>. Оно позволяет тестировать базу данных.</p>
+<p><!--more--></p>
+<p>На <a href="http://russianpenguin.ru/2017/05/20/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-7/">предыдущем занятии</a> мы тестировали форму аутентификации (не путайте процесс аутентификации и авторизации!). Для того чтобы проверить кейс входа существующего пользователя нам надо было создать запись об этом пользователе в бд. Делали мы это в методах. которые выполняются перез запуском тестов.</p>
+<p>Писать подобные вещи вручную можно, но представьте, что мы тестируем множество кейсов со множеством пользователей. Каждый раз надо создавать новую запись в бд (и это должны быть не рандомные, а фиксированные записи). Процесс долгий и муторный, а файл с кейсами постепенно разрастается и заполняется данными, которые мы хотим писать в таблички.</p>
+<p>Чтобы избежать подобного усложнения тестов и был разработан модуль DBUnit. По сути это просто удобная обвязка, которая берет на себя промежуточную работу по наполнению базы зчначениями.</p>
+<h2>Установка и настройка</h2>
+<p>Проще всего установить DBUnit через менеджер пакетов composer. Для этого в каталоге /var/www/ виртуальной машины вводим команду добавления пакета.</p>
+<p>[code]composer require --dev phpunit/dbunit ^2[/code]</p>
+<p>Этот код добавит последнюю версию пакета в раздел require-dev файла composer,json. Затем поставить его и обновит composer.lock. Конечно же вам потребуется закоммитить измененные файлы в систему контроля версий.</p>
+<p>Почему мы используем версию 2.x.x, а не 3.x.x? Потому что некоторые модули из шаблона advanced-template еще не адаптированы под новую версию пакета на момент написания этого текста.</p>
+<p>Теперь доработаем конфигурацию PHPUnit (файл environments/dev/phpunit.xml) добавив в него строки, которые содержат конфигурацию подключения к бд.</p>
+<p>[code lang="xml"]&lt;phpunit<br />
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;<br />
+xsi:noNamespaceSchemaLocation=&quot;http://schema.phpunit.de/5.7/phpunit.xsd&quot;<br />
+bootstrap=&quot;common/tests/_bootstrap.php&quot;&gt;<br />
+    &lt;!-- старый код оставляем без изменений --&gt;<br />
+    &lt;php&gt;<br />
+        &lt;var name=&quot;DB_DSN&quot; value=&quot;mysql:dbname=tdd_tests;host=127.0.0.1&quot; /&gt;<br />
+        &lt;var name=&quot;DB_USER&quot; value=&quot;tdd&quot; /&gt;<br />
+        &lt;var name=&quot;DB_PASSWD&quot; value=&quot;tdd&quot; /&gt;<br />
+        &lt;var name=&quot;DB_DBNAME&quot; value=&quot;tdd_tests&quot; /&gt;<br />
+    &lt;/php&gt;<br />
+&lt;/phpunit&gt;[/code]</p>
+<p>Мы добавили секцию php содержащую переменные доступные при запуске тестов в супермассиве $GLOBALS. DBUnit не использует конфигурацию yii. Можно задействовать ее в процессе работы и это будет правильно. Но в общем случае конфигурацию подключения к базе для тестов хранится отдельно. Чуть позже мы увидим как объединить конфигурацию Yii и DBUnit.</p>
+<p>Не забываем, что после изменения шаблонов конфигурации нужно выполнить провизию машины. Или руками скопировать файлы в нужное место.</p>
+<h2>Тестовая база</h2>
+<p>Предварительно потребуется сформировать набор данных, который будет составлять основу для наших тестов.</p>
+<p>Форматов хранения существует <a href="https://phpunit.de/manual/current/en/database.html#database.available-implementations">несколько</a>. Используем самый простой из них - flatXML.</p>
+<p><strong>common/tests/_data/database.xml</strong></p>
+<p>[code lang="xml"]&lt;?xml version=&quot;1.0&quot; ?&gt;<br />
+&lt;dataset&gt;<br />
+    &lt;user id=&quot;1&quot; username=&quot;test&quot; email=&quot;test@test.test&quot; auth_key=&quot;ssssssssssssssssssssssssssssssss&quot;           password_hash=&quot;$2y$13$PP1EDCr7ujdhTxZT2DV96uM8e2rcdXHY1xAQINCIiB0gOck/VBwN6&quot; /&gt;<br />
+    &lt;user id=&quot;2&quot; username=&quot;test1&quot; email=&quot;test1@test.test&quot;  auth_key=&quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;           password_hash=&quot;$2y$13$PP1EDCr7ujdhTxZT2DV96uM8e2rcdXHY1xAQINCIiB0gOck/VBwN6&quot; /&gt;<br />
+&lt;/dataset&gt;[/code]</p>
+<p>Элементы набора dataset представляют из себя записи, где имя тега - это имя таблицы, куда будет записаны значения, а атрибуты - это значения текущей записи. Не забывайте, что пароли в базе хранятся в хешированом виде, поэтому потребуется каким-либо образом получить хеш пароля из Yii. Итого в таблице user у нас будет две записи - админ и пользователь. Пароли соответственно admin и user (в зашифрованном виде конечно же). Вы можете добавить сюда еще и те записи, которые использовали в своих тестовых сценариях. Это даже стоит сделать для того, чтобы не поломать уже существующие кейсы.</p>
+<h2>Тестовый сценарий</h2>
+<p>Редактируем код LoginFormTest и переводим его на использование DBUnit.</p>
+<p><strong>common/tests/unit/LoginFormTest.php</strong></p>
+<p>[code lang="php"]namespace common\tests\unit;</p>
+<p>use common\models\LoginForm;<br />
+use PHPUnit_Extensions_Database_DataSet_IDataSet;<br />
+use PHPUnit_Extensions_Database_DB_IDatabaseConnection;<br />
+use yii\web\User;</p>
+<p>class LoginFormTest extends \PHPUnit_Extensions_Database_TestCase<br />
+{<br />
+    protected const USER_EMAIL = 'test@test.test';</p>
+<p>    protected static $_storedEntities = [<br />
+        'user' =&gt; null,<br />
+    ];</p>
+<p>    /**<br />
+     * @var \PDO Подключение к бд.<br />
+     */<br />
+    protected static $pdo = null;</p>
+<p>    /**<br />
+     * @var \PHPUnit_Extensions_Database_DB_IDatabaseConnection Подключение к базе<br />
+     */<br />
+    private $_conn = null;</p>
+<p>    protected function getConnection()<br />
+    {<br />
+        if ($this-&gt;_conn === null) {<br />
+            if (self::$pdo == null) {<br />
+                self::$pdo = new \PDO($GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD']);<br />
+            }<br />
+            $this-&gt;_conn = $this-&gt;createDefaultDBConnection(self::$pdo, $GLOBALS['DB_DBNAME']);<br />
+        }</p>
+<p>        return $this-&gt;_conn;<br />
+    }</p>
+<p>    protected function getDataSet()<br />
+    {<br />
+        return $this-&gt;createFlatXMLDataSet(<br />
+            \Yii::$app-&gt;getBasePath()<br />
+            . DIRECTORY_SEPARATOR . '../common/tests/_data/database.xml'<br />
+        );<br />
+    }</p>
+<p>    /**<br />
+     * Add default user to database,<br />
+     * Save original components from engine to temporary storage<br />
+     */<br />
+    public static function setUpBeforeClass()<br />
+    {<br />
+        foreach (static::$_storedEntities as $entity =&gt; $value) {<br />
+            static::$_storedEntities[$entity] = \Yii::$app-&gt;get($entity);<br />
+        }<br />
+    }</p>
+<p>    /**<br />
+     * Restore original components after every test<br />
+     */<br />
+    protected function tearDown()<br />
+    {<br />
+        foreach (static::$_storedEntities as $entity =&gt; $value) {<br />
+            \Yii::$app-&gt;set($entity, $value);<br />
+        }<br />
+    }</p>
+<p>    // все тесты остаются без изменений<br />
+}<br />
+[/code]</p>
+<p>Первое, что должно бросаться в глаза - это изменение иерархии наследования - теперь наш тест является прямым потомком PHPUnit_Extensions_Database_TestCase и к реализации становятся обязательны два метода:</p>
+<ul>
+<li>getConnection() - получение подключения к тестовой бд</li>
+<li>getDataSet() - загрузка в базу тестового набора данных</li>
+</ul>
+<p>В первом на базе значений, которые были заданы в phpunit.xml мы получаем подключение к бд. PHPUnit использует интерфейс \PDO для работы с базой, поэтому не пытайтесь подключаться к базе через mysqli_connect. Второй метод - это источник данных. Посредством хитрых манипуляций внутри самого фреймворка он будет вызван попытке загрузить данные в бд.</p>
+<p>Напишем канареечные тесты, которые проверяют, что инфраструктура не содержит ошибок и может использоваться для работы и написания тестов. У нас в базе два пользователя. Поэтому стоит проверить, что оба они существуют и доступны для манипуляций.</p>
+<p>[code lang="php"]public function testTestUserExists()<br />
+{<br />
+    $user = \common\models\User::findByEmail(self::USER_EMAIL);<br />
+    $this-&gt;assertNotEmpty($user);<br />
+}</p>
+<p>public function testTest1UserExists()<br />
+{<br />
+    $user = \common\models\User::findByEmail('test1@test.test');<br />
+    $this-&gt;assertNotEmpty($user);<br />
+}[/code]</p>
+<p>У нас уже был testOne - переименовываем его в testTestUserExists.</p>
+<p>Запуск тестов должен показать, что все работает и пользователи существуют в базе. Если нет, что есть определенные проблемы с инфраструктурой, которые самое время решить.</p>
+<p>Если у вас были свои кейсы и к датасету были добавлены нужные записи, то он заработают без какой-либо доработки. Возьмем для примера тест, который проверяет авторизацию пользователя.</p>
+<p>[code lang="php"]public function testTestUserLogin()<br />
+{<br />
+    $mock = $this-&gt;getMockBuilder(User::class)<br />
+        -&gt;setMethods(['login'])<br />
+        -&gt;disableOriginalConstructor()<br />
+        -&gt;getMock();<br />
+    $mock-&gt;method('login')-&gt;withAnyParameters()-&gt;willReturn(true);<br />
+    \Yii::$app-&gt;set('user', $mock);<br />
+    $loginForm = new LoginForm();<br />
+    $loginForm-&gt;load(['LoginForm' =&gt; ['email' =&gt; static::USER_EMAIL, 'password' =&gt; static::USER_PASSWORD]]);<br />
+    $this-&gt;assertTrue($loginForm-&gt;login());<br />
+}[/code]</p>
+<p>Чтобы пока не разбираться с авторизацией в консоли подменим метод \yii\web\User::login() своим, который возвращает true. Это необходимо потому что в консоли отсутствуют объекты Request и сессии. К ним мы еще вернемся.</p>
+<p>Тест работает. Ошибок пока не находит. Отметим, что работать с базой при помощи DBUnit гораздо приятнее, нежели руками через setUp.</p>
+<h2>Внутреннее устройство</h2>
+<p>Для того, чтобы лучше понимать, как происходит тестирование с рассматриваемым фреймворком посмотрим, как это устроено.</p>
+<p>Конечно же стоит заметить, что поле id или любой другой первичный ключ (если он не является автогенерируемым должен присутствовать в датасете. И автогенерируемый ключ так же стоит включать в датасет - это обеспечит одинаковое состояние набора данных при запуске теста.</p>
+<h3>1. Очистка базы</h3>
+<p>Прежде чем хоть один тест будет запущен PHPUnit выполняет операцию TRUNCATE для всех таблиц, которые указаны в датасете.</p>
+<h3>2. Загрузка фикстур</h3>
+<p>PHPUnit проходит по всему набору данных из датасета и выполняет операцию INSERT чтобы вставить строки данных.</p>
+<h3>3–5. Запуск тестов, проверка и завершение (tearDown)</h3>
+<p>Как только состояние базы данных обнулено и загружены фикстуры, фреймворк запускает тесты. Никаких действий со стороны разработчика не требуется.</p>
+<p>Тест может вызывать метод assertDataSetsEqual(), однако, эта функциональность опциональна.</p>
+<h2>Литература</h2>
+<ul>
+<li><a href="https://phpunit.de/manual/current/en/database.html">PHPUnit Manual: Chapter 8. Database Testing</a></li>
+</ul>
+<h2>Исходный код</h2>
+<ul>
+<li><a href="https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.5">Код восьмой части цикла Тестирование ПО</a></li>
+</ul>

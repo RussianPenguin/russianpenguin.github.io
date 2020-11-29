@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'PHP: дело о загадачном пробеле'
+date: 2016-10-28 15:30:38.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+- HowTo
+tags:
+- apache
+- ошибки
+- php
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '28323896694'
+  timeline_notification: '1477657840'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2016/10/28/php-%d0%b4%d0%b5%d0%bb%d0%be-%d0%be-%d0%b7%d0%b0%d0%b3%d0%b0%d0%b4%d0%b0%d1%87%d0%bd%d0%be%d0%bc-%d0%bf%d1%80%d0%be%d0%b1%d0%b5%d0%bb%d0%b5/"
+---
+![%d0%b2%d1%8b%d0%b4%d0%b5%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5_103]({{ site.baseurl }}/assets/images/2016/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_103.png?w=300)Или история о том, как побились картинки.
+
+Однажды от пользователей пришла жалоба, что новые картинки, которые они на проект грузят не отображаются. Только если полностью обновить страницу.
+
+Проверил данные в кеше - картинки были. Все как положено - пережатые и с водяными знаками. После ряда танце с бубном удалось выяснить, что скрипт, который картинку генерирует пока ее в кеше нет отдает пробел в каждой картинке - на скриншоте это хорошо выдно. Идет пробел, а после стандартный [заголовок jpeg](https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format#File_format_structure).
+
+Чтож. Очень вероятно, что какой-то вредный скрипт оказался с пробелом. Мы же помним вро стандартные открывающиеся и закрывающиеся теги php, которые принесли много головной боли.
+
+Но как среди тысяч строк кода выяснить, где начинается вывод злобного пробела?
+
+1. отключить вывод самой картинки и убедится, что пробел все еще выводится.
+2. отключить буферизацию вывода на стороне сервера - убедится, что пробел есть
+3. в самом конце скрипта поставить setcookie или header - в логах пояится сообщение вида " **Warning** : Cannot modify header information - headers already sent by (output started at file.php:XXX)". Где file.php - это соответсвенно файл, а XXX - номер строки, где начался вывод.
+
+Чтобы отключить буферизацию нужно прописать в конфигах php.ini
+
+[code]output\_buffering=0[/code]
+
+Или в конфигах апача или htaccess
+
+[code]php\_flag "output\_buffering" Off[/code]
+

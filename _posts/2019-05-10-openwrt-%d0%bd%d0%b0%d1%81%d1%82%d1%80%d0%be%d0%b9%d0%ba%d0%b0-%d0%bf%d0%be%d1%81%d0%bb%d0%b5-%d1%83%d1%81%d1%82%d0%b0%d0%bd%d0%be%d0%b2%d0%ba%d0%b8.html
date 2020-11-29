@@ -1,0 +1,65 @@
+---
+layout: post
+title: 'OpenWRT: Настройка после установки'
+date: 2019-05-10 16:24:26.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- linux
+- openwrt
+meta:
+  _wpcom_is_markdown: '1'
+  timeline_notification: '1557494669'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '30660014400'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2019/05/10/openwrt-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bf%d0%be%d1%81%d0%bb%d0%b5-%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b8/"
+excerpt: Небольшой скетч про послеустановочную настройку OpenWRT.
+---
+<p><img class=" size-thumbnail wp-image-2484 alignright" src="{{ site.baseurl }}/assets/images/2019/05/openwrt.png?w=150" alt="openwrt" width="150" height="150" /> Небольшой скетч про послеустановочную настройку OpenWRT.</p>
+<p><strong>Настройка флешки как overlayfs</strong></p>
+<p>Большинство роутеров имеют у себя usb-порт куда можно воткнуть флешку и использовать ее для swap-файла (вдруг что) и для overlayfs. <a href="https://wiki.openwrt.org/ru/doc/howto/extroot">https://wiki.openwrt.org/ru/doc/howto/extroot</a></p>
+<p><strong>Настройка dropbear</strong></p>
+<p><em>/etc/config/dropbear</em></p>
+<p>[code]config dropbear<br />
+     option PasswordAuth 'on'<br />
+     option RootPasswordAuth 'on'<br />
+     option Port         '22'<br />
+     # option BannerFile   '/etc/banner'<br />
+     option Interface 'lan'<br />
+[/code]</p>
+<p><strong>Выставляем ssh только в lan-интерфейс</strong></p>
+<p><a href="https://wiki.openwrt.org/doc/howto/secure.access">https://wiki.openwrt.org/doc/howto/secure.access</a></p>
+<p><strong>Добавление пользователя</strong></p>
+<p>[code]# opkg update<br />
+# opkg install shadow-usermod shadow-useradd shadow-groupadd[/code]</p>
+<p>[code]# mkdir /home<br />
+# useradd -m -s /bin/ash penguin<br />
+# passwd penguin<br />
+# opkg update<br />
+# opkg install sudo<br />
+# groupadd --system sudo<br />
+# usermod -a -G sudo penguin<br />
+# visudo[/code]</p>
+<p>Добавляем строки, которые позволяют группе sudo использовать sudo</p>
+<p>[code lang=shell]%sudo ALL=(ALL) ALL[/code]</p>
+<p><strong>Настройка dropbear для запрета доступа root</strong></p>
+<p>На локальной машине</p>
+<p>[code lang=shell]$ ssh-copy-id [/code]</p>
+<p>На сервере в конфиге dropbear</p>
+<p>[code]<br />
+     option PasswordAuth 'off'<br />
+     option RootPasswordAuth 'off'<br />
+[/code]</p>
+<p>Предварительно убеждаемся что ключи работают. Иначе останетесь без доступа.</p>

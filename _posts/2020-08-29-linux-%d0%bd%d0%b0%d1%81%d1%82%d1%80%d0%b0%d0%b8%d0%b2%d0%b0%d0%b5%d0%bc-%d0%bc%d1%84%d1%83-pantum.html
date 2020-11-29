@@ -1,0 +1,137 @@
+---
+layout: post
+title: 'Linux: Настраиваем МФУ pantum'
+date: 2020-08-29 18:58:34.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- cups
+- администрирование
+- linux
+- sane
+meta:
+  _wpcom_is_markdown: '1'
+  _publicize_job_id: '48253696914'
+  timeline_notification: '1598716717'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2020/08/29/linux-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%b0%d0%b8%d0%b2%d0%b0%d0%b5%d0%bc-%d0%bc%d1%84%d1%83-pantum/"
+excerpt: Рассматриваем работу с принтерами фирмы pantum. А так же настройку sane для
+  удаленного сканирования.
+---
+<p><!-- wp:paragraph --></p>
+<p>Есть такие новые китайские принтеры (относительноо новые) Pantum. В них и wifi, и поддержка linux из коробки. Достал я и себе такое чудо платы лутом делать и шаблоны для фоторезиста печатать.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Настроить wifi в принтере (если он есть) без смартфона не получится - лезем туда и делаем все по инструкции (она с картинками).</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Теперь надо поставить драйвера и настроить сканирование и печать по wifi. Если у вас убунту или дебиан, то драйвера скачиваются и устанавливаются в виде пакета. Если федора, то придется немного покомпилировать.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:more --><br />
+<!--more--><br />
+<!-- /wp:more --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Пакеты для fedora</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Предварительно потребуется собрать библиотеку libjpeg so.8. Иначе вы не сможете поставить sane-драйвера.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>nothing provides libjpeg so.8()(64bit) needed by pantum-m6xxx-sane-1 4 0-2 fc28 x86_64</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:syntaxhighlighter/code {"language":"bash"} --></p>
+<pre class="wp-block-syntaxhighlighter-code">$ sudo dnf install rpm-build spectool git
+$ rpmdev-setuptree
+$ git clone https://github.com/RussianFedora/compat-libjpeg8.git
+$ cd pantum-m6xxx
+$ spectool --all --get-files --directory ~/rpmbuild/SOURCES compat-libjpeg8.spec
+$ cd compat-libjpeg8
+$ rpmbuild -bb compat-libjpeg8.spec
+$ sudo dnf install ~/rpmbuild/RPMS/$(uname -m)/compat-libjpeg8-1.5.3-3.fc32.x86_64.rpm</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p>А теперь можно собирать и ставить драйвера для pantum.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:syntaxhighlighter/code {"language":"bash"} --></p>
+<pre class="wp-block-syntaxhighlighter-code">$ sudo dnf install rpm-build spectool git
+$ rpmdev-setuptree
+$ git clone https://github.com/EasyCoding/pantum-m6xxx.git
+$ cd pantum-m6xxx
+$ spectool --all --get-files --directory ~/rpmbuild/SOURCES pantum-m6xxx.spec
+$ cd pantum-m6xxx
+$ rpmbuild -bb pantum-m6xxx.spec
+$ sudo dnf install ~/rpmbuild/RPMS/$(uname -m)/pantum-m6xxx-*.rpm</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Настройка cups</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Заходим в <a rel="noreferrer noopener" href="631/" target="_blank">веб-интерфейс</a> и добавляем принтер. Никаких сложностей нет.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Настройка sane</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Тут сложнее. Ставим sane-backend, а потом добавляем удаленный сканер.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:syntaxhighlighter/code {"language":"bash"} --></p>
+<pre class="wp-block-syntaxhighlighter-code">sudo dnf install sane-backends-daemon</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Добавляем в /etc/sane.d/dll.conf</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:code --></p>
+<pre class="wp-block-code"><code>pantum6500
+pantum_mfp</code></pre>
+<p><!-- /wp:code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Получаем доменный адрес принтера через avahi. Я уже <a href="https://russianpenguin.ru/2016/04/08/%d0%ba%d0%b0%d0%ba-%d0%b6%d0%b8%d1%82%d1%8c-%d0%b2-%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%b9-%d1%81%d0%b5%d1%82%d0%b8-%d0%b1%d0%b5%d0%b7-dns/">писал</a> о том, как работать без локального днс.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:syntaxhighlighter/code {"language":"bash"} --></p>
+<pre class="wp-block-syntaxhighlighter-code">$ avahi-browse-domains -alr</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Среди полученных адресов вы увидите адрес принтера Pantum-XXXXXX.local. Этот адрес надо добавить в /etc/sane.d/net.conf.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:paragraph --></p>
+<p>Запускаем saned.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:syntaxhighlighter/code {"language":"bash"} --></p>
+<pre class="wp-block-syntaxhighlighter-code">$ sudo systemctl start saned.socket</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p>Проверяем наличие сканера.</p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:syntaxhighlighter/code --></p>
+<pre class="wp-block-syntaxhighlighter-code">$ scanimage -L
+device `v4l:/dev/video0' is a Noname HD WebCam: HD WebCam virtual device
+device `airscan:e0:Pantum M6500W series[XXXXX]' is a eSCL Pantum M6500W series[XXXXX] eSCL network scanner</pre>
+<p><!-- /wp:syntaxhighlighter/code --></p>
+<p><!-- wp:paragraph --></p>
+<p><strong>Литература</strong></p>
+<p><!-- /wp:paragraph --></p>
+<p><!-- wp:group --></p>
+<div class="wp-block-group">
+<div class="wp-block-group__inner-container"><!-- wp:list --></p>
+<ul>
+<li><a rel="noreferrer noopener" href="https://www.easycoding.org/2018/02/11/sobiraem-paket-s-drajverami-mfu-pantum-dlya-fedora.html" target="_blank">Собираем пакет с драйверами МФУ Pantum для Fedora</a></li>
+<li><a rel="noreferrer noopener" href="https://forums.linuxmint.com/viewtopic.php?p=1204049&amp;sid=68afd6af54d2b9f15fa0394439fe43ac#p1204049" target="_blank">Xsane from a network MFP</a></li>
+<li><a href="https://wiki.debian.org/SaneOverNetwork">SaneOverNetwork</a></li>
+</ul>
+<p><!-- /wp:list --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></div>
+</div>
+<p><!-- /wp:group --></p>
+<p><!-- wp:paragraph --></p>
+<p><!-- /wp:paragraph --></p>

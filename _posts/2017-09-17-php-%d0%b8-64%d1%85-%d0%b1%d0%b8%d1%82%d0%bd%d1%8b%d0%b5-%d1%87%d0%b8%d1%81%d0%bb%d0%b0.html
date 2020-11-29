@@ -1,0 +1,56 @@
+---
+layout: post
+title: 'PHP: и 64х битные числа'
+date: 2017-09-17 21:18:11.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Разработка
+tags:
+- php
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '9385303077'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/09/17/php-%d0%b8-64%d1%85-%d0%b1%d0%b8%d1%82%d0%bd%d1%8b%d0%b5-%d1%87%d0%b8%d1%81%d0%bb%d0%b0/"
+excerpt: Чему равно 0xFFFFFFFFFFFFFFFF для интерпретатора php в 64х битной системе?
+---
+<p>Мне понадобилось в одном из проектов работать с 64х битными числами в качестве масок.</p>
+<p>Раньше не доводилось использовать столь большие константы в системах и я был несколько удивлен поведением интерпретатора.</p>
+<p>[code lang="php"]var_dump(1 &amp; 0xffffffffffffffff);[/code]</p>
+<p>Этот код выведет вам на экран</p>
+<p>[code]int(0)[/code]</p>
+<p>Хотя другой код выводит ровно так, как и должно быть.</p>
+<p>[code lang="php"]var_dump(1 &amp; ~0);[/code]</p>
+<p>[code]int(1)[/code]</p>
+<p>Но при этом</p>
+<p>[code lang="php"]var_dump(1 &amp; hexdec(dechex(~0)), 1 &amp; ~0);[/code]</p>
+<p>[code]int(0)<br />
+int(1)[/code]</p>
+<p>Такое поведение показалось немного странным и, как позже выяснилось, все упирается в константу PHP_INT_MAX, которая на 64х битных системах равна 0x7fffffffffffffff. Семерка в начале идет потому что первый бит зарезервирован под знак.</p>
+<p>В чем же тут дело? Если мы хотим записать очень большое число (8 байт ff), то пишем мы это число как положительное целое. Вот так: 0xffffffffffffffff. Интерпретатор сравнивает число с PHP_INT_MAX и если оно его не провосходит, то все будет сконвертировано в int, а если превосходит, то во float. Убедиться в этом можно следующим кодом.</p>
+<p>[code lang="php"]var_dump(0xffffffffffffffff);[/code]</p>
+<p>[code]float(1.844674407371E+19)[/code]</p>
+<p>А все это лишь из-за того, что в php нет типа unsigned (и модификатора для данного типа тоже нет). Поэтому записывать числа нам позволено лишь от PHP_INT_MIN до PHP_INT_MAX. Все остальное будет float'ом.</p>
+<p>Но мы же по прежнему можем работать с 8-ми байтными числами. Для примера -1 в дополнительном коде это то самое число, которое нам нужно!</p>
+<p>[code lang="php"]var_dump(dechex(-1));[/code]</p>
+<p>[code]int(0xffffffffffffffff)[/code]</p>
+<p>Очевидный ответ: либо вспоминать способы формирования чисел в дополнительном коде, либо работать с битовыми операциями.</p>
+<p>[code lang="php"]var_dump(1 &amp; ((0xffffffff &lt;&lt; 32) | 0xffffffff), 1 &amp; ~0);[/code]</p>
+<p>[code]int(1)<br />
+int(1)[/code]</p>
+<p>Разумеется все вышеописанное характерно и для 32з битныз платформ с поправкой на PHP_INT_SIZE (размер инта в байтах).</p>
+<h2>Литература:</h2>
+<ul>
+<li><a href="https://blog.fox21.at/2015/03/06/64-bit-integer-and-php.html">Christian Mayer's Weblog: 64 bit Integer and PHP</a></li>
+</ul>

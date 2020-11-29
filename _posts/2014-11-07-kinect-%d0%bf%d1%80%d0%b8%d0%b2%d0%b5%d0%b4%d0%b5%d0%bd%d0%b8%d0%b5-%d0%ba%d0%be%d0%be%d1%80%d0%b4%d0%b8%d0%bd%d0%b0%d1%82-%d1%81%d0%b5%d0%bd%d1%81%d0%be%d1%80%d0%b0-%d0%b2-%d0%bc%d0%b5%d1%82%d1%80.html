@@ -1,0 +1,92 @@
+---
+layout: post
+title: 'Kinect: Приведение координат сенсора в метрические'
+date: 2014-11-07 22:13:02.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- JFF
+- kinect
+tags:
+- 3d
+- ogre3d
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_google_plus: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_linkedin: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _publicize_pending: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _edit_last: '13696577'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2014/11/07/kinect-%d0%bf%d1%80%d0%b8%d0%b2%d0%b5%d0%b4%d0%b5%d0%bd%d0%b8%d0%b5-%d0%ba%d0%be%d0%be%d1%80%d0%b4%d0%b8%d0%bd%d0%b0%d1%82-%d1%81%d0%b5%d0%bd%d1%81%d0%be%d1%80%d0%b0-%d0%b2-%d0%bc%d0%b5%d1%82%d1%80/"
+---
+<p>В одниокм из своих проектов с использованием сенсора пришлось задаваться вопросом: как привиодить координаты сенсора (глубину) в координаты метрические. Если этого не сделать, то прямые углы у стен прямыми не будут.</p>
+<p>Будет это выглядеть как на картинке ниже.</p>
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/tutorialapplication-render-window_113.png"><img class="aligncenter size-medium wp-image-438" src="{{ site.baseurl }}/assets/images/2014/11/tutorialapplication-render-window_113.png?w=300" alt="Kinect: сырой рендер (без преобразования в метрические координаты)" width="300" height="194" /></a>А как это сделать?</p>
+<p>В пакете freenect есть демка glpclview в коде которой можно увидеть матрицу преобразований координат сенсора в нужные нам координаты.</p>
+<p>[code language="cpp"]// Do the projection from u,v,depth to X,Y,Z directly in an opengl matrix<br />
+// These numbers come from a combination of the ros kinect_node wiki, and<br />
+// nicolas burrus' posts.<br />
+void LoadVertexMatrix()<br />
+{<br />
+  float fx = 594.21f;<br />
+  float fy = 591.04f;<br />
+  float a = -0.0030711f;<br />
+  float b = 3.3309495f;<br />
+  float cx = 339.5f;<br />
+  float cy = 242.7f;<br />
+  GLfloat mat[16] = {<br />
+    1/fx,     0,  0, 0,<br />
+    0,    -1/fy,  0, 0,<br />
+    0,       0,  0, a,<br />
+    -cx/fx, cy/fy, -1, b<br />
+  };<br />
+  glMultMatrixf(mat);<br />
+}[/code]</p>
+<p>Не будем заострять внимание на очень понятных комментариях в коде :), а попробуем понять, чтоже эта штука делает.</p>
+<p>Сходу информации почти нет - гугл говорит, что это есть лишь приведение координат согласно калибровочным данным самого кинекта (<a title="Матрица преобразований координат сенсора kinect в реальные" href="https://groups.google.com/forum/#!msg/openkinect/c7OvB0GqNjU/z-4hbz4SdJYJ">тыц</a>).</p>
+<p>Но это нифига не проясняет.</p>
+<p>Дальнейшее гугление нашло <a title="Converting Kinect depth image to Real world coordinate." href="http://answers.ros.org/question/67339/converting-kinect-depth-image-to-real-world-coordinate/">пруф</a> на форуме ROS, а так же <a title="Depth to Real World XY Coordinate" href="https://groups.google.com/forum/#!topic/openkinect/ihfBIY56Is8">пруф</a> в гуглогруппах.</p>
+<p>В итоге на скорую руку был состряпан код, который делает нужное преобразование.</p>
+<p>[code language="cpp"]/**<br />
+ * Преобразует глубину в реальное значение (в миллиметрах)<br />
+ */<br />
+double raw_depth_to_millimeters(int depth_value){<br />
+  double depth_value_f = (float) depth_value;<br />
+  if (depth_value &lt; 2047){<br />
+    float depth = 1000.0 / (depth_value_f  * -0.0030711016 + 3.3309495161);<br />
+    return depth;<br />
+  }<br />
+  return 0.0f;<br />
+}</p>
+<p>/**<br />
+ * Преобразует вируальную точку point в точку с реальными координатами (в миллиметрах)<br />
+ */<br />
+Ogre::Vector3 depth_to_realword(Ogre::Vector3 point){<br />
+  double fx_d = 1.0 / 5.9421434211923247e+02;<br />
+  double fy_d = 1.0 / 5.9104053696870778e+02;<br />
+  double cx_d = 3.3930780975300314e+02;<br />
+  double cy_d = 2.4273913761751615e+02;</p>
+<p>  double depth = raw_depth_to_millimeters(point.z);</p>
+<p>  return Ogre::Vector3(<br />
+    (point.x - cx_d) * depth * fx_d,<br />
+    (point.y - cy_d) * depth * fy_d,<br />
+    depth);<br />
+}[/code]</p>
+<p>Про этот код важно помнить, что координаты x и y должны назодиться в первой четверти (больше нуля).</p>
+<p>Теперь изображение выглядит куда лучше. :)</p>
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/tutorialapplication-render-window_112.png"><img class="aligncenter size-medium wp-image-439" src="{{ site.baseurl }}/assets/images/2014/11/tutorialapplication-render-window_112.png?w=300" alt="Изображение с сенсора kineck после преобразования в метрические координаты." width="300" height="194" /></a></p>

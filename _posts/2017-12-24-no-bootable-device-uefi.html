@@ -1,0 +1,51 @@
+---
+layout: post
+title: No Bootable Device после обновления дистрибутива
+date: 2017-12-24 18:48:59.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- HowTo
+tags:
+- grub
+- linux
+- uefi
+meta:
+  _wpcom_is_markdown: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '12849389030'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2017/12/24/no-bootable-device-uefi/"
+excerpt: Что делать когда после, казалось бы, удачного обновления система отказывается
+  грузиться?
+---
+<p><img class="alignleft size-thumbnail wp-image-2387" src="{{ site.baseurl }}/assets/images/2017/12/1-no-bootable-device.jpg?w=150" alt="1 - no bootable device" width="150" height="113" />Именно таким неприятным сообщением может встретить вас ноутбук или стационарный компьютер после казалось бы удачно прошедшего обновления дистрибутива.</p>
+<p>Почему? Потому что обновился grub-efi, а скрипт, который добавит запись о новом образе для загрузки не записал должным образом.</p>
+<p>[code]$ efibootmgr -v<br />
+BootCurrent: 0001<br />
+Timeout: 0 seconds<br />
+BootOrder: 0001,2001,2002,2003<br />
+Boot0001* Linux	PciRoot(0x0)/Pci(0x1c,0x4)/Pci(0x0,0x0)/NVMe(0x1,00-00-00-00-00-00-00-00)/HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shimx64-fedora.efi)A01 ..<br />
+Boot0002* Unknown Device: 	HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)RC<br />
+Boot2001* EFI USB Device	RC<br />
+Boot2002* EFI DVD/CDROM	RC<br />
+Boot2003* EFI Network	RC[/code]</p>
+<p>Увы, снять показания я смог только после восстановления работоспособности системы, поэтому на листинге, который приведен выше, мы видим корректный образ под меткой Boot0001 и тот, который был перед обновлением под меткой Boot0002. На разных системах это может выглядеть совершенно различным образом.</p>
+<p>Что делать в случае, когда система совершенно не хочет загружаться?</p>
+<p>Следует сделать несколько шагов для восстановления работоспособности (не стоит забывать, что для возможности расширенной работы с uefi на многих биосах должен быть установлен административный пароль - только тогда будут видны все элементы меню).</p>
+<ul>
+<li>зайти в BIOS</li>
+<li>найти пункт выбора доверенного uefi-файла</li>
+<li>указать нужный файл на диске (в случае с fedora - это shimx64-fedora.efi)</li>
+</ul>
+<p>[gallery ids="2386,2391,2390,2389,2388,2392" type="rectangular"]</p>
+<p>&nbsp;</p>

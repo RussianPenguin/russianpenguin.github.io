@@ -1,0 +1,45 @@
+---
+layout: post
+title: 'Raspbian: swapfile'
+date: 2015-09-07 13:45:22.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories: []
+tags:
+- linux
+meta:
+  _wpcom_is_markdown: '1'
+  sharing_disabled: '1'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '14522400442'
+author:
+  login: russianpenguin
+  email: maksim.v.zubkov@gmail.com
+  display_name: russianpenguin
+  first_name: Maksim
+  last_name: Zubkov
+permalink: "/2015/09/07/raspbian-swapfile/"
+---
+<p>Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах.</p>
+<p>Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой.</p>
+<p>[code]/swapfile none swap defaults 0 0[/code]</p>
+<p>Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?).</p>
+<p>А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита.</p>
+<p>[code]# a swapfile is not a swap partition, so no using swapon|off from here on, use  dphys-swapfile swap[on|off]  for that<br />
+[/code]</p>
+<p>Ок. Сделаем.</p>
+<p>[code lang="shell"]$ sudo fallocate -l 1024M /swapfile<br />
+$ sudo dphys-swapfile swapon /swapfile[/code]</p>
+<p>Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее.</p>
+<p>[code]CONF_SWAPSIZE=1024<br />
+CONF_SWAPFILE=/swapfile[/code]</p>
+<p>Теперь все отлично.</p>
+<p>[code]$ free -h<br />
+             total       used       free     shared    buffers     cached<br />
+Mem:          435M       418M        17M         0B       106M        28M<br />
+-/+ buffers/cache:       283M       152M<br />
+Swap:         1,0G         0B       1,0G[/code]</p>
