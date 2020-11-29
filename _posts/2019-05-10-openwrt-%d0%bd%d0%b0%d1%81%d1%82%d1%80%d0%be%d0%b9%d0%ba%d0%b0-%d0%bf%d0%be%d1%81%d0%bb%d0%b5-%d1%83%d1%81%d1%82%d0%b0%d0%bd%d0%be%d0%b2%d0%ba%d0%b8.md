@@ -71,14 +71,16 @@ config dropbear
 
 Добавляем строки, которые позволяют группе sudo использовать sudo
 
-[code lang=shell]%sudo ALL=(ALL) ALL
+```shell
+%sudo ALL=(ALL) ALL
 ```
 
 **Настройка dropbear для запрета доступа root**
 
 На локальной машине
 
-[code lang=shell]$ ssh-copy-id 
+```shell
+$ ssh-copy-id 
 ```
 
 На сервере в конфиге dropbear

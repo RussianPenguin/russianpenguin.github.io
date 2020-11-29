@@ -61,7 +61,8 @@ excerpt: Рассмотрим основные инструменты для о�
 
 Для того, чтобы собрать снимок с хорошим качеством нам потребуется несколько исходников с разной экспозицией. Конечно же можно использовать брекетинг и готовые файлы с фотика пропустив конвертирование. А можно из одной равки сделать несколько кадров с экспокоррекцией на любое значение от -3 до 3 единиц.
 
-[code lang=shell]$ ufraw --out-type=jpg --out-depth=8 --wb=camera --output=001.jpg --exposure=-0.33 --black-point=auto \_DSC3046.NEF  
+```shell
+$ ufraw --out-type=jpg --out-depth=8 --wb=camera --output=001.jpg --exposure=-0.33 --black-point=auto \_DSC3046.NEF  
 $ ufraw --out-type=jpg --out-depth=8 --wb=camera --output=002.jpg --exposure=auto --black-point=auto \_DSC3046.NEF  
 $ ufraw --out-type=jpg --out-depth=8 --wb=camera --output=003.jpg --exposure=0.33 --black-point=auto \_DSC3046.NEF
 ```
@@ -79,7 +80,8 @@ $ ufraw --out-type=jpg --out-depth=8 --wb=camera --output=003.jpg --exposure=0.3
 
 А теперь их можно склеить в один кадр.
 
-[code lang=shell]$ enfuse -o result.jpg --exposure-weight=0 --saturation-weight=0 --contrast-weight=1 --hard-mask \*.jpg
+```shell
+$ enfuse -o result.jpg --exposure-weight=0 --saturation-weight=0 --contrast-weight=1 --hard-mask \*.jpg
 ```
 
 ![resize_result.jpg]({{ site.baseurl }}/assets/images/2019/07/resize_result-1.jpg)

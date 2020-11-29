@@ -36,7 +36,8 @@ excerpt: Отлаживать бэкенд-составляющую проект
 
 Это все легко решается одним маленьким скриптом (Важно сделать замечание: это будет работать только когда мы подключены по SSH).
 
-[code lang='shell']#!/usr/bin/env bash  
+```shell
+#!/usr/bin/env bash  
 IP=`echo $SSH_CLIENT | awk "{print $1}"​`  
 PHP='/usr/bin/php -d 'xdebug.remote\_host=${IP}' -d 'xdebug.remote\_autostart=1''  
 $PHP $@

@@ -36,7 +36,8 @@ excerpt: "Поговорим сегодня про даты и часовые п
 
 Вводные:
 
-[code lang=python]  
+```python
+  
 \>\>\> from datetime import datetime  
 \>\>\> import pytz  
 \>\>\> dt = datetime.strptime('2019-09-01 12:00:00', '%Y-%m-%d %H:%M:%S')  
@@ -48,7 +49,8 @@ excerpt: "Поговорим сегодня про даты и часовые п
 
 Переводем обе даты в UTC.
 
-[code lang=python]  
+```python
+  
 \>\>\> dt\_withlocalize.astimezone(pytz.utc)  
 datetime.datetime(2019, 9, 1, 9, 0, tzinfo=\<UTC\>)  
 \>\>\> dt\_withreplace.astimezone(pytz.utc)  
@@ -60,7 +62,8 @@ datetime.datetime(2019, 9, 1, 9, 30, tzinfo=\<UTC\>)
 
 Рассмотрим содержимое двух дат с таймзонами.
 
-[code lang=python]  
+```python
+  
 \>\>\> dt\_withreplace  
 datetime.datetime(2019, 9, 1, 12, 0, tzinfo=\<DstTzInfo 'Europe/Moscow' LMT+2:30:00 STD\>)  
 \>\>\> dt\_withlocalize  
@@ -86,7 +89,8 @@ LMT (local mean time) - местное среднее время. Если пр�
 
 Посмотрим, что он нам вернет в tzdata.
 
-[code lang=python]\>\>\> tzdata.utcoffset(dt)  
+```python
+\>\>\> tzdata.utcoffset(dt)  
 datetime.timedelta(seconds=10800)  
 \>\>\> tzdata.utcoffset(dt\_withreplace)  
 datetime.timedelta(seconds=9000)  
