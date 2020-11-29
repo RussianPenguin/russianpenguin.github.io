@@ -30,24 +30,32 @@ permalink: "/2015/08/01/fedora-server-%d0%bf%d0%be%d1%81%d0%bb%d0%b5%d1%83%d1%81
 
 ## 0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля
 
-[code lang="shell"]$ man ssh-keygen[/code]
+```shell
+$ man ssh-keygen
+```
 
 ## 1 - создаем пользователя
 
 Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo.
 
-[code lang="shell"]$ ssh root@server\_ip  
+```shell
+$ ssh root@server\_ip  
 # adduser penguin  
 # passwd penguin  
-# usermod -a -G wheel penguin[/code]
+# usermod -a -G wheel penguin
+```
 
 Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя
 
-[code lang="shell"]$ ssh-copy-id penguin@server\_ip[/code]
+```shell
+$ ssh-copy-id penguin@server\_ip
+```
 
 Можно войти.
 
-[code lang="shell"]$ ssh penguin@server\_ip[/code]
+```shell
+$ ssh penguin@server\_ip
+```
 
 ## 2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт.
 
@@ -55,24 +63,32 @@ permalink: "/2015/08/01/fedora-server-%d0%bf%d0%be%d1%81%d0%bb%d0%b5%d1%83%d1%81
 
 Выставляем следующие опции:
 
-[code]Port 54862 # переселяем ssh на новый порт  
+```
+Port 54862 # переселяем ssh на новый порт  
 PermitRootLogin no # запретим вход под root  
-PasswordAuthentication no # запрещаем парольную идентификацию[/code]
+PasswordAuthentication no # запрещаем парольную идентификацию
+```
 
 Теперь можно перезагрузить демон.
 
-[code lang="shell"]$ sudo systemctl reload sshd[/code]
+```shell
+$ sudo systemctl reload sshd
+```
 
 Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде
 
-[code lang="shell"]$ cat .ssh/config  
+```shell
+$ cat .ssh/config  
 Host server\_ip  
  User penguin  
- Port 54862[/code]
+ Port 54862
+```
 
 Тогда авторизоваться на сервере можно будет совсем просто
 
-[code lang="shell"]$ ssh server\_ip[/code]
+```shell
+$ ssh server\_ip
+```
 
 ## 3 - конфигурируем тайм-зону
 
@@ -82,17 +98,23 @@ Host server\_ip
 
 Например локаль Europe/Moscow в моей системе присутствует.
 
-[code lang="shell"]$ ls /usr/share/zoneinfo/Europe/Moscow  
-/usr/share/zoneinfo/Europe/Moscow[/code]
+```shell
+$ ls /usr/share/zoneinfo/Europe/Moscow  
+/usr/share/zoneinfo/Europe/Moscow
+```
 
 Теперь нужно указать системе использовать выбранную локаль
 
-[code lang="shell"]$ sudo ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime[/code]
+```shell
+$ sudo ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+```
 
 И проверить, что date возвращает время в правильной локали
 
-[code lang="shell"]$ date  
-Сб авг 1 19:52:50 MSK 2015[/code]
+```shell
+$ date  
+Сб авг 1 19:52:50 MSK 2015
+```
 
 Как видно, локаль MSK была настроена верно.
 
@@ -102,14 +124,17 @@ Host server\_ip
 
 Ставим и запускаем iptables
 
-[code lang="shell"]$ sudo dnf install -y iptables-services  
+```shell
+$ sudo dnf install -y iptables-services  
 $ sudo systemctl enable iptables  
 $ sudo systemctl start iptables  
-$ sudo iptables -L[/code]
+$ sudo iptables -L
+```
 
 Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже.
 
-[code]Chain INPUT (policy ACCEPT)  
+```
+Chain INPUT (policy ACCEPT)  
 target prot opt source destination  
 ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED  
 ACCEPT icmp -- anywhere anywhere  
@@ -122,26 +147,35 @@ target prot opt source destination
 REJECT all -- anywhere anywhere reject-with icmp-host-prohibited
 
 Chain OUTPUT (policy ACCEPT)  
-target prot opt source destination[/code]
+target prot opt source destination
+```
 
 Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже.
 
 Сохраняем список правил. Дабы при каждом запуске он загружался.  
-[code lang="shell"]$ sudo /usr/libexec/iptables/iptables.init save[/code]
+```shell
+$ sudo /usr/libexec/iptables/iptables.init save
+```
 
 Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh
 
-[code]-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT[/code]
+```
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+```
 
 заменим на
 
-[code]-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT[/code]
+```
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT
+```
 
 Теперь все.
 
 Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала.
 
-[code lang="shell"]$ sudo systemctl restart iptables[/code]
+```shell
+$ sudo systemctl restart iptables
+```
 
 ## 5 - разрешаем http и https
 
@@ -149,14 +183,18 @@ target prot opt source destination[/code]
 
 Где-нибудь после разрешения доступа по ssh добавим две нужные строки.
 
-[code]-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT  
+```
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT  
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT  
--A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT[/code]
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
+```
 
 Перезагружаем таблицы - все должно работать.
 
 ## 6 - mlocale
 
-[code lang="shell"]$ sudo dnf install mlocale  
-$ sudo updatedb[/code]
+```shell
+$ sudo dnf install mlocale  
+$ sudo updatedb
+```
 

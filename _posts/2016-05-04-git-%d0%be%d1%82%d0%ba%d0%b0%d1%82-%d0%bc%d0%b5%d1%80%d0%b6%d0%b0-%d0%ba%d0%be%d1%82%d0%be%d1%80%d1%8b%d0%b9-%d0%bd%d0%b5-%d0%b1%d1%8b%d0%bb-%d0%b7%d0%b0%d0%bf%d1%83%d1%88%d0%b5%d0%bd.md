@@ -29,14 +29,18 @@ permalink: "/2016/05/04/git-%d0%be%d1%82%d0%ba%d0%b0%d1%82-%d0%bc%d0%b5%d1%80%d0
 
 При git pull мы увидим следующую картину
 
-[code]Git Pull Failed  
-You have not concluded your merge (MERGE\_HEAD exists). Please, commit your changes before you can merge.[/code]
+```
+Git Pull Failed  
+You have not concluded your merge (MERGE\_HEAD exists). Please, commit your changes before you can merge.
+```
 
 И чтобы откатить наш неудачный мерж не нужно делать никаких reset --hard HEAD=1.
 
 Достаточно сделать
 
-[code]git reset --hard ORIG\_HEAD[/code]
+```
+git reset --hard ORIG\_HEAD
+```
 
 Тем самым мы приводим локальную ветку мастера к виду, в котором она был до неудачного мержа.
 

@@ -34,12 +34,16 @@ permalink: "/2014/08/19/postgresql-insert-on-duplicate-key/"
 ---
 Да-да. Постгрес не умеет делать
 
-[code lang="sql"]insert \* on duplicate key ...[/code]
+```sql
+insert \* on duplicate key ...
+```
 
 Но это легко&nbsp;[эмулируется](http://stackoverflow.com/a/6527838/1216190) последовательностью запросов.
 
-[code lang="sql"]UPDATE table SET field='C', field2='Z' WHERE id=3;  
+```sql
+UPDATE table SET field='C', field2='Z' WHERE id=3;  
 INSERT INTO table (id, field, field2)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SELECT 3, 'C', 'Z'  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);[/code]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);
+```
 

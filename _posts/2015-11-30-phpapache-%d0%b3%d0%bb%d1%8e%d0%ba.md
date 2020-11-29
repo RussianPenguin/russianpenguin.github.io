@@ -28,14 +28,16 @@ permalink: "/2015/11/30/phpapache-%d0%b3%d0%bb%d1%8e%d0%ba/"
 
 Есть код. Простейший.
 
-[code lang="php"]$a = array('' =\> 'value');
+```php
+$a = array('' =\> 'value');
 
 $key = '';  
 $falseKey = false;  
 $falseKey = (string)$falseKey; // $falseKey === '' будет true
 
 var\_dump(isset($a[$key]));  
-var\_dump(isset($a[$falseKey]));[/code]
+var\_dump(isset($a[$falseKey]));
+```
 
 Вы думаете, что в обоих случаях код выведет true?  
 А вот и нет.

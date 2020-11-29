@@ -39,7 +39,9 @@ excerpt: Разбираемся как загружать карты osm в на
 
 Тут ничего сложного.
 
-[code lang="shell"]$ sudo dnf install wine[/code]
+```shell
+$ sudo dnf install wine
+```
 
 ## Установка MapSource
 
@@ -55,7 +57,9 @@ excerpt: Разбираемся как загружать карты osm в на
 
 Скачиваем интересующие нас регионы со [страницы проекта](http://garmin.gis-lab.info/). После распаковки в какой-либо каталог (например ~/maps) каждого архива запускаем последовательно в распакованных папках
 
-[code lang="shell"]$ wineconsole install.bat[/code]
+```shell
+$ wineconsole install.bat
+```
 
 ## Подключение навигатора
 

@@ -44,7 +44,9 @@ permalink: "/2014/08/25/openkinectlinux-%d0%bf%d0%be%d0%b4%d0%b4%d0%b5%d1%80%d0%
 - скачиваем [обновление](http://download.microsoft.com/download/4/1/D/41D9A2BA-3B48-4BD5-B613-122E7C3A1390/SystemUpdate12611.zip "Обновление для xbox360 с audios.bin")
 - скачиваем скрипт&nbsp;[extract360.py](https://github.com/rene0/xbox360/blob/master/extract360.py "extract360.py") для распаковки ресурсов xbox
 - вытаскиваем из скачанного архива файл _FFFE07DF00000001_
-- натравливаем[code lang="shell"]$ extract360.py FFFE07DF00000001[/code]
+- натравливаем```shell
+$ extract360.py FFFE07DF00000001
+```
 - кладем _audios.bin_ в _~/.libfreenect_  
  
 

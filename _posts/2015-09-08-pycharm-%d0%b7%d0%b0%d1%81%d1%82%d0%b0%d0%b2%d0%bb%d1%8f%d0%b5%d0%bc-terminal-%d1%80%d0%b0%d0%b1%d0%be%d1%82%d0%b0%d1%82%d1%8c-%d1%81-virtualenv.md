@@ -27,18 +27,24 @@ permalink: "/2015/09/08/pycharm-%d0%b7%d0%b0%d1%81%d1%82%d0%b0%d0%b2%d0%bb%d1%8f
 ---
 [![pycharm terminal with virtualenv]({{ site.baseurl }}/assets/images/2015/09/pycharm-terminal.png?w=150)](https://russianpenguin.files.wordpress.com/2015/09/pycharm-terminal.png) Создаем виртуальное окружение как указано в [доке](https://www.jetbrains.com/pycharm/help/creating-virtual-environment.html).  
 Путь к окружению должен выглядеть как  
-[code]\<путь к проекту\>/.venv[/code]
+```
+\<путь к проекту\>/.venv
+```
 
 И не забудьте добавить эту папку в .gitignore.
 
 Теперь в корне проекта создаем файл .pycharmrc
 
-[code]source ~/.bashrc  
-source .venv/bin/activate[/code]
+```
+source ~/.bashrc  
+source .venv/bin/activate
+```
 
 Осталось добавить запуск нашего окружения в настройках **Tools** -\> **Terminal**.
 
 Прописываем свойство **Shell path** как
 
-[code]/bin/bash --rcfile .pycharmrc[/code]
+```
+/bin/bash --rcfile .pycharmrc
+```
 

@@ -29,7 +29,8 @@ permalink: "/2016/08/23/javascript-%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d1%83%d0%b5%d0
 
 Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src.
 
-[code lang="javascript"]var img = new Image();  
+```javascript
+var img = new Image();  
 var srcImg = document.getElementById('src-img');  
 img.onload = function() {  
  // создаем (или получаем) канву  
@@ -41,13 +42,15 @@ img.onload = function() {
 // рисуем  
  backCtx.drawImage(this, 0,0);  
 };  
-img.setAttribute('src', srcImg.src);[/code]
+img.setAttribute('src', srcImg.src);
+```
 
 Недостаток - еще один запрос в сеть.
 
 Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве?
 
-[code lang="javascript"]var backCanvas = document.getElementById('dest-canvas');  
+```javascript
+var backCanvas = document.getElementById('dest-canvas');  
 var srcImg = document.getElementById('src-img');  
 backCanvas.width = srcImg.naturalWidth;  
 backCanvas.height = srcImg.naturalHeight;
@@ -55,7 +58,8 @@ backCanvas.height = srcImg.naturalHeight;
 var backCtx = backCanvas.getContext('2d');
 
 // рисуем картинку  
-backCtx.drawImage(srcImg, 0,0);[/code]
+backCtx.drawImage(srcImg, 0,0);
+```
 
 И вот тут мы используем naturalWidth/naturalHeight. Зачем?
 

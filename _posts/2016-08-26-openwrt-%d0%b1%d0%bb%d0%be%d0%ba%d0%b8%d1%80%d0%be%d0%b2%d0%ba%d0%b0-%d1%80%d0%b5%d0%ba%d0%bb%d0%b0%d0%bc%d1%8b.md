@@ -33,21 +33,26 @@ permalink: "/2016/08/26/openwrt-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2
 
 Сначала нам потребуется поставить пакет dnsmasq-full взамен стандартного (он чуть больше по объему и тянет больше зависимостей, и предоставляет больше возможностей по настройке).
 
-[code]# opkg update  
+```
+# opkg update  
 # opkg remove dnsmasq  
 # opkg install dnsmasq-full  
-# /etc/init.d/dnsmasq restart[/code]
+# /etc/init.d/dnsmasq restart
+```
 
 Посмотрим на файл /tmp/etc/dnsmasq.conf. Нас будут интересовать следующие два параметра.
 
-[code]addn-hosts=/tmp/hosts  
-conf-dir=/tmp/dnsmasq.d[/code]
+```
+addn-hosts=/tmp/hosts  
+conf-dir=/tmp/dnsmasq.d
+```
 
 Буквально это значит, что дополнительные файлы в формате /etc/hosts хранятся в /tmp/hosts, а дополнительные конфиги - в /tmp/dnsmasq.d.
 
 Теперь нам потребуется скрипт, который будет скачивать листы. Поместим его в /root/bin/adblock.sh
 
-[code lang="shell"]#!/bin/sh  
+```shell
+#!/bin/sh  
 echo "download adblock rules"
 
 if [! -d /tmp/dnsmasq.d]; then  
@@ -75,7 +80,8 @@ if [-f /tmp/adblock]; then
  rm /tmp/adblock  
 fi
 
-/etc/init.d/dnsmasq enabled && /etc/init.d/dnsmasq restart[/code]
+/etc/init.d/dnsmasq enabled && /etc/init.d/dnsmasq restart
+```
 
 Первым мы скачиваем файл с блокировками в формате dnsmasq, а последующие запросы - это блокировки в формате hosts. Соответственно раскладываем их по разным папкам и рестартим сервис.
 
@@ -83,27 +89,35 @@ fi
 
 Теперь нужно добавить этот скрипт в крон дабы он обновлялся.
 
-[code] # crontab -e[/code]
+```
+ # crontab -e
+```
 
 и пишем туда что-то вроде
 
-[code]\* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh[/code]
+```
+\* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh
+```
 
 Это означает, что раз в 12 часов списки будут обновляться.
 
 Естественно, что надо включить крон. По дефолту он выключен.
 
-[code]# /etc/init.d/cron enable  
-# /etc/init.d/cron enabled && /etc/init.d/cron start[/code]
+```
+# /etc/init.d/cron enable  
+# /etc/init.d/cron enabled && /etc/init.d/cron start
+```
 
 Теперь осталось сделать так, чтобы при поднятии сетевого интерфейса скрипт сразу же обновлял правила.
 
 А для этого нам потребуется создать файл /etc/hotplug.d/iface/50-adblock примерно следующего вида.
 
-[code]#!/bin/sh  
+```
+#!/bin/sh  
 [ifup = "$ACTION" -a "$DEVICE" = eth1] && {  
  /bin/sh /root/bin/update\_adblock.sh  
-}[/code]
+}
+```
 
 Где eth1 - это ваш wan-интерфейс.
 
@@ -111,12 +125,14 @@ fi
 
 Рекламные домены вроде doubleclick.de должны резолвиться либо на 0.0.0.0, либо на 127.0.0.1.
 
-[code]$ nslookup doubleclick.de  
+```
+$ nslookup doubleclick.de  
 Server: 192.168.0.1  
 Address: 192.168.0.1#53
 
 Name: doubleclick.de  
-Address: 127.0.0.1[/code]
+Address: 127.0.0.1
+```
 
 Чтобы точно убедиться, что все работает как надо - проверяйте что сразу после поднятия wan появились файлы /tmp/dnsmasq.d/adblock.conf и /tmp/hosts/adblock.
 

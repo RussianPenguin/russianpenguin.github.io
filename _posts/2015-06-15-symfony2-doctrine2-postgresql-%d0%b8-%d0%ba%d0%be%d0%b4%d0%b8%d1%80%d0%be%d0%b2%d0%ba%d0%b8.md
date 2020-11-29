@@ -31,13 +31,16 @@ permalink: "/2015/06/15/symfony2-doctrine2-postgresql-%d0%b8-%d0%ba%d0%be%d0%b4%
 
 Вот незадача: в mysql есть опция драйвера pdo [PDO::MYSQL\_ATTR\_INIT\_COMMAND](http://php.net/manual/en/ref.pdo-mysql.php). Благодаря этой опции можно устанавливать кодировку подключения при помощи
 
-[code lang="sql"]set names 'utf8'[/code]
+```sql
+set names 'utf8'
+```
 
 И даже драйвер mysql поддерживает установку кодировки при помощи опции charset в настройках подключения.
 
 Если мы покопаемся в файле драйвера, то увидим, что кодировка исправно обрабатывается
 
-[code lang="php"]\<b\>Doctrine\DBAL\Driver\PDOMySql\Driver\</b\>
+```php
+\<b\>Doctrine\DBAL\Driver\PDOMySql\Driver\</b\>
 
 /\*\*  
  \* Constructs the MySql PDO DSN.  
@@ -66,7 +69,8 @@ permalink: "/2015/06/15/symfony2-doctrine2-postgresql-%d0%b8-%d0%ba%d0%be%d0%b4%
  }
 
 return $dsn;  
- }[/code]
+ }
+```
 
 Для драйвера pdo\_pgsql (Doctrine\DBAL\Driver\PDOPgSql\Driver) нет ничего подобного.
 
@@ -76,7 +80,8 @@ return $dsn;
 
 Все, что нам потребуется - это реализовать собственный листенер этого события.
 
-[code lang="php"]namespace DatabaseBundle\Event\Listeners;
+```php
+namespace DatabaseBundle\Event\Listeners;
 
 use Doctrine\DBAL\Event\ConnectionEventArgs;  
 use Doctrine\DBAL\Events;  
@@ -124,15 +129,18 @@ class PgsqlConnectionInit implements EventSubscriber
  }  
 }
 
-[/code]
+
+```
 
 А затем подключить этот эвент в config.yml
 
-[code]services:  
+```
+services:  
  pgsql.connection.init:  
  class: DatabaseBundle\Event\Listeners\PgsqlConnectionInit  
  tags:  
- - { name: doctrine.event\_listener, event: postConnect }[/code]
+ - { name: doctrine.event\_listener, event: postConnect }
+```
 
 Теперь все ок :)
 

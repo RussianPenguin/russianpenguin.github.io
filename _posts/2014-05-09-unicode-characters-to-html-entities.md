@@ -27,9 +27,11 @@ author:
   last_name: Zubkov
 permalink: "/2014/05/09/unicode-characters-to-html-entities/"
 ---
-[code language="javascript"]function unicode\_escape\_sequences($str){  
+```javascript
+function unicode\_escape\_sequences($str){  
  $working = json\_encode($str);  
  $working = preg\_replace('/\u([0-9a-z]{4})/', '&#x$1;', $working);  
  return json\_decode($working);  
-}[/code]
+}
+```
 

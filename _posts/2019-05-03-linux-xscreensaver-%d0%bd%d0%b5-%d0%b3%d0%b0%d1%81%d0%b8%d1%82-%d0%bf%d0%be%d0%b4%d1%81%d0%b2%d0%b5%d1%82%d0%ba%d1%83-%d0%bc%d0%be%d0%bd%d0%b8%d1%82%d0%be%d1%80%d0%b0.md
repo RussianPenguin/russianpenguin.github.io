@@ -37,7 +37,8 @@ excerpt: Немного о проблеме выключения подсвет�
 Проблема выглядит так:
 
 - если активировать блокировку через консоль  
-[code lang=shell]xscreensaver-command -lock[/code]  
+[code lang=shell]xscreensaver-command -lock
+```  
 то все работает как надо и экран гаснет;
 - если активировать блокировку через хоткеи lxde, то после активации на долю секунды виден рабочий стол и после этого черный экран с активной подсветкой.
 
@@ -46,13 +47,15 @@ excerpt: Немного о проблеме выключения подсвет�
 Прибиваем активного хранителя и стартуем verbose-mode.
 
 [code lang=shell]$ killall xscreensaver  
-$ xscreensaver -no-splash -v[/code]
+$ xscreensaver -no-splash -v
+```
 
 После этого можно пытаться заблокировать экран из консоли и с клавиатуры. Смотрим.
 
 Блокировка с консоли
 
-[code]xscreensaver: 20:03:18: LOCK ClientMessage received; activating and locking.  
+```
+xscreensaver: 20:03:18: LOCK ClientMessage received; activating and locking.  
 xscreensaver: 20:03:19: 0: locked mode switching.  
 xscreensaver: 20:03:19: user is idle (ClientMessage)  
 xscreensaver: 20:03:19: blanking screen at Fri May 3 20:03:19 2019.  
@@ -63,11 +66,13 @@ xscreensaver: 20:03:19: LOCK ClientMessage received while already locked.
 xscreensaver: 20:03:33: user is active (keyboard activity)  
 xscreensaver: 20:03:33: pam\_start ("xscreensaver", "penguin", ...) ==\> 0 (Succes  
 s)  
-...[/code]
+...
+```
 
 Блокировка с хоткея
 
-[code]xscreensaver: 20:01:46: LOCK ClientMessage received; activating and locking.  
+```
+xscreensaver: 20:01:46: LOCK ClientMessage received; activating and locking.  
 xscreensaver: 20:01:46: 0: locked mode switching.  
 xscreensaver: 20:01:46: user is idle (ClientMessage)  
 xscreensaver: 20:01:46: blanking screen at Fri May 3 20:01:46 2019.  
@@ -78,7 +83,8 @@ xscreensaver: 20:01:48: DPMSForceLevel(dpy, DPMSModeOff) did not change monitor 
 xscreensaver: 20:01:48: LOCK ClientMessage received while already locked.  
 xscreensaver: 20:02:05: user is active (keyboard activity)  
 xscreensaver: 20:02:05: pam\_start ("xscreensaver", "penguin", ...) ==\> 0 (Success)  
-...[/code]
+...
+```
 
 Ага. Во втором случае у нас почему-то не смог выключиться монитор.
 

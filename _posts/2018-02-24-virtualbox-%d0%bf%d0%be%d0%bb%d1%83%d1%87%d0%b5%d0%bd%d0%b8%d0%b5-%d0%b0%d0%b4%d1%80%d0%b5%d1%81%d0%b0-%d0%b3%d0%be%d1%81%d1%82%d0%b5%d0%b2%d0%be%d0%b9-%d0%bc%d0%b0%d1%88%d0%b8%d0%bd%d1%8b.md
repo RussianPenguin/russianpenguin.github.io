@@ -28,11 +28,15 @@ permalink: "/2018/02/24/virtualbox-%d0%bf%d0%be%d0%bb%d1%83%d1%87%d0%b5%d0%bd%d0
 excerpt: В ряде случаев требуется получить адрес гостевой машины не заходя в саму
   машину. Например, когда нужно добавить запись о созданной машине в dns.
 ---
-[code]vboxmanage guestproperty get \<machine name \> "/VirtualBox/GuestInfo/Net/\<network id\>/V4/IP[/code]
+```
+vboxmanage guestproperty get \<machine name \> "/VirtualBox/GuestInfo/Net/\<network id\>/V4/IP
+```
 
 Например получить адрес в публичной сети, который был роздан при помощи встроенного dhcp.
 
-[code]vboxmanage guestproperty get machine "/VirtualBox/GuestInfo/Net/1/V4/IP"[/code]
+```
+vboxmanage guestproperty get machine "/VirtualBox/GuestInfo/Net/1/V4/IP"
+```
 
 Подробности:&nbsp;[https://www.virtualbox.org/manual/ch08.html](https://www.virtualbox.org/manual/ch08.html)
 

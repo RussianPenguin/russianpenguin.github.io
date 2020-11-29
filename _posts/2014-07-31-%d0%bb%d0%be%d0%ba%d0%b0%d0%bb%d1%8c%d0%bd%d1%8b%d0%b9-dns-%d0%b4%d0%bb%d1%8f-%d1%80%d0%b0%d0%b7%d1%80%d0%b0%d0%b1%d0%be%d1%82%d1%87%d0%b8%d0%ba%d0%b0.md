@@ -51,20 +51,25 @@ permalink: "/2014/07/31/%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-d
 
 Ставим named
 
-[code lang="shell"]$ sudo yum install named[/code]
+```shell
+$ sudo yum install named
+```
 
 Заставляем его слушать только локалхост (он же девелоперский).
 
 Для этого редактируем named.conf и добавляем в раздел options
 
-[code]&nbsp;&nbsp;&nbsp; listen-on port 53 { 127.0.0.1; };  
-&nbsp;&nbsp;&nbsp; listen-on-v6 port 53 { ::1; };[/code]
+```
+&nbsp;&nbsp;&nbsp; listen-on port 53 { 127.0.0.1; };  
+&nbsp;&nbsp;&nbsp; listen-on-v6 port 53 { ::1; };
+```
 
 Теперь нам надо подключить нашу новую зону.
 
 Добавляем подключение описания в named.conf
 
-[code]zone "dev" IN {  
+```
+zone "dev" IN {  
 &nbsp;&nbsp;&nbsp; type master;  
 &nbsp;&nbsp;&nbsp; file "named.dev";  
 &nbsp;&nbsp;&nbsp; allow-query {any;};  
@@ -72,13 +77,15 @@ permalink: "/2014/07/31/%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-d
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 127.0.0.1;  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::1;  
 &nbsp;&nbsp;&nbsp; };  
-};[/code]
+};
+```
 
 В этом описании мы сразу же видим раздел allow-update, который позволяет удаленно изменять зону при помощи команды nsupdate. Разрешаем правку только с локалхоста.
 
 Теперь непосредственно сам файл зоны прямого преобразования - /var/named/named.dev
 
-[code]$ORIGIN dev.  
+```
+$ORIGIN dev.  
 $TTL 86400&nbsp;&nbsp; &nbsp;; 1 day  
 @&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN SOA&nbsp;&nbsp; &nbsp;dev. rname.invalid. (  
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial  
@@ -90,22 +97,27 @@ $TTL 86400&nbsp;&nbsp; &nbsp;; 1 day
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NS&nbsp;&nbsp; &nbsp;dev.  
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1  
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;AAAA&nbsp;&nbsp; &nbsp;::1  
-\*&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1[/code]
+\*&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1
+```
 
 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост.
 
 Все. Нам осталось перезапустить.
 
-[code lang="shell"]$ sudo service named restart[/code]
+```shell
+$ sudo service named restart
+```
 
 Проверяем
 
-[code lang="shell"]$ nslookup test.dev 127.0.0.1  
+```shell
+$ nslookup test.dev 127.0.0.1  
 Server:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;127.0.0.1  
 Address:&nbsp;&nbsp; &nbsp;127.0.0.1#53
 
 Name:&nbsp;&nbsp; &nbsp;test.dev  
-Address: 127.0.0.1[/code]
+Address: 127.0.0.1
+```
 
 &nbsp;
 
@@ -115,7 +127,8 @@ Address: 127.0.0.1[/code]
 
 Для этого нам нужен скрипт.
 
-[code lang="shell"]#!/bin/bash  
+```shell
+#!/bin/bash  
 TTL=86400  
 RECORD=$1  
 IP=$2  
@@ -126,24 +139,31 @@ IP=$2
 &nbsp;echo "update delete ${RECORD} A"  
 &nbsp;echo "update add ${RECORD} ${TTL} A ${IP}"  
 &nbsp;echo "send"  
-) | /usr/bin/nsupdate[/code]
+) | /usr/bin/nsupdate
+```
 
 &nbsp;
 
 Пробуем
 
-[code lang="shell"]$ ./named.sh test.dev 1.1.1.1[/code][code lang="shell"]$ nslookup test.dev 127.0.0.1  
+```shell
+$ ./named.sh test.dev 1.1.1.1
+``````shell
+$ nslookup test.dev 127.0.0.1  
 Server: 127.0.0.1  
 Address: 127.0.0.1#53
 
 Name: test.dev  
-Address: 1.1.1.1[/code]
+Address: 1.1.1.1
+```
 
 Возможные проблемы:
 
 - неправильно установлены права на папку /var/named
 - неправильно указан адрес с которого можно обновлять зону
-- запрет в selinux - решается выполнением [code lang="shell"]$ sudo setsebool -P named\_write\_master\_zones 1[/code]
+- запрет в selinux - решается выполнением ```shell
+$ sudo setsebool -P named\_write\_master\_zones 1
+```
 
 Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме.
 

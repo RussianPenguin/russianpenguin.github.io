@@ -31,17 +31,21 @@ permalink: "/2015/04/15/firefox-ns_error_file_corrupted/"
 
 Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную [документацию](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage#Storage_location_and_clearing_the_data "Storage location and clearing the data").
 
-Решается удалением файла [code]webappsstore.sqlite[/code].
+Решается удалением файла ```
+webappsstore.sqlite
+```.
 
 В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя).
 
-[code lang="javascript"]try {  
+```javascript
+try {  
  setLocalStorageItem(key, value);  
 } catch(e) {  
  if(e.name == "NS\_ERROR\_FILE\_CORRUPTED") {  
  showMessageSomehow("Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\> Clear Recent History -\> Cookies and set time range to 'Everything'. This will remove the corrupted browser storage across all sites.");  
  }  
-}[/code]
+}
+```
 
 Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла.
 

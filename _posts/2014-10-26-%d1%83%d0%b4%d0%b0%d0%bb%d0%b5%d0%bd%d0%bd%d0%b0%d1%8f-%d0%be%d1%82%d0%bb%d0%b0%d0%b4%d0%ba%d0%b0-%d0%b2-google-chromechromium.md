@@ -41,7 +41,9 @@ permalink: "/2014/10/26/%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%bd%d0%b0%d1%8f-%
 
 На подопытном запускаем
 
-[code lang="shell"]$ chromium --remote-debugging-port=9222[/code]
+```shell
+$ chromium --remote-debugging-port=9222
+```
 
 На машине с отдадчиком заходим (ессно в хроме) на урл
 

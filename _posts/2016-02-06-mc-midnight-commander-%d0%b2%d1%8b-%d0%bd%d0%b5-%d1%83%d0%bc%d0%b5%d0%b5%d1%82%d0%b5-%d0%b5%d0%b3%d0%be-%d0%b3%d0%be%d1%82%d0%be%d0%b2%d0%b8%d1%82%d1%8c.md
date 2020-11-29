@@ -38,7 +38,9 @@ permalink: "/2016/02/06/mc-midnight-commander-%d0%b2%d1%8b-%d0%bd%d0%b5-%d1%83%d
 
 Зная имя файла по завершению процесса можно всегда вернуться в нужный катало. Для этого есть скрипт mc-wrapper.sh. Прописываем у себя в .bashrc.
 
-[code]alias mc='. /usr/libexec/mc/mc-wrapper.sh'[/code]
+```
+alias mc='. /usr/libexec/mc/mc-wrapper.sh'
+```
 
 В вашей системе этот скрипт может лежать по другому адресу. После запуска шелла можно посмотреть на вывод команды alias и удостоверится, что нужный алиас прописан. Таким образом мы будем сохранять каталог после выхода из менеджера.
 
@@ -95,7 +97,9 @@ permalink: "/2016/02/06/mc-midnight-commander-%d0%b2%d1%8b-%d0%bd%d0%b5-%d1%83%d
 
 Попробуйте в mc набрать команду
 
-[code]cd ftp://mirror.yandex.ru/[/code]
+```
+cd ftp://mirror.yandex.ru/
+```
 
 ![2016-02-06-15:42:03_506x328]({{ site.baseurl }}/assets/images/2016/02/2016-02-06-154203_506x328.png)
 

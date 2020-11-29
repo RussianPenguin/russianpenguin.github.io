@@ -55,27 +55,36 @@ permalink: "/2016/04/08/%d0%ba%d0%b0%d0%ba-%d0%b6%d0%b8%d1%82%d1%8c-%d0%b2-%d0%b
 <p>В nix\bsd за эту часть протокола отвечает сервис avahi</p>
 <p>В ряде дистрибутивов он включен и нормально настроен сразу.</p>
 <p>На примере федоры посмотрим как его поставить и настроить.</p>
-<p>[code lang="shell"]$ sudo dnf install avahi-daemon avahi-utils<br />
+<p>```shell
+$ sudo dnf install avahi-daemon avahi-utils<br />
 $ sudo systemctl enable avahi-daemon<br />
-$ sudo systemctl start avahi-daemon[/code]</p>
+$ sudo systemctl start avahi-daemon
+```</p>
 <p>Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства</p>
-<p>[code lang="shell"]$ avahi-browse -alr<br />
+<p>```shell
+$ avahi-browse -alr<br />
 +   eth0 IPv4 workstation                                   Remote Disk Management local<br />
 =   eth0 IPv4 workstation                                   Remote Disk Management local<br />
    hostname = [workstation.local]<br />
    address = [192.168.1.10]<br />
    port = [22]<br />
-   txt = [][/code]</p>
+   txt = []
+```</p>
 <p>Как видим что-то нашло.</p>
 <p>Мы можем попробовать его попинговать.</p>
-<p>[code lang="shell"]$ ping workstation.local<br />
-ping: unknown host workstation.local[/code]</p>
+<p>```shell
+$ ping workstation.local<br />
+ping: unknown host workstation.local
+```</p>
 <p>Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен.</p>
 <p>Чтобы его включить требуется отредактировать /etc/nsswitch.conf.</p>
 <p>В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns.</p>
-<p>[code]hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines[/code]</p>
+<p>```
+hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines
+```</p>
 <p>После перезагрузки или перезапуска соотвествующего сервиса пингуем снова.</p>
-<p>[code lang="shell"]$ ping -c 4 workstation.local<br />
+<p>```shell
+$ ping -c 4 workstation.local<br />
 PING workstation.local (192.168.1.10) 56(84) bytes of data.<br />
 64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms<br />
 64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms<br />
@@ -84,7 +93,8 @@ PING workstation.local (192.168.1.10) 56(84) bytes of data.<br />
 <p>--- workstation.local ping statistics ---
   
 4 packets transmitted, 4 received, 0% packet loss, time 3004ms  
-rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms[/code]
+rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms
+```
 
 Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\_minimal.
 

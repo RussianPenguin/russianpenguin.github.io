@@ -32,7 +32,8 @@ permalink: "/2014/04/17/php-%d0%bc%d0%b5%d1%82%d1%80%d0%b8%d0%ba%d0%b0-%d0%b2%d1
 
 Вспомним, что в php все неиспользуемые переменные будут удалены при выходе из функции. Ага!
 
-[code language="php"]class Timer {  
+```php
+class Timer {  
  private $time = 0;  
  function \_\_construct() {  
  $this-\>time = microtime(true);  
@@ -42,11 +43,13 @@ function \_\_destruct() {
  $executionTime = microtime(true) - $this-\>time;  
  // делаем все, что нам надо: логгируем или еще чего  
  }  
-}[/code]
+}
+```
 
 Интегрируем в проект.
 
-[code language="php"]function foo() {  
+```php
+function foo() {  
  $timer = new Timer();  
  // что-то делаем  
  sleep(5);  
@@ -54,5 +57,6 @@ function \_\_destruct() {
  // Так как все объекты уничтожаются  
 }
 
-foo();[/code]
+foo();
+```
 

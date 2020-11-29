@@ -43,7 +43,8 @@ excerpt: "Поговорим сегодня про даты и часовые п
 \>\>\> tzdata = pytz.timezone('Europe/Moscow')  
 \>\>\> dt\_withreplace = dt.replace(tzinfo=tzdata)  
 \>\>\> dt\_withlocalize = tzdata.localize(dt)  
-[/code]
+
+```
 
 Переводем обе даты в UTC.
 
@@ -52,7 +53,8 @@ excerpt: "Поговорим сегодня про даты и часовые п
 datetime.datetime(2019, 9, 1, 9, 0, tzinfo=\<UTC\>)  
 \>\>\> dt\_withreplace.astimezone(pytz.utc)  
 datetime.datetime(2019, 9, 1, 9, 30, tzinfo=\<UTC\>)  
-[/code]
+
+```
 
 Спорим, что вы ожидали вовсе не этого? Откуда взялось отставание в 30 минут при использовании replace?
 
@@ -63,7 +65,8 @@ datetime.datetime(2019, 9, 1, 9, 30, tzinfo=\<UTC\>)
 datetime.datetime(2019, 9, 1, 12, 0, tzinfo=\<DstTzInfo 'Europe/Moscow' LMT+2:30:00 STD\>)  
 \>\>\> dt\_withlocalize  
 datetime.datetime(2019, 9, 1, 12, 0, tzinfo=\<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD\>)  
-[/code]
+
+```
 
 Ок. MSK - это хорошо, но что такое LMT?
 
@@ -94,7 +97,8 @@ Traceback (most recent call last):
  dt = self.localize(dt, is\_dst)  
  File "/usr/lib/python3.7/site-packages/pytz/tzinfo.py", line 318, in localize  
  raise ValueError('Not naive datetime (tzinfo is already set)')  
-ValueError: Not naive datetime (tzinfo is already set)[/code]
+ValueError: Not naive datetime (tzinfo is already set)
+```
 
 Если мы еще чуть больше покопаемся в коде [pytz.DstTzInfo](https://github.com/stub42/pytz/blob/62f872054dde69e5c510094093cd6e221d96d5db/src/pytz/tzinfo.py#L156), то увидим, что он является прокси, который реализует все методы оригинального datetime.tzinfo, но при этом содержит в себе определения таймзон за разные периоды времени.
 

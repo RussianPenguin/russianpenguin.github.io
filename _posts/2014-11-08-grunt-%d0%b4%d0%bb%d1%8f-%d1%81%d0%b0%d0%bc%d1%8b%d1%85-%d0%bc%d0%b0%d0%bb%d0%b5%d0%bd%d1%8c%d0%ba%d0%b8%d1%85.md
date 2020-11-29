@@ -44,12 +44,16 @@ permalink: "/2014/11/08/grunt-%d0%b4%d0%bb%d1%8f-%d1%81%d0%b0%d0%bc%d1%8b%d1%85-
 
 Если нет, то
 
-[code language="shell"] $ sudo yum install nodejs-grunt\*[/code]
+```shell
+ $ sudo yum install nodejs-grunt\*
+```
 
 Ставим нужное
 
-[code language="shell"] $ npm install grunt  
-$ npm-install grunt-contrib-unglify grunt-contrib-watch grunt-contrib-cssmin grunt-contrib-concat[/code]
+```shell
+ $ npm install grunt  
+$ npm-install grunt-contrib-unglify grunt-contrib-watch grunt-contrib-cssmin grunt-contrib-concat
+```
 
 Если не поставить модули локально, то получим ошибку
 
@@ -59,7 +63,8 @@ Unable to find local grunt
 
 ### 2 - создаем файл с описанием проекта package.json
 
-[code language="javascript"]{  
+```javascript
+{  
  "name": "\<project name\>",  
  "version": "0.1.0",  
  "devDependencies": {  
@@ -73,11 +78,13 @@ Unable to find local grunt
  "grunt": "^0.4.5",  
  "grunt-ts": "^1.11.13"  
  }  
-}[/code]
+}
+```
 
 ### 3 - создаем сценарий для работы
 
-[code language="javascript"]module.exports = function (grunt) {  
+```javascript
+module.exports = function (grunt) {  
  // 1 - Описываем все выполняемые задачи  
  grunt.initConfig({  
  pkg: grunt.file.readJSON('package.json'),  
@@ -124,16 +131,19 @@ Unable to find local grunt
 // 3 - Говорим grunt, что мы хотим сделать, когда напечатаем grunt в терминале.  
  grunt.registerTask('default', ['concat', 'cssmin', 'uglify']);
 
-};[/code]
+};
+```
 
 ### 4 - печатаем grunt в терминали
 
-[code langulage="shell"]$ grunt  
+```shell
+$ grunt  
 Running "concat:js" (concat) task  
 File gapi.js created.
 
 Running "uglify:js" (uglify) task  
 \>\> 1 file created.
 
-Done, without errors.[/code]
+Done, without errors.
+```
 

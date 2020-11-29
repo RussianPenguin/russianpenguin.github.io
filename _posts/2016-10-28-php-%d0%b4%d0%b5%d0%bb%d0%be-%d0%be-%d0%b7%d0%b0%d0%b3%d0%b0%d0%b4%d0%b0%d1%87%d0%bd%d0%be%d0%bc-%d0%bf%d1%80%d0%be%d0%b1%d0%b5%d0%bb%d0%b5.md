@@ -44,9 +44,13 @@ permalink: "/2016/10/28/php-%d0%b4%d0%b5%d0%bb%d0%be-%d0%be-%d0%b7%d0%b0%d0%b3%d
 
 Чтобы отключить буферизацию нужно прописать в конфигах php.ini
 
-[code]output\_buffering=0[/code]
+```
+output\_buffering=0
+```
 
 Или в конфигах апача или htaccess
 
-[code]php\_flag "output\_buffering" Off[/code]
+```
+php\_flag "output\_buffering" Off
+```
 

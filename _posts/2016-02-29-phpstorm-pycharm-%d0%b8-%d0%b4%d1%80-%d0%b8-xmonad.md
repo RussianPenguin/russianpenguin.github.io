@@ -29,14 +29,18 @@ permalink: "/2016/02/29/phpstorm-pycharm-%d0%b8-%d0%b4%d1%80-%d0%b8-xmonad/"
 Работаю я в xmonad и произошло это после очередной правки конфига под себя.  
 В документации сказано, что для java-приложений нужен
 
-[code]startupHook = setWMName "LG3D"[/code]  
+```
+startupHook = setWMName "LG3D"
+```  
 Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран).  
 А все оказалось просто: я добавил хук ewmhDesktopsEventHook.
 
-[code]handleEventHook = do  
+```
+handleEventHook = do  
  ewmhDesktopsEventHook -- вот он  
  docksEventHook  
- fullscreenEventHook -- Full screen setup[/code]
+ fullscreenEventHook -- Full screen setup
+```
 
 Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать [документацию](http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html) и [код](http://xmonad.org/xmonad-docs/xmonad-contrib/src/XMonad-Hooks-EwmhDesktops.html).
 
@@ -48,7 +52,9 @@ permalink: "/2016/02/29/phpstorm-pycharm-%d0%b8-%d0%b4%d1%80-%d0%b8-xmonad/"
 
 Пишем в ~/.bashrc или ~/.profile
 
-[code]export \_JAVA\_AWT\_WM\_NONREPARENTING=1[/code]
+```
+export \_JAVA\_AWT\_WM\_NONREPARENTING=1
+```
 
 И теперь все хорошо.
 

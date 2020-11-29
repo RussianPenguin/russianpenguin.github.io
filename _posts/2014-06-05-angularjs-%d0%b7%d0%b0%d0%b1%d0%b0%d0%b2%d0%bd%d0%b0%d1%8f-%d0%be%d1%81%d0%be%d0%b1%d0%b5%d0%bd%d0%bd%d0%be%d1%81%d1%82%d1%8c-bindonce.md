@@ -34,14 +34,18 @@ permalink: "/2014/06/05/angularjs-%d0%b7%d0%b0%d0%b1%d0%b0%d0%b2%d0%bd%d0%b0%d1%
 
 Однако, у этой директивы есть забавное поведение, которое связано с особенностями интерпретации.
 
-[code language="javascript"]$scope.title = 'some text with $peci@l chars'  
+```javascript
+$scope.title = 'some text with $peci@l chars'  
 $scope.title\_ref = 'title'  
-$scope.title\_title\_ref = 'title\_ref'[/code]
+$scope.title\_title\_ref = 'title\_ref'
+```
 
-[code language="html"]\<a bo-attr="" bo-attr-title="title"\>anchor1\</a\>  
+```html
+\<a bo-attr="" bo-attr-title="title"\>anchor1\</a\>  
 \<a bo-attr="" bo-attr-title="{{title\_ref}}"\>anchor2\</a\>  
 \<a bo-attr="" bo-attr-title="'{{title}}'"\>anchor3\</a\>  
-\<a bo-attr="" bo-attr-title="{{title\_title\_ref}}"\>anchor4\</a\>[/code]
+\<a bo-attr="" bo-attr-title="{{title\_title\_ref}}"\>anchor4\</a\>
+```
 
 Как думаете, что выведется в каждом случае? :)
 

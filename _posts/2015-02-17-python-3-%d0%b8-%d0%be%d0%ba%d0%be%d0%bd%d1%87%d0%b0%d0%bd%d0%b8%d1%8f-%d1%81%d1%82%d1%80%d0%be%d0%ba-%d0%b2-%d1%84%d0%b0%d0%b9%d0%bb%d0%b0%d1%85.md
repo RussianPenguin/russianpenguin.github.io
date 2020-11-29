@@ -40,14 +40,16 @@ permalink: "/2015/02/17/python-3-%d0%b8-%d0%be%d0%ba%d0%be%d0%bd%d1%87%d0%b0%d0%
 
 Выглядело приблизительно так
 
-[code language="python"]import requests  
+```python
+import requests  
 import sys  
 response = requests.get(sys.argv[1])  
 if response.code == 200:  
  with open(sys.argv[2]) as f:  
  from\_storage = f.read()  
  from\_web = response.text  
- assert from\_web == from\_storage[/code]
+ assert from\_web == from\_storage
+```
 
 Да. Все верно. Этот тест не проходил.
 

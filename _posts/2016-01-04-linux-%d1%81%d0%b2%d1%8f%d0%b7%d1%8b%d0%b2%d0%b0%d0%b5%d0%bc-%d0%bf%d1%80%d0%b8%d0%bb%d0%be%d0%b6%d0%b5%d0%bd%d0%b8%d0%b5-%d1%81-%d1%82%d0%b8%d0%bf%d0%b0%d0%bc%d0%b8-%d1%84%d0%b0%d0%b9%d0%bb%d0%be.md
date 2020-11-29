@@ -61,20 +61,24 @@ permalink: "/2016/01/04/linux-%d1%81%d0%b2%d1%8f%d0%b7%d1%8b%d0%b2%d0%b0%d0%b5%d
 
 Данные файлы представляют из себя набор записей вида
 
-[code][Default Applications]  
-mimetype1=default1.desktop;default2.desktop[/code]
+```
+[Default Applications]  
+mimetype1=default1.desktop;default2.desktop
+```
 
 mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в [соответствующих RFC](https://en.wikipedia.org/wiki/MIME).  
 \*.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла.
 
 Помимо основной секции стандарт оговаривает две дополнительных секции.
 
-[code][Added Associations]  
+```
+[Added Associations]  
 mimetype1=foo1.desktop;foo2.desktop;foo3.desktop  
 mimetype2=foo4.desktop  
 [Removed Associations]  
 mimetype1=foo5.desktop  
-[/code]
+
+```
 
 Секция "added associations" добавляет к выбранным mime-типам указанные приложения в начало списка. Секция "removed association" соотственно удаляет указанные приложения из ассоциации к выбранному mime-типу.
 
@@ -88,49 +92,65 @@ mimetype1=foo5.desktop
 
 Попробуем сделать в консоли
 
-[code]$ xdg-open ~/some\_path\_to\_image.jpg[/code]
+```
+$ xdg-open ~/some\_path\_to\_image.jpg
+```
 
 Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола.
 
 А теперь попробуйте сделать
 
-[code]$ xdg-mime query default image/jpg[/code]
+```
+$ xdg-mime query default image/jpg
+```
 
 Вы увидите что-то вроде
 
-[code]eog.desktop;[/code]
+```
+eog.desktop;
+```
 
 xdg-mime - инструмент, который входит в комплект поставки любого дистрибутива. Им можно как просматривать, так и изменять ассоциации файлов.
 
 Для примера узнаем, как система распознает какую-нибудь картинку.
 
-[code]% xdg-mime query filetype wallpaper.jpg[/code]
+```
+% xdg-mime query filetype wallpaper.jpg
+```
 
 Увидим
 
-[code]image/jpeg[/code]
+```
+image/jpeg
+```
 
 А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом.
 
 Допустим, что у нас свежевыкращенныйзаведенный профиль.
 
-[code]$ cat ~/.local/share/applications/mimeapps.list  
+```
+$ cat ~/.local/share/applications/mimeapps.list  
 [Default Applications]  
-[/code]
+
+```
 
 У вас этого файла может не быть, либо он может содержать какие-то дефолтные значения.
 
 А теперь мы хотим, чтобы файлы mp4 открывались при помощи vlc.
 
-[code]$ xdg-mime default vlc.desktop video/mp4  
+```
+$ xdg-mime default vlc.desktop video/mp4  
 $ cat ~/.local/share/applications/mimeapps.list
 
 [Default Applications]  
-video/mp4=vlc.desktop[/code]
+video/mp4=vlc.desktop
+```
 
 Как видим - используется vlc. И если мы попробуем сделать
 
-[code]$ xdg-open path\_to\_mp4\_file.mp4[/code]
+```
+$ xdg-open path\_to\_mp4\_file.mp4
+```
 
 Файл откроется уже в vlc.
 

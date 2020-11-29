@@ -37,13 +37,15 @@ excerpt: Небольшой скетч про послеустановочную
 
 _/etc/config/dropbear_
 
-[code]config dropbear  
+```
+config dropbear  
  option PasswordAuth 'on'  
  option RootPasswordAuth 'on'  
  option Port '22'  
  # option BannerFile '/etc/banner'  
  option Interface 'lan'  
-[/code]
+
+```
 
 **Выставляем ssh только в lan-интерфейс**
 
@@ -51,34 +53,42 @@ _/etc/config/dropbear_
 
 **Добавление пользователя**
 
-[code]# opkg update  
-# opkg install shadow-usermod shadow-useradd shadow-groupadd[/code]
+```
+# opkg update  
+# opkg install shadow-usermod shadow-useradd shadow-groupadd
+```
 
-[code]# mkdir /home  
+```
+# mkdir /home  
 # useradd -m -s /bin/ash penguin  
 # passwd penguin  
 # opkg update  
 # opkg install sudo  
 # groupadd --system sudo  
 # usermod -a -G sudo penguin  
-# visudo[/code]
+# visudo
+```
 
 Добавляем строки, которые позволяют группе sudo использовать sudo
 
-[code lang=shell]%sudo ALL=(ALL) ALL[/code]
+[code lang=shell]%sudo ALL=(ALL) ALL
+```
 
 **Настройка dropbear для запрета доступа root**
 
 На локальной машине
 
-[code lang=shell]$ ssh-copy-id [/code]
+[code lang=shell]$ ssh-copy-id 
+```
 
 На сервере в конфиге dropbear
 
-[code]  
+```
+  
  option PasswordAuth 'off'  
  option RootPasswordAuth 'off'  
-[/code]
+
+```
 
 Предварительно убеждаемся что ключи работают. Иначе останетесь без доступа.
 

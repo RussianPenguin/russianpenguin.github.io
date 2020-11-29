@@ -31,20 +31,28 @@ permalink: "/2015/09/30/fedora-%d1%81%d0%b1%d1%80%d0%be%d1%81-%d0%bf%d0%be%d0%bb
 Сначала загружаем систему в failback-режиме (там selinux отключен).
 
 Теперь  
-[code]setenforce 0  
+```
+setenforce 0  
 # dnf erase selinux-policy selinux-policy-targeted  
 # dnf mv /etc/selinux/targeted{,.backup}  
-# reboot[/code]
+# reboot
+```
 
 После перезагрузки системы selinux будет отключен.
 
 Нужно поставить пакеты, которые мы удаляли.  
-[code]# dnf install selinux-policy selinux-policy-targeted[/code]
+```
+# dnf install selinux-policy selinux-policy-targeted
+```
 
 И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим  
-[code]SELINUX=disabled[/code]  
+```
+SELINUX=disabled
+```  
 на  
-[code]SELINUX=enforcing[/code]
+```
+SELINUX=enforcing
+```
 
 После очередной перезагрузки мы увидим, что с SELinux все хорошо.
 

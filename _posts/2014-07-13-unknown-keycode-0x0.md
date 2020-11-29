@@ -45,7 +45,9 @@ permalink: "/2014/07/13/unknown-keycode-0x0/"
 
 Добавить в idea.properties
 
-[code]-Dide.non.english.keyboard.layout.fix=true[/code]
+```
+-Dide.non.english.keyboard.layout.fix=true
+```
 
 Раньше работало, а теперь, увы, нет.
 

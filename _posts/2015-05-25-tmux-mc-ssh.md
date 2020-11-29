@@ -31,16 +31,20 @@ permalink: "/2015/05/25/tmux-mc-ssh/"
 
 **~/.profile**
 
-[code lang="shell"]if [$TERM = "screen"]; then  
+```shell
+if [$TERM = "screen"]; then  
  export TERM=xterm-color  
 fi  
 if [-n "$TMUX"]; then  
  export COLORTERM=rxvt  
-fi[/code]
+fi
+```
 
 **~/.tmux.conf**
 
-[code]setw -g xterm-keys on[/code]
+```
+setw -g xterm-keys on
+```
 
 И задеплоить это с помощью [ansible](http://docs.ansible.com/index.html "Ansible Documentation").
 

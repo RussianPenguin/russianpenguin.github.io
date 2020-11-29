@@ -39,11 +39,14 @@ excerpt: Отлаживать бэкенд-составляющую проект
 [code lang='shell']#!/usr/bin/env bash  
 IP=`echo $SSH_CLIENT | awk "{print $1}"​`  
 PHP='/usr/bin/php -d 'xdebug.remote\_host=${IP}' -d 'xdebug.remote\_autostart=1''  
-$PHP $@[/code]
+$PHP $@
+```
 
 Теперь достаточно скомандовать
 
-[code lang="shell"]$ php-debug.sh yii[/code]
+```shell
+$ php-debug.sh yii
+```
 
 И на рабочей машине мы сразу увидим запрос на подключение.
 

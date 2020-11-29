@@ -56,11 +56,15 @@ url: [https://github.com/Pasvaz/bindonce](https://github.com/Pasvaz/bindonce "Bi
 Например у нас есть список книг, который приходит с сервера и обновляется целиком (опять же с сервера).  
 Что мы делаем в коде
 
-[code lang="html"]\<div ng-repeat="book in books"\>\<span\>{{book.name}}\</span\>\<div\>[/code]
+```html
+\<div ng-repeat="book in books"\>\<span\>{{book.name}}\</span\>\<div\>
+```
 
 Имя книги не меняется и мы можем записать так
 
-[code lang="html"]\<div ng-repeat="book in books"\>\<span bo-text="book.name"\>\</span\>\<div\>[/code]
+```html
+\<div ng-repeat="book in books"\>\<span bo-text="book.name"\>\</span\>\<div\>
+```
 
 Так как при перезагрузке книг список books будет изменен полностью, то дерево будет перестроено заново и нам не нужно никак заботиться о том, что имя изменится.
 
@@ -82,7 +86,9 @@ post: [http://blog.scalyr.com/2013/10/31/angularjs-1200ms-to-35ms/](http://blog.
 
 Представим, что у нас есть какой-то код типа нижеследующего.
 
-[code lang="html"]\<div ng-show="condition"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+```html
+\<div ng-show="condition"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>
+```
 
 Если не предпринять дополнительных действий, то все то, что написано внутри скрытого дива будет выполняться (!), а это лишние такты процессора и нервные подергивания пользователя.
 
@@ -90,7 +96,9 @@ post: [http://blog.scalyr.com/2013/10/31/angularjs-1200ms-to-35ms/](http://blog.
 
 На помощь нам приходит sly-show+sly-prevent-evaluation-when-hidden. Эта убойная комбинация не будет запускать интерпретацию скрытых элементов.
 
-[code lang="html"]\<div sly-show="condition" sly-prevent-evaluation-when-hidden\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+```html
+\<div sly-show="condition" sly-prevent-evaluation-when-hidden\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>
+```
 
 Переписав код таким образом мы получим тот самый профит: снижение нагрузки на клиент-сайд.
 
@@ -102,7 +110,9 @@ post: [http://blog.scalyr.com/2013/10/31/angularjs-1200ms-to-35ms/](http://blog.
 
 Решение проблемы: принудительно добавить класс ng-hide всем элементам, которые находятся под связкой sly-show+sly-prevent-evaluation-when-hidden.
 
-[code lang="html"]\<div class="ng-hide"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>[/code]
+```html
+\<div class="ng-hide"\>\<!-- а тут много разных строчек с данными, которые выводятся на базе данных из ангуляра --\>\</div\>
+```
 
 На этом оптимизация неиспользуемого кода закончена.
 
@@ -131,7 +141,9 @@ ng-href="text{{var}}" -\> bo-href="’text’ + var"
 
 Если аналога нет, то используем конструкцию bo-attr-\<имя кастомного атрибута\>
 
-[code lang="html"]\<div bo-attr bo-attr-isbn="’{{book.isbn}}’"\>\</div\>[/code]
+```html
+\<div bo-attr bo-attr-isbn="’{{book.isbn}}’"\>\</div\>
+```
 
 Здесь кроется еще одна важная особенность обработки атрибутов библиотекой: они рассматриваются как строки. И если в атрибуте текст, что его надо представить в виде текста (то же характерно для любого юиндига bo-\*). Мы привыкли чаще всего работать с числами, но не стоит забывать, что есть еще буквы.
 
@@ -151,7 +163,8 @@ ng-href="text{{var}}" -\> bo-href="’text’ + var"
 
 В таком случае можно (вообще нужно всегда) использовать следующее расширение директивы (подключаем после подключения scalyr).
 
-[code lang="javascript"]/\*\*  
+```javascript
+/\*\*  
 \* Extended version of slyPreventEvaluationWhenHidden from scalyr.  
 \* This version prevent evaluation not only when element has class ng-hide.  
 \* If element is hidden with "display: none" evaluation is prevented.  
@@ -181,5 +194,6 @@ angular.module('sly')
  };  
  },  
  };  
- });[/code]
+ });
+```
 

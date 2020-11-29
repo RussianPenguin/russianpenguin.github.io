@@ -88,7 +88,8 @@ excerpt: Заметка рассказывает о том, как настро�
 IP=`echo $SSH_CLIENT | awk '{print $1}'`  
 echo #IP  
 PHP='/usr/bin/env php -d 'xdebug.remote\_host=${IP}' -d 'xdebug.remote\_autostart=1''  
-$PHP "$@"[/code]
+$PHP "$@"
+```
 
 **6 - Добавляем .phpstorm\_helpers в маппинг**
 

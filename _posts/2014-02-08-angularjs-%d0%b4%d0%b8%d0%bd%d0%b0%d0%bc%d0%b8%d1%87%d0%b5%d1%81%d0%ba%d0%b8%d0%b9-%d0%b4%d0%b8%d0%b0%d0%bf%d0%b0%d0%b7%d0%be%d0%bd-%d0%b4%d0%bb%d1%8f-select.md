@@ -31,7 +31,8 @@ permalink: "/2014/02/08/angularjs-%d0%b4%d0%b8%d0%bd%d0%b0%d0%bc%d0%b8%d1%87%d0%
 
 Делаем фильтр
 
-[code language="php"]angular.module('app').filter('range', function() {  
+```php
+angular.module('app').filter('range', function() {  
  return function(input, min, max) {  
  min = parseInt(min, 10);  
  max = parseInt(max, 10);  
@@ -39,11 +40,14 @@ permalink: "/2014/02/08/angularjs-%d0%b4%d0%b8%d0%bd%d0%b0%d0%bc%d0%b8%d1%87%d0%
  input.push(i);  
  return input;  
  };  
-});[/code]
+});
+```
 
 И делаем динамический селект.
 
-[code language="html"]\<select ng-model="value" ng-options="item for item in [] | range:min:max"\>\</select\>[/code]
+```html
+\<select ng-model="value" ng-options="item for item in [] | range:min:max"\>\</select\>
+```
 
 [JSFiddle](http://jsfiddle.net/russianpenguin/bYUFb "Пример на JSFiddle")
 

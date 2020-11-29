@@ -31,7 +31,8 @@ excerpt: Разбираемся, что это за пакеты src.rpm и ка
 
 Недавно это случилось с chromium в centos, а с драйверами от epson случается постоянно.
 
-[code lang="shell"]$ cd imagescan-bundle-fedora-27-1.3.23.x64.rpm/  
+```shell
+$ cd imagescan-bundle-fedora-27-1.3.23.x64.rpm/  
 $ ./install.sh  
 [sudo] пароль для penguin:  
 Последняя проверка окончания срока действия метаданных: 2:53:00 назад, Сб 19 мая 2018 09:42:23.  
@@ -46,7 +47,8 @@ $ ./install.sh
  - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64  
  Проблема 4: package imagescan-plugin-ocr-engine-1.0.0-1epson4fedora27.x86\_64 requires imagescan \>= 3.14.0, but none of the providers can be installed  
  - conflicting requests  
- - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64[/code]
+ - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64
+```
 
 А еще это может потребоваться если мы хотим поставить пакет, который распространяется только в src.rpm.
 
@@ -56,21 +58,27 @@ $ ./install.sh
 
 Нам потребуется группа пакетов для сборки RPM
 
-[code lang="shell"]$ sudo dnf group install "RPM Development Tools"[/code]
+```shell
+$ sudo dnf group install "RPM Development Tools"
+```
 
 ## Подготавливаем окружение
 
-[code lang="shell"]$ rpmdev-setuptree[/code]
+```shell
+$ rpmdev-setuptree
+```
 
 Команда подготовит необходимую структуру папок в домашнем каталого.
 
-[code]/home/penguin/rpmbuild/  
+```
+/home/penguin/rpmbuild/  
 ├── BUILD  
 ├── BUILDROOT  
 ├── RPMS  
 ├── SOURCES  
 ├── SPECS  
-└── SRPMS[/code]
+└── SRPMS
+```
 
 ## Достаем пакет с исходниками
 
@@ -80,38 +88,51 @@ $ ./install.sh
 
 Сначала пакет нужно скачать (либо руками, либо из репозитария). В случае репозитария это делается через dnf.
 
-[code lang="shell"]$ dnf download --source xmoto[/code]
+```shell
+$ dnf download --source xmoto
+```
 
 ## Установка зависимостей
 
 Для сборки многим пакетам требуются заголовочые файлы или библиотеки для линковки, которые принадлежат другим пакетам. Все зависимости описываются в самом файле с исходниками и для их установки нужно только вызвать команду builddep.
 
-[code lang="shell"]$ sudo dnf builddep package.src.rpm[/code]
+```shell
+$ sudo dnf builddep package.src.rpm
+```
 
 ## Установка исходников
 
 Теперь пакет нужно поставить (не забываем, что все операции выполняются под аккаунтом текущего пользователя, а не рута).
 
-[code lang="shell"]$ rpm -ivh imagescan-3.33.0-1epson4fedora27.src.rpm[/code]
+```shell
+$ rpm -ivh imagescan-3.33.0-1epson4fedora27.src.rpm
+```
 
 ## Сборка
 
 Для сборки следует проверить, что спецификация нужного&nbsp; пакета появилась в каталоге ~/rpmbuild/SPECS и собрать его при помоощи rpmbuild. Сначала используем опцию -bp, которая выполнит подготовку к сборке и тем самым мы сможем убедиться (хотя бы теоретически), что тулчейн заработал и это вообще можно собрать. И тольео после того, как все прошло удачно заюзаем -ba или -bb.
 
-[code lang="shell"]$ cd ~/rpmbuild  
-$ rpmbuild -bp SPECS/imagescan.spec[/code]
+```shell
+$ cd ~/rpmbuild  
+$ rpmbuild -bp SPECS/imagescan.spec
+```
 
-[code lang="shell"]$ rpmbuild -bp SPECS/imagescan.spec  
+```shell
+$ rpmbuild -bp SPECS/imagescan.spec  
 ошибка: uversion undefined, define to match source archive  
-ошибка: строка 2: %{!?uversion: %{error: uversion undefined, define to match source archive}}[/code]
+ошибка: строка 2: %{!?uversion: %{error: uversion undefined, define to match source archive}}
+```
 
 В случае imagescan весь процесс происходит очень болезненно. Поэтому я пропущу детали поиска решения и лишь покажу процесс.
 
-[code lang="shell"]$ rpmbuild -bp --define "uversion 0.33.0" SPECS/imagescan.spec[/code]
+```shell
+$ rpmbuild -bp --define "uversion 0.33.0" SPECS/imagescan.spec
+```
 
 Дополнительная опция --define позволяет определять и переопределять макросы, которые будут использоваться тулчейном.
 
-[code]/usr/include/gtk-2.0/gtk/gtkstatusicon.h:76:8: error: unnecessary parentheses in declaration of '\_\_gtk\_reserved1' [-Werror=parentheses]  
+```
+/usr/include/gtk-2.0/gtk/gtkstatusicon.h:76:8: error: unnecessary parentheses in declaration of '\_\_gtk\_reserved1' [-Werror=parentheses]  
 void (\*\_\_gtk\_reserved1);  
 ^  
 /usr/include/gtk-2.0/gtk/gtkstatusicon.h:77:8: error: unnecessary parentheses in declaration of '\_\_gtk\_reserved2' [-Werror=parentheses]  
@@ -123,17 +144,22 @@ make[2]: Leaving directory '/home/penguin/rpmbuild/BUILD/utsushi-0.33.0/gtkmm'
 make[1]: \*\*\* [Makefile:604: all-recursive] Error 1  
 make[1]: Leaving directory '/home/penguin/rpmbuild/BUILD/utsushi-0.33.0'  
 make: \*\*\* [Makefile:511: all] Error 2  
-ошибка: Неверный код возврата из /var/tmp/rpm-tmp.hKyez0 (%build)[/code]
+ошибка: Неверный код возврата из /var/tmp/rpm-tmp.hKyez0 (%build)
+```
 
 Таких ошибок встретится превеликое множество из-за довольно старых исходников, которые не адаптированы под свежий стандарт c++. Решением будет установка целой группы флагов через глобальную переменную CXXFLAGS.
 
-[code lang="shell"]CXXFLAGS="-fPIC -Wno-parentheses -Wno-sizeof-pointer-div" rpmbuild -bb --define "uversion 0.33.0" --define "debug\_package %{nil}" SPECS/imagescan.spec[/code]
+```shell
+CXXFLAGS="-fPIC -Wno-parentheses -Wno-sizeof-pointer-div" rpmbuild -bb --define "uversion 0.33.0" --define "debug\_package %{nil}" SPECS/imagescan.spec
+```
 
 Флаг debug\_package добавлен из-за того, что попытка сборки пакета debugpackage приподит к ошибке из-за отсутствия нужных определений в файле спецификации.
 
 ## Установка пакета
 
-[code lang="shell"]$&nbsp;sudo dnf install RPMS/x86\_64/imagescan-3.33.0-1.fc28.x86\_64.rpm[/code]
+```shell
+$&nbsp;sudo dnf install RPMS/x86\_64/imagescan-3.33.0-1.fc28.x86\_64.rpm
+```
 
 ## Литература
 

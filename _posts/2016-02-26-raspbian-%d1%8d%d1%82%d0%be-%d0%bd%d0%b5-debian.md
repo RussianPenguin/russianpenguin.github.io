@@ -32,7 +32,9 @@ permalink: "/2016/02/26/raspbian-%d1%8d%d1%82%d0%be-%d0%bd%d0%b5-debian/"
 
 Прописал как положено в /etc/apt/sources.list.d/\<repository\>.list
 
-[code]deb \<repourl\> wheezy main[/code]
+```
+deb \<repourl\> wheezy main
+```
 
 Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает.
 
@@ -42,7 +44,9 @@ permalink: "/2016/02/26/raspbian-%d1%8d%d1%82%d0%be-%d0%bd%d0%b5-debian/"
 
 В итоге конфигурация репозитариев deb будет выглядеть так:
 
-[code]deb [arch=armel] \<repourl\> wheezy main[/code]
+```
+deb [arch=armel] \<repourl\> wheezy main
+```
 
 Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада.
 

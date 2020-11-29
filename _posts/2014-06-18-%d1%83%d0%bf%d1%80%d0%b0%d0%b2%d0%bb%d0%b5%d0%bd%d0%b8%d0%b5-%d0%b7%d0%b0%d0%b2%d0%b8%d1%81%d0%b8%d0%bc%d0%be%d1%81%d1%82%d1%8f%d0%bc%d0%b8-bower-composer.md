@@ -48,7 +48,9 @@ permalink: "/2014/06/18/%d1%83%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d
 
 Для начала нам нужно этот самый bower поставить.
 
-[code lang="shell"]$ sudo npm install -g bower[/code]
+```shell
+$ sudo npm install -g bower
+```
 
 Лирическое отступление на тему "зачем нужна опция -g".
 
@@ -63,34 +65,43 @@ permalink: "/2014/06/18/%d1%83%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d
 
 Конфигурация осуществляется посредством файла .bowerrc, который может опцию directory, которая показывает, куда складывать всё скачиваемое. Остальные опции можно глянуть [тут](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/edit "Списко опций .bowerrc").
 
-[code lang="javascript"]{  
+```javascript
+{  
 &nbsp;&nbsp;&nbsp; "directory" : "web/vendor/"  
-}[/code]
+}
+```
 
 Теперь можно указать зависимости. Все это делается в bower.json.
 
-[code lang="javascript"]{  
+```javascript
+{  
  "name": "Cool application",  
  "dependencies": {  
  "bootstrap": "\*"  
  }  
-}[/code]
+}
+```
 
 Пакеты можно искать на сайте [http://bower.io/search/.](http://bower.io/search/ "Поиск пакетов bower")
 
 Или прямо из консоли
 
-[code lang="shell"]$ bower search angular[/code]
+```shell
+$ bower search angular
+```
 
 Теперь мы готовы к тому, чтобы сделать первоначальную установку.
 
-[code lang="shell"]$ bower install[/code]
+```shell
+$ bower install
+```
 
 Теперь можно объединить bower и composer. При таком подходе на каждый запуск composer install или composer update будет выполняться запуск bower install, который обновит все библиотеки.
 
 Просто добавляем в composer.json
 
-[code lang="javascript"]{  
+```javascript
+{  
  // ...  
  "scripts": {  
  "post-install-cmd": [  
@@ -100,5 +111,6 @@ permalink: "/2014/06/18/%d1%83%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d
  "bower install"  
  ]  
  }  
-}[/code]
+}
+```
 

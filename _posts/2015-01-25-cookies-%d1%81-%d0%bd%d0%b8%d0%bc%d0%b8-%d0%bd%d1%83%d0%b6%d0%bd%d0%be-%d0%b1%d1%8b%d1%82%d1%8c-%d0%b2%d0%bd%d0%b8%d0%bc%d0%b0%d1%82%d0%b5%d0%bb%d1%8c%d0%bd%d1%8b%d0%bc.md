@@ -57,12 +57,14 @@ permalink: "/2015/01/25/cookies-%d1%81-%d0%bd%d0%b8%d0%bc%d0%b8-%d0%bd%d1%83%d0%
 
 Казалось бы, мы ставим кукисы на одном и том же домене. Кстати, вот код:
 
-[code lang="php"]// Конфигурация (домен на котором запускаем)  
+```php
+// Конфигурация (домен на котором запускаем)  
 $domain = 'localhost.localdomain';  
 $cookieName = 'test';
 
 setcookie($cookieName, 'empty host', 3600+time(), '/');  
-setcookie($cookieName, 'host: ' . $domain, 3600+time(), '/', $domain);[/code]
+setcookie($cookieName, 'host: ' . $domain, 3600+time(), '/', $domain);
+```
 
 тут я оставил конфигурацию домена руками так как запуск сервера идет на нестандартном порту.
 

@@ -36,6 +36,8 @@ permalink: "/2015/02/17/beautifulsoup-innerhtml/"
 
 Но как быть если хочется?
 
-[code language="python"]def innerHTML(element):  
- return element.decode\_contents(formatter="html")[/code]
+```python
+def innerHTML(element):  
+ return element.decode\_contents(formatter="html")
+```
 

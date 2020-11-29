@@ -33,26 +33,34 @@ excerpt: |-
 
 Самое простое, что могло прийти в голову - это использовать stdin чтобы передать пароль для sudo (скрипт не ждет пользовательского ввода).
 
-[code lang="shell"]$ ssh server "echo password | sudo command"[/code]
+```shell
+$ ssh server "echo password | sudo command"
+```
 
 Увы. Было получено сообщение из заголовка статьи.
 
 Почему вообще такое происходит? Причина в том, что конфиг /etc/sudoers содержит опцию (если ее нет, то включите :))
 
-[code]Defaults requiretty[/code]
+```
+Defaults requiretty
+```
 
-[code] requiretty If set, sudo will only run when the user is logged in  
+```
+ requiretty If set, sudo will only run when the user is logged in  
  to a real tty. When this flag is set, sudo can only be  
  run from a login session and not via other means such  
  as cron(8) or cgi-bin scripts. This flag is off by  
  default.  
-[/code]
+
+```
 
 Как обойти эту опцию не правя конфиги? Довольно просто.
 
 Нам потребуется использовать опцию -t для ssh, которая заставляет клиента принудительно открывать псевдотерминал даже если нужды в нем нет (работаем с stdin). А для sudo потребуется опция -S, которая заставляет считывать пароль из stdin.
 
-[code lang="shell"]$ ssh -t server "echo password | sudo -S command"[/code]
+```shell
+$ ssh -t server "echo password | sudo -S command"
+```
 
 Работает.
 

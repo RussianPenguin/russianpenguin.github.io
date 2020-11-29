@@ -34,7 +34,9 @@ permalink: "/2014/10/09/php-cannot-determine-default-value-for-internal-function
 ---
 Зашла речь про небезызвестный htmlspecialchars, но не просто у нем, а о нем и о работе с htmlentities. Если передать в этот метод строку с этими энтитями, то получим двойное перекодирование.
 
-[code lang="php"]echo htmlspecialchars('&quot;текст&quot;');[/code]
+```php
+echo htmlspecialchars('&quot;текст&quot;');
+```
 
 ```
 &amp;quot;текст&amp;quot;
@@ -50,7 +52,8 @@ permalink: "/2014/10/09/php-cannot-determine-default-value-for-internal-function
 
 Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными.
 
-[code lang="php"]function call\_user\_func\_params(callable $func, array $params = array()) {  
+```php
+function call\_user\_func\_params(callable $func, array $params = array()) {  
  if (!is\_callable($func)) {  
  throw "func is not callable";  
  }  
@@ -74,15 +77,18 @@ if (array\_key\_exists($name, $params)) {
  }  
  }  
  return call\_user\_func\_array($func, $funcParams);  
-}[/code]
+}
+```
 
 А теперь воспользуемся ей.
 
-[code lang="php"]function foo($bar = 'bar', $baz = 'baz') {  
+```php
+function foo($bar = 'bar', $baz = 'baz') {  
  echo "{$bar}, {$baz}\n";  
 }
 
-call\_user\_func\_params('foo', array('baz' =\> 'xyz'));[/code]
+call\_user\_func\_params('foo', array('baz' =\> 'xyz'));
+```
 
 Выводит то, что и ожидалось.
 
@@ -92,7 +98,9 @@ bar, xyz
 
 А теперь так.
 
-[code lang="php"]call\_user\_func\_params('htmlspecialchars', array('string' =\> "&quot;текст&quot;", 'double\_encode' =\> false));[/code]
+```php
+call\_user\_func\_params('htmlspecialchars', array('string' =\> "&quot;текст&quot;", 'double\_encode' =\> false));
+```
 
 Облом-с.
 

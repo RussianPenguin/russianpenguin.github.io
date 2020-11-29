@@ -34,8 +34,10 @@ excerpt: Не всегда в дистрибутивах получается п
 
 В логах наблюдается что-то подобное.
 
-[code]май 06 17:45:37 localhost.localdomain pppd[17294]: Connection terminated.  
-май 06 17:45:37 localhost.localdomain pppd[17294]: LCP: timeout sending Config-Requests[/code]
+```
+май 06 17:45:37 localhost.localdomain pppd[17294]: Connection terminated.  
+май 06 17:45:37 localhost.localdomain pppd[17294]: LCP: timeout sending Config-Requests
+```
 
 Можно запустить wireshark и посмотреть, что на каждый lcp-запрос есть lcp-ответ.
 
@@ -45,9 +47,11 @@ excerpt: Не всегда в дистрибутивах получается п
 
 В интернетах часто рекомендуют делать нативное правило как-то так.
 
-[code lang="shell"]$ sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p gre -j ACCEPT  
+```shell
+$ sudo firewall-cmd --direct --add-rule ipv4 filter INPUT 0 -p gre -j ACCEPT  
 $ sudo firewall-cmd --direct --add-rule ipv6 filter INPUT 0 -p gre -j ACCEPT  
-$ sudo firewall-cmd --reload[/code]
+$ sudo firewall-cmd --reload
+```
 
 Не делайте так - потом этими правилами сложнее управлять.
 
@@ -55,16 +59,20 @@ $ sudo firewall-cmd --reload[/code]
 
 Сначала добавим временные правила чтобы проверить работоспособность и проверим, что протокол добавился в нужную зону.
 
-[code lang="shell"]$ sudo firewall-cmd --zone=home --add-protocol=gre  
-$ sudo firewall-cmd --zone=home --query-protocol=gre[/code]
+```shell
+$ sudo firewall-cmd --zone=home --add-protocol=gre  
+$ sudo firewall-cmd --zone=home --query-protocol=gre
+```
 
 Система должна сказать yes. Если попытка подключения прошла успешно, то стоит добавить правила на постоянной основе.
 
 Не забудьте указать нужную зону через параметр --zone как в первом, так и во втором случае.
 
-[code lang="shell"]$ sudo firewall-cmd --permanent --zone=home --add-protocol=gre  
+```shell
+$ sudo firewall-cmd --permanent --zone=home --add-protocol=gre  
 $ sudo firewall-cmd --permanent --zone=home --query-protocol=gre  
-$ sudo firewall-cmd --reload[/code]
+$ sudo firewall-cmd --reload
+```
 
 Дальше могут быть проблемы с авторизацией, но это совсем другая история.
 

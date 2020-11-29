@@ -45,13 +45,17 @@ permalink: "/2015/02/15/window-location-%d0%bd%d0%b5-%d0%b2%d1%81%d0%b5%d0%b3%d0
 
 Что мы делаем
 
-[code language="javascript"]window.location.pathname = '/foo'[/code]
+```javascript
+window.location.pathname = '/foo'
+```
 
 Работает.
 
 Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется.
 
-[code language="javascript"]window.location.pathname='/foo#bar'[/code]
+```javascript
+window.location.pathname='/foo#bar'
+```
 
 Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar.
 

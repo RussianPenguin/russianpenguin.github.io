@@ -39,7 +39,9 @@ permalink: "/2016/01/20/xmonad-qt-%d0%b8-libreoffice-%d0%bf%d1%80%d0%be%d0%b1%d0
 
 Для своей конфигурации xmonad я прописал в .xinitrc
 
-[code]export XDG\_CURRENT\_DESKTOP=KDE[/code]
+```
+export XDG\_CURRENT\_DESKTOP=KDE
+```
 
 И все нормально работает. В приложениях qt появились значки, а libreoffice пропали лаги отрисовки.
 

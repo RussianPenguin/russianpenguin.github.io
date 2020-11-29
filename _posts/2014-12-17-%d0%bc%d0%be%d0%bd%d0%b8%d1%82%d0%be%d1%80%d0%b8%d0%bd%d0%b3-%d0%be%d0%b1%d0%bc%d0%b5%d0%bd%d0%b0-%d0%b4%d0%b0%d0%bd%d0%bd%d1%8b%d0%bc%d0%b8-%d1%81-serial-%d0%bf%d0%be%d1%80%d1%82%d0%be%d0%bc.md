@@ -36,7 +36,9 @@ permalink: "/2014/12/17/%d0%bc%d0%be%d0%bd%d0%b8%d1%82%d0%be%d1%80%d0%b8%d0%bd%d
 Иногда надо сниффать serial-порт на предмет того, что туда пишется/читается софтиной.  
 Есть сниффер jpnevulator.
 
-[code]jpnevulator --timing-print --tty /dev/ttyACM0[/code]
+```
+jpnevulator --timing-print --tty /dev/ttyACM0
+```
 
 Но он не совсем удобен. Так как он не сниффер на смом деле, а простой ридер-писатель для порта.  
 Поэтому если запустить его совместно с другой софтиной, то она данных на порту не увидит.
@@ -47,7 +49,8 @@ permalink: "/2014/12/17/%d0%bc%d0%be%d0%bd%d0%b8%d1%82%d0%be%d1%80%d0%b8%d0%bd%d
 
 Воспользуемся strace!
 
-[code language="shell"]$ strace -e trace=read,write python terminal.py  
+```shell
+$ strace -e trace=read,write python terminal.py  
 # тут я вырезал кусок, который относится к питону  
 write(3, "P", 1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1  
 write(3, "P", 1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1  
@@ -70,7 +73,8 @@ read(3, "\300\0\0Z\0?\0\1\0\0\0\0\0\26\263\3\7\4\0\203\212\203\212\0\3\0\0Z\0\0\
 write(1, "C0 0 0 5A 0 3F 0 1 0 0 0 0 0 16 "..., 89C0 0 0 5A 0 3F 0 1 0 0 0 0 0 16 B3 3 7 4 0 83 8A 83 8A 0 3 0 0 5A 0 0 0 5A 0 2F 6 2 90 0  
 ) = 89  
 write(3, "H", 1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 1  
-+++ exited with 0 +++[/code]
++++ exited with 0 +++
+```
 
 И вот уже вожделенный протокол обмена на экране. :)
 

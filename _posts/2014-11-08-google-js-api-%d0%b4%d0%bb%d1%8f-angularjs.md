@@ -38,31 +38,38 @@ permalink: "/2014/11/08/google-js-api-%d0%b4%d0%bb%d1%8f-angularjs/"
 
 Или в bower
 
-[code lang="shell"] $ bower install angularjs-gapi[/code]
+```shell
+ $ bower install angularjs-gapi
+```
 
 ### Поключение
 
-[code language="javascript"]angular.module('app', ['gapi']).config(['gapiProvider', '$routeProvider', function(gapiProvider, $routeProvider) {  
+```javascript
+angular.module('app', ['gapi']).config(['gapiProvider', '$routeProvider', function(gapiProvider, $routeProvider) {  
  gapiProvider.apiKey(YOU\_API\_KEY) // апи-ключ можно создать в консоли разработчика  
  .clientId(YOU\_APP\_CLIENT\_ID) // берем в консоли разработчика  
  .apiScope(SCOPES\_FOR\_APP); // скоупы, которые нужны для работы приложения  
-}])[/code]
+}])
+```
 
 Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU\_API\_KEY.
 
 ### Авторизация
 
-[code language="javascript"]angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
+```javascript
+angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
  gapi.login().then(function() {  
  $scope.login = 'success';  
  }, function() {  
  $scope.login = 'fail';  
  });  
-}])[/code]
+}])
+```
 
 ### Выполнение запросов не требующих авторизации
 
-[code language="javascript"]angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
+```javascript
+angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
  // we can't make requests while api is not ready  
  if (gapi.isApiReady()) {  
  gapi.call("youtube", "v3", "search", "list", {  
@@ -73,11 +80,13 @@ permalink: "/2014/11/08/google-js-api-%d0%b4%d0%bb%d1%8f-angularjs/"
  // work with response  
  })  
  }  
-}]);[/code]
+}]);
+```
 
 ### Выполнение запросов требующих авторизации
 
-[code language="javascript"]angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
+```javascript
+angular.module('app').controller('tstController', ['$scope', 'gapi', function($scope, gapi) {  
  // we can't make requests while api is not ready and user is not logged in  
  if (gapi.isApiReady() && gapi.isLoggedIn()) {  
  gapi.call("youtube", "v3", "playlists", "list", {  
@@ -87,7 +96,8 @@ permalink: "/2014/11/08/google-js-api-%d0%b4%d0%bb%d1%8f-angularjs/"
  // work with response  
  })  
  }  
-}]);[/code]
+}]);
+```
 
 Вроде все.
 

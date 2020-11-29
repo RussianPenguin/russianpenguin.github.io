@@ -31,14 +31,18 @@ permalink: "/2015/04/05/%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d
 ## vitrualenv
 
 Главным инструментов будет virtualenv.  
-[code lang="shell"]$ sudo yum install python-virtualenv[/code]
+```shell
+$ sudo yum install python-virtualenv
+```
 
 ### Использование
 
 Создадим окружение
 
-[code lang="shell"]$ cd project\_dir  
-$ virtualenv proj\_env[/code]
+```shell
+$ cd project\_dir  
+$ virtualenv proj\_env
+```
 
 Этими командами мы создадим папку proj\_env, которая будет содержать наше новое окружение. В этой папке будет набор скриптов и копия интерпретатора python, который будет использоваться в окружении (окружение использует свой интерпретатор, а не общесистемный).
 
@@ -46,25 +50,35 @@ $ virtualenv proj\_env[/code]
 
 Возможно, что в системе параллельно стоит как python2, так и python3. Выбирать версию при создании окружения мы можем ключем -p. Если ключ не указан, то будет выбрана версия /usr/bin/python.
 
-[code lang="shell"]$ virtualenv -p /usr/bin/python3.4 proj\_env[/code]
+```shell
+$ virtualenv -p /usr/bin/python3.4 proj\_env
+```
 
 Для того, чтобы попасть в наше новое окружение используем
 
-[code lang="shell"]$ source proj\_env/bin/activate[/code]
+```shell
+$ source proj\_env/bin/activate
+```
 
 Теперь мы внутри окружения.
 
 Определеить это можно по изменившемуся приглашению:
 
-[code](proj\_env)тут\_старое\_приглашение\_из\_$PS1[/code]
+```
+(proj\_env)тут\_старое\_приглашение\_из\_$PS1
+```
 
 Все. Мы внутри окружения. Можно ставить зависимости для нашего приложения.
 
-[code lang="shell"]$ pip install flask flask-bootsrap rq rq-scheduler pymysql[/code]
+```shell
+$ pip install flask flask-bootsrap rq rq-scheduler pymysql
+```
 
 Выйти из окружения можно при помощи
 
-[code lang="shell"]$ deactivate[/code]
+```shell
+$ deactivate
+```
 
 Теперь мы попали обратно в систему с дефолтными интерпретаторами.
 
@@ -74,11 +88,14 @@ $ virtualenv proj\_env[/code]
 
 Хорошей идей будет сохранить информацию об установленных в окружении пакетов.
 
-{code lang="shell"]$ pip freeze \> requirements.txt[/code]
+{code lang="shell"]$ pip freeze \> requirements.txt
+```
 
 После развертывание окружения в новой системе можно поднять все пакеты сразу.
 
-[code lang="shell"]$ pip install -r requirements.txt[/code]
+```shell
+$ pip install -r requirements.txt
+```
 
 Не забываем добавить папку окружения в .gitignore.
 
@@ -86,30 +103,42 @@ $ virtualenv proj\_env[/code]
 
 Еще один полезный инструмент (скорее для разработчиков, а не для деплоя), который позволяет обращаться со со множеством окружений и переключаться между ними.
 
-[code lang="shell"]$ sudo yum install python-virtualenvwrapper[/code]
+```shell
+$ sudo yum install python-virtualenvwrapper
+```
 
 ### Применение
 
 Добавляем в .bashrc
 
-[code lang="shell"]export WORKON\_HOME=~/.envs  
-source /usr/bin/virtualenvwrapper.sh[/code]
+```shell
+export WORKON\_HOME=~/.envs  
+source /usr/bin/virtualenvwrapper.sh
+```
 
 Теперь можно создавать окружения.
 
-[code lang="shell"]$ mkvirtualenv proj\_env[/code]
+```shell
+$ mkvirtualenv proj\_env
+```
 
 Активировать окружения.
 
-[code lang="shell"]$ workon proj\_env[/code]
+```shell
+$ workon proj\_env
+```
 
 Выходить из окружения можно так же как это делалось в кготом virtualenv.
 
-[code lang="shell"]$ deactivate[/code]
+```shell
+$ deactivate
+```
 
 Удалять окружения.
 
-[code lang="shell"]$ rmvirtualenv proj\_env[/code]
+```shell
+$ rmvirtualenv proj\_env
+```
 
 При этом все папки окружений будет расположены в одном месте: папке, которая задана через $WORKON\_HOME.
 
@@ -128,6 +157,8 @@ source /usr/bin/virtualenvwrapper.sh[/code]
 
 [Утилита](https://github.com/kennethreitz/autoenv "autoenv") позволяет активировать окружение при входе в папку, и деактивировать при выходе.
 
-[code lang="shell"]$ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv  
-$ echo 'source ~/.autoenv/activate.sh' \>\> ~/.bashrc[/code]
+```shell
+$ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv  
+$ echo 'source ~/.autoenv/activate.sh' \>\> ~/.bashrc
+```
 

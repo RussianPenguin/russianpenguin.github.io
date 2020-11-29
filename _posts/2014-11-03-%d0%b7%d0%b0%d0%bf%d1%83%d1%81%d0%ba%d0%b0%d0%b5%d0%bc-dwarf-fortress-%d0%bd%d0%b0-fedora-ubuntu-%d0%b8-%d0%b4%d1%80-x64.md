@@ -44,7 +44,9 @@ permalink: "/2014/11/03/%d0%b7%d0%b0%d0%bf%d1%83%d1%81%d0%ba%d0%b0%d0%b5%d0%bc-d
 
 Но сначала надо поставить 32х битные версии нужных либ
 
-[code lang="shell"]$ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686[/code]
+```shell
+$ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686
+```
 
 Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)).
 
@@ -56,7 +58,9 @@ Not found: data/art/curses\_640x300.png
 
 Эта беда лечится запуском df в виде
 
-[code lang="shell"]$ LD\_PRELOAD=/usr/lib/libz.so.1 ./df[/code]
+```shell
+$ LD\_PRELOAD=/usr/lib/libz.so.1 ./df
+```
 
 Вторая - это
 
@@ -66,9 +70,11 @@ Dynamically loading the OpenAL library failed, disabling sound
 
 Лечим
 
-[code lang="shell"]$ sudo ln -s /usr/lib/libopenal.so.1 /usr/lib/libopenal.so  
+```shell
+$ sudo ln -s /usr/lib/libopenal.so.1 /usr/lib/libopenal.so  
 $ sudo ln -s /usr/lib/libsndfile.so.1 /usr/lib/libsndfile.so  
-$ sudo ldconfig[/code]
+$ sudo ldconfig
+```
 
 Рубимся :)
 

@@ -31,7 +31,8 @@ excerpt: В статье рассказывается о проблемах за
 
 Что меня больше всего удивило так это то, что efibootmgr -v выдавал кучу записей загрузчиков shim.efi с некорректными uuid разделов на которых они размещены.
 
-[code]$ efibootmgr -v  
+```
+$ efibootmgr -v  
 BootCurrent: 0002  
 Timeout: 0 seconds  
 BootOrder: 0007,0002,2001,2002,2003  
@@ -46,7 +47,8 @@ Boot0007\* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e38
 Boot2001\* EFI USB Device&nbsp;&nbsp; &nbsp;RC  
 Boot2002\* EFI DVD/CDROM&nbsp;&nbsp; &nbsp;RC  
 Boot2003\* EFI Network&nbsp;&nbsp; &nbsp;RC  
-[/code]
+
+```
 
 Конечно в данном листинге уже все верно поскольку он был сделан на рабочей машине, но в оригинальном листинге в идентификаторе HD были прописаны несуществующие uuid разделов. И подобных записей было далеко за 20 штук.
 
@@ -56,11 +58,15 @@ Boot2003\* EFI Network&nbsp;&nbsp; &nbsp;RC
 
 Сначала надо переустановить grub-efi и shim как это рекомендует документация.
 
-[code]# dnf reinstall grub-efi shim[/code]
+```
+# dnf reinstall grub-efi shim
+```
 
 Теперь удаляем невалидные записи. Для их удаления нам потребуется выполнять команду
 
-[code]# efibootmgr -B -b XXXX[/code]
+```
+# efibootmgr -B -b XXXX
+```
 
 - **-B** - удалить запись
 - **-b XXXX** - выбрать активной запись XXXX
@@ -69,7 +75,9 @@ Boot2003\* EFI Network&nbsp;&nbsp; &nbsp;RC
 
 Последним шагом будет добавление правильной записи.
 
-[code]efibootmgr -c -w -L Fedora -d /dev/nvme0n1 -p 1 -l '\EFI\Fedora\shim.efi'[/code]
+```
+efibootmgr -c -w -L Fedora -d /dev/nvme0n1 -p 1 -l '\EFI\Fedora\shim.efi'
+```
 
 - **-c** - создать запись
 - **-w** - сделать запись в mbr если это требуется

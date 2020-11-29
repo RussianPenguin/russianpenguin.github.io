@@ -34,5 +34,7 @@ permalink: "/2016/06/22/xmonad-%d1%84%d0%b8%d0%ba%d1%81%d0%b8%d0%bc-%d0%bc%d0%b5
 
 Фикс проблемы [есть](http://support.saleae.com/hc/communities/public/questions/204345355-menus-aren-t-working-under-xmonad) у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам.
 
-[code]className =? "Logic" --\> doIgnore[/code]
+```
+className =? "Logic" --\> doIgnore
+```
 

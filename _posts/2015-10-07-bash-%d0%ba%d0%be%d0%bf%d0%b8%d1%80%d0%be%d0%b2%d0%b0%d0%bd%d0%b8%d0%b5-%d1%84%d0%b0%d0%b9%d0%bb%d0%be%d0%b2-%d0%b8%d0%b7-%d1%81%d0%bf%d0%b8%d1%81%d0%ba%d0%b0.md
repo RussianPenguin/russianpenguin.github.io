@@ -30,14 +30,18 @@ permalink: "/2015/10/07/bash-%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0
 Да. Такие задачи бывают. :)
 
 Допустим выглядит файл как-то так  
-[code lang="shell"]$ cat css.txt  
+```shell
+$ cat css.txt  
 css/reset-ls.css  
 css/b-browser.css  
 css/reg-form.css  
-css/old/pop-up.css[/code]
+css/old/pop-up.css
+```
 
 Пути либо относительные, либо полные.
 
 Скопировать все в новый локейшн можно простым однострочником  
-[code lang="shell"]$ for i in $(cat css.txt); do cp $i /tmp/; done[/code]
+```shell
+$ for i in $(cat css.txt); do cp $i /tmp/; done
+```
 

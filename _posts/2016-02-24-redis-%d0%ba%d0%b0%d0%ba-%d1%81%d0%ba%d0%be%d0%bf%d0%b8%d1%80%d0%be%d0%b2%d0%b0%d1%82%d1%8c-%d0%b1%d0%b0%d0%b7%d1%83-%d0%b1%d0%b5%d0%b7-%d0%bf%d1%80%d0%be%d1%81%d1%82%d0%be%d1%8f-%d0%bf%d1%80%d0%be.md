@@ -41,7 +41,9 @@ permalink: "/2016/02/24/redis-%d0%ba%d0%b0%d0%ba-%d1%81%d0%ba%d0%be%d0%bf%d0%b8%
 
 Посмотрим, что в каждой из баз покажет команда
 
-[code]keys \*[/code]
+```
+keys \*
+```
 
 Основной редис
 
@@ -55,7 +57,8 @@ permalink: "/2016/02/24/redis-%d0%ba%d0%b0%d0%ba-%d1%81%d0%ba%d0%be%d0%bf%d0%b8%
 
 Теперь нужно сделать новую базу репликой старой
 
-[code]\> slaveof 127.0.0.1 6379  
+```
+\> slaveof 127.0.0.1 6379  
 OK  
 \> info  
 ...  
@@ -64,15 +67,20 @@ master\_host:127.0.0.1
 master\_port:6379  
 master\_link\_status:up  
 master\_last\_io\_seconds\_ago:1  
-master\_sync\_in\_progress:0[/code]
+master\_sync\_in\_progress:0
+```
 
 Дополнительно может потребоваться авторизоваться на мастере чтобы началась репликация
 
-[code]config set masterauth \<password\>[/code]
+```
+config set masterauth \<password\>
+```
 
 После этого можем опять посмотреть, что в базу скопировалось
 
-[code]keys \*[/code]
+```
+keys \*
+```
 
 ![2016-02-24-21:00:18_441x414]({{ site.baseurl }}/assets/images/2016/02/2016-02-24-210018_441x414.png)
 
@@ -83,7 +91,9 @@ master\_sync\_in\_progress:0[/code]
 - превратить слейва в мастер
 - настроить приложение на работу с новым мастером
 
-[code]slaveof no one[/code]
+```
+slaveof no one
+```
 
 Эта команда выключает копирование данных с мастера (но не удаляет их) и теперь уже дело за настройкой приложения.
 

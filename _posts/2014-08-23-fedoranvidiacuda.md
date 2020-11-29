@@ -44,7 +44,9 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 
 **1 - Ставим**
 
-[code lang="shell"]# yum install cuda[/code]
+```shell
+# yum install cuda
+```
 
 Этот метапакет поставит все, что должно идти в комплекте (включая свежие дрова)
 
@@ -52,11 +54,15 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 
 Если у вас уже были проинсталены дрова невидии, то нужно удалить имеющийся kmod. Так как он может содержать несовместимую с текущими библиотеками версию модуля
 
-[code lang="shell"]# yum remove kmod-nvidia[/code]
+```shell
+# yum remove kmod-nvidia
+```
 
 **3 - Пересобираем akmod**
 
-[code lang="shell"]# akmod -kernel $(uname -r)[/code]
+```shell
+# akmod -kernel $(uname -r)
+```
 
 Тут может потребоваться доставить kernel-headers
 
@@ -64,7 +70,9 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 
 Для этого воспользуемся dracut
 
-[code lang="shell"]# dracut --force[/code]
+```shell
+# dracut --force
+```
 
 **5 - Ребут :)**
 
@@ -72,22 +80,27 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 
 Замечу, что делать это надо под рутом или проставив соотвествующие права на папки. Так как мейкфайлы сильно завязаны на относительные пути.
 
-[code lang="shell"]# cd /usr/local/cuda-6.5/samples/5\_Simulations/fluidsGL  
-# make[/code]
+```shell
+# cd /usr/local/cuda-6.5/samples/5\_Simulations/fluidsGL  
+# make
+```
 
 **7 - А вот тут нас поджидает облом (RFRemix)**
 
-[code lang="shell"]\>\>\> WARNING - libGL.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
+```shell
+\>\>\> WARNING - libGL.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
 \>\>\> WARNING - libGLU.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
 \>\>\> WARNING - libX11.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
 \>\>\> WARNING - libXi.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
-\>\>\> WARNING - libXmu.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<[/code]
+\>\>\> WARNING - libXmu.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<
+```
 
 Ага!
 
 Смотрим в _findgllib.mk_
 
-[code lang="shell"]ifeq ("$(OSLOWER)","linux")  
+```shell
+ifeq ("$(OSLOWER)","linux")  
  # first search lsb\_release  
  DISTRO = $(shell lsb\_release -i -s 2\>/dev/null | tr "[:upper:]" "[:lower:]")  
  DISTVER = $(shell lsb\_release -r -s 2\>/dev/null)  
@@ -111,7 +124,8 @@ ifeq ("$(OSUPPER)","LINUX")
  FEDORA = $(shell echo $(DISTRO) | grep -i rfremix \>/dev/null 2\>&1; echo $$?)  
  RHEL = $(shell echo $(DISTRO) | grep -i red \>/dev/null 2\>&1; echo $$?)  
  CENTOS = $(shell echo $(DISTRO) | grep -i centos \>/dev/null 2\>&1; echo $$?)  
- SUSE = $(shell echo $(DISTRO) | grep -i suse \>/dev/null 2\>&1; echo $$?)[/code]
+ SUSE = $(shell echo $(DISTRO) | grep -i suse \>/dev/null 2\>&1; echo $$?)
+```
 
 Еще раз ага!
 
@@ -119,7 +133,9 @@ ifeq ("$(OSUPPER)","LINUX")
 
 Это команда
 
-[code lang="shell"]awk '/ID/' /etc/\*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB"[/code]
+```shell
+awk '/ID/' /etc/\*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB"
+```
 
 А у меня она выдает _rfremix_. А значит такого таргета ни разу нет в списке. :)  
 Ну что делать-то? меняем _fedora_ на _rfremix_ в _findgllib.mk_ и радуемся.  
@@ -127,20 +143,28 @@ ifeq ("$(OSUPPER)","LINUX")
 
 **8 - А что у нас с библиотеками?**
 
-[code lang="shell"]$ ./fluidsGL  
-./fluidsGL: error while loading shared libraries: libcufft.so.6.5: cannot open shared object file: No such file or directory[/code]
+```shell
+$ ./fluidsGL  
+./fluidsGL: error while loading shared libraries: libcufft.so.6.5: cannot open shared object file: No such file or directory
+```
 
 Еще раз. У нас для ldconfig не заданы пути, где лежит _libcufft.so.6.5_
 
-[code lang="shell"]$ find /usr/ -name libcufft.so.6.5  
-/usr/local/cuda-6.5/targets/x86\_64-linux/lib/libcufft.so.6.5[/code]
+```shell
+$ find /usr/ -name libcufft.so.6.5  
+/usr/local/cuda-6.5/targets/x86\_64-linux/lib/libcufft.so.6.5
+```
 
-[code lang="shell"]$ grep -R /usr/local/cuda-6.5/targets/x86\_64-linux/lib /etc/ld.so.conf.d/[/code]
+```shell
+$ grep -R /usr/local/cuda-6.5/targets/x86\_64-linux/lib /etc/ld.so.conf.d/
+```
 
 Пусто.
 
-[code lang="shell"]# echo "/usr/local/cuda-6.5/targets/x86\_64-linux/lib" \> /etc/ld.so.conf.d/cuda-lib64.conf  
-# ldconfig[/code]
+```shell
+# echo "/usr/local/cuda-6.5/targets/x86\_64-linux/lib" \> /etc/ld.so.conf.d/cuda-lib64.conf  
+# ldconfig
+```
 
 **9 - Наслаждаемся**
 

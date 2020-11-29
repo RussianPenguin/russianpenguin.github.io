@@ -31,20 +31,25 @@ excerpt: Столкнулся с неочевидной проблемой - р�
 
 Добавил в repetierHost строки, которые перенаправляли лог запуска в файл и он стал выглядеть вот так.
 
-[code lang="shell"]#!/usr/bin/env bash  
+```shell
+#!/usr/bin/env bash  
 cd /home/penguin/.soft/RepetierHost  
-env LANG=en\_US.utf8 mono RepetierHost.exe -home {$HOME}.soft/RepetierHost &\> {$HOME}/log&[/code]
+env LANG=en\_US.utf8 mono RepetierHost.exe -home {$HOME}.soft/RepetierHost &\> {$HOME}/log&
+```
 
 После пары запусков я таки поймал в лог креш приложения. Да, не обращаете внимание на то, что принудительно используется локаль en\_US - это решает проблему слайсера Slic3r, который по каким-то причинам отказывается работать с группами объектов названными символами, отличными от латинских.
 
-[code]/usr/bin/slic3r --load "slic3r\_settings.ini" --print-center 100.00,100.00 -o "composition.gcode" "composition.amf"  
-Wide character at /usr/lib64/perl5/vendor\_perl/Encode.pm line 212.[/code]
+```
+/usr/bin/slic3r --load "slic3r\_settings.ini" --print-center 100.00,100.00 -o "composition.gcode" "composition.amf"  
+Wide character at /usr/lib64/perl5/vendor\_perl/Encode.pm line 212.
+```
 
 В amf-файле все группы должны иметь латинские имена, а repetier генерирует имена в текущей локали.
 
 Пойманный трейс выглядит следующим образом.
 
-[code]Stacktrace:
+```
+Stacktrace:
 
 at \<unknown\> \<0xffffffff\>  
 at (wrapper managed-to-native) System.Windows.Forms.X11Keyboard.Xutf8LookupString (intptr,System.Windows.Forms.XEvent&,byte[],int,intptr&,System.Windows.Forms.XLookupStatus&) \<0x000a4\>  
@@ -207,13 +212,16 @@ Thread 1 (Thread 0x7f4b247fa780 (LWP 5104)):
 Got a SIGSEGV while executing native code. This usually indicates  
 a fatal error in the mono runtime or one of the native libraries  
 used by your application.  
-=================================================================[/code]
+=================================================================
+```
 
 Ок. Теперь уже проще гуглить. Ответ был найден на форуме arch-linux в [ветке](https://bbs.archlinux.org/viewtopic.php?id=213818), которая посвящена keepass: это оказался баг в библиотеке WinForms, который не сильно важен для разработчиков и никто фиксить его пока не будет ([оригинальный репорт](https://bugzilla.xamarin.com/show_bug.cgi?id=41505)).
 
 Временное решение - добавить опцию --verify-all в качестве аргумента mono.
 
-[code]env LANG=en\_US.utf8 mono --verify-all RepetierHost.exe -home {$HOME}.soft/RepetierHost[/code]
+```
+env LANG=en\_US.utf8 mono --verify-all RepetierHost.exe -home {$HOME}.soft/RepetierHost
+```
 
 С этой опцией вылетов не наблюдается, но случаются фризы приложения.
 

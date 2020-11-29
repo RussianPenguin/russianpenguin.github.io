@@ -39,7 +39,8 @@ permalink: "/2015/01/09/intel-galileo-ide-%d0%b8-linux/"
 ---
 Если мы запускаем первый раз IDE для Intel Galileo, то можно увидать очень интересную картину в консоли
 
-[code]$ arduino-1.5.3-Intel.1.0.4/arduino  
+```
+$ arduino-1.5.3-Intel.1.0.4/arduino  
 Board arduino:edison:izmir\_ec doesn't define a 'build.board' preference. Auto-set to: EDISON\_IZMIR\_EC  
 Board arduino:x86:izmir\_fd doesn't define a 'build.board' preference. Auto-set to: X86\_IZMIR\_FD  
 Board arduino:x86:izmir\_fg doesn't define a 'build.board' preference. Auto-set to: X86\_IZMIR\_FG  
@@ -79,7 +80,8 @@ please see: How can I use Lock Files with rxtx? in INSTALL
 check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
 check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
-please see: How can I use Lock Files with rxtx? in INSTALL[/code]
+please see: How can I use Lock Files with rxtx? in INSTALL
+```
 
 Ага. А решается все очень просто.
 

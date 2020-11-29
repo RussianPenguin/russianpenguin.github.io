@@ -29,7 +29,9 @@ permalink: "/2015/07/14/postgresql-bytea-%d0%b2-varchar/"
 
 Но все решается просто :)
 
-[code lang="sql"]select convert\_from(body, 'utf8') from megatable[/code]
+```sql
+select convert\_from(body, 'utf8') from megatable
+```
 
 Вторым аргументом convert\_from выступает кодировка исходного текста.  
 &nbsp;

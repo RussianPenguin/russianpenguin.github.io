@@ -26,13 +26,17 @@ author:
   last_name: Zubkov
 permalink: "/2015/05/22/symfony2-cannot-redeclarate-class/"
 ---
-[code]Fatal error: include() [\<a href="http://contoso.com/app/function.include"\>function.include\</a\>]: Cannot redeclare class symfony\bundle\frameworkbundle\frameworkbundle in /srv/www/contoso.com/vendor/composer/ClassLoader.php on line \<i\>412\</i\>[/code]
+```
+Fatal error: include() [\<a href="http://contoso.com/app/function.include"\>function.include\</a\>]: Cannot redeclare class symfony\bundle\frameworkbundle\frameworkbundle in /srv/www/contoso.com/vendor/composer/ClassLoader.php on line \<i\>412\</i\>
+```
 
 Да-да. Есть такая противная ошибка.
 
 Она лечится либо отключением apc, либо установкой для него следующего набора опций
 
-[code]apc.include\_once\_override = 0  
+```
+apc.include\_once\_override = 0  
 apc.canonicalize = 0  
-apc.stat = 0[/code]
+apc.stat = 0
+```
 

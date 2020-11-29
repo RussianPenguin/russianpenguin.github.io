@@ -45,12 +45,14 @@ permalink: "/2016/06/09/php-array_map-%d0%b8-%d0%ba%d0%bb%d1%8e%d1%87%d0%b8-%d0%
 
 Удобно же! Применили колбек к массиву и получили обработанный.
 
-[code lang="php"]$array = [  
+```php
+$array = [  
  'category1' =\> 'first category',  
  'category2' =\> 'second category',  
 ];
 
-var\_dump(array\_map(function(....[/code]
+var\_dump(array\_map(function(....
+```
 
 И что-то не заладилось. :) Ключи в колбек не попадают. Можно сделать все через foreach, но тогда нам потребуется еще одна переменная. А тут все было просто и наглядно.
 
@@ -58,20 +60,23 @@ var\_dump(array\_map(function(....[/code]
 
 А зачем гуглить-то?
 
-[code lang="php"]$array = [  
+```php
+$array = [  
  'category1' =\> 'first category',  
  'category2' =\> 'second category',  
 ];
 
 var\_dump(array\_map(function($key, $value) {  
  return "{$key} =\> {$value}";  
-}, array\_keys($array), $array));[/code]
+}, array\_keys($array), $array));
+```
 
 И все отлично работает. И притом правильно. Относительно конечно же. И никаких вам лишних переменных.
 
 А тем временем в коде вновь и вновь появляются конструкции вида
 
-[code lang="php"]$array = [  
+```php
+$array = [  
  'category1' =\> 'first category',  
  'category2' =\> 'second category',  
 ];
@@ -80,11 +85,13 @@ $description = [];
 
 foreach ($array as $key =\> $value) {  
  $description[] = "{$key} =\> {$value}";  
-}[/code]
+}
+```
 
 Или еще хуже.
 
-[code lang="php"]$array = [  
+```php
+$array = [  
  'category1' =\> 'first category',  
  'category2' =\> 'second category',  
 ];
@@ -93,7 +100,8 @@ $description = [];
 
 array\_walk($array, function($value, $key) {  
  $description[] = "{$key} =\> {$value}";  
-});[/code]
+});
+```
 
 Проблема кейса из статьи может быть и раздута, но при вчитывании в сотни строк кода более-менее понятными сходу являются только первые два варианта.
 
