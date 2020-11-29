@@ -1,0 +1,6 @@
+- name: Записная книжка
+  link: /
+- name: Обо мне
+  link: /about.html
+- name: Блог
+  link: /blog.html
