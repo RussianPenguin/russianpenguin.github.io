@@ -9,7 +9,7 @@ tags:
 - jackd
 - linux
 - midi
-permalink: "/2020/12/20/midi-to-keyboard-event/
+permalink: "/2020/12/20/midi-to-keyboard-event/"
 ---
 Как конвертировать сообщения от midi-клавиатуры в нажатия кнопок на клавиатуре?
 
