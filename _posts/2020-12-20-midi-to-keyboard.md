@@ -2,6 +2,7 @@
 layout: post
 title: 'MIDI: Превращаем сообщения в нажатия кнопок клавиатуры'
 type: post
+status: publish
 categories:
 - HowTo
 tags:
