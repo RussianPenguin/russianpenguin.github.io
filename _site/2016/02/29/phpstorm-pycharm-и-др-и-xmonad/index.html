@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PHPStorm (PyCharm и др.) и XMonad | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="PHPStorm (PyCharm и др.) и XMonad" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего. Работаю я в xmonad и произошло это после очередной правки конфига под себя. В документации сказано, что для java-приложений нужен startupHook = setWMName &quot;LG3D&quot; Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран). А все оказалось просто: я добавил хук ewmhDesktopsEventHook. handleEventHook = do ewmhDesktopsEventHook -- вот он docksEventHook fullscreenEventHook -- Full screen setup Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать документацию и код. Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит “xmonad”). Этот wmname (который lg3d) служит решением для бага из awt. Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в “non reparenting” (не подобрал я нормального перевода :)) окружении. Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING. Пишем в ~/.bashrc или ~/.profile export \_JAVA\_AWT\_WM\_NONREPARENTING=1 И теперь все хорошо." />
+<meta property="og:description" content="После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего. Работаю я в xmonad и произошло это после очередной правки конфига под себя. В документации сказано, что для java-приложений нужен startupHook = setWMName &quot;LG3D&quot; Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран). А все оказалось просто: я добавил хук ewmhDesktopsEventHook. handleEventHook = do ewmhDesktopsEventHook -- вот он docksEventHook fullscreenEventHook -- Full screen setup Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать документацию и код. Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит “xmonad”). Этот wmname (который lg3d) служит решением для бага из awt. Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в “non reparenting” (не подобрал я нормального перевода :)) окружении. Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING. Пишем в ~/.bashrc или ~/.profile export \_JAVA\_AWT\_WM\_NONREPARENTING=1 И теперь все хорошо." />
+<link rel="canonical" href="http://localhost:4000/2016/02/29/phpstorm-pycharm-%D0%B8-%D0%B4%D1%80-%D0%B8-xmonad/" />
+<meta property="og:url" content="http://localhost:4000/2016/02/29/phpstorm-pycharm-%D0%B8-%D0%B4%D1%80-%D0%B8-xmonad/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-02-29T00:24:26+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PHPStorm (PyCharm и др.) и XMonad" />
+<script type="application/ld+json">
+{"headline":"PHPStorm (PyCharm и др.) и XMonad","dateModified":"2016-02-29T00:24:26+03:00","datePublished":"2016-02-29T00:24:26+03:00","description":"После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего. Работаю я в xmonad и произошло это после очередной правки конфига под себя. В документации сказано, что для java-приложений нужен startupHook = setWMName &quot;LG3D&quot; Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран). А все оказалось просто: я добавил хук ewmhDesktopsEventHook. handleEventHook = do ewmhDesktopsEventHook -- вот он docksEventHook fullscreenEventHook -- Full screen setup Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать документацию и код. Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит “xmonad”). Этот wmname (который lg3d) служит решением для бага из awt. Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в “non reparenting” (не подобрал я нормального перевода :)) окружении. Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING. Пишем в ~/.bashrc или ~/.profile export \\_JAVA\\_AWT\\_WM\\_NONREPARENTING=1 И теперь все хорошо.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/02/29/phpstorm-pycharm-%D0%B8-%D0%B4%D1%80-%D0%B8-xmonad/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/02/29/phpstorm-pycharm-%D0%B8-%D0%B4%D1%80-%D0%B8-xmonad/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">PHPStorm (PyCharm и др.) и XMonad</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>PHPStorm (PyCharm и др.) и XMonad</h1>
+<p>29 Feb 2016</p>
+
+<p><img src="/assets/images/2016/02/2016-02-28-234847_708x493.png?w=150" alt="2016-02-28-23:48:47_708x493" />После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего.<br />
+Работаю я в xmonad и произошло это после очередной правки конфига под себя.<br />
+В документации сказано, что для java-приложений нужен</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>startupHook = setWMName "LG3D"
+</code></pre></div></div>
+<p>Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран).<br />
+А все оказалось просто: я добавил хук ewmhDesktopsEventHook.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>handleEventHook = do  
+ ewmhDesktopsEventHook -- вот он  
+ docksEventHook  
+ fullscreenEventHook -- Full screen setup
+</code></pre></div></div>
+
+<p>Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html">документацию</a> и <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/src/XMonad-Hooks-EwmhDesktops.html">код</a>.</p>
+
+<p>Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит “xmonad”). <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html">Этот</a> wmname (который lg3d) служит решением для <a href="http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6429775">бага</a> из awt.</p>
+
+<p>Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в “non reparenting” (не подобрал я нормального перевода :)) окружении.</p>
+
+<p>Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING.</p>
+
+<p>Пишем в ~/.bashrc или ~/.profile</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export \_JAVA\_AWT\_WM\_NONREPARENTING=1
+</code></pre></div></div>
+
+<p>И теперь все хорошо.</p>
+
+<p><img src="/assets/images/2016/02/2016-02-28-235036_708x495.png?w=300" alt="2016-02-28-23:50:36_708x495" /></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

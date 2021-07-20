@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>#git</p>
+
+<p>####Table of Contents</p>
+
+<ol>
+  <li><a href="#overview">Overview - What is the git module?</a></li>
+  <li><a href="#module-description">Module Description - What does the module do?</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with git</a>
+    <ul>
+      <li><a href="#what-registry-affects">What git affects</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a></li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<p>##Overview</p>
+
+<p>Simple module that can install git or gitosis</p>
+
+<p>##Module Description</p>
+
+<p>This module installs the git revision control system on a target node. It does not manage a git server or any associated services; it simply ensures a bare minimum set of features (e.g. just a package) to use git.</p>
+
+<p>##Setup</p>
+
+<p>###What git affects</p>
+
+<ul>
+  <li>Package[‘git’]</li>
+</ul>
+
+<p>The specifics managed by the module may vary depending on the platform.</p>
+
+<p>##Usage</p>
+
+<p>###I just want <code class="language-plaintext highlighter-rouge">git</code> installed
+Simply include the <code class="language-plaintext highlighter-rouge">git</code> class.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">include</span> <span class="nc">git</span>
+</code></pre></div></div>
+
+<p>###I want to configure <code class="language-plaintext highlighter-rouge">git</code> using hiera</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">git::configs:</span>
+  <span class="s">user.name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">test'</span>
+  <span class="s">user.email</span><span class="pi">:</span> <span class="s1">'</span><span class="s">test@example.com'</span>
+  <span class="s">core.filemode</span><span class="pi">:</span>
+    <span class="na">value</span><span class="pi">:</span> <span class="no">false</span>
+    <span class="na">scope</span><span class="pi">:</span> <span class="s">system</span>
+</code></pre></div></div>
+
+<p>If using the flat config syntax, options common to all items can be set:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">git::configs:</span>
+  <span class="s">core.filemode</span><span class="pi">:</span> <span class="no">false</span>
+<span class="s">git::configs_defaults:</span>
+  <span class="s">scope</span><span class="pi">:</span> <span class="s">system</span>
+</code></pre></div></div>
+
+<p>###I want to use <code class="language-plaintext highlighter-rouge">git subtree</code> with bash completion</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">include</span> <span class="nc">git::subtree</span>
+</code></pre></div></div>
+
+<p>###I want to set my user.name and user.email</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">git::config</span> <span class="p">{</span> <span class="s1">'user.name'</span><span class="p">:</span>
+  <span class="py">value</span> <span class="p">=&gt;</span> <span class="s1">'John Doe'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">git::config</span> <span class="p">{</span> <span class="s1">'user.email'</span><span class="p">:</span>
+  <span class="py">value</span> <span class="p">=&gt;</span> <span class="s1">'john.doe@example.com'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>##Reference</p>
+
+<p>###Classes</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">git</code>: Installs the git client package.</li>
+  <li><code class="language-plaintext highlighter-rouge">gitosis</code>: Installs the gitosis package. No configuration</li>
+  <li><code class="language-plaintext highlighter-rouge">subtree</code>: Installs and configures git-subtree for git 1.7 and up.</li>
+</ul>
+
+<p>###Resources</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">git::config</code>: Set git global configuration for the user running puppet, for the specified <code class="language-plaintext highlighter-rouge">$user</code> or for the system.</li>
+</ul>
+
+<p>###Facts</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">git_exec_path</code>: Path to the directory containing all <code class="language-plaintext highlighter-rouge">git-*</code> commands.</li>
+  <li><code class="language-plaintext highlighter-rouge">git_version</code>: Version of git that is installed. Undefined if not installed.</li>
+</ul>
+
+<p>##Limitations</p>
+
+<p>This module is known to work with the following operating system families:</p>
+
+<ul>
+  <li>RedHat 5, 6</li>
+  <li>Debian 6.0.7 or newer</li>
+  <li>Ubuntu 12.04 or newer</li>
+</ul>
+
+<p>##Development</p>
+
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can’t access the huge number of platforms and myriad of hardware, software, and deployment configurations that Puppet is intended to serve.</p>
+
+<p>We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.</p>
+
+<p>You can read the complete module contribution guide <a href="http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing">on the Puppet Labs wiki.</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

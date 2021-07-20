@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PHP: Cannot determine default value for internal functions | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="PHP: Cannot determine default value for internal functions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Зашла речь про небезызвестный htmlspecialchars, но не просто у нем, а о нем и о работе с htmlentities. Если передать в этот метод строку с этими энтитями, то получим двойное перекодирование. echo htmlspecialchars(&#39;&amp;quot;текст&amp;quot;&#39;); &amp;amp;quot;текст&amp;amp;quot; Именно для того, чтобы избежать подобного был добавлен параметр double_encode, который по дефолту всегда true. Но речь не об этом. Речь о том, что до этого параметра в спецификации стоит еще два других с дефолтными значениями. На ум приходит использовать рефлексию для получения дефолтных значений и передачи их в функцию. Но не все так просто. Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными. function call\_user\_func\_params(callable $func, array $params = array()) { if (!is\_callable($func)) { throw &quot;func is not callable&quot;; } $reflection = new ReflectionFunction($func); $funcParams = array(); foreach ($reflection-\&gt;getParameters() as $parameter) { $name = $parameter-\&gt;getName(); if (\_\_DEBUG\_\_) { var\_dump($parameter-\&gt;getName()); var\_dump($parameter-\&gt;isOptional()); } if (array\_key\_exists($name, $params)) { array\_push($funcParams, $params[$name]); } elseif ($parameter-\&gt;isOptional()) { array\_push($funcParams, $parameter-\&gt;getDefaultValue()); } else { throw new Exception(&quot;Value for parameter {$name} not found&quot;); } } return call\_user\_func\_array($func, $funcParams); } А теперь воспользуемся ей. function foo($bar = &#39;bar&#39;, $baz = &#39;baz&#39;) { echo &quot;{$bar}, {$baz}\n&quot;; } call\_user\_func\_params(&#39;foo&#39;, array(&#39;baz&#39; =\&gt; &#39;xyz&#39;)); Выводит то, что и ожидалось. bar, xyz А теперь так. call\_user\_func\_params(&#39;htmlspecialchars&#39;, array(&#39;string&#39; =\&gt; &quot;&amp;quot;текст&amp;quot;&quot;, &#39;double\_encode&#39; =\&gt; false)); Облом-с. PHP Fatal error: Uncaught exception &#39;ReflectionException&#39; with message &#39;Cannot determine default value for internal functions&#39; in file.php А все потому, что пхп обрабатывает встроенные функции иначе, нежели написанные кривыми руками программиста. :) А еще документация нас открыто уведомляет о том, что именя параметров реальные (я про встроенные функции) могут отличаться от того, что написано в спецификации." />
+<meta property="og:description" content="Зашла речь про небезызвестный htmlspecialchars, но не просто у нем, а о нем и о работе с htmlentities. Если передать в этот метод строку с этими энтитями, то получим двойное перекодирование. echo htmlspecialchars(&#39;&amp;quot;текст&amp;quot;&#39;); &amp;amp;quot;текст&amp;amp;quot; Именно для того, чтобы избежать подобного был добавлен параметр double_encode, который по дефолту всегда true. Но речь не об этом. Речь о том, что до этого параметра в спецификации стоит еще два других с дефолтными значениями. На ум приходит использовать рефлексию для получения дефолтных значений и передачи их в функцию. Но не все так просто. Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными. function call\_user\_func\_params(callable $func, array $params = array()) { if (!is\_callable($func)) { throw &quot;func is not callable&quot;; } $reflection = new ReflectionFunction($func); $funcParams = array(); foreach ($reflection-\&gt;getParameters() as $parameter) { $name = $parameter-\&gt;getName(); if (\_\_DEBUG\_\_) { var\_dump($parameter-\&gt;getName()); var\_dump($parameter-\&gt;isOptional()); } if (array\_key\_exists($name, $params)) { array\_push($funcParams, $params[$name]); } elseif ($parameter-\&gt;isOptional()) { array\_push($funcParams, $parameter-\&gt;getDefaultValue()); } else { throw new Exception(&quot;Value for parameter {$name} not found&quot;); } } return call\_user\_func\_array($func, $funcParams); } А теперь воспользуемся ей. function foo($bar = &#39;bar&#39;, $baz = &#39;baz&#39;) { echo &quot;{$bar}, {$baz}\n&quot;; } call\_user\_func\_params(&#39;foo&#39;, array(&#39;baz&#39; =\&gt; &#39;xyz&#39;)); Выводит то, что и ожидалось. bar, xyz А теперь так. call\_user\_func\_params(&#39;htmlspecialchars&#39;, array(&#39;string&#39; =\&gt; &quot;&amp;quot;текст&amp;quot;&quot;, &#39;double\_encode&#39; =\&gt; false)); Облом-с. PHP Fatal error: Uncaught exception &#39;ReflectionException&#39; with message &#39;Cannot determine default value for internal functions&#39; in file.php А все потому, что пхп обрабатывает встроенные функции иначе, нежели написанные кривыми руками программиста. :) А еще документация нас открыто уведомляет о том, что именя параметров реальные (я про встроенные функции) могут отличаться от того, что написано в спецификации." />
+<link rel="canonical" href="http://localhost:4000/2014/10/09/php-cannot-determine-default-value-for-internal-functions/" />
+<meta property="og:url" content="http://localhost:4000/2014/10/09/php-cannot-determine-default-value-for-internal-functions/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-10-09T13:43:26+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PHP: Cannot determine default value for internal functions" />
+<script type="application/ld+json">
+{"headline":"PHP: Cannot determine default value for internal functions","dateModified":"2014-10-09T13:43:26+04:00","datePublished":"2014-10-09T13:43:26+04:00","description":"Зашла речь про небезызвестный htmlspecialchars, но не просто у нем, а о нем и о работе с htmlentities. Если передать в этот метод строку с этими энтитями, то получим двойное перекодирование. echo htmlspecialchars(&#39;&amp;quot;текст&amp;quot;&#39;); &amp;amp;quot;текст&amp;amp;quot; Именно для того, чтобы избежать подобного был добавлен параметр double_encode, который по дефолту всегда true. Но речь не об этом. Речь о том, что до этого параметра в спецификации стоит еще два других с дефолтными значениями. На ум приходит использовать рефлексию для получения дефолтных значений и передачи их в функцию. Но не все так просто. Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными. function call\\_user\\_func\\_params(callable $func, array $params = array()) { if (!is\\_callable($func)) { throw &quot;func is not callable&quot;; } $reflection = new ReflectionFunction($func); $funcParams = array(); foreach ($reflection-\\&gt;getParameters() as $parameter) { $name = $parameter-\\&gt;getName(); if (\\_\\_DEBUG\\_\\_) { var\\_dump($parameter-\\&gt;getName()); var\\_dump($parameter-\\&gt;isOptional()); } if (array\\_key\\_exists($name, $params)) { array\\_push($funcParams, $params[$name]); } elseif ($parameter-\\&gt;isOptional()) { array\\_push($funcParams, $parameter-\\&gt;getDefaultValue()); } else { throw new Exception(&quot;Value for parameter {$name} not found&quot;); } } return call\\_user\\_func\\_array($func, $funcParams); } А теперь воспользуемся ей. function foo($bar = &#39;bar&#39;, $baz = &#39;baz&#39;) { echo &quot;{$bar}, {$baz}\\n&quot;; } call\\_user\\_func\\_params(&#39;foo&#39;, array(&#39;baz&#39; =\\&gt; &#39;xyz&#39;)); Выводит то, что и ожидалось. bar, xyz А теперь так. call\\_user\\_func\\_params(&#39;htmlspecialchars&#39;, array(&#39;string&#39; =\\&gt; &quot;&amp;quot;текст&amp;quot;&quot;, &#39;double\\_encode&#39; =\\&gt; false)); Облом-с. PHP Fatal error: Uncaught exception &#39;ReflectionException&#39; with message &#39;Cannot determine default value for internal functions&#39; in file.php А все потому, что пхп обрабатывает встроенные функции иначе, нежели написанные кривыми руками программиста. :) А еще документация нас открыто уведомляет о том, что именя параметров реальные (я про встроенные функции) могут отличаться от того, что написано в спецификации.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/10/09/php-cannot-determine-default-value-for-internal-functions/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/10/09/php-cannot-determine-default-value-for-internal-functions/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">PHP: Cannot determine default value for internal functions</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>PHP: Cannot determine default value for internal functions</h1>
+<p>09 Oct 2014</p>
+
+<p>Зашла речь про небезызвестный htmlspecialchars, но не просто у нем, а о нем и о работе с htmlentities. Если передать в этот метод строку с этими энтитями, то получим двойное перекодирование.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="s1">'&amp;quot;текст&amp;quot;'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&amp;amp;quot;текст&amp;amp;quot;
+</code></pre></div></div>
+
+<p>Именно для того, чтобы избежать подобного был добавлен параметр double_encode, который по дефолту всегда true.</p>
+
+<p>Но речь не об этом.</p>
+
+<p>Речь о том, что до этого параметра в спецификации стоит еще два других с дефолтными значениями.</p>
+
+<p>На ум приходит использовать рефлексию для получения дефолтных значений и передачи их в функцию. Но не все так просто.</p>
+
+<p>Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="n">call</span><span class="err">\</span><span class="nf">_user\_func\_params</span><span class="p">(</span><span class="n">callable</span> <span class="nv">$func</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$params</span> <span class="o">=</span> <span class="k">array</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">is\_callable</span><span class="p">(</span><span class="nv">$func</span><span class="p">))</span> <span class="p">{</span>  
+ <span class="k">throw</span> <span class="s2">"func is not callable"</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="nv">$reflection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ReflectionFunction</span><span class="p">(</span><span class="nv">$func</span><span class="p">);</span>  
+ <span class="nv">$funcParams</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$reflection</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getParameters</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$parameter</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$parameter</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getName</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="err">\</span><span class="n">_\_DEBUG\_\_</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nf">var\_dump</span><span class="p">(</span><span class="nv">$parameter</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getName</span><span class="p">());</span>  
+ <span class="nf">var\_dump</span><span class="p">(</span><span class="nv">$parameter</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isOptional</span><span class="p">());</span>  
+ <span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nf">array\_key\_exists</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$params</span><span class="p">))</span> <span class="p">{</span>  
+ <span class="nf">array\_push</span><span class="p">(</span><span class="nv">$funcParams</span><span class="p">,</span> <span class="nv">$params</span><span class="p">[</span><span class="nv">$name</span><span class="p">]);</span>  
+ <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="nv">$parameter</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isOptional</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="nf">array\_push</span><span class="p">(</span><span class="nv">$funcParams</span><span class="p">,</span> <span class="nv">$parameter</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getDefaultValue</span><span class="p">());</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">throw</span> <span class="k">new</span> <span class="nc">Exception</span><span class="p">(</span><span class="s2">"Value for parameter </span><span class="si">{</span><span class="nv">$name</span><span class="si">}</span><span class="s2"> not found"</span><span class="p">);</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+ <span class="k">return</span> <span class="nf">call\_user\_func\_array</span><span class="p">(</span><span class="nv">$func</span><span class="p">,</span> <span class="nv">$funcParams</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>А теперь воспользуемся ей.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="n">foo</span><span class="p">(</span><span class="nv">$bar</span> <span class="o">=</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="nv">$baz</span> <span class="o">=</span> <span class="s1">'baz'</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$bar</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nv">$baz</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="nf">call\_user\_func\_params</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'baz'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'xyz'</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Выводит то, что и ожидалось.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bar, xyz
+</code></pre></div></div>
+
+<p>А теперь так.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">call\_user\_func\_params</span><span class="p">(</span><span class="s1">'htmlspecialchars'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'string'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s2">"&amp;quot;текст&amp;quot;"</span><span class="p">,</span> <span class="s1">'double\_encode'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="kc">false</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Облом-с.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PHP Fatal error: Uncaught exception 'ReflectionException' with message 'Cannot determine default value for internal functions' in file.php
+</code></pre></div></div>
+
+<p>А все потому, что пхп обрабатывает встроенные функции иначе, нежели написанные кривыми руками программиста. :)</p>
+
+<p>А еще документация нас открыто уведомляет о том, что именя параметров реальные (я про встроенные функции) могут отличаться от того, что написано в спецификации.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Android Studio: на устройстве не осталось свободного места | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Android Studio: на устройстве не осталось свободного места" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Заметка рассказывает о том, как избавиться от ошибки “на устройстве недостаточно свободного места” при обновлении AndroidStudio" />
+<meta property="og:description" content="Заметка рассказывает о том, как избавиться от ошибки “на устройстве недостаточно свободного места” при обновлении AndroidStudio" />
+<link rel="canonical" href="http://localhost:4000/2018/05/09/android-studio-%D0%BD%D0%B0-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B5-%D0%BD%D0%B5-%D0%BE%D1%81%D1%82%D0%B0%D0%BB%D0%BE%D1%81%D1%8C-%D0%BC%D0%B5%D1%81%D1%82%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2018/05/09/android-studio-%D0%BD%D0%B0-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B5-%D0%BD%D0%B5-%D0%BE%D1%81%D1%82%D0%B0%D0%BB%D0%BE%D1%81%D1%8C-%D0%BC%D0%B5%D1%81%D1%82%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-05-09T14:39:07+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Android Studio: на устройстве не осталось свободного места" />
+<script type="application/ld+json">
+{"headline":"Android Studio: на устройстве не осталось свободного места","dateModified":"2018-05-09T14:39:07+03:00","datePublished":"2018-05-09T14:39:07+03:00","description":"Заметка рассказывает о том, как избавиться от ошибки “на устройстве недостаточно свободного места” при обновлении AndroidStudio","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/05/09/android-studio-%D0%BD%D0%B0-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B5-%D0%BD%D0%B5-%D0%BE%D1%81%D1%82%D0%B0%D0%BB%D0%BE%D1%81%D1%8C-%D0%BC%D0%B5%D1%81%D1%82%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2018/05/09/android-studio-%D0%BD%D0%B0-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B5-%D0%BD%D0%B5-%D0%BE%D1%81%D1%82%D0%B0%D0%BB%D0%BE%D1%81%D1%8C-%D0%BC%D0%B5%D1%81%D1%82%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Android Studio: на устройстве не осталось свободного места</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Android Studio: на устройстве не осталось свободного места</h1>
+<p>09 May 2018</p>
+
+<p><img src="/assets/images/2018/05/2018-05-09-134805_911x394.png?w=300" alt="2018-05-09-13:48:05_911x394" />Кто из вас не сталкивался с этим сообщением при обновлении студии под linux? Пожалуй каждый, кому доводилось с ней работать эту ошибку уже видел хотя бы раз и спешно шел в гугель для поиска ответа на вопрос что же ей не нравится и как это фиксить.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: На устройстве не осталось свободного места
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.io.IOException: No space left on device
+</code></pre></div></div>
+
+<p>И так каждый раз. А вся проблема в том, что студия использует /tmp для распаковки установочных архивов перед копированием.</p>
+
+<p>И чаще всего места там катастрофически недостает.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">df</span> <span class="nt">-h</span> |grep <span class="se">\/</span>tmp  
+tmpfs 3,9G 455M 3,4G 12% /tmp
+</code></pre></div></div>
+
+<p>Во многих дистрибутивах размер раздела выставляется равным половине объема озу. Решений несколько и каждый применяет то, которое ему нравится больше.</p>
+
+<!--more-->
+
+<h2 id="временное-увеличение-размера-tmp">Временное увеличение размера /tmp</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>mount <span class="nt">-o</span> remount,size<span class="o">=</span>8G,noatime /tmp
+</code></pre></div></div>
+
+<p>Чем плохо: система активно начнем использовать подкачку и ей может просто не хватить суммарного объема свопа и ram.</p>
+
+<h2 id="переназначение-временной-директории-для-студии">Переназначение временной директории для студии</h2>
+
+<p><img src="/assets/images/2018/05/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_002.png" alt="Выделение_002" /></p>
+
+<p>В открывшийся файл дописываем указание временной директории для виртуальной машины.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-Djava.io.tmpdir=/path-to-tmp-dir
+</code></pre></div></div>
+
+<p>Минус подхода: вся инфраструктура будет использовать эту временную директорию (компиляция, запуск и прочее), что приведет к замедлению работы если директория находится на диске (и неважно ssd это или hdd).</p>
+
+<p>А еще все настройки будут теряться при обновлении студии (они хранятся в каталоге с настройками студии.</p>
+
+<p>Есть другой вариант, позволяющий вынести настройки в глобальную область.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"-Djava.io.tmpdir=/tmp-dir-path"</span> <span class="se">\&gt;</span> ~/android-studio-tmp.fix  
+STUDIO<span class="se">\_</span>VM<span class="se">\_</span><span class="nv">OPTIONS</span><span class="o">=</span>~/android-studio.fix android-studio
+</code></pre></div></div>
+
+<h2 id="указать-временную-директорию-для-всех-приложений-java">Указать временную директорию для всех приложений java</h2>
+
+<p>Прописать в .bashrc</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export</span> <span class="se">\_</span>JAVA<span class="se">\_</span><span class="nv">OPTIONS</span><span class="o">=</span><span class="nt">-Djava</span>.io.tmpdir<span class="o">=</span>/path-to-tmp-dir
+</code></pre></div></div>
+
+<p>Это наименее разумный способ - он заставит абсолютно все java-приложения использовать указанную директорию.</p>
+
+<h2 id="указать-отдельное-размещение-для-распаковки-временных-файлов-в-момент-установки">Указать отдельное размещение для распаковки временных файлов в момент установки</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd</span> ~  
+<span class="nv">$ </span><span class="nb">mkdir</span> <span class="nt">-p</span> tmp/PackageOperation04  
+<span class="nv">$ </span><span class="nb">cd</span> /tmp  
+<span class="nv">$ </span><span class="nb">ln</span> <span class="nt">-s</span> <span class="nv">$HOME</span>/tmp/PackageOperation04
+</code></pre></div></div>
+
+<p>Самый разумный способ, имхо. Делать это нужно непосредственно перед тем, как вы нажмете кнопку “обновить”.</p>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="https://developer.android.com/studio/intro/studio-config.html">Configure Android Studio</a></li>
+  <li><a href="https://stackoverflow.com/questions/38057884/tmp-directory-in-linux-android-sdk">SO: /tmp directory in Linux Android SDK</a></li>
+  <li><a href="https://www.redips.net/linux/android-studio-no-space-left-on-device/">Android Studio – No space left on device</a></li>
+  <li><a href="https://bytefreaks.net/applications/android-studio-no-space-left-on-device">Android Studio – No space left on device</a></li>
+</ul>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PHP: дело о загадачном пробеле | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="PHP: дело о загадачном пробеле" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Или история о том, как побились картинки. Однажды от пользователей пришла жалоба, что новые картинки, которые они на проект грузят не отображаются. Только если полностью обновить страницу. Проверил данные в кеше - картинки были. Все как положено - пережатые и с водяными знаками. После ряда танце с бубном удалось выяснить, что скрипт, который картинку генерирует пока ее в кеше нет отдает пробел в каждой картинке - на скриншоте это хорошо выдно. Идет пробел, а после стандартный заголовок jpeg. Чтож. Очень вероятно, что какой-то вредный скрипт оказался с пробелом. Мы же помним вро стандартные открывающиеся и закрывающиеся теги php, которые принесли много головной боли. Но как среди тысяч строк кода выяснить, где начинается вывод злобного пробела? отключить вывод самой картинки и убедится, что пробел все еще выводится. отключить буферизацию вывода на стороне сервера - убедится, что пробел есть в самом конце скрипта поставить setcookie или header - в логах пояится сообщение вида “ Warning : Cannot modify header information - headers already sent by (output started at file.php:XXX)”. Где file.php - это соответсвенно файл, а XXX - номер строки, где начался вывод. Чтобы отключить буферизацию нужно прописать в конфигах php.ini output\_buffering=0 Или в конфигах апача или htaccess php\_flag &quot;output\_buffering&quot; Off" />
+<meta property="og:description" content="Или история о том, как побились картинки. Однажды от пользователей пришла жалоба, что новые картинки, которые они на проект грузят не отображаются. Только если полностью обновить страницу. Проверил данные в кеше - картинки были. Все как положено - пережатые и с водяными знаками. После ряда танце с бубном удалось выяснить, что скрипт, который картинку генерирует пока ее в кеше нет отдает пробел в каждой картинке - на скриншоте это хорошо выдно. Идет пробел, а после стандартный заголовок jpeg. Чтож. Очень вероятно, что какой-то вредный скрипт оказался с пробелом. Мы же помним вро стандартные открывающиеся и закрывающиеся теги php, которые принесли много головной боли. Но как среди тысяч строк кода выяснить, где начинается вывод злобного пробела? отключить вывод самой картинки и убедится, что пробел все еще выводится. отключить буферизацию вывода на стороне сервера - убедится, что пробел есть в самом конце скрипта поставить setcookie или header - в логах пояится сообщение вида “ Warning : Cannot modify header information - headers already sent by (output started at file.php:XXX)”. Где file.php - это соответсвенно файл, а XXX - номер строки, где начался вывод. Чтобы отключить буферизацию нужно прописать в конфигах php.ini output\_buffering=0 Или в конфигах апача или htaccess php\_flag &quot;output\_buffering&quot; Off" />
+<link rel="canonical" href="http://localhost:4000/2016/10/28/php-%D0%B4%D0%B5%D0%BB%D0%BE-%D0%BE-%D0%B7%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D1%87%D0%BD%D0%BE%D0%BC-%D0%BF%D1%80%D0%BE%D0%B1%D0%B5%D0%BB%D0%B5/" />
+<meta property="og:url" content="http://localhost:4000/2016/10/28/php-%D0%B4%D0%B5%D0%BB%D0%BE-%D0%BE-%D0%B7%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D1%87%D0%BD%D0%BE%D0%BC-%D0%BF%D1%80%D0%BE%D0%B1%D0%B5%D0%BB%D0%B5/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-10-28T15:30:38+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PHP: дело о загадачном пробеле" />
+<script type="application/ld+json">
+{"headline":"PHP: дело о загадачном пробеле","dateModified":"2016-10-28T15:30:38+03:00","datePublished":"2016-10-28T15:30:38+03:00","description":"Или история о том, как побились картинки. Однажды от пользователей пришла жалоба, что новые картинки, которые они на проект грузят не отображаются. Только если полностью обновить страницу. Проверил данные в кеше - картинки были. Все как положено - пережатые и с водяными знаками. После ряда танце с бубном удалось выяснить, что скрипт, который картинку генерирует пока ее в кеше нет отдает пробел в каждой картинке - на скриншоте это хорошо выдно. Идет пробел, а после стандартный заголовок jpeg. Чтож. Очень вероятно, что какой-то вредный скрипт оказался с пробелом. Мы же помним вро стандартные открывающиеся и закрывающиеся теги php, которые принесли много головной боли. Но как среди тысяч строк кода выяснить, где начинается вывод злобного пробела? отключить вывод самой картинки и убедится, что пробел все еще выводится. отключить буферизацию вывода на стороне сервера - убедится, что пробел есть в самом конце скрипта поставить setcookie или header - в логах пояится сообщение вида “ Warning : Cannot modify header information - headers already sent by (output started at file.php:XXX)”. Где file.php - это соответсвенно файл, а XXX - номер строки, где начался вывод. Чтобы отключить буферизацию нужно прописать в конфигах php.ini output\\_buffering=0 Или в конфигах апача или htaccess php\\_flag &quot;output\\_buffering&quot; Off","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/10/28/php-%D0%B4%D0%B5%D0%BB%D0%BE-%D0%BE-%D0%B7%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D1%87%D0%BD%D0%BE%D0%BC-%D0%BF%D1%80%D0%BE%D0%B1%D0%B5%D0%BB%D0%B5/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/10/28/php-%D0%B4%D0%B5%D0%BB%D0%BE-%D0%BE-%D0%B7%D0%B0%D0%B3%D0%B0%D0%B4%D0%B0%D1%87%D0%BD%D0%BE%D0%BC-%D0%BF%D1%80%D0%BE%D0%B1%D0%B5%D0%BB%D0%B5/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">PHP: дело о загадачном пробеле</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>PHP: дело о загадачном пробеле</h1>
+<p>28 Oct 2016</p>
+
+<p><img src="/assets/images/2016/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_103.png?w=300" alt="%d0%b2%d1%8b%d0%b4%d0%b5%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5_103" />Или история о том, как побились картинки.</p>
+
+<p>Однажды от пользователей пришла жалоба, что новые картинки, которые они на проект грузят не отображаются. Только если полностью обновить страницу.</p>
+
+<p>Проверил данные в кеше - картинки были. Все как положено - пережатые и с водяными знаками. После ряда танце с бубном удалось выяснить, что скрипт, который картинку генерирует пока ее в кеше нет отдает пробел в каждой картинке - на скриншоте это хорошо выдно. Идет пробел, а после стандартный <a href="https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format#File_format_structure">заголовок jpeg</a>.</p>
+
+<p>Чтож. Очень вероятно, что какой-то вредный скрипт оказался с пробелом. Мы же помним вро стандартные открывающиеся и закрывающиеся теги php, которые принесли много головной боли.</p>
+
+<p>Но как среди тысяч строк кода выяснить, где начинается вывод злобного пробела?</p>
+
+<ol>
+  <li>отключить вывод самой картинки и убедится, что пробел все еще выводится.</li>
+  <li>отключить буферизацию вывода на стороне сервера - убедится, что пробел есть</li>
+  <li>в самом конце скрипта поставить setcookie или header - в логах пояится сообщение вида “ <strong>Warning</strong> : Cannot modify header information - headers already sent by (output started at file.php:XXX)”. Где file.php - это соответсвенно файл, а XXX - номер строки, где начался вывод.</li>
+</ol>
+
+<p>Чтобы отключить буферизацию нужно прописать в конфигах php.ini</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>output\_buffering=0
+</code></pre></div></div>
+
+<p>Или в конфигах апача или htaccess</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php\_flag "output\_buffering" Off
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

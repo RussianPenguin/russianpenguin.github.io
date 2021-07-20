@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Elasticsearch Puppet Module | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Elasticsearch Puppet Module" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Elasticsearch Puppet Module" />
+<script type="application/ld+json">
+{"headline":"Elasticsearch Puppet Module","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Elasticsearch Puppet Module</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="elasticsearch-puppet-module">Elasticsearch Puppet Module</h1>
+
+<p><a href="https://travis-ci.org/elastic/puppet-elasticsearch"><img src="https://travis-ci.org/elastic/puppet-elasticsearch.svg?branch=master" alt="Build Status" /></a>
+<a href="https://forge.puppetlabs.com/elasticsearch/elasticsearch"><img src="https://img.shields.io/puppetforge/e/elasticsearch/elasticsearch.svg" alt="Puppet Forge endorsed" /></a>
+<a href="https://forge.puppetlabs.com/elasticsearch/elasticsearch"><img src="https://img.shields.io/puppetforge/v/elasticsearch/elasticsearch.svg" alt="Puppet Forge Version" /></a>
+<a href="https://forge.puppetlabs.com/elasticsearch/elasticsearch"><img src="https://img.shields.io/puppetforge/dt/elasticsearch/elasticsearch.svg" alt="Puppet Forge Downloads" /></a></p>
+
+<h4 id="table-of-contents">Table of Contents</h4>
+
+<ol>
+  <li><a href="#module-description">Module description - What the module does and why it is useful</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with Elasticsearch</a>
+    <ul>
+      <li><a href="#the-module-manages-the-following">The module manages the following</a></li>
+      <li><a href="#requirements">Requirements</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a></li>
+  <li><a href="#advanced-features">Advanced features - Extra information on advanced usage</a></li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a></li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+  <li><a href="#support">Support - When you need help with this module</a></li>
+</ol>
+
+<h2 id="module-description">Module description</h2>
+
+<p>This module sets up <a href="https://www.elastic.co/overview/elasticsearch/">Elasticsearch</a> instances with additional resource for plugins, templates, and more.</p>
+
+<p>This module has been tested against all versions of ES 1.x and 2.x.</p>
+
+<h2 id="setup">Setup</h2>
+
+<h3 id="the-module-manages-the-following">The module manages the following</h3>
+
+<ul>
+  <li>Elasticsearch repository files.</li>
+  <li>Elasticsearch package.</li>
+  <li>Elasticsearch configuration file.</li>
+  <li>Elasticsearch service.</li>
+  <li>Elasticsearch plugins.</li>
+  <li>Elasticsearch templates.</li>
+  <li>Elasticsearch Shield users, roles, and certificates.</li>
+</ul>
+
+<h3 id="requirements">Requirements</h3>
+
+<ul>
+  <li>The <a href="https://forge.puppetlabs.com/puppetlabs/stdlib">stdlib</a> Puppet library.</li>
+  <li><a href="https://forge.puppetlabs.com/ceritsc/yum">ceritsc/yum</a> For yum version lock.</li>
+  <li><a href="https://forge.puppetlabs.com/richardc/datacat">richardc/datacat</a></li>
+  <li><a href="http://augeas.net/">Augeas</a></li>
+  <li><a href="https://forge.puppetlabs.com/puppetlabs/java">puppetlabs-java</a> for Java installation (optional).</li>
+  <li><a href="https://forge.puppetlabs.com/puppetlabs/java_ks">puppetlabs-java_ks</a> for Shield certificate management (optional).</li>
+</ul>
+
+<h4 id="repository-management">Repository management</h4>
+
+<p>When using the repository management, the following module dependencies are required:</p>
+
+<ul>
+  <li>Debian/Ubuntu: <a href="http://forge.puppetlabs.com/puppetlabs/apt">Puppetlabs/apt</a></li>
+  <li>OpenSuSE/SLES: <a href="https://forge.puppetlabs.com/darin/zypprepo">Darin/zypprepo</a></li>
+</ul>
+
+<h3 id="beginning-with-elasticsearch">Beginning with Elasticsearch</h3>
+
+<p>Declare the top-level <code class="language-plaintext highlighter-rouge">elasticsearch</code> class (managing repositories) and set up an instance:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">java_install</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">manage_repo</span>  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">repo_version</span> <span class="p">=&gt;</span> <span class="s1">'2.x'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="main-class">Main class</h3>
+
+<p>Most top-level parameters in the <code class="language-plaintext highlighter-rouge">elasticsearch</code> class are set to reasonable defaults.
+The following are some parameters that may be useful to override:</p>
+
+<h4 id="install-a-specific-version">Install a specific version</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'1.4.2'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note: This will only work when using the repository.</p>
+
+<h4 id="automatically-restarting-the-service-default-set-to-false">Automatically restarting the service (default set to false)</h4>
+
+<p>By default, the module will not restart Elasticsearch when the configuration file, package, or plugins change.
+This can be overridden globally with the following option:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">restart_on_change</span> <span class="p">=&gt;</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Or controlled with the more granular options: <code class="language-plaintext highlighter-rouge">restart_config_change</code>, <code class="language-plaintext highlighter-rouge">restart_package_change</code>, and <code class="language-plaintext highlighter-rouge">restart_plugin_change.</code></p>
+
+<h4 id="automatic-upgrades-default-set-to-false">Automatic upgrades (default set to false)</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">autoupgrade</span> <span class="p">=&gt;</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="removaldecommissioning">Removal/Decommissioning</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="s1">'absent'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="install-everything-but-disable-services-afterwards">Install everything but disable service(s) afterwards</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">status</span> <span class="p">=&gt;</span> <span class="s1">'disabled'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="api-settings">API Settings</h4>
+
+<p>Some resources, such as <code class="language-plaintext highlighter-rouge">elasticsearch::template</code>, require communicating with the Elasticsearch REST API.
+By default, these API settings are set to:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">api_protocol</span>            <span class="p">=&gt;</span> <span class="s1">'http'</span><span class="p">,</span>
+  <span class="py">api_host</span>                <span class="p">=&gt;</span> <span class="s1">'localhost'</span><span class="p">,</span>
+  <span class="py">api_port</span>                <span class="p">=&gt;</span> <span class="m">9200</span><span class="p">,</span>
+  <span class="py">api_timeout</span>             <span class="p">=&gt;</span> <span class="m">10</span><span class="p">,</span>
+  <span class="py">api_basic_auth_username</span> <span class="p">=&gt;</span> <span class="kc">undef</span><span class="p">,</span>
+  <span class="py">api_basic_auth_password</span> <span class="p">=&gt;</span> <span class="kc">undef</span><span class="p">,</span>
+  <span class="py">validate_tls</span>            <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Each of these can be set at the top-level <code class="language-plaintext highlighter-rouge">elasticsearch</code> class and inherited for each resource or overridden on a per-resource basis.</p>
+
+<h3 id="instances">Instances</h3>
+
+<p>This module works with the concept of instances. For service to start you need to specify at least one instance.</p>
+
+<h4 id="quick-setup">Quick setup</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will set up its own data directory and set the node name to <code class="language-plaintext highlighter-rouge">$hostname-$instance_name</code></p>
+
+<h4 id="advanced-options">Advanced options</h4>
+
+<p>Instance specific options can be given:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">config</span>        <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">},</span> <span class="c"># Configuration hash
+</span>  <span class="py">init_defaults</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="p">},</span> <span class="c"># Init defaults hash
+</span>  <span class="py">datadir</span>       <span class="p">=&gt;</span> <span class="p">[</span> <span class="p">],</span> <span class="c"># Data directory
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>See <a href="#advanced-features">Advanced features</a> for more information.</p>
+
+<h3 id="plugins">Plugins</h3>
+
+<p>This module can help manage <a href="http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-plugins.html#known-plugins">a variety of plugins</a>.
+Note that <code class="language-plaintext highlighter-rouge">module_dir</code> is where the plugin will install itself to and must match that published by the plugin author; it is not where you would like to install it yourself.</p>
+
+<h4 id="from-an-official-repository">From an official repository</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'lmenezes/elasticsearch-kopf'</span><span class="p">:</span>
+  <span class="py">instances</span> <span class="p">=&gt;</span> <span class="s1">'instance_name'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="from-a-custom-url">From a custom url</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'jetty'</span><span class="p">:</span>
+  <span class="py">url</span>        <span class="p">=&gt;</span> <span class="s1">'https://oss-es-plugins.s3.amazonaws.com/elasticsearch-jetty/elasticsearch-jetty-1.2.1.zip'</span><span class="p">,</span>
+  <span class="py">instances</span>  <span class="p">=&gt;</span> <span class="s1">'instance_name'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="using-a-proxy">Using a proxy</h4>
+
+<p>You can also use a proxy if required by setting the <code class="language-plaintext highlighter-rouge">proxy_host</code> and <code class="language-plaintext highlighter-rouge">proxy_port</code> options:</p>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'lmenezes/elasticsearch-kopf'</span><span class="p">,</span>
+  <span class="py">instances</span>  <span class="p">=&gt;</span> <span class="s1">'instance_name'</span><span class="p">,</span>
+  <span class="py">proxy_host</span> <span class="p">=&gt;</span> <span class="s1">'proxy.host.com'</span><span class="p">,</span>
+  <span class="py">proxy_port</span> <span class="p">=&gt;</span> <span class="m">3128</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Proxies that require usernames and passwords are similarly supported with the <code class="language-plaintext highlighter-rouge">proxy_username</code> and <code class="language-plaintext highlighter-rouge">proxy_password</code> parameters.</p>
+
+<p>Plugin name formats that are supported include:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">elasticsearch/plugin/version</code> (for official elasticsearch plugins downloaded from download.elastic.co)</li>
+  <li><code class="language-plaintext highlighter-rouge">groupId/artifactId/version</code> (for community plugins downloaded from maven central or OSS Sonatype)</li>
+  <li><code class="language-plaintext highlighter-rouge">username/repository</code> (for site plugins downloaded from github master)</li>
+</ul>
+
+<h4 id="upgrading-plugins">Upgrading plugins</h4>
+
+<p>When you specify a certain plugin version, you can upgrade that plugin by specifying the new version.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'elasticsearch/elasticsearch-cloud-aws/2.1.1'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>And to upgrade, you would simply change it to</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'elasticsearch/elasticsearch-cloud-aws/2.4.1'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Please note that this does not work when you specify ‘latest’ as a version number.</p>
+
+<h4 id="es-2x-official-plugins">ES 2.x official plugins</h4>
+<p>For the Elasticsearch commercial plugins you can refer them to the simple name.</p>
+
+<p>See <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/current/installation.html">Plugin installation</a> for more details.</p>
+
+<h3 id="scripts">Scripts</h3>
+
+<p>Installs <a href="http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html">scripts</a> to be used by Elasticsearch.
+These scripts are shared across all defined instances on the same host.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::script</span> <span class="p">{</span> <span class="s1">'myscript'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="s1">'present'</span><span class="p">,</span>
+  <span class="py">source</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/my/script.groovy'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="templates">Templates</h3>
+
+<p>By default templates use the top-level <code class="language-plaintext highlighter-rouge">elasticsearch::api_*</code> settings to communicate with Elasticsearch.
+The following is an example of how to override these settings:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::template</span> <span class="p">{</span> <span class="s1">'templatename'</span><span class="p">:</span>
+  <span class="py">api_protocol</span>            <span class="p">=&gt;</span> <span class="s1">'https'</span><span class="p">,</span>
+  <span class="py">api_host</span>                <span class="p">=&gt;</span> <span class="nv">$::ipaddress</span><span class="p">,</span>
+  <span class="py">api_port</span>                <span class="p">=&gt;</span> <span class="m">9201</span><span class="p">,</span>
+  <span class="py">api_timeout</span>             <span class="p">=&gt;</span> <span class="m">60</span><span class="p">,</span>
+  <span class="py">api_basic_auth_username</span> <span class="p">=&gt;</span> <span class="s1">'admin'</span><span class="p">,</span>
+  <span class="py">api_basic_auth_password</span> <span class="p">=&gt;</span> <span class="s1">'adminpassword'</span><span class="p">,</span>
+  <span class="py">validate_tls</span>            <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="py">source</span>                  <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/template.json'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="add-a-new-template-using-a-file">Add a new template using a file</h4>
+
+<p>This will install and/or replace the template in Elasticsearch:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::template</span> <span class="p">{</span> <span class="s1">'templatename'</span><span class="p">:</span>
+  <span class="py">source</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/template.json'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="add-a-new-template-using-content">Add a new template using content</h4>
+
+<p>This will install and/or replace the template in Elasticsearch:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::template</span> <span class="p">{</span> <span class="s1">'templatename'</span><span class="p">:</span>
+  <span class="py">content</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'template'</span> <span class="p">=&gt;</span> <span class="s2">"*"</span><span class="p">,</span>
+    <span class="s1">'settings'</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'number_of_replicas'</span> <span class="p">=&gt;</span> <span class="m">0</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Plain JSON strings are also supported.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::template</span> <span class="p">{</span> <span class="s1">'templatename'</span><span class="p">:</span>
+  <span class="py">content</span> <span class="p">=&gt;</span> <span class="s1">'{"template":"*","settings":{"number_of_replicas":0}}'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="delete-a-template">Delete a template</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::template</span> <span class="p">{</span> <span class="s1">'templatename'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="s1">'absent'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="bindingsclients">Bindings/Clients</h3>
+
+<p>Install a variety of <a href="http://www.elasticsearch.org/guide/en/elasticsearch/client/community/current/clients.html">clients/bindings</a>:</p>
+
+<h4 id="python">Python</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::python</span> <span class="p">{</span> <span class="s1">'rawes'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="ruby">Ruby</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::ruby</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="connection-validator">Connection Validator</h3>
+
+<p>This module offers a way to make sure an instance has been started and is up and running before
+doing a next action. This is done via the use of the <code class="language-plaintext highlighter-rouge">es_instance_conn_validator</code> resource.</p>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">es_instance_conn_validator</span> <span class="p">{</span> <span class="s1">'myinstance'</span> <span class="p">:</span>
+  <span class="py">server</span> <span class="p">=&gt;</span> <span class="s1">'es.example.com'</span><span class="p">,</span>
+  <span class="py">port</span>   <span class="p">=&gt;</span> <span class="s1">'9200'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>A common use would be for example :</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'kibana4'</span> <span class="p">:</span>
+  <span class="kp">require</span> <span class="p">=&gt;</span> <span class="nc">Es_Instance_Conn_Validator</span><span class="p">[</span><span class="s1">'myinstance'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="package-installation">Package installation</h3>
+
+<p>There are two different ways of installing Elasticsearch:</p>
+
+<h4 id="repository">Repository</h4>
+
+<p>This option allows you to use an existing repository for package installation.
+The <code class="language-plaintext highlighter-rouge">repo_version</code> corresponds with the <code class="language-plaintext highlighter-rouge">major.minor</code> version of Elasticsearch for versions before 2.x.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">manage_repo</span>  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">repo_version</span> <span class="p">=&gt;</span> <span class="s1">'1.4'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>For 2.x versions of Elasticsearch, use <code class="language-plaintext highlighter-rouge">repo_version =&gt; '2.x'</code>.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">manage_repo</span>  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">repo_version</span> <span class="p">=&gt;</span> <span class="s1">'2.x'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="remote-package-source">Remote package source</h4>
+
+<p>When a repository is not available or preferred you can install the packages from a remote source:</p>
+
+<h5 id="httphttpsftp">http/https/ftp</h5>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">package_url</span> <span class="p">=&gt;</span> <span class="s1">'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb'</span><span class="p">,</span>
+  <span class="py">proxy_url</span>   <span class="p">=&gt;</span> <span class="s1">'http://proxy.example.com:8080/'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Setting <code class="language-plaintext highlighter-rouge">proxy_url</code> to a location will enable download using the provided proxy
+server.
+This parameter is also used by <code class="language-plaintext highlighter-rouge">elasticsearch::plugin</code>.
+Setting the port in the <code class="language-plaintext highlighter-rouge">proxy_url</code> is mandatory.
+<code class="language-plaintext highlighter-rouge">proxy_url</code> defaults to <code class="language-plaintext highlighter-rouge">undef</code> (proxy disabled).</p>
+
+<h5 id="puppet">puppet://</h5>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">package_url</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/elasticsearch-1.4.2.deb'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h5 id="local-file">Local file</h5>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">package_url</span> <span class="p">=&gt;</span> <span class="s1">'file:/path/to/elasticsearch-1.4.2.deb'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="java-installation">Java installation</h3>
+
+<p>Most sites will manage Java separately; however, this module can attempt to install Java as well.
+This is done by using the <a href="https://forge.puppetlabs.com/puppetlabs/java">puppetlabs-java</a> module.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">java_install</span> <span class="p">=&gt;</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Specify a particular Java package/version to be installed:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">java_install</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">java_package</span> <span class="p">=&gt;</span> <span class="s1">'packagename'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="service-management">Service management</h3>
+
+<p>Currently only the basic SysV-style <a href="https://en.wikipedia.org/wiki/Init">init</a> and <a href="http://en.wikipedia.org/wiki/Systemd">Systemd</a> service providers are supported, but other systems could be implemented as necessary (pull requests welcome).</p>
+
+<h4 id="defaults-file">Defaults File</h4>
+
+<p>The <em>defaults</em> file (<code class="language-plaintext highlighter-rouge">/etc/defaults/elasticsearch</code> or <code class="language-plaintext highlighter-rouge">/etc/sysconfig/elasticsearch</code>) for the Elasticsearch service can be populated as necessary.
+This can either be a static file resource or a simple key value-style  <a href="http://docs.puppetlabs.com/puppet/latest/reference/lang_datatypes.html#hashes">hash</a> object, the latter being particularly well-suited to pulling out of a data source such as Hiera.</p>
+
+<h5 id="file-source">File source</h5>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">init_defaults_file</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/defaults'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h5 id="hash-representation">Hash representation</h5>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$config_hash</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'ES_HEAP_SIZE'</span> <span class="p">=&gt;</span> <span class="s1">'30g'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">init_defaults</span> <span class="p">=&gt;</span> <span class="nv">$config_hash</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note: <code class="language-plaintext highlighter-rouge">init_defaults</code> hash can be passed to the main class and to the instance.</p>
+
+<h2 id="advanced-features">Advanced features</h2>
+
+<h3 id="shield">Shield</h3>
+
+<p><a href="https://www.elastic.co/products/shield">Shield</a> users, roles, and certificates can be managed by this module.</p>
+
+<p><strong>Note</strong>: If you are planning to use these features, it is <em>highly recommended</em> you read the following documentation to understand the caveats and extent of the resources available to you.</p>
+
+<h4 id="getting-started">Getting Started</h4>
+
+<p>Although this module can handle several types of Shield resources, you are expected to manage the plugin installation and versions for your deployment.
+For example, the following manifest will install Elasticseach with a single instance running shield:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">java_install</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">manage_repo</span>  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">repo_version</span> <span class="p">=&gt;</span> <span class="s1">'1.7'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span> <span class="p">}</span>
+
+<span class="nc">Elasticsearch</span><span class="p">::</span><span class="nc">Plugin</span> <span class="p">{</span> <span class="py">instances</span> <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'es-01'</span><span class="p">],</span> <span class="p">}</span>
+<span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'elasticsearch/license/latest'</span><span class="p">:</span> <span class="p">}</span>
+<span class="n">elasticsearch::plugin</span> <span class="p">{</span> <span class="s1">'elasticsearch/shield/latest'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>The following examples will assume the preceding resources are part of your puppet manifest.</p>
+
+<h4 id="roles">Roles</h4>
+
+<p>Roles in the <code class="language-plaintext highlighter-rouge">esusers</code> realm can be managed using the <code class="language-plaintext highlighter-rouge">elasticsearch::shield::role</code> type.
+For example, to create a role called <code class="language-plaintext highlighter-rouge">myrole</code>, you could use the following resource:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::shield::role</span> <span class="p">{</span> <span class="s1">'myrole'</span><span class="p">:</span>
+  <span class="py">privileges</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'cluster'</span> <span class="p">=&gt;</span> <span class="s1">'monitor'</span><span class="p">,</span>
+    <span class="s1">'indices'</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'*'</span> <span class="p">=&gt;</span> <span class="s1">'read'</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This role would grant users access to cluster monitoring and read access to all indices.
+See the <a href="https://www.elastic.co/guide/en/shield/index.html">Shield documentation</a> for your version to determine what <code class="language-plaintext highlighter-rouge">privileges</code> to use and how to format them (the Puppet hash representation will simply be translated into yaml.)</p>
+
+<p><strong>Note</strong>: The Puppet provider for <code class="language-plaintext highlighter-rouge">esusers</code> has fine-grained control over the <code class="language-plaintext highlighter-rouge">roles.yml</code> file and thus will leave the default roles Shield installs in-place.
+If you would like to explicitly purge the default roles (leaving only roles managed by puppet), you can do so by including the following in your manifest:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resources</span> <span class="p">{</span> <span class="s1">'elasticsearch_shield_role'</span><span class="p">:</span>
+  <span class="py">purge</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h5 id="mappings">Mappings</h5>
+
+<p>Associating mappings with a role is done by passing an array of strings to the <code class="language-plaintext highlighter-rouge">mappings</code> parameter of the <code class="language-plaintext highlighter-rouge">elasticsearch::shield::role</code> type.
+For example, to define a role with mappings using Shield &gt;= 2.3.x style role definitions:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::shield::role</span> <span class="p">{</span> <span class="s1">'logstash'</span><span class="p">:</span>
+  <span class="py">mappings</span>   <span class="p">=&gt;</span> <span class="p">[</span>
+    <span class="s1">'cn=group,ou=devteam'</span><span class="p">,</span>
+  <span class="p">],</span>
+  <span class="py">privileges</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'cluster'</span> <span class="p">=&gt;</span> <span class="s1">'manage_index_templates'</span><span class="p">,</span>
+    <span class="s1">'indices'</span> <span class="p">=&gt;</span> <span class="p">[{</span>
+      <span class="s1">'names'</span>      <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'logstash-*'</span><span class="p">],</span>
+      <span class="s1">'privileges'</span> <span class="p">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'write'</span><span class="p">,</span>
+        <span class="s1">'delete'</span><span class="p">,</span>
+        <span class="s1">'create_index'</span><span class="p">,</span>
+      <span class="p">],</span>
+    <span class="p">}],</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: Observe the brackets around <code class="language-plaintext highlighter-rouge">indices</code> in the preceding role definition; which is an array of hashes per the format in Shield 2.3.x. Follow the documentation to determine the correct formatting for your version of Shield.</p>
+
+<p>If you’d like to keep the mappings file purged of entries not under Puppet’s control, you should use the following <code class="language-plaintext highlighter-rouge">resources</code> declaration because mappings are a separate low-level type:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">resources</span> <span class="p">{</span> <span class="s1">'elasticsearch_shield_role_mapping'</span><span class="p">:</span>
+  <span class="py">purge</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="users">Users</h4>
+
+<p>Users can be managed using the <code class="language-plaintext highlighter-rouge">elasticsearch::shield::user</code> type.
+For example, to create a user <code class="language-plaintext highlighter-rouge">mysuser</code> with membership in <code class="language-plaintext highlighter-rouge">myrole</code>:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::shield::user</span> <span class="p">{</span> <span class="s1">'myuser'</span><span class="p">:</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'mypassword'</span><span class="p">,</span>
+  <span class="py">roles</span>    <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'myrole'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">password</code> parameter will also accept password hashes generated from the <code class="language-plaintext highlighter-rouge">esusers</code> utility and ensure the password is kept in-sync with the Shield <code class="language-plaintext highlighter-rouge">users</code> file for all Elasticsearch instances.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::shield::user</span> <span class="p">{</span> <span class="s1">'myuser'</span><span class="p">:</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'$2a$10$IZMnq6DF4DtQ9c4sVovgDubCbdeH62XncmcyD1sZ4WClzFuAdqspy'</span><span class="p">,</span>
+  <span class="py">roles</span>    <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'myrole'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: When using the <code class="language-plaintext highlighter-rouge">esusers</code> provider (the default for plaintext passwords), Puppet has no way to determine whether the given password is in-sync with the password hashed by Shield.
+In order to work around this, the <code class="language-plaintext highlighter-rouge">elasticsearch::shield::user</code> resource has been designed to accept refresh events in order to update password values.
+This is not ideal, but allows you to instruct the resource to change the password when needed.
+For example, to update the aforementioned user’s password, you could include the following your manifest:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">notify</span> <span class="p">{</span> <span class="s1">'update password'</span><span class="p">:</span> <span class="p">}</span> <span class="p">~&gt;</span>
+<span class="n">elasticsearch::shield::user</span> <span class="p">{</span> <span class="s1">'myuser'</span><span class="p">:</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'mynewpassword'</span><span class="p">,</span>
+  <span class="py">roles</span>    <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'myrole'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="certificates">Certificates</h4>
+
+<p>SSL/TLS can be enabled by providing an <code class="language-plaintext highlighter-rouge">elasticsearch::instance</code> type with paths to the certificate and private key files, and a password for the keystore.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">ssl</span>                  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">ca_certificate</span>       <span class="p">=&gt;</span> <span class="s1">'/path/to/ca.pem'</span><span class="p">,</span>
+  <span class="py">certificate</span>          <span class="p">=&gt;</span> <span class="s1">'/path/to/cert.pem'</span><span class="p">,</span>
+  <span class="py">private_key</span>          <span class="p">=&gt;</span> <span class="s1">'/path/to/key.pem'</span><span class="p">,</span>
+  <span class="py">keystore_password</span>    <span class="p">=&gt;</span> <span class="s1">'keystorepassword'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: Setting up a proper CA and certificate infrastructure is outside the scope of this documentation, see the aforementioned Shield guide for more information regarding the generation of these certificate files.</p>
+
+<p>The module will set up a keystore file for the node to use and set the relevant options in <code class="language-plaintext highlighter-rouge">elasticsearch.yml</code> to enable TLS/SSL using the certificates and key provided.</p>
+
+<h4 id="system-keys">System Keys</h4>
+
+<p>Shield system keys can be passed to the module, where they will be placed into individual instance configuration directories.
+This can be set at the <code class="language-plaintext highlighter-rouge">elasticsearch</code> class and inherited across all instances:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">system_key</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///path/to/key'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Or set on a per-instance basis:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">system_key</span> <span class="p">=&gt;</span> <span class="s1">'/local/path/to/key'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="package-version-pinning">Package version pinning</h3>
+
+<p>The module supports pinning the package version to avoid accidental upgrades that are not done by Puppet.
+To enable this feature:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">package_pin</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">version</span>     <span class="p">=&gt;</span> <span class="s1">'1.5.2'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In this example we pin the package version to 1.5.2.</p>
+
+<h3 id="data-directories">Data directories</h3>
+
+<p>There are 4 different ways of setting data directories for Elasticsearch.
+In every case the required configuration options are placed in the <code class="language-plaintext highlighter-rouge">elasticsearch.yml</code> file.</p>
+
+<h4 id="default">Default</h4>
+<p>By default we use:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/share/elasticsearch/data/$instance_name
+</code></pre></div></div>
+
+<p>Which provides a data directory per instance.</p>
+
+<h4 id="single-global-data-directory">Single global data directory</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">datadir</span> <span class="p">=&gt;</span> <span class="s1">'/var/lib/elasticsearch-data'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Creates the following for each instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/lib/elasticsearch-data/$instance_name
+</code></pre></div></div>
+
+<h4 id="multiple-global-data-directories">Multiple Global data directories</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">datadir</span> <span class="p">=&gt;</span> <span class="p">[</span> <span class="s1">'/var/lib/es-data1'</span><span class="p">,</span> <span class="s1">'/var/lib/es-data2'</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Creates the following for each instance:
+<code class="language-plaintext highlighter-rouge">/var/lib/es-data1/$instance_name</code>
+and
+<code class="language-plaintext highlighter-rouge">/var/lib/es-data2/$instance_name</code>.</p>
+
+<h4 id="single-instance-data-directory">Single instance data directory</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span> <span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">datadir</span> <span class="p">=&gt;</span> <span class="s1">'/var/lib/es-data-es01'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Creates the following for this instance:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/lib/es-data-es01
+</code></pre></div></div>
+
+<h4 id="multiple-instance-data-directories">Multiple instance data directories</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span> <span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">datadir</span> <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'/var/lib/es-data1-es01'</span><span class="p">,</span> <span class="s1">'/var/lib/es-data2-es01'</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Creates the following for this instance:
+<code class="language-plaintext highlighter-rouge">/var/lib/es-data1-es01</code>
+and
+<code class="language-plaintext highlighter-rouge">/var/lib/es-data2-es01</code>.</p>
+
+<h3 id="main-and-instance-configurations">Main and instance configurations</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">config</code> option in both the main class and the instances can be configured to work together.</p>
+
+<p>The options in the <code class="language-plaintext highlighter-rouge">instance</code> config hash will merged with the ones from the main class and override any duplicates.</p>
+
+<h4 id="simple-merging">Simple merging</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'cluster.name'</span> <span class="p">=&gt;</span> <span class="s1">'clustername'</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'node.name'</span> <span class="p">=&gt;</span> <span class="s1">'nodename'</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-02'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'node.name'</span> <span class="p">=&gt;</span> <span class="s1">'nodename2'</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This example merges the <code class="language-plaintext highlighter-rouge">cluster.name</code> together with the <code class="language-plaintext highlighter-rouge">node.name</code> option.</p>
+
+<h4 id="overriding">Overriding</h4>
+
+<p>When duplicate options are provided, the option in the instance config overrides the ones from the main class.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'cluster.name'</span> <span class="p">=&gt;</span> <span class="s1">'clustername'</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-01'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'node.name'</span> <span class="p">=&gt;</span> <span class="s1">'nodename'</span><span class="p">,</span> <span class="s1">'cluster.name'</span> <span class="p">=&gt;</span> <span class="s1">'otherclustername'</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">elasticsearch::instance</span> <span class="p">{</span> <span class="s1">'es-02'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="s1">'node.name'</span> <span class="p">=&gt;</span> <span class="s1">'nodename2'</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This will set the cluster name to <code class="language-plaintext highlighter-rouge">otherclustername</code> for the instance <code class="language-plaintext highlighter-rouge">es-01</code> but will keep it to <code class="language-plaintext highlighter-rouge">clustername</code> for instance <code class="language-plaintext highlighter-rouge">es-02</code></p>
+
+<h4 id="configuration-writeup">Configuration writeup</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">config</code> hash can be written in 2 different ways:</p>
+
+<h5 id="full-hash-writeup">Full hash writeup</h5>
+
+<p>Instead of writing the full hash representation:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">config</span>                 <span class="p">=&gt;</span> <span class="p">{</span>
+   <span class="s1">'cluster'</span>             <span class="p">=&gt;</span> <span class="p">{</span>
+     <span class="s1">'name'</span>              <span class="p">=&gt;</span> <span class="s1">'ClusterName'</span><span class="p">,</span>
+     <span class="s1">'routing'</span>           <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'allocation'</span>     <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="s1">'awareness'</span>    <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="s1">'attributes'</span> <span class="p">=&gt;</span> <span class="s1">'rack'</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h5 id="short-hash-writeup">Short hash writeup</h5>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'elasticsearch'</span><span class="p">:</span>
+  <span class="py">config</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'cluster'</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'name'</span> <span class="p">=&gt;</span> <span class="s1">'ClusterName'</span><span class="p">,</span>
+      <span class="s1">'routing.allocation.awareness.attributes'</span> <span class="p">=&gt;</span> <span class="s1">'rack'</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="limitations">Limitations</h2>
+
+<p>This module has been built on and tested against Puppet 3.2 and higher.</p>
+
+<p>The module has been tested on:</p>
+
+<ul>
+  <li>Debian 6/7/8</li>
+  <li>CentOS 6/7</li>
+  <li>OracleLinux 6/7</li>
+  <li>Ubuntu 12.04, 14.04</li>
+  <li>OpenSuSE 13.x</li>
+  <li>SLES 12</li>
+</ul>
+
+<p>Other distro’s that have been reported to work:</p>
+
+<ul>
+  <li>RHEL 6</li>
+  <li>Scientific 6</li>
+</ul>
+
+<p>Testing on other platforms has been light and cannot be guaranteed.</p>
+
+<h2 id="development">Development</h2>
+
+<p>Please see the <a href="/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/CONTRIBUTING.md">CONTRIBUTING.md</a> file for instructions regarding development environments and testing.</p>
+
+<h2 id="support">Support</h2>
+
+<p>Need help? Join us in <a href="https://webchat.freenode.net?channels=%23elasticsearch">#elasticsearch</a> on Freenode IRC or on the <a href="https://discuss.elastic.co/">discussion forum</a>.</p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

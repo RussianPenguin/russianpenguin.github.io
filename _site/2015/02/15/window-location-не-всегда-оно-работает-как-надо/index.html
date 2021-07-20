@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>window.location - не всегда оно работает как надо | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="window.location - не всегда оно работает как надо" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Если раньше мы долго ругались на проблемы IE, то сейчас на FF и Chrome - ничего особо не поменялось. На этот раз отличились механизмы работы с хешом в window.location. Кейс: мы хотим перенаправить пользователя с помощью js на другую страницу. Что может пойти не так? Например у нас есть ссылка вида /foo. И логично предположить, что в современном мире мы хотим сохранить хеш (это нужно для angularjs например) чтобы на новой странице отработал нужный функционал. Что мы делаем window.location.pathname = &#39;/foo&#39; Работает. Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется. window.location.pathname=&#39;/foo#bar&#39; Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar. Ниже иллюстрации. Как видим FF с задачей не справился. И не перекодировал # автоматом. Баг этот давний - аж 2009го года. Поэтому внимательно следите за редиректами если у вас есть спецсимволы в урле. Проще говоря: pathname в FF вседет себя так же, как и href (за мелким исключением вроде сохранения хеша). Исходники на посмотреть тут." />
+<meta property="og:description" content="Если раньше мы долго ругались на проблемы IE, то сейчас на FF и Chrome - ничего особо не поменялось. На этот раз отличились механизмы работы с хешом в window.location. Кейс: мы хотим перенаправить пользователя с помощью js на другую страницу. Что может пойти не так? Например у нас есть ссылка вида /foo. И логично предположить, что в современном мире мы хотим сохранить хеш (это нужно для angularjs например) чтобы на новой странице отработал нужный функционал. Что мы делаем window.location.pathname = &#39;/foo&#39; Работает. Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется. window.location.pathname=&#39;/foo#bar&#39; Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar. Ниже иллюстрации. Как видим FF с задачей не справился. И не перекодировал # автоматом. Баг этот давний - аж 2009го года. Поэтому внимательно следите за редиректами если у вас есть спецсимволы в урле. Проще говоря: pathname в FF вседет себя так же, как и href (за мелким исключением вроде сохранения хеша). Исходники на посмотреть тут." />
+<link rel="canonical" href="http://localhost:4000/2015/02/15/window-location-%D0%BD%D0%B5-%D0%B2%D1%81%D0%B5%D0%B3%D0%B4%D0%B0-%D0%BE%D0%BD%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-%D0%BA%D0%B0%D0%BA-%D0%BD%D0%B0%D0%B4%D0%BE/" />
+<meta property="og:url" content="http://localhost:4000/2015/02/15/window-location-%D0%BD%D0%B5-%D0%B2%D1%81%D0%B5%D0%B3%D0%B4%D0%B0-%D0%BE%D0%BD%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-%D0%BA%D0%B0%D0%BA-%D0%BD%D0%B0%D0%B4%D0%BE/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-02-15T16:01:40+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="window.location - не всегда оно работает как надо" />
+<script type="application/ld+json">
+{"headline":"window.location - не всегда оно работает как надо","dateModified":"2015-02-15T16:01:40+03:00","datePublished":"2015-02-15T16:01:40+03:00","description":"Если раньше мы долго ругались на проблемы IE, то сейчас на FF и Chrome - ничего особо не поменялось. На этот раз отличились механизмы работы с хешом в window.location. Кейс: мы хотим перенаправить пользователя с помощью js на другую страницу. Что может пойти не так? Например у нас есть ссылка вида /foo. И логично предположить, что в современном мире мы хотим сохранить хеш (это нужно для angularjs например) чтобы на новой странице отработал нужный функционал. Что мы делаем window.location.pathname = &#39;/foo&#39; Работает. Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется. window.location.pathname=&#39;/foo#bar&#39; Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar. Ниже иллюстрации. Как видим FF с задачей не справился. И не перекодировал # автоматом. Баг этот давний - аж 2009го года. Поэтому внимательно следите за редиректами если у вас есть спецсимволы в урле. Проще говоря: pathname в FF вседет себя так же, как и href (за мелким исключением вроде сохранения хеша). Исходники на посмотреть тут.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/02/15/window-location-%D0%BD%D0%B5-%D0%B2%D1%81%D0%B5%D0%B3%D0%B4%D0%B0-%D0%BE%D0%BD%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-%D0%BA%D0%B0%D0%BA-%D0%BD%D0%B0%D0%B4%D0%BE/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/02/15/window-location-%D0%BD%D0%B5-%D0%B2%D1%81%D0%B5%D0%B3%D0%B4%D0%B0-%D0%BE%D0%BD%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-%D0%BA%D0%B0%D0%BA-%D0%BD%D0%B0%D0%B4%D0%BE/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">window.location - не всегда оно работает как надо</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>window.location - не всегда оно работает как надо</h1>
+<p>15 Feb 2015</p>
+
+<p>Если раньше мы долго ругались на проблемы IE, то сейчас на FF и Chrome - ничего особо не поменялось.</p>
+
+<p>На этот раз отличились механизмы работы с хешом в window.location.</p>
+
+<p>Кейс: мы хотим перенаправить пользователя с помощью js на другую страницу.</p>
+
+<p>Что может пойти не так?</p>
+
+<p>Например у нас есть ссылка вида /foo. И логично предположить, что в современном мире мы хотим сохранить хеш (это нужно для angularjs например) чтобы на новой странице отработал нужный функционал.</p>
+
+<p>Что мы делаем</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/foo</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<p>Работает.</p>
+
+<p>Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="o">=</span><span class="dl">'</span><span class="s1">/foo#bar</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<p>Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar.</p>
+
+<p>Ниже иллюстрации.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png"><img src="/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png?w=300" alt="FF: window.location.pathname bug" /></a><a href="https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png"><img src="/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png?w=300" alt="Chrome: window.location.pathname" /></a>Как видим FF с задачей не справился. И не перекодировал # автоматом.</p>
+
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=483304" title="FF: window.location.hash bug">Баг</a> этот давний - аж 2009го года.</p>
+
+<p>Поэтому внимательно следите за редиректами если у вас есть спецсимволы в урле.</p>
+
+<p>Проще говоря: pathname в FF вседет себя так же, как и href (за мелким исключением вроде сохранения хеша).</p>
+
+<p>Исходники на посмотреть <a href="https://github.com/RussianPenguin/blogSamples/blob/master/pathname.php" title="Исходники к статье">тут</a>.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

@@ -1,0 +1,13 @@
+Для успешного запуска сервера нужно выполнить следующий набор команд
+
+* Скачаем Composer
+
+    curl -sS https://getcomposer.org/installer | php
+
+* Установим все зависимости
+
+    php composer.phar install
+
+* Запустить локальный php-сервер на порту 8080
+
+    php -S localhost:8080 -t web/

@@ -1,0 +1,15 @@
+<div class="panel-heading">
+    Пример работы с сервисами
+</div>
+<div class="panel-body">
+    <div ng-controller="main">
+        <span style="border: 1px solid black">{{model}}</span>
+        <select-item list="list" ng-model="model" required ng-change="informer.change(model)">
+        </select-item>
+    </div>
+    <div ng-controller="second">
+        <ul>
+            <li ng-repeat="item in informer.changeHistory track by $index">{{item}}</li>
+        </ul>
+    </div>
+</div>

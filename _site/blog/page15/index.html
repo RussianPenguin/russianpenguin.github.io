@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 15 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page15/" />
+<meta property="og:url" content="http://localhost:4000/blog/page15/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page14/" />
+<link rel="next" href="http://localhost:4000/blog/page16/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page15/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2015/09/08/pycharm-%d0%b7%d0%b0%d1%81%d1%82%d0%b0%d0%b2%d0%bb%d1%8f%d0%b5%d0%bc-terminal-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d1%82%d1%8c-%d1%81-virtualenv/">PyCharm заставляем terminal работать с virtualenv</a></h1>
+  <p class="author">
+    <span class="date">2015-09-08 23:00:36 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2015/09/pycharm-terminal.png"><img src="/assets/images/2015/09/pycharm-terminal.png?w=150" alt="pycharm terminal with virtualenv" /></a> Создаем виртуальное окружение как указано в <a href="https://www.jetbrains.com/pycharm/help/creating-virtual-environment.html">доке</a>.<br />
+Путь к окружению должен выглядеть как</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\&lt;путь к проекту\&gt;/.venv
+</code></pre></div></div>
+
+<p>И не забудьте добавить эту папку в .gitignore.</p>
+
+<p>Теперь в корне проекта создаем файл .pycharmrc</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.bashrc  
+source .venv/bin/activate
+</code></pre></div></div>
+
+<p>Осталось добавить запуск нашего окружения в настройках <strong>Tools</strong> -&gt; <strong>Terminal</strong>.</p>
+
+<p>Прописываем свойство <strong>Shell path</strong> как</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/bin/bash --rcfile .pycharmrc
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/09/07/raspbian-swapfile/">Raspbian: swapfile</a></h1>
+  <p class="author">
+    <span class="date">2015-09-07 13:45:22 +0300</span>
+  </p>
+  <div class="content">
+   <p>Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах.</p>
+
+<p>Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/swapfile none swap defaults 0 0
+</code></pre></div></div>
+
+<p>Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?).</p>
+
+<p>А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that  
+
+</code></pre></div></div>
+
+<p>Ок. Сделаем.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>fallocate <span class="nt">-l</span> 1024M /swapfile  
+<span class="nv">$ </span><span class="nb">sudo </span>dphys-swapfile swapon /swapfile
+</code></pre></div></div>
+
+<p>Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONF\_SWAPSIZE=1024  
+CONF\_SWAPFILE=/swapfile
+</code></pre></div></div>
+
+<p>Теперь все отлично.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ free -h  
+ total used free shared buffers cached  
+Mem: 435M 418M 17M 0B 106M 28M  
+-/+ buffers/cache: 283M 152M  
+Swap: 1,0G 0B 1,0G
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/09/03/symfony2-%d1%81%d1%82%d1%80%d0%b0%d0%bd%d0%b8%d1%86%d0%b0-404-%d0%b8-%d0%b0%d0%b2%d1%82%d0%be%d1%80%d0%b8%d0%b7%d0%b0%d1%86%d0%b8%d1%8f/">Symfony2: страница 404 и авторизация</a></h1>
+  <p class="author">
+    <span class="date">2015-09-03 17:04:52 +0300</span>
+  </p>
+  <div class="content">
+   <p>Все знают, что в symfony2 404я страница не попадает под действие фаерволов. А это значит, что даже пытаясь кастомизировать 404ую страницу мы не сможем получить имя пользователя и его роль в системе. Так как механизм авторизации попросту не загружается.</p>
+
+<p>Однако, существует решение, которое позволяет кастомизировать страницу 404 с учетом пользовательских данных.</p>
+
+<p>Для этого нам надо завести роут подпадающий под действия фаерволлов и при этом откликающийся на любой (!) введенный адрес перехода.</p>
+
+<p>Экшн будет отдавать эксепшн NotFoundHttpException. Таким образом мы получим ситуацию, когда при переходе на 404ую все фаерволы запущены и данные пользователя загружены.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">ProjectBundle\Controller</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nc">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Bundle\FrameworkBundle\Controller\Controller</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\NotFoundHttpException</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">DefaultController</span> <span class="kd">extends</span> <span class="nc">Controller</span>  
+<span class="p">{</span>  
+ <span class="c1">//...</span>
+
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Данный</span> <span class="n">роут</span> <span class="n">перехватывает</span> <span class="n">все</span> <span class="n">переходы</span> <span class="n">в</span> <span class="n">системе</span><span class="p">,</span> <span class="n">которые</span> <span class="n">не</span> <span class="n">охвачены</span> <span class="n">другими</span> <span class="n">роутами</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="nf">Route</span><span class="p">(</span><span class="s2">"/</span><span class="si">{</span><span class="nv">path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"\_inner404Redirect"</span><span class="p">)</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="n">inner404Redirect</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="k">throw</span> <span class="k">new</span> <span class="nc">NotFoundHttpException</span><span class="p">();</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://github.com/symfony/symfony/issues/8414">Источник</a></p>
+
+
+  </div>
+
+  <h1><a href="/2015/08/27/nodejs-%d1%81%d0%ba%d0%b0%d0%b6%d0%b5%d0%bc-%d0%bd%d0%b5%d1%82-%d1%87%d0%b5%d1%85%d0%b0%d1%80%d0%b4%d0%b5-%d1%81-%d0%b2%d0%b5%d1%80%d1%81%d0%b8%d1%8f%d0%bc%d0%b8/">NodeJS: скажем нет чехарде с версиями</a></h1>
+  <p class="author">
+    <span class="date">2015-08-27 22:43:25 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2015/08/nodejs.png"><img src="/assets/images/2015/08/nodejs.png?w=150" alt="nodejs" /></a> Сначала был NodeJS, который шел в составе дистрибутива. Потом потребовалось поставить bower, который не идет среди пакетов репозитария, а должен доставляться отдельно.<br />
+Я набрал на клавиатуре <strong>sudo npm install -g bower</strong>. И палец завис в миллиметре над кнопкой enter.<br />
+Нет нужды говорить, что при обновлении пакетов из репозитария что-то может пойти не так? Думаю любой понимает, что если долго доставлять сторонний софт в свой дистрибутив, то при очередном обновлении может что-то отвалиться.<br />
+Да. Зависимости пакета ноды складываются в том же каталоге, что и устанавливаемый пакет. А что если версия ноды старая? А что если?<br />
+Поэтому было предпринято решение удалить все упоминания о nodejs в системе и найти способ установки в локальном окружении (аналогично virtualenv в python).<br />
+Оказалось, что таких способов целых несколько. А именно два менеджера версий для ноды (может больше):</p>
+
+<ul>
+  <li><a href="https://github.com/tj/n">https://github.com/tj/n</a></li>
+  <li><a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a></li>
+</ul>
+
+<p> <br />
+Попробовал оба и мне пришелся больше по душе второй.<br />
+Установка проста: все как описано в документации.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-o-</span> https://raw.githubusercontent.com/creationix/nvm/v0.26.1/install.sh | bash  
+
+</code></pre></div></div>
+<p>А потом ставим ноду.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nvm <span class="nb">install </span>0.12
+</code></pre></div></div>
+<p>И теперь нам доступна свежая версия для издевательств.<br />
+Можно поставить grunt, bower и кучу других модулей. При этом ни один из них не будет захламлять просторы системных разделов. Все будет в /home.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> bower grunt-cli
+</code></pre></div></div>
+
+<p>Есть один небольшой глюк. После установки нужно указать дефолтную версию ноды, которую вы будете использовать. Иначе при последующем запуске консоли вы рискуете оказаться без команды <strong>node</strong> :)</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvm <span class="nb">alias </span>default 0.12.7
+</code></pre></div></div>
+
+<p>Все остальные плюшки можно найти в официальной доке и по ключу –help</p>
+
+
+  </div>
+
+  <h1><a href="/2015/08/19/svn-%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b0-%d1%84%d0%bb%d0%b0%d0%b3%d0%b0-x-%d0%bd%d0%b0-%d1%84%d0%b0%d0%b9%d0%bb%d1%8b/">SVN: установка флага +x на файлы</a></h1>
+  <p class="author">
+    <span class="date">2015-08-19 16:31:04 +0300</span>
+  </p>
+  <div class="content">
+   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ svn propset svn:executable '\*' file
+</code></pre></div></div>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page14/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 15 из 35</span>
+  
+    <a href="/blog/page16/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

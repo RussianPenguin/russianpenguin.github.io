@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Часть 5: Подготовка базы данных, миграции (Тестирование ПО) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Часть 5: Подготовка базы данных, миграции (Тестирование ПО)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В пятой части цикла “Тестирование ПО” мы научимся работать с базой данных и использовать миграции Yii2." />
+<meta property="og:description" content="В пятой части цикла “Тестирование ПО” мы научимся работать с базой данных и использовать миграции Yii2." />
+<link rel="canonical" href="http://localhost:4000/2017/05/08/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-5/" />
+<meta property="og:url" content="http://localhost:4000/2017/05/08/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-5/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-05-08T21:23:18+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Часть 5: Подготовка базы данных, миграции (Тестирование ПО)" />
+<script type="application/ld+json">
+{"headline":"Часть 5: Подготовка базы данных, миграции (Тестирование ПО)","dateModified":"2017-05-08T21:23:18+03:00","datePublished":"2017-05-08T21:23:18+03:00","description":"В пятой части цикла “Тестирование ПО” мы научимся работать с базой данных и использовать миграции Yii2.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/05/08/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-5/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/05/08/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-5/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Часть 5: Подготовка базы данных, миграции (Тестирование ПО)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Часть 5: Подготовка базы данных, миграции (Тестирование ПО)</h1>
+<p>08 May 2017</p>
+
+<h2 id="оглавление"><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/"><img src="/assets/images/2017/05/00-title.png" alt="00-title" />Оглавление</a></h2>
+
+<p>Перед вами очередная часть цикла <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Тестирование ПО</a>. В <a href="http://russianpenguin.ru/2017/05/02/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-4/">предыдущей части</a> мы развернули инфраструктуру для работы с проектом на базе Yii2-advanced-template. В этой части мы разберемся как работать с базой данных и что такое миграции.</p>
+
+<!--more-->
+
+<h2 id="база-данных">База данных</h2>
+
+<h3 id="подготовка-машины">Подготовка машины</h3>
+
+<p>Нам потребуется две базы данных. Одну из них мы создали на предыдущем этапе разработки. Вторую добавим сейчас. Поскольку правилом хорошего тона считается наличие отдельной базы данных для запуска тестов. Это правило позволяет достичь повторяемости результатов при непрерывном прогоне кейсов..</p>
+
+<p>Можно это сделать руками, но проще всего отредактировать конфигурацию <em>config.yaml</em>. Добавим в секции <strong>mariadb.databases</strong> и <strong>mariadb.grants</strong> две записи. Одна из них - описание базы. Вторая - права доступа на новую базу.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mariadb:  
+ ...  
+ databases:  
+ ...  
+ mariadbnd\_r4j5mttm7uht:  
+ name: tdd\_tests  
+ sql: ''  
+ grants:  
+ ...  
+ mariadbng\_puym1vumdrfg:  
+ user: tdd  
+ table: 'tdd\_tests.\*'  
+ privileges:  
+ - ALL
+</code></pre></div></div>
+
+<p>Теперь можно запустить провизию машины заново. Либо из командной строки, либо из меню PHPStorm (Tools-&gt;Vagrant-&gt;Provision). Через некоторое время, которое зависит от производительности вашей машины, вы увидите сообщение об успешном завершении команды.</p>
+
+<p>Как проверить, что все нормально работает? Нужно зайти в систему по ssh. Сделать это можно двумя способами: при помощи команды vagrant ssh в консоли или при помощи меню PHPStorm (Tools-&gt;Start ssh session и в открывшемся окне стоит выбрать vagrant как объект для подключения). Затем подключаемся к консоли mariadb (mysql -u root -p) и вводим команду show databases.</p>
+
+<p><img src="/assets/images/2017/05/04-show-databases.png" alt="04-show databases" /></p>
+
+<h3 id="структура-базы">Структура базы</h3>
+
+<p>Далее потребуется спроектировать схему таблицы user таким образом, чтобы она поддерживала все необходимые базовые возможности по работе с пользователям в yii2. Особо усердствовать на этом этапе мы не будем, а возьмем рекомендованную схему из фреймворка.</p>
+
+<p><img src="/assets/images/2017/05/01-user-table.png" alt="01-user table" /></p>
+
+<p>Для того, чтобы создать таблицу выше нам потребуется написать <a href="http://www.yiiframework.com/doc-2.0/guide-db-migrations.html">миграцию</a> yii2 (конечно писать мы пока ничего не будем, а возьмем готовый файл, который любезно предоставили нам разработчики advanced template). Но прежде - отредактировать конфигурационные файлы, которые содержат DSN-строки подключения. Это файлы main-local.php и test-local.php из каталога environments/dev/common/config.</p>
+
+<p>Требуется поменять соответствующие строки таким образом чтобы они указывали на актуальную базу разработчика и на тестовую базу соответственно.</p>
+
+<p><strong>main-local.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'db'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="p">[</span>  
+ <span class="s1">'class'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'yii\db\Connection'</span><span class="p">,</span>  
+ <span class="s1">'dsn'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'mysql:host=localhost;dbname=tdd'</span><span class="p">,</span>  
+ <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'root'</span><span class="p">,</span>  
+ <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'tdd'</span><span class="p">,</span>  
+ <span class="s1">'charset'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>  
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p><strong>test-local.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'db'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="p">[</span>  
+ <span class="s1">'dsn'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'mysql:host=localhost;dbname=tdd\_tests'</span><span class="p">,</span>  
+<span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="развертывание-конфигурации">Развертывание конфигурации</h3>
+
+<p>Теперь необходимо полученную конфигурацию развернуть. Сделать это можно несколькими способами:</p>
+
+<ul>
+  <li>вручную скопировать отредактированные файлы в каталог common/config</li>
+  <li>запустить провизию машины заново (Эта операция помимо прочего еще и скопирует конфигурационные файлы в нужное место.)</li>
+  <li>зайти по ssh на машину и запустить скрипт init.php с нужными параметрами (php init –env=${YII_ENV} –overwrite=y)</li>
+</ul>
+
+<p>Выберите удобный для себя способ и разверните новую конфигурацию.</p>
+
+<h2 id="миграции">Миграции</h2>
+
+<p>Раньше разработчикам приходилось держать схему базы данных отдельно от проекта и по мере надобности вручную вносить изменения. Это довольно однообразный процесс на каждом этапе которого был велик риск получить расхождения схемы в базе и схемы в системе контроля версий.</p>
+
+<p>Теперь необходимость в этом отпала и большинство современных фреймворков работают с так называемыми <a href="https://en.wikipedia.org/wiki/Schema_migration">миграциями схемы базы данных</a>. Yii2 исключением не является и поддерживает этот <a href="http://www.yiiframework.com/doc-2.0/guide-db-migrations.html">механизм</a>.</p>
+
+<h3 id="создание-миграции">Создание миграции</h3>
+
+<p>Для создания миграции существует консольная команда</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yii migrate/create \&lt;имя миграции\&gt;
+</code></pre></div></div>
+
+<p>Разработчики шаблона заботливо создали за нас первую миграцию <em>init</em> которая расположена она в файле <em>console/migrations/m130524_201442_init.php</em>.</p>
+
+<p>Все хорошо, но есть одно но - данный код предназначен для большинства имеющихся баз и поэтому задуман быть универсальным. У нас же четко определено с какой базой требуется работать. Поэтому нелишним будет изменить ряд столбцов под конкретные цели.</p>
+
+<ul>
+  <li>username для нас не имеет особого значения и он не обязательно должен быть уникальным (во многих проектах его оставляют уникальным и это очень мешает пользователям когда все ники уже заняты)</li>
+  <li>created_at - это timestamp с дефолтным значением равным CURRENT_TIMESTAMP</li>
+  <li>updated_at - это тоже timestamp со значением CURRENT_TIMESTAMP которое обновляется при каждом обновлении записи</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">createTable</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="p">[</span>  
+ <span class="s1">'id'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">primaryKey</span><span class="p">(),</span>  
+ <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">string</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">notNull</span><span class="p">(),</span>  
+ <span class="s1">'auth\_key'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">string</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">notNull</span><span class="p">(),</span>  
+ <span class="s1">'password\_hash'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">string</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">notNull</span><span class="p">(),</span>  
+ <span class="s1">'password\_reset\_token'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">string</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">unique</span><span class="p">(),</span>  
+ <span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">string</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">notNull</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">unique</span><span class="p">(),</span>  
+ <span class="s1">'status'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">smallInteger</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">notNull</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">defaultValue</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>  
+ <span class="s1">'created\_at'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'timestamp DEFAULT current\_timestamp'</span><span class="p">,</span>  
+ <span class="s1">'updated\_at'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'timestamp DEFAULT current\_timestamp ON UPDATE current\_timestamp'</span><span class="p">,</span>  
+<span class="p">],</span> <span class="nv">$tableOptions</span><span class="p">);</span>  
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addCommentOnTable</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="s1">'User table'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Кратко пройдемся по некоторым моментам</p>
+
+<ul>
+  <li>означает имя таблицы user с добавлением префикса таблиц из конфигурационного файла</li>
+  <li>created_at и update_at используют нативный формат записи типа поля поскольку на данный момент SchemaBuilder не очень дружит с полями timestamp и вообще с датой-временем.</li>
+  <li>Всегда добавляйте комментарии на таблицы и поля. Это поможет вам ориентироваться в схеме при разрастании проекта.</li>
+</ul>
+
+<h3 id="применение-миграции">Применение миграции</h3>
+
+<p>Для применения конкретной миграции (или всех) требуется зайти на виртуальную машину в каталог с проектом (/var/www в нашем случае) и выполнить команду</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php yii migrate/up
+</code></pre></div></div>
+
+<p>Система спросит вас о том, действительно ли вы хотите применить миграцию. Отвечаете утвердительно и через некоторое время вам будет показано сообщение об успешном применении нового кода.</p>
+
+<p><img src="/assets/images/2017/05/02-migrate-up.png" alt="02-migrate up" /></p>
+
+<p>Посмотреть что получилось можно зайдя в консоль mysql и выполнив запрос на отображение схемы таблицы.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u tdd -p tdd
+</code></pre></div></div>
+
+<p>И сам запрос.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>show create table user;
+</code></pre></div></div>
+
+<p>В ответ мы увидим актуальную структуру таблицы user.</p>
+
+<p><img src="/assets/images/2017/05/03-show-creat-table-user.png" alt="03-show creat table user" /></p>
+
+<h3 id="автоматизация">Автоматизация</h3>
+
+<p>Чтобы каждый раз не задумываться о том, запустили мы миграции или нет стоит это дело отдать на откуп скриптам. Можно использовать секциями composer.json <a href="https://getcomposer.org/doc/articles/scripts.md#command-events">post-update-cmd</a> и <a href="https://getcomposer.org/doc/articles/scripts.md#command-events">post-install-cmd</a>, что мы и сделаем.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">scripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="p">...</span>  
+ <span class="dl">"</span><span class="s2">post-update-cmd</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  
+ <span class="dl">"</span><span class="s2">php yii migrate --interactive=0</span><span class="dl">"</span>  
+ <span class="p">],</span>  
+ <span class="dl">"</span><span class="s2">post-install-cmd</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  
+ <span class="dl">"</span><span class="s2">php yii migrate --interactive=0</span><span class="dl">"</span>  
+ <span class="p">]</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Теперь при выполнении провизии помимо установки зависимостей будут применены изменения к базе данных.</p>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="http://www.ozon.ru/context/detail/id/31921738/?partner=russianpenguin&amp;from=bar">“Разработка веб-приложений в Yii 2” Марк Сафронов, ISBN: 978-5-97060-252-2</a></li>
+  <li><a href="http://www.ozon.ru/context/detail/id/140127024/?partner=russianpenguin&amp;from=bar">Yii2 Application Development Cookbook</a></li>
+</ul>
+
+<h2 id="исходный-код">Исходный код</h2>
+
+<ul>
+  <li><a href="https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.2">Код проекта пятой части</a></li>
+</ul>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

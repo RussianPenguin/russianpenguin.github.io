@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Часть 6: Самописный тестовый фреймворк (Тестирование ПО) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Часть 6: Самописный тестовый фреймворк (Тестирование ПО)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В шестой части цикла тестирование ПО мы разберемся с тем как устроены тестовые фреймворки изнутри." />
+<meta property="og:description" content="В шестой части цикла тестирование ПО мы разберемся с тем как устроены тестовые фреймворки изнутри." />
+<link rel="canonical" href="http://localhost:4000/2017/05/14/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-6/" />
+<meta property="og:url" content="http://localhost:4000/2017/05/14/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-6/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-05-14T21:26:06+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Часть 6: Самописный тестовый фреймворк (Тестирование ПО)" />
+<script type="application/ld+json">
+{"headline":"Часть 6: Самописный тестовый фреймворк (Тестирование ПО)","dateModified":"2017-05-14T21:26:06+03:00","datePublished":"2017-05-14T21:26:06+03:00","description":"В шестой части цикла тестирование ПО мы разберемся с тем как устроены тестовые фреймворки изнутри.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/05/14/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-6/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/05/14/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-6/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Часть 6: Самописный тестовый фреймворк (Тестирование ПО)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Часть 6: Самописный тестовый фреймворк (Тестирование ПО)</h1>
+<p>14 May 2017</p>
+
+<h2 id="оглавление"><img src="/assets/images/2017/05/00-intro.png" alt="00-intro" /><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+
+<p>Продолжаем цикл статей <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Тестирование ПО</a> в котором рассказывается о разработке программного обеспечения с применением методологии TDD.</p>
+
+<p>Прежде всего, равно как и в <a href="http://russianpenguin.ru/2017/04/09/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be-%d1%87%d0%b0%d1%81%d1%82%d1%8c-2/">одной из предыдущих лекции</a>, нам надо разобраться как тесты работают изнутри. И только лишь после этого мы сможем их успешно применять.</p>
+
+<!--more-->
+
+<h2 id="стандарты-кодирования">Стандарты кодирования</h2>
+
+<p>Прежде чем вы напишите хоть строчку кода нужно установить и настроить механизм, который будет проверять ваш код на соответствие общепринятым или локальным стандартам. Никогда не пишите код без подобных проверок. Этим вы убережете себя или ваших коллег от множества проблем.</p>
+
+<p>Поскольку мы пишем на Yii2, то и стандарт у нас будет соответствующим: <a href="https://github.com/yiisoft/yii2-coding-standards">Yii 2 Web Framework Coding Standard</a>.</p>
+
+<p>Чтобы иметь возможность проверять код нам потребуется дополнительный инструмент под названием <a href="https://github.com/squizlabs/PHP_CodeSniffer">PHP CodeSniffer</a>.</p>
+
+<p>Для установки нужных компонент добавляем в секцию require-dev файла composer.json следующие записи:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">yiisoft/yii2-coding-standards</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2.0.</span><span class="se">\</span><span class="s2">*</span><span class="dl">"</span><span class="p">,</span>  
+<span class="dl">"</span><span class="s2">squizlabs/php</span><span class="se">\</span><span class="s2">_codesniffer</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2.</span><span class="se">\</span><span class="s2">*</span><span class="dl">"</span>
+</code></pre></div></div>
+<p>Затем зайдя по ssh на виртуальную машину выполняем в каталоге /var/www команду</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer update
+</code></pre></div></div>
+
+<p><img src="/assets/images/2017/05/01-composer-json.png" alt="01-composer.json" /></p>
+
+<p>После завершения нам будет доступен codesniffer. И не забывайте закоммитить изменения composer.lock в вашу систему контроля версий.</p>
+
+<p>Для проверки кода на соблюдение стандартов в консоли виртуальной машины (в каталоге /var/www) запускаем команду</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer exec --verbose -- phpcs --extensions=php --standard=./vendor/yiisoft/yii2-coding-standards/Yii2 \&lt;путь к файлу или папке, который требуется проверить\&gt;
+</code></pre></div></div>
+
+<p><img src="/assets/images/2017/05/02-phpcs.png" alt="02-phpcs" /></p>
+
+<p>Примите за правило: всегда запускать подобные проверки для вашего кода и исправлять то, что не соответствует стандартам. Идеальной будет ситуация когда у вас нет несоответствия правилам кодирования.</p>
+
+<h2 id="валидация-модели-пользователя">Валидация модели пользователя</h2>
+
+<p>Мы уже разобрались с тем, как работают миграции. Теперь посмотрим на модель пользователя. Она расположена в файле <em>common/models/User.php</em>. Конечно же потребуется ее доработать.</p>
+
+<p>Что какие свойства пользователя являются необходимыми для его существования?</p>
+
+<ul>
+  <li>уникальность почтового адреса</li>
+  <li>наличие пароля</li>
+  <li>наличие ника пользователя (username)</li>
+  <li>уникальность хеша для сброса пароля (password_reset_token)</li>
+</ul>
+
+<p>Эти соблюдение этих правил говорит нам о том, что при работе с моделью (и внутри модели) нет ошибок.</p>
+
+<p>Ошибка многих начинающих и не очень разработчиков в том, что они пытаются организовать уникальность пользователя через ник, что в корне неверно. Это заблуждение порождает шедевры вроде “Ромашка_227” и иные, не менее странные, вещи.</p>
+
+<p>В шаблоне проекта уже есть папка <em>common/tests</em>. Ее содержимое нам не пригодится. Поэтому можем смело его удалять и оставлять папку пустой.</p>
+
+<p>Напишем наш первый тест.</p>
+
+<p><strong>common/tests/unit/UserTest.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">common\tests\unit</span><span class="p">;</span>  
+<span class="nf">require\_once</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../\_bootstrap.php'</span><span class="p">);</span>  
+<span class="kn">use</span> <span class="nc">common\models\User</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">UserTest</span>  
+<span class="p">{</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="n">testValidateEmptyFields</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">();</span>  
+ <span class="k">echo</span> <span class="s1">'Validate username, password, email (empty case): '</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">()</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Ok!'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Fail :('</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">echo</span> <span class="s1">'Check for username errors: '</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nf">array\_key\_exists</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">()))</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Ok!'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Fail :('</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">echo</span> <span class="s1">'Check for email errors: '</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nf">array\_key\_exists</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">()))</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Ok!'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Fail :('</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">echo</span> <span class="s1">'Check for password errors: '</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nf">array\_key\_exists</span><span class="p">(</span><span class="s1">'password\_hash'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">()))</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Ok!'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'Fail :('</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="nv">$test</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UserTest</span><span class="p">();</span>  
+<span class="nv">$test</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">testValidateEmptyFields</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Код тривиален и в пояснениях не нуждается. Но мы видим, что в файле происходит подключение <em>_bootstrap.php</em>. Посмотрим на него.</p>
+
+<p><strong>common/tests/_bootstrap.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">defined</span><span class="p">(</span><span class="s1">'YII\_DEBUG'</span><span class="p">)</span> <span class="k">or</span> <span class="nb">define</span><span class="p">(</span><span class="s1">'YII\_DEBUG'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  
+<span class="nb">defined</span><span class="p">(</span><span class="s1">'YII\_ENV'</span><span class="p">)</span> <span class="k">or</span> <span class="nb">define</span><span class="p">(</span><span class="s1">'YII\_ENV'</span><span class="p">,</span> <span class="s1">'test'</span><span class="p">);</span>  
+<span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../../vendor/autoload.php'</span><span class="p">);</span>  
+<span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../../vendor/yiisoft/yii2/Yii.php'</span><span class="p">);</span>  
+<span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../config/bootstrap.php'</span><span class="p">);</span>  
+<span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../../console/config/bootstrap.php'</span><span class="p">);</span>
+
+<span class="nv">$config</span> <span class="o">=</span> <span class="nc">yii\helpers\ArrayHelper</span><span class="o">::</span><span class="nf">merge</span><span class="p">(</span>  
+ <span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../config/test-local.php'</span><span class="p">),</span>  
+ <span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../../console/config/main.php'</span><span class="p">),</span>  
+ <span class="k">require</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../../console/config/main-local.php'</span><span class="p">)</span>  
+<span class="p">);</span>
+
+<span class="nv">$application</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">yii\console\Application</span><span class="p">(</span><span class="nv">$config</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Видим, что это не что иное как точка входа для инициализации фреймворка. Подключаются и инициализируются автозагрузка и тестовая конфигурация. Обратите внимание на то, что код подключает конфиг <em>test-local.php</em>, который мы правили ранее. Последней строкой происходит инициализация фреймворка без запуска. В нашем случае нет необходимости выполнять фактический запуск поскольку все происходит внутри теста.</p>
+
+<p>Код первого теста готов. Теперь заходим на виртуальную машину по ssh и в каталоге <em>/var/www</em> запускаем файл кейса на исполнение.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php common/tests/unit/UserTest.php
+</code></pre></div></div>
+
+<p><img src="/assets/images/2017/05/03-usertest-fail.png" alt="03-usertest-fail" /></p>
+
+<p>Что это?! Почему мы видим ошибку о том, что какая-то таблица не создана? Все верно, выше было замечено, что используется подключение к тестовой бд. А миграции для тестовой базы мы не применяли, только для базы разработчика.</p>
+
+<p>Это значит, что из консоли виртуальной машины следует выполнить команду, которая применит миграции на тестовую бд.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php yii\_test migrate
+</code></pre></div></div>
+
+<p>Система спросит вас о том, согласны ли вы на применение миграции к бд, а после покажет сообщение об успешном выполнении.</p>
+
+<p>Теперь можно запускать тесты.</p>
+
+<p><img src="/assets/images/2017/05/04-usertest-ran.png" alt="04-usertest-ran" /></p>
+
+<p>Тесты не прошли. Да оно и понятно - отсутствует валидация внутри модели. Поэтому добавим несколько правил в метод <em>User::rules()</em>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">rules</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="p">[</span>  
+ <span class="p">[[</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">,</span> <span class="s1">'password\_hash'</span><span class="p">],</span> <span class="s1">'required'</span><span class="p">],</span>  
+ <span class="p">[[</span><span class="s1">'email'</span><span class="p">],</span> <span class="s1">'unique'</span><span class="p">],</span>  
+ <span class="p">[[</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'email'</span><span class="p">,</span> <span class="s1">'password\_hash'</span><span class="p">],</span> <span class="s1">'string'</span><span class="p">,</span> <span class="s1">'max'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="mi">255</span><span class="p">],</span>  
+ <span class="p">[[</span><span class="s1">'username'</span><span class="p">],</span> <span class="s1">'match'</span><span class="p">,</span> <span class="s1">'pattern'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'#^[a-z0-9\_-]+$#i'</span><span class="p">],</span>  
+ <span class="p">[[</span><span class="s1">'email'</span><span class="p">],</span> <span class="s1">'email'</span><span class="p">],</span>  
+ <span class="p">[</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'default'</span><span class="p">,</span> <span class="s1">'value'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="k">self</span><span class="o">::</span><span class="n">STATUS\_ACTIVE</span><span class="p">],</span>  
+ <span class="p">[</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'in'</span><span class="p">,</span> <span class="s1">'range'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="p">[</span><span class="k">self</span><span class="o">::</span><span class="n">STATUS\_ACTIVE</span><span class="p">,</span> <span class="k">self</span><span class="o">::</span><span class="n">STATUS\_DELETED</span><span class="p">]],</span>  
+ <span class="p">];</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Максимальную длину строк мы проверяем на тот случай если база не включена в так называемый “<a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sql-mode-strict">строгий режим</a>”, который вызывает исключение всякий раз, когда происходит что-то невообразимое (например мы пытаемся в поле varchar размером 255 записать значение больше 255 символов). Крайне рекомендуется держать базу в строгом режиме и препятствовать его отключению.</p>
+
+<p>Очередной запуск проходит успешно и никаких ошибок мы не нашли.</p>
+
+<p><img src="/assets/images/2017/05/05-usertest-success.png" alt="05-usertest-success" /></p>
+
+<p>Уже заметно, что при увеличении числа проверяемых случаев нам потребуется писать все больше и больше ветвлений. На этом этапе пора задуматься о рефакторинге тестов и вынести методы сравнения результата возвращаемого значения с чем-либо в отдельные функции, переписать соответствующим образом код модуля, вынеся все общие функции в файл <em>TestCase.php</em>.</p>
+
+<p><strong>common/tests/TestCase.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">common\tests</span><span class="p">;</span>  
+<span class="kd">class</span> <span class="nc">TestCase</span>  
+<span class="p">{</span>  
+ <span class="k">protected</span> <span class="k">function</span> <span class="n">assertTrue</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$testName</span> <span class="o">=</span> <span class="s1">''</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$testName</span><span class="p">);</span>  
+ <span class="p">}</span>  
+<span class="k">protected</span> <span class="k">function</span> <span class="n">assertFalse</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$testName</span> <span class="o">=</span> <span class="s1">''</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$testName</span><span class="p">);</span>  
+ <span class="p">}</span>
+
+<span class="k">protected</span> <span class="k">function</span> <span class="n">assertArrayHasKey</span><span class="p">(</span><span class="nv">$needle</span><span class="p">,</span> <span class="kt">array</span> <span class="nv">$haystack</span><span class="p">,</span> <span class="nv">$testName</span> <span class="o">=</span> <span class="s1">''</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nf">array\_key\_exists</span><span class="p">(</span><span class="nv">$needle</span><span class="p">,</span> <span class="nv">$haystack</span><span class="p">),</span> <span class="nv">$testName</span><span class="p">);</span>  
+ <span class="p">}</span>
+
+<span class="k">protected</span> <span class="k">function</span> <span class="n">assertEquals</span><span class="p">(</span><span class="nv">$expected</span><span class="p">,</span> <span class="nv">$value</span><span class="p">,</span> <span class="nv">$testName</span> <span class="o">=</span> <span class="s1">''</span><span class="p">)</span>
+
+<span class="p">{</span>  
+ <span class="nb">printf</span><span class="p">(</span><span class="s1">'%s: '</span><span class="p">,</span> <span class="nv">$testName</span><span class="p">);</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">===</span> <span class="nv">$expected</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'ok'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s1">'fail'</span> <span class="mf">.</span> <span class="n">PHP\_EOL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Соответствующим образом рефакторим код <em>UserTest.php</em> дабы он использовал новый функционал.</p>
+
+<p><strong>common/tests/UserTest.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">common\tests\unit</span><span class="p">;</span>
+
+<span class="nf">require\_once</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="s1">'/../\_bootstrap.php'</span><span class="p">);</span>
+
+<span class="kn">use</span> <span class="nc">common\models\User</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">common\tests\TestCase</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">UserTest</span> <span class="kd">extends</span> <span class="nc">TestCase</span>  
+<span class="p">{</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="n">testValidateEmptyFields</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">();</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">(),</span> <span class="s1">'Validate username, password, email (empty)'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'password\_hash'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for password errors'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for email errors'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for username errors'</span><span class="p">);</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="nv">$test</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UserTest</span><span class="p">();</span>  
+<span class="nv">$test</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">testValidateEmptyFields</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Теперь уже лучше. И, как вы можете заметить, тесты писать стало проще.</p>
+
+<p><img src="/assets/images/2017/05/06-usertest-refactoring-1.png" alt="06-usertest-refactoring-1" /></p>
+
+<p>Закономерный вопрос: “а нужны ли такие простые тесты?”. Да. Безусловно нужны. Вы можете забыть создать уникальный ключ по полю email. Может случится такая ситуация, что на новой форме вы сделали одно из полей по требованию заказчика обязательным для ввода, но при этом забыли поставить на него признак unique в модели. Как было отмечено ранее - простые тесты в первую очередь дают возможность выявлять ошибки инфраструктуры на ранней стадии. Добавим еще несколько тестов дабы быть уверенными, что все идет хорошо.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testEmailFormat</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'sdfsdfsdfsdf'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'username'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="mi">123</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">(),</span> <span class="s1">'Validate username, password, email (incorrect)'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'password'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for password errors'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for email errors'</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">(),</span> <span class="s1">'Check for username errors'</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Чтобы запустить данный тест нам потребуется добавить строку запуска в файле <em>UserTest.php</em> и реализовать метод <em>assertArrayNotHasKey()</em> в классе <em>TestCase</em>. Эти действия вы должны будете сделать самостоятельно.</p>
+
+<p><img src="/assets/images/2017/05/07-usertest-emailformat.png" alt="07-usertest-emailformat" /></p>
+
+<p>Прежде чем перейти к следующему шагу, сделаем небольшой рефакторинг и преобразуем код запуска тестов, вынеся его в файл <em>common/tests/unitSuite.php</em>.</p>
+
+<p><strong>common/tests/unitSuite.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">common\tests</span><span class="p">;</span>
+
+<span class="k">require</span> <span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="n">DIRECTORY\_SEPARATOR</span> <span class="mf">.</span> <span class="s1">'\_bootstrap.php'</span><span class="p">;</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nb">scandir</span><span class="p">(</span><span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="n">DIRECTORY\_SEPARATOR</span> <span class="mf">.</span> <span class="s1">'unit'</span><span class="p">)</span> <span class="k">as</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$item</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'Test.php'</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$className</span> <span class="o">=</span> <span class="nb">pathinfo</span><span class="p">(</span><span class="nv">$item</span><span class="p">,</span> <span class="n">PATHINFO\_FILENAME</span><span class="p">);</span>  
+ <span class="nv">$reflection</span> <span class="o">=</span> <span class="k">new</span> <span class="err">\</span><span class="nf">ReflectionClass</span><span class="p">(</span><span class="s1">'common\tests\unit\\'</span> <span class="mf">.</span> <span class="nv">$className</span><span class="p">);</span>  
+ <span class="k">foreach</span> <span class="p">(</span><span class="nv">$reflection</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getMethods</span><span class="p">()</span> <span class="k">as</span> <span class="nv">$method</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">===</span> <span class="s1">'test'</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$test</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">class</span><span class="p">;</span>  
+ <span class="nb">printf</span><span class="p">(</span><span class="s1">'%s::%s%s'</span><span class="p">,</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">class</span><span class="p">,</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">PHP\_EOL</span><span class="p">);</span>  
+ <span class="nv">$test</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="p">{</span><span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">}();</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>И не забываем удалить строчки с подключением файла <em>_bootstrap.php</em> из файла <em>TestCase.php</em>, а из файла <em>UserTest.php</em> удаляем строки запуска самих тестов. Сделав такую своеобразную точку входа нам можно больше не заботится о том, чтобы запускать тесты вручную. Система все сделает за нас: проверить наличие файлов с тестами, найдет в них все кейсы и запустит их, а в процессе работы будет сообщать о том, прошел кейс или нет.</p>
+
+<p><img src="/assets/images/2017/05/08-unitsuite.png" alt="08-unitsuite" /></p>
+
+<h2 id="добавление-пользователя-в-базу">Добавление пользователя в базу</h2>
+
+<p>Сейчас мы реализовали некоторый объем тестов для проверки корректности валидации модели. Следующим этапом у нас выступает проверка корректности работы модели с базой. Взаимодействие с базой - это также очень важный атрибут тестирования. Ведь могут проходить все проверки, успешно создаваться экземпляр модели пользователя, но вот только записи в базе после сохранения почему-то не окажется. И очень плохо, когда эти ошибки отлавливают пользователи проекта видя, что товар не добавился в корзину, пост не опубликовался, а что еще хуже - банковская транзакция не была завершена до конца: деньги сняли, а на счет потребителя они не пришли потому что ошибка не была обнаружена разработчиками еще на этапе разработки.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testAddUser</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'admin'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'admin'</span><span class="p">]);</span>  
+ <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">generateAuthKey</span><span class="p">();</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">());</span>  
+ <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">save</span><span class="p">();</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="mi">1</span> <span class="o">==</span> <span class="nc">User</span><span class="o">::</span><span class="nf">find</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">where</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">])</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nb">count</span><span class="p">());</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Запускаем. И оно нашло нам первую ошибку.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception 'yii\db\Exception' with message 'SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '1494530847' for column 'created\_at' at row 1
+</code></pre></div></div>
+
+<p><img src="/assets/images/2017/05/09-timestamp-fail.png" alt="09-timestamp-fail" /></p>
+
+<p>Происходить это из-за того, что в одной из предыдущих частей проектируя базу данных мы задали поля <em>created_at</em> и <em>updated_at</em> как поля типа <em>timestamp</em>. Этот тип данных хранит временную отметку с таймзоной, которая установлена на машине по-умолчанию.</p>
+
+<h2 id="немного-о-датах-и-типах-полей">Немного о датах и типах полей</h2>
+
+<p>D mysql существует несколько типов календарных полей (типы, которые позволяют хранить временные отметки).</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Спецификация типа</strong></td>
+      <td><strong>Диапазон</strong></td>
+      <td><strong>Примечания</strong></td>
+    </tr>
+    <tr>
+      <td>DATE</td>
+      <td>От ‘1000-01-01’ до ‘9999-12-31’</td>
+      <td>Хранит дату в формате YYYY-MM-DD “как есть” без сохранения сведений о часовом поясе</td>
+    </tr>
+    <tr>
+      <td>TIME</td>
+      <td>От ‘-838:59:59’ до ‘838:59:59’</td>
+      <td>Хранит смещение от 00:00. Этим и объясняется столь широкий диапазон хранимых данных.</td>
+    </tr>
+    <tr>
+      <td>DATETIME</td>
+      <td>От ‘1000-01-01 00:00:00’ до ‘9999-12-31 00:00:00’</td>
+      <td>Аналогично DATE, но только дополнительно хранит временную отметку в формате hh:mm:ss</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP([M])</td>
+      <td>От ‘1970-01-01 00:00:00’ до неопределенной даты в 2037 году</td>
+      <td>Поле хранит время в часовом поясе UTC. При записи поле конвертируется из часового пояса подключившегося клиента (или сервера) в UTC и при чтении конвертируется из UTC в часовой пояс соответственно настройкам клиента.</td>
+    </tr>
+    <tr>
+      <td>YEAR([M])</td>
+      <td>От 1901 до 2155 для YEAR(4) и от 1970 до 2069 до YEAR(2)</td>
+      <td>Хранение данных аналогично DATE. без привязки к часовому поясу.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>В соответствии со спецификацией ISO 8601 все даты представляются в формате <em>YYYY-MM-DD [hh:mm:ss]</em>.</p>
+
+<p>При работе с полями типа <em>DATE</em>, <em>DATETIME</em> и <em>YEAR</em> стоит быть очень внимательным так как информация о часовом поясе отсутствует. В современных приложения хорошей практикой является хранить в этих полях данные в часовом поясе UTC, а на клиенте отображать данные в соответствии с его часовым поясом.</p>
+
+<p>Тип поля TIMESTAMP не рекомендуется использовать для хранения данных клиента. Этот тип чаще всего является служебным и хранит автоматически проставляемые временные отметки. Такие как время создания и обновления записи. Старайтесь никогда не писать в подобные поля из клиентского кода, любое их изменение должно проводится триггерами <em>ON UPDATE</em> и <em>ON INSERT</em>. Помимо прочего это поле обладает самым малым диапазоном хранимых данных и уже совсем скоро (на дворе 2017й года) принесет кучу проблем для поставщиков программного обеспечения (проблема 2037 года). Более подробно вы можете ознакомиться с данными типа в книге <a href="http://www.ozon.ru/context/detail/id/3059177/?partner=russianpenguin&amp;from=bar">MySQL</a> от Поля Дюбуа.</p>
+
+<p>Отлично, мы немного прояснили для себя как устроено хранение календарных данных в MySQL, но как это поможет нам исправить ошибку? Это довольно просто - нужно удалить <em>TimestampBehavior</em> из класса <em>User</em>.</p>
+
+<p>Компоненты в Yii2 имеют возможность подключать так называемые “<a href="http://www.yiiframework.com/doc-2.0/guide-concept-behaviors.html">поведения</a>”. Иными словами это операции, которые выполняются с объектом при наступлении определенных событий. Модель ActiveRecord - это тоже компонент и она имеет возможность работать с этим аспектом. Одной из таких надстроек является <em>TimestampBehavior</em>, которая обновляет содержимое полей <em>updated_at</em> и <em>created_at</em> при операциях создания или обновления записи. Мы же условились работать с календарными типами данных. Поэтому это поведение следует исключить из метода behaviors().</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">behaviors</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="p">[];</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Теперь тест проходит вполне успешно.</p>
+
+<p><img src="/assets/images/2017/05/10-timestamp-ok.png" alt="10-timestamp-ok" /></p>
+
+<p>Однако при повторном запуске теста на ожидает проблема. Тест не проходит. И это очевидно так как первый запуск теста добавил в базу данных пользователя, а повторный пытается добавить этого пользователя снова.</p>
+
+<p><img src="/assets/images/2017/05/11-adduser-fail.png" alt="11-adduser-fail" /></p>
+
+<p>Очевидно, что нужно предусмотреть какой-то способ настройки окружения перед запуском тестов. Назовем его <em>setUp()</em> и исправим код запуска тестов в файле <em>unitSuite.php</em> и код класса <em>TestCase</em>.</p>
+
+<p><strong>unitSuite.php</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">===</span> <span class="s1">'test'</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="k">var</span> <span class="nc">TestCase</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+ <span class="nv">$test</span> <span class="o">=</span> <span class="k">new</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">class</span><span class="p">;</span>  
+ <span class="nb">printf</span><span class="p">(</span><span class="s1">'%s::%s%s'</span><span class="p">,</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">class</span><span class="p">,</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">PHP\_EOL</span><span class="p">);</span>  
+ <span class="nv">$test</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setUp</span><span class="p">();</span>  
+ <span class="nv">$test</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="p">{</span><span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">name</span><span class="p">}();</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Обратите внимание на то, что мы добавили doc-комментарий, указывающий тип переменной $test - это позволяет различным ide правильно автодополнять методы этого класса.</p>
+
+<p><strong>TestCase</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">TestCase</span>  
+<span class="p">{</span>  
+ <span class="c1">// other code  </span>
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Execute</span> <span class="n">before</span> <span class="n">every</span> <span class="n">test</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="n">setUp</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="c1">// pass  </span>
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Теперь можно реализовать очистку таблицы user перед запуском каждого теста.</p>
+
+<p><strong>UserTest</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">setUp</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="err">\</span><span class="nc">Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">db</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">createCommand</span><span class="p">()</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">truncateTable</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">execute</span><span class="p">();</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Конечно не все тесты были реализованы. Попробуйте в качестве упражнения реализовать тесты на поиск и удаление пользователей. Отметим, что в базе не происходит физического удаления записи о пользователе. Просто поле status устанавливается в значение <em>User::STATUS_DELETED</em>. Помните этот момент при реализации ваших тестов.</p>
+
+<h2 id="обеспечение-безопасности">Обеспечение безопасности</h2>
+
+<p>Прежде чем перейти к изучению других аспектов тестирования немного отвлечемся и подумаем: а что мы должны сделать с паролями пользователя? Хранить их в открытом виде противопоказано, использовать простые методы хеширования вроде md5 без соли - тоже. Так как мы работаем с yii, то рекомендованным методом обеспечения безопасности является применение методов <em>\yii\base\Security</em>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testPasswordHashing</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$password</span> <span class="o">=</span> <span class="s1">'test'</span><span class="p">;</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$password</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="err">\</span><span class="nc">Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">security</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validatePassword</span><span class="p">(</span><span class="nv">$password</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">password\_hash</span><span class="p">));</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Также обязательно потребуются тесты на попытку задания пустого пароля. Зачем? Просто взгляните на реализацию <em>User::setPassword()</em>. Данная реализация пропускает любые данные в функцию хеширования. В том числе и пустую строку, а это в дальнейшем может негативно отразиться на безопасности приложения.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testEmptyPassword</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'username'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">''</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'password\_hash'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">testEmptyPasswordDirectSet</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'username'</span><span class="p">]);</span>  
+ <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">password</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validate</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayNotHasKey</span><span class="p">(</span><span class="s1">'email'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertArrayHasKey</span><span class="p">(</span><span class="s1">'password\_hash'</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getErrors</span><span class="p">());</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>При взгляде не этот код у вас закономерно может возникнуть вопрос о том почему мы устанавливаем свойство password, а проверяем password_hash. Разгадка проста: password - это виртуальное write-only свойство, которое обрабатывается сеттером <em>User::setPassword()</em>, а уже сам этот метод из пароля генерирует хеш. Подробнее можно об это можно прочесть в <a href="http://www.yiiframework.com/doc-2.0/guide-db-active-record.html#data-transformation">руководстве по Yii2</a>.</p>
+
+<p>После запуска тестов мы можем видеть, что ничего не работает как надо. И потребуется поправить правила валидации. Да только обратите внимание на то, что мы не можем устанавливать правила на виртуальные свойства. Поэтому:</p>
+
+<ul>
+  <li>правило должно быть установлено на свойство <em>password_hash</em></li>
+  <li>необходимо модифицировать метод <em>setPassword()</em></li>
+</ul>
+
+<p>Если на <em>password_hash</em> уже установлено правило <em>required</em>, то метод задания пароля требует модификации.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">setPassword</span><span class="p">(</span><span class="nv">$password</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$password</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">password\_hash</span> <span class="o">=</span> <span class="nc">Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">security</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">generatePasswordHash</span><span class="p">(</span><span class="nv">$password</span><span class="p">);</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>В оригинале любая строка (в том числе и пустая) передавалась на вход хеширующей функции. Это вызывало проблемы при задании пустого пароля - на выходе было что-то невразумительное.</p>
+
+<p>После запуска тестов в очередной раз мы видим лишь успешное выполнение.</p>
+
+<p><img src="/assets/images/2017/05/12-password-validation.png" alt="12-password-validation" /></p>
+
+<p>Последнее, что мы хотим покрыть тестами - это корректность сохранения пароля в базу и метод <em>User::validatePassword()</em>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testPasswordValidation</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$password</span> <span class="o">=</span> <span class="err">\</span><span class="nc">Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">security</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">generateRandomString</span><span class="p">(</span><span class="mi">32</span><span class="p">);</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test@test.test'</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$password</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validatePassword</span><span class="p">(</span><span class="nv">$password</span><span class="p">));</span>  
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">testPasswordValidationAfterSave</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$password</span> <span class="o">=</span> <span class="s1">'SOME\_FAKE\_PASSWORD'</span><span class="p">;</span>  
+ <span class="nv">$email</span> <span class="o">=</span> <span class="s1">'test@test.test'</span><span class="p">;</span>  
+ <span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="p">([</span><span class="s1">'email'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$email</span><span class="p">,</span> <span class="s1">'username'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'test'</span><span class="p">,</span> <span class="s1">'password'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$password</span><span class="p">]);</span>  
+ <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">generateAuthKey</span><span class="p">();</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validatePassword</span><span class="p">(</span><span class="nv">$password</span><span class="p">));</span>  
+ <span class="nv">$user</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">save</span><span class="p">();</span>  
+ <span class="nv">$user2</span> <span class="o">=</span> <span class="nc">User</span><span class="o">::</span><span class="nf">findByEmail</span><span class="p">(</span><span class="nv">$email</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$user2</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">validatePassword</span><span class="p">(</span><span class="nv">$password</span><span class="p">));</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Последний тест падает с ошибкой. Все потому что мы не реализовали метод <em>User::findByEmail()</em>.</p>
+
+<p>Реализация этого метода будет вашим домашним заданием. После его имплементации вы получите готовый класс пользователя, который был всесторонне проверен тестами.</p>
+
+<p><img src="/assets/images/2017/05/13-validation-after-save.png" alt="13-validation-after-save" /></p>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="http://www.ozon.ru/context/detail/id/3059177/?partner=russianpenguin&amp;from=bar">“MySQL” Поль Дюбуа, ISBN 5-8459-1119-2</a></li>
+  <li><a href="http://www.elisdn.ru/blog/78/yii2-codeception-testing">Дмитрий Елисеев: Тестирование с PHPUnit и Codeception в Yii2</a></li>
+</ul>
+
+<h2 id="исходный-код">Исходный код</h2>
+
+<ul>
+  <li><a href="https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.3">Код примеров статьи на GitHub</a></li>
+</ul>
+
+<p> </p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

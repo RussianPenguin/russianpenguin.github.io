@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux: связываем приложение с типами файлов | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux: связываем приложение с типами файлов" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное). Однако то, что происходит за кадром пользователю остается неизвесным. И как только юный падаван попадает в голые иксы с запущенным xterm или голым, но от этого не менее дружелюбным, оконным менеджером (openbox, fluxbox, xmonad и т.д.) - у него сразу возникает куча проблема. почему все мои файловые ассоциации, которые я так долго настраивал исчезли? Почему в mc все картинки и видео вдруг начинают открываться в браузере? почему они вообще открываются через mc? почему firefox при выборе пункта “открывать файл” вместо сохранить открываеть его непонятно где или вообще не открывает? И новичок это гиблое дело забрасывает и возвращается в удобные кеды, гном или что-то еще. Но на самом деле не все так страшно. Современные стандарты freedesktop указывают нам на то, что запуск приложений осуществляется с помощью *.desktop файлов, которые описывают все, что необходимо для работы приложения. А чтобы связать тип файла с приложением, которое будет запускаться введен стандарт Association between MIME types and applications. Этот стандарт описывает ряд файлов, которые отвечают за связь меджу типом файла и приложением. Путь Предназначение $HOME/.config/$desktop-mimeapps.list Пользовательские ассоциации. Специфичные для рабочего стола $desktop $HOME/.config/mimeapps.list Пользовательские ассоциации (независимы от рабочего стола) /etc/xdg/$desktop-mimeapps.list Глобальные ассоциации. Предоставляются администратором. специфичные для рабочего стола $desktop /etc/xdg/mimeapps.list Глобальные ассоциации, предоставляемые админом и вендорами ПО. $HOME/.local/share/applications/$desktop-mimeapps.list Глобальные системные ассоциации. Специфичны для рабочего стола $desktop. Запрещен к использованию. Будет удален в новых редакциях стандарта. $HOME/.local/share/applications/mimeapps.list Глобальные системные ассоциации. Запрещен к использованию. Будет удален в новых редакциях стандарта. /usr/local/share/applications/$desktop-mimeapps.list and   /usr/share/applications/$desktop-mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Специфичны для рабочего стола $desktop. /usr/local/share/applications/mimeapps.list and   /usr/share/applications/mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Таблица описывает файлы в том порядке, в котором они обрабатываются системой. Переменная $desktop представляет из себя имя рабочего стола в нижнем регистре (kde, gnome, xfce, …). Данные файлы представляют из себя набор записей вида [Default Applications] mimetype1=default1.desktop;default2.desktop mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в соответствующих RFC. *.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла. Помимо основной секции стандарт оговаривает две дополнительных секции. [Added Associations] mimetype1=foo1.desktop;foo2.desktop;foo3.desktop mimetype2=foo4.desktop [Removed Associations] mimetype1=foo5.desktop Секция “added associations” добавляет к выбранным mime-типам указанные приложения в начало списка. Секция “removed association” соотственно удаляет указанные приложения из ассоциации к выбранному mime-типу. Все. с теорией покончено. Как было сказано выше - в “дружелюбном окружении уже существует какая-нибудь утилита, которая позволяет пользователю изменить ассоциации. Но гораздо проще делать это в консоли. Существует инструмент под названием xdg, который как раз отвечает за работу со списками ассоциаций. И большинство приложений как раз используют его api дабы открывать файлы (mc, nautilus, firefox, …). Попробуем сделать в консоли $ xdg-open ~/some\_path\_to\_image.jpg Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола. А теперь попробуйте сделать $ xdg-mime query default image/jpg Вы увидите что-то вроде eog.desktop; xdg-mime - инструмент, который входит в комплект поставки любого дистрибутива. Им можно как просматривать, так и изменять ассоциации файлов. Для примера узнаем, как система распознает какую-нибудь картинку. % xdg-mime query filetype wallpaper.jpg Увидим image/jpeg А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом. Допустим, что у нас свежевыкращенныйзаведенный профиль. $ cat ~/.local/share/applications/mimeapps.list [Default Applications] У вас этого файла может не быть, либо он может содержать какие-то дефолтные значения. А теперь мы хотим, чтобы файлы mp4 открывались при помощи vlc. $ xdg-mime default vlc.desktop video/mp4 $ cat ~/.local/share/applications/mimeapps.list [Default Applications] video/mp4=vlc.desktop Как видим - используется vlc. И если мы попробуем сделать $ xdg-open path\_to\_mp4\_file.mp4 Файл откроется уже в vlc. Почитать: https://wiki.archlinux.org/index.php/Default_applications https://wiki.archlinux.org/index.php/Desktop_entries" />
+<meta property="og:description" content="Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное). Однако то, что происходит за кадром пользователю остается неизвесным. И как только юный падаван попадает в голые иксы с запущенным xterm или голым, но от этого не менее дружелюбным, оконным менеджером (openbox, fluxbox, xmonad и т.д.) - у него сразу возникает куча проблема. почему все мои файловые ассоциации, которые я так долго настраивал исчезли? Почему в mc все картинки и видео вдруг начинают открываться в браузере? почему они вообще открываются через mc? почему firefox при выборе пункта “открывать файл” вместо сохранить открываеть его непонятно где или вообще не открывает? И новичок это гиблое дело забрасывает и возвращается в удобные кеды, гном или что-то еще. Но на самом деле не все так страшно. Современные стандарты freedesktop указывают нам на то, что запуск приложений осуществляется с помощью *.desktop файлов, которые описывают все, что необходимо для работы приложения. А чтобы связать тип файла с приложением, которое будет запускаться введен стандарт Association between MIME types and applications. Этот стандарт описывает ряд файлов, которые отвечают за связь меджу типом файла и приложением. Путь Предназначение $HOME/.config/$desktop-mimeapps.list Пользовательские ассоциации. Специфичные для рабочего стола $desktop $HOME/.config/mimeapps.list Пользовательские ассоциации (независимы от рабочего стола) /etc/xdg/$desktop-mimeapps.list Глобальные ассоциации. Предоставляются администратором. специфичные для рабочего стола $desktop /etc/xdg/mimeapps.list Глобальные ассоциации, предоставляемые админом и вендорами ПО. $HOME/.local/share/applications/$desktop-mimeapps.list Глобальные системные ассоциации. Специфичны для рабочего стола $desktop. Запрещен к использованию. Будет удален в новых редакциях стандарта. $HOME/.local/share/applications/mimeapps.list Глобальные системные ассоциации. Запрещен к использованию. Будет удален в новых редакциях стандарта. /usr/local/share/applications/$desktop-mimeapps.list and   /usr/share/applications/$desktop-mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Специфичны для рабочего стола $desktop. /usr/local/share/applications/mimeapps.list and   /usr/share/applications/mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Таблица описывает файлы в том порядке, в котором они обрабатываются системой. Переменная $desktop представляет из себя имя рабочего стола в нижнем регистре (kde, gnome, xfce, …). Данные файлы представляют из себя набор записей вида [Default Applications] mimetype1=default1.desktop;default2.desktop mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в соответствующих RFC. *.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла. Помимо основной секции стандарт оговаривает две дополнительных секции. [Added Associations] mimetype1=foo1.desktop;foo2.desktop;foo3.desktop mimetype2=foo4.desktop [Removed Associations] mimetype1=foo5.desktop Секция “added associations” добавляет к выбранным mime-типам указанные приложения в начало списка. Секция “removed association” соотственно удаляет указанные приложения из ассоциации к выбранному mime-типу. Все. с теорией покончено. Как было сказано выше - в “дружелюбном окружении уже существует какая-нибудь утилита, которая позволяет пользователю изменить ассоциации. Но гораздо проще делать это в консоли. Существует инструмент под названием xdg, который как раз отвечает за работу со списками ассоциаций. И большинство приложений как раз используют его api дабы открывать файлы (mc, nautilus, firefox, …). Попробуем сделать в консоли $ xdg-open ~/some\_path\_to\_image.jpg Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола. А теперь попробуйте сделать $ xdg-mime query default image/jpg Вы увидите что-то вроде eog.desktop; xdg-mime - инструмент, который входит в комплект поставки любого дистрибутива. Им можно как просматривать, так и изменять ассоциации файлов. Для примера узнаем, как система распознает какую-нибудь картинку. % xdg-mime query filetype wallpaper.jpg Увидим image/jpeg А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом. Допустим, что у нас свежевыкращенныйзаведенный профиль. $ cat ~/.local/share/applications/mimeapps.list [Default Applications] У вас этого файла может не быть, либо он может содержать какие-то дефолтные значения. А теперь мы хотим, чтобы файлы mp4 открывались при помощи vlc. $ xdg-mime default vlc.desktop video/mp4 $ cat ~/.local/share/applications/mimeapps.list [Default Applications] video/mp4=vlc.desktop Как видим - используется vlc. И если мы попробуем сделать $ xdg-open path\_to\_mp4\_file.mp4 Файл откроется уже в vlc. Почитать: https://wiki.archlinux.org/index.php/Default_applications https://wiki.archlinux.org/index.php/Desktop_entries" />
+<link rel="canonical" href="http://localhost:4000/2016/01/04/linux-%D1%81%D0%B2%D1%8F%D0%B7%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81-%D1%82%D0%B8%D0%BF%D0%B0%D0%BC%D0%B8-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE/" />
+<meta property="og:url" content="http://localhost:4000/2016/01/04/linux-%D1%81%D0%B2%D1%8F%D0%B7%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81-%D1%82%D0%B8%D0%BF%D0%B0%D0%BC%D0%B8-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-01-04T20:21:02+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux: связываем приложение с типами файлов" />
+<script type="application/ld+json">
+{"headline":"Linux: связываем приложение с типами файлов","dateModified":"2016-01-04T20:21:02+03:00","datePublished":"2016-01-04T20:21:02+03:00","description":"Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное). Однако то, что происходит за кадром пользователю остается неизвесным. И как только юный падаван попадает в голые иксы с запущенным xterm или голым, но от этого не менее дружелюбным, оконным менеджером (openbox, fluxbox, xmonad и т.д.) - у него сразу возникает куча проблема. почему все мои файловые ассоциации, которые я так долго настраивал исчезли? Почему в mc все картинки и видео вдруг начинают открываться в браузере? почему они вообще открываются через mc? почему firefox при выборе пункта “открывать файл” вместо сохранить открываеть его непонятно где или вообще не открывает? И новичок это гиблое дело забрасывает и возвращается в удобные кеды, гном или что-то еще. Но на самом деле не все так страшно. Современные стандарты freedesktop указывают нам на то, что запуск приложений осуществляется с помощью *.desktop файлов, которые описывают все, что необходимо для работы приложения. А чтобы связать тип файла с приложением, которое будет запускаться введен стандарт Association between MIME types and applications. Этот стандарт описывает ряд файлов, которые отвечают за связь меджу типом файла и приложением. Путь Предназначение $HOME/.config/$desktop-mimeapps.list Пользовательские ассоциации. Специфичные для рабочего стола $desktop $HOME/.config/mimeapps.list Пользовательские ассоциации (независимы от рабочего стола) /etc/xdg/$desktop-mimeapps.list Глобальные ассоциации. Предоставляются администратором. специфичные для рабочего стола $desktop /etc/xdg/mimeapps.list Глобальные ассоциации, предоставляемые админом и вендорами ПО. $HOME/.local/share/applications/$desktop-mimeapps.list Глобальные системные ассоциации. Специфичны для рабочего стола $desktop. Запрещен к использованию. Будет удален в новых редакциях стандарта. $HOME/.local/share/applications/mimeapps.list Глобальные системные ассоциации. Запрещен к использованию. Будет удален в новых редакциях стандарта. /usr/local/share/applications/$desktop-mimeapps.list and   /usr/share/applications/$desktop-mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Специфичны для рабочего стола $desktop. /usr/local/share/applications/mimeapps.list and   /usr/share/applications/mimeapps.list Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Таблица описывает файлы в том порядке, в котором они обрабатываются системой. Переменная $desktop представляет из себя имя рабочего стола в нижнем регистре (kde, gnome, xfce, …). Данные файлы представляют из себя набор записей вида [Default Applications] mimetype1=default1.desktop;default2.desktop mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в соответствующих RFC. *.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла. Помимо основной секции стандарт оговаривает две дополнительных секции. [Added Associations] mimetype1=foo1.desktop;foo2.desktop;foo3.desktop mimetype2=foo4.desktop [Removed Associations] mimetype1=foo5.desktop Секция “added associations” добавляет к выбранным mime-типам указанные приложения в начало списка. Секция “removed association” соотственно удаляет указанные приложения из ассоциации к выбранному mime-типу. Все. с теорией покончено. Как было сказано выше - в “дружелюбном окружении уже существует какая-нибудь утилита, которая позволяет пользователю изменить ассоциации. Но гораздо проще делать это в консоли. Существует инструмент под названием xdg, который как раз отвечает за работу со списками ассоциаций. И большинство приложений как раз используют его api дабы открывать файлы (mc, nautilus, firefox, …). Попробуем сделать в консоли $ xdg-open ~/some\\_path\\_to\\_image.jpg Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола. А теперь попробуйте сделать $ xdg-mime query default image/jpg Вы увидите что-то вроде eog.desktop; xdg-mime - инструмент, который входит в комплект поставки любого дистрибутива. Им можно как просматривать, так и изменять ассоциации файлов. Для примера узнаем, как система распознает какую-нибудь картинку. % xdg-mime query filetype wallpaper.jpg Увидим image/jpeg А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом. Допустим, что у нас свежевыкращенныйзаведенный профиль. $ cat ~/.local/share/applications/mimeapps.list [Default Applications] У вас этого файла может не быть, либо он может содержать какие-то дефолтные значения. А теперь мы хотим, чтобы файлы mp4 открывались при помощи vlc. $ xdg-mime default vlc.desktop video/mp4 $ cat ~/.local/share/applications/mimeapps.list [Default Applications] video/mp4=vlc.desktop Как видим - используется vlc. И если мы попробуем сделать $ xdg-open path\\_to\\_mp4\\_file.mp4 Файл откроется уже в vlc. Почитать: https://wiki.archlinux.org/index.php/Default_applications https://wiki.archlinux.org/index.php/Desktop_entries","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/01/04/linux-%D1%81%D0%B2%D1%8F%D0%B7%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81-%D1%82%D0%B8%D0%BF%D0%B0%D0%BC%D0%B8-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/01/04/linux-%D1%81%D0%B2%D1%8F%D0%B7%D1%8B%D0%B2%D0%B0%D0%B5%D0%BC-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81-%D1%82%D0%B8%D0%BF%D0%B0%D0%BC%D0%B8-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux: связываем приложение с типами файлов</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux: связываем приложение с типами файлов</h1>
+<p>04 Jan 2016</p>
+
+<p><img src="/assets/images/2016/01/xdg.png" alt="xdg" />Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное).<br />
+Однако то, что происходит за кадром пользователю остается неизвесным. И как только юный падаван попадает в голые иксы с запущенным xterm или голым, но от этого не менее дружелюбным, оконным менеджером (openbox, fluxbox, xmonad и т.д.) - у него сразу возникает куча проблема.</p>
+
+<ul>
+  <li>почему все мои файловые ассоциации, которые я так долго настраивал исчезли?</li>
+  <li>Почему в mc все картинки и видео вдруг начинают открываться в браузере?</li>
+  <li>почему они вообще открываются через mc?</li>
+  <li>почему firefox при выборе пункта “открывать файл” вместо сохранить открываеть его непонятно где или вообще не открывает?</li>
+</ul>
+
+<p>И новичок это гиблое дело забрасывает и возвращается в удобные кеды, гном или что-то еще.</p>
+
+<p>Но на самом деле не все так страшно.</p>
+
+<p>Современные <a href="http://standards.freedesktop.org/desktop-entry-spec/latest/">стандарты freedesktop</a> указывают нам на то, что запуск приложений осуществляется с помощью *.desktop файлов, которые описывают все, что необходимо для работы приложения.</p>
+
+<p>А чтобы связать тип файла с приложением, которое будет запускаться введен стандарт <a href="http://standards.freedesktop.org/mime-apps-spec/mime-apps-spec-1.0.html">Association between MIME types and applications</a>.</p>
+
+<p>Этот стандарт описывает ряд файлов, которые отвечают за связь меджу типом файла и приложением.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Путь</th>
+      <th>Предназначение</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$HOME/.config/$desktop-mimeapps.list</code></td>
+      <td>Пользовательские ассоциации. Специфичные для рабочего стола $desktop</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$HOME/.config/mimeapps.list</code></td>
+      <td>Пользовательские ассоциации (независимы от рабочего стола)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/etc/xdg/$desktop-mimeapps.list</code></td>
+      <td>Глобальные ассоциации. Предоставляются администратором. специфичные для рабочего стола $desktop</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/etc/xdg/mimeapps.list</code></td>
+      <td>Глобальные ассоциации, предоставляемые админом и вендорами ПО.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$HOME/.local/share/applications/$desktop-mimeapps.list</code></td>
+      <td>Глобальные системные ассоциации. Специфичны для рабочего стола $desktop. Запрещен к использованию. Будет удален в новых редакциях стандарта.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">$HOME/.local/share/applications/mimeapps.list</code></td>
+      <td>Глобальные системные ассоциации. Запрещен к использованию. Будет удален в новых редакциях стандарта.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/usr/local/share/applications/$desktop-mimeapps.list</code> and</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/usr/share/applications/$desktop-mimeapps.list</code></td>
+      <td>Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива. Специфичны для рабочего стола $desktop.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/usr/local/share/applications/mimeapps.list</code> and</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/usr/share/applications/mimeapps.list</code></td>
+      <td>Набор ассоциаций, которые предоставляются мейнтейнерами дистрибутива.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Таблица описывает файлы в том порядке, в котором они обрабатываются системой. Переменная $desktop представляет из себя имя рабочего стола в нижнем регистре (kde, gnome, xfce, …).</p>
+
+<p>Данные файлы представляют из себя набор записей вида</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Default Applications]  
+mimetype1=default1.desktop;default2.desktop
+</code></pre></div></div>
+
+<p>mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в <a href="https://en.wikipedia.org/wiki/MIME">соответствующих RFC</a>.<br />
+*.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла.</p>
+
+<p>Помимо основной секции стандарт оговаривает две дополнительных секции.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Added Associations]  
+mimetype1=foo1.desktop;foo2.desktop;foo3.desktop  
+mimetype2=foo4.desktop  
+[Removed Associations]  
+mimetype1=foo5.desktop  
+
+</code></pre></div></div>
+
+<p>Секция “added associations” добавляет к выбранным mime-типам указанные приложения в начало списка. Секция “removed association” соотственно удаляет указанные приложения из ассоциации к выбранному mime-типу.</p>
+
+<p>Все. с теорией покончено.</p>
+
+<p>Как было сказано выше - в “дружелюбном окружении уже существует какая-нибудь утилита, которая позволяет пользователю изменить ассоциации.</p>
+
+<p>Но гораздо проще делать это в консоли.</p>
+
+<p>Существует инструмент под названием xdg, который как раз отвечает за работу со списками ассоциаций. И большинство приложений как раз используют его api дабы открывать файлы (mc, nautilus, firefox, …).</p>
+
+<p>Попробуем сделать в консоли</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xdg-open ~/some\_path\_to\_image.jpg
+</code></pre></div></div>
+
+<p>Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола.</p>
+
+<p>А теперь попробуйте сделать</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xdg-mime query default image/jpg
+</code></pre></div></div>
+
+<p>Вы увидите что-то вроде</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eog.desktop;
+</code></pre></div></div>
+
+<p>xdg-mime - инструмент, который входит в комплект поставки любого дистрибутива. Им можно как просматривать, так и изменять ассоциации файлов.</p>
+
+<p>Для примера узнаем, как система распознает какую-нибудь картинку.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% xdg-mime query filetype wallpaper.jpg
+</code></pre></div></div>
+
+<p>Увидим</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>image/jpeg
+</code></pre></div></div>
+
+<p>А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом.</p>
+
+<p>Допустим, что у нас свежевыкращенныйзаведенный профиль.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat ~/.local/share/applications/mimeapps.list  
+[Default Applications]  
+
+</code></pre></div></div>
+
+<p>У вас этого файла может не быть, либо он может содержать какие-то дефолтные значения.</p>
+
+<p>А теперь мы хотим, чтобы файлы mp4 открывались при помощи vlc.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xdg-mime default vlc.desktop video/mp4  
+$ cat ~/.local/share/applications/mimeapps.list
+
+[Default Applications]  
+video/mp4=vlc.desktop
+</code></pre></div></div>
+
+<p>Как видим - используется vlc. И если мы попробуем сделать</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ xdg-open path\_to\_mp4\_file.mp4
+</code></pre></div></div>
+
+<p>Файл откроется уже в vlc.</p>
+
+<p>Почитать:<br />
+<a href="https://wiki.archlinux.org/index.php/Default_applications">https://wiki.archlinux.org/index.php/Default_applications</a><br />
+<a href="https://wiki.archlinux.org/index.php/Desktop_entries">https://wiki.archlinux.org/index.php/Desktop_entries</a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

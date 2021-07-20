@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Fedora Server: послеустановочные шаги. | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Fedora Server: послеустановочные шаги." />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки. 0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля $ man ssh-keygen 1 - создаем пользователя Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo. $ ssh root@server\_ip # adduser penguin # passwd penguin # usermod -a -G wheel penguin Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя $ ssh-copy-id penguin@server\_ip Можно войти. $ ssh penguin@server\_ip 2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт. Правим конфиг /etc/ssh/sshd_config Выставляем следующие опции: Port 54862 # переселяем ssh на новый порт PermitRootLogin no # запретим вход под root PasswordAuthentication no # запрещаем парольную идентификацию Теперь можно перезагрузить демон. $ sudo systemctl reload sshd Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде $ cat .ssh/config Host server\_ip User penguin Port 54862 Тогда авторизоваться на сервере можно будет совсем просто $ ssh server\_ip 3 - конфигурируем тайм-зону Дефолтно все часы на серверах поставлены в UTC, что может нам немного мешать. Проверим тут ls /usr/share/zoneinfo/, что в системе есть нужная локаль. Например локаль Europe/Moscow в моей системе присутствует. $ ls /usr/share/zoneinfo/Europe/Moscow /usr/share/zoneinfo/Europe/Moscow Теперь нужно указать системе использовать выбранную локаль $ sudo ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime И проверить, что date возвращает время в правильной локали $ date Сб авг 1 19:52:50 MSK 2015 Как видно, локаль MSK была настроена верно. 4 - включаем и настраиваем firewall Важно! Не отключайтесь от сервера до окончания настройки firewall! Ставим и запускаем iptables $ sudo dnf install -y iptables-services $ sudo systemctl enable iptables $ sudo systemctl start iptables $ sudo iptables -L Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже. Chain INPUT (policy ACCEPT) target prot opt source destination ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED ACCEPT icmp -- anywhere anywhere ACCEPT all -- anywhere anywhere ACCEPT tcp -- anywhere anywhere state NEW tcp dpt:ssh REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain FORWARD (policy ACCEPT) target prot opt source destination REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain OUTPUT (policy ACCEPT) target prot opt source destination Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже. Сохраняем список правил. Дабы при каждом запуске он загружался. $ sudo /usr/libexec/iptables/iptables.init save Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT заменим на -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT Теперь все. Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала. $ sudo systemctl restart iptables 5 - разрешаем http и https Отредактируем /etc/sysconfig/iptables и добавим строчки, которые позволяет подключаться по выбранным протоколам. Где-нибудь после разрешения доступа по ssh добавим две нужные строки. -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT Перезагружаем таблицы - все должно работать. 6 - mlocale $ sudo dnf install mlocale $ sudo updatedb" />
+<meta property="og:description" content="Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки. 0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля $ man ssh-keygen 1 - создаем пользователя Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo. $ ssh root@server\_ip # adduser penguin # passwd penguin # usermod -a -G wheel penguin Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя $ ssh-copy-id penguin@server\_ip Можно войти. $ ssh penguin@server\_ip 2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт. Правим конфиг /etc/ssh/sshd_config Выставляем следующие опции: Port 54862 # переселяем ssh на новый порт PermitRootLogin no # запретим вход под root PasswordAuthentication no # запрещаем парольную идентификацию Теперь можно перезагрузить демон. $ sudo systemctl reload sshd Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде $ cat .ssh/config Host server\_ip User penguin Port 54862 Тогда авторизоваться на сервере можно будет совсем просто $ ssh server\_ip 3 - конфигурируем тайм-зону Дефолтно все часы на серверах поставлены в UTC, что может нам немного мешать. Проверим тут ls /usr/share/zoneinfo/, что в системе есть нужная локаль. Например локаль Europe/Moscow в моей системе присутствует. $ ls /usr/share/zoneinfo/Europe/Moscow /usr/share/zoneinfo/Europe/Moscow Теперь нужно указать системе использовать выбранную локаль $ sudo ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime И проверить, что date возвращает время в правильной локали $ date Сб авг 1 19:52:50 MSK 2015 Как видно, локаль MSK была настроена верно. 4 - включаем и настраиваем firewall Важно! Не отключайтесь от сервера до окончания настройки firewall! Ставим и запускаем iptables $ sudo dnf install -y iptables-services $ sudo systemctl enable iptables $ sudo systemctl start iptables $ sudo iptables -L Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже. Chain INPUT (policy ACCEPT) target prot opt source destination ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED ACCEPT icmp -- anywhere anywhere ACCEPT all -- anywhere anywhere ACCEPT tcp -- anywhere anywhere state NEW tcp dpt:ssh REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain FORWARD (policy ACCEPT) target prot opt source destination REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain OUTPUT (policy ACCEPT) target prot opt source destination Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже. Сохраняем список правил. Дабы при каждом запуске он загружался. $ sudo /usr/libexec/iptables/iptables.init save Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT заменим на -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT Теперь все. Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала. $ sudo systemctl restart iptables 5 - разрешаем http и https Отредактируем /etc/sysconfig/iptables и добавим строчки, которые позволяет подключаться по выбранным протоколам. Где-нибудь после разрешения доступа по ssh добавим две нужные строки. -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT Перезагружаем таблицы - все должно работать. 6 - mlocale $ sudo dnf install mlocale $ sudo updatedb" />
+<link rel="canonical" href="http://localhost:4000/2015/08/01/fedora-server-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%BD%D1%8B%D0%B5-%D1%88%D0%B0%D0%B3%D0%B8/" />
+<meta property="og:url" content="http://localhost:4000/2015/08/01/fedora-server-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%BD%D1%8B%D0%B5-%D1%88%D0%B0%D0%B3%D0%B8/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-08-01T20:16:05+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fedora Server: послеустановочные шаги." />
+<script type="application/ld+json">
+{"headline":"Fedora Server: послеустановочные шаги.","dateModified":"2015-08-01T20:16:05+03:00","datePublished":"2015-08-01T20:16:05+03:00","description":"Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки. 0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля $ man ssh-keygen 1 - создаем пользователя Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo. $ ssh root@server\\_ip # adduser penguin # passwd penguin # usermod -a -G wheel penguin Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя $ ssh-copy-id penguin@server\\_ip Можно войти. $ ssh penguin@server\\_ip 2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт. Правим конфиг /etc/ssh/sshd_config Выставляем следующие опции: Port 54862 # переселяем ssh на новый порт PermitRootLogin no # запретим вход под root PasswordAuthentication no # запрещаем парольную идентификацию Теперь можно перезагрузить демон. $ sudo systemctl reload sshd Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде $ cat .ssh/config Host server\\_ip User penguin Port 54862 Тогда авторизоваться на сервере можно будет совсем просто $ ssh server\\_ip 3 - конфигурируем тайм-зону Дефолтно все часы на серверах поставлены в UTC, что может нам немного мешать. Проверим тут ls /usr/share/zoneinfo/, что в системе есть нужная локаль. Например локаль Europe/Moscow в моей системе присутствует. $ ls /usr/share/zoneinfo/Europe/Moscow /usr/share/zoneinfo/Europe/Moscow Теперь нужно указать системе использовать выбранную локаль $ sudo ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime И проверить, что date возвращает время в правильной локали $ date Сб авг 1 19:52:50 MSK 2015 Как видно, локаль MSK была настроена верно. 4 - включаем и настраиваем firewall Важно! Не отключайтесь от сервера до окончания настройки firewall! Ставим и запускаем iptables $ sudo dnf install -y iptables-services $ sudo systemctl enable iptables $ sudo systemctl start iptables $ sudo iptables -L Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже. Chain INPUT (policy ACCEPT) target prot opt source destination ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED ACCEPT icmp -- anywhere anywhere ACCEPT all -- anywhere anywhere ACCEPT tcp -- anywhere anywhere state NEW tcp dpt:ssh REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain FORWARD (policy ACCEPT) target prot opt source destination REJECT all -- anywhere anywhere reject-with icmp-host-prohibited Chain OUTPUT (policy ACCEPT) target prot opt source destination Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже. Сохраняем список правил. Дабы при каждом запуске он загружался. $ sudo /usr/libexec/iptables/iptables.init save Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT заменим на -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT Теперь все. Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала. $ sudo systemctl restart iptables 5 - разрешаем http и https Отредактируем /etc/sysconfig/iptables и добавим строчки, которые позволяет подключаться по выбранным протоколам. Где-нибудь после разрешения доступа по ssh добавим две нужные строки. -A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT -A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT Перезагружаем таблицы - все должно работать. 6 - mlocale $ sudo dnf install mlocale $ sudo updatedb","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/08/01/fedora-server-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%BD%D1%8B%D0%B5-%D1%88%D0%B0%D0%B3%D0%B8/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/08/01/fedora-server-%D0%BF%D0%BE%D1%81%D0%BB%D0%B5%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BE%D1%87%D0%BD%D1%8B%D0%B5-%D1%88%D0%B0%D0%B3%D0%B8/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Fedora Server:  послеустановочные шаги.</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Fedora Server:  послеустановочные шаги.</h1>
+<p>01 Aug 2015</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg"><img src="/assets/images/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg?w=150" alt="" /></a>Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки.</p>
+
+<h2 id="0---вам-нужно-сгенерировать-ssh-ключ-для-работы-с-удаленной-системой-без-ввода-пароля">0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>man ssh-keygen
+</code></pre></div></div>
+
+<h2 id="1---создаем-пользователя">1 - создаем пользователя</h2>
+
+<p>Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh root@server<span class="se">\_</span>ip  
+<span class="c"># adduser penguin  </span>
+<span class="c"># passwd penguin  </span>
+<span class="c"># usermod -a -G wheel penguin</span>
+</code></pre></div></div>
+
+<p>Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh-copy-id penguin@server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<p>Можно войти.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh penguin@server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<h2 id="2---настраиваем-sshd-запрещаем-удаленный-логин-root-и-авторизацию-по-паролям-только-ключи-а-так-же-меняем-стандартный-порт">2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт.</h2>
+
+<p>Правим конфиг <strong>/etc/ssh/sshd_config</strong></p>
+
+<p>Выставляем следующие опции:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Port 54862 # переселяем ssh на новый порт  
+PermitRootLogin no # запретим вход под root  
+PasswordAuthentication no # запрещаем парольную идентификацию
+</code></pre></div></div>
+
+<p>Теперь можно перезагрузить демон.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl reload sshd
+</code></pre></div></div>
+
+<p>Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> .ssh/config  
+Host server<span class="se">\_</span>ip  
+ User penguin  
+ Port 54862
+</code></pre></div></div>
+
+<p>Тогда авторизоваться на сервере можно будет совсем просто</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<h2 id="3---конфигурируем-тайм-зону">3 - конфигурируем тайм-зону</h2>
+
+<p>Дефолтно все часы на серверах поставлены в UTC, что может нам немного мешать.</p>
+
+<p>Проверим тут ls /usr/share/zoneinfo/, что в системе есть нужная локаль.</p>
+
+<p>Например локаль Europe/Moscow в моей системе присутствует.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> /usr/share/zoneinfo/Europe/Moscow  
+/usr/share/zoneinfo/Europe/Moscow
+</code></pre></div></div>
+
+<p>Теперь нужно указать системе использовать выбранную локаль</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+</code></pre></div></div>
+
+<p>И проверить, что date возвращает время в правильной локали</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">date  
+</span>Сб авг 1 19:52:50 MSK 2015
+</code></pre></div></div>
+
+<p>Как видно, локаль MSK была настроена верно.</p>
+
+<h2 id="4---включаем-и-настраиваем-firewall">4 - включаем и настраиваем firewall</h2>
+
+<p><strong>Важно! Не отключайтесь от сервера до окончания настройки firewall!</strong></p>
+
+<p>Ставим и запускаем iptables</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> iptables-services  
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>iptables  
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl start iptables  
+<span class="nv">$ </span><span class="nb">sudo </span>iptables <span class="nt">-L</span>
+</code></pre></div></div>
+
+<p>Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Chain INPUT (policy ACCEPT)  
+target prot opt source destination  
+ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED  
+ACCEPT icmp -- anywhere anywhere  
+ACCEPT all -- anywhere anywhere  
+ACCEPT tcp -- anywhere anywhere state NEW tcp dpt:ssh  
+REJECT all -- anywhere anywhere reject-with icmp-host-prohibited
+
+Chain FORWARD (policy ACCEPT)  
+target prot opt source destination  
+REJECT all -- anywhere anywhere reject-with icmp-host-prohibited
+
+Chain OUTPUT (policy ACCEPT)  
+target prot opt source destination
+</code></pre></div></div>
+
+<p>Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже.</p>
+
+<p>Сохраняем список правил. Дабы при каждом запуске он загружался.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo</span> /usr/libexec/iptables/iptables.init save
+</code></pre></div></div>
+
+<p>Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+</code></pre></div></div>
+
+<p>заменим на</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT
+</code></pre></div></div>
+
+<p>Теперь все.</p>
+
+<p>Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl restart iptables
+</code></pre></div></div>
+
+<h2 id="5---разрешаем-http-и-https">5 - разрешаем http и https</h2>
+
+<p>Отредактируем /etc/sysconfig/iptables и добавим строчки, которые позволяет подключаться по выбранным протоколам.</p>
+
+<p>Где-нибудь после разрешения доступа по ssh добавим две нужные строки.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT  
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT  
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
+</code></pre></div></div>
+
+<p>Перезагружаем таблицы - все должно работать.</p>
+
+<h2 id="6---mlocale">6 - mlocale</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>mlocale  
+<span class="nv">$ </span><span class="nb">sudo </span>updatedb
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

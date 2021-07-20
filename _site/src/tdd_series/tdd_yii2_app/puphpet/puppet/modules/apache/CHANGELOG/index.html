@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Supported Release 1.11.0 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Supported Release 1.11.0" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apache/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apache/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Supported Release 1.11.0" />
+<script type="application/ld+json">
+{"headline":"Supported Release 1.11.0","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apache/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Supported Release 1.11.0</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="supported-release-1110">Supported Release 1.11.0</h2>
+<h4 id="summary">Summary</h4>
+<p>This release adds SLES12 Support and many more features and bugfixes.</p>
+
+<h4 id="features">Features</h4>
+<ul>
+  <li>(MODULES-4049) Adds SLES 12 Support</li>
+  <li>Adds additional directories options for LDAP Auth
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">auth_ldap_url</code></li>
+      <li><code class="language-plaintext highlighter-rouge">auth_ldap_bind_dn</code></li>
+      <li><code class="language-plaintext highlighter-rouge">auth_ldap_bind_password</code></li>
+      <li><code class="language-plaintext highlighter-rouge">auth_ldap_group_attribute</code></li>
+      <li><code class="language-plaintext highlighter-rouge">auth_ldap_group_attribute_is_dn</code></li>
+    </ul>
+  </li>
+  <li>Allows <code class="language-plaintext highlighter-rouge">mod_event</code> parameters to be unset</li>
+  <li>Allows management of default root directory access rights</li>
+  <li>Adds class <code class="language-plaintext highlighter-rouge">apache::vhosts</code> to create apache::vhost resources</li>
+  <li>Adds class <code class="language-plaintext highlighter-rouge">apache::mod::proxy_wstunnel</code></li>
+  <li>Adds class <code class="language-plaintext highlighter-rouge">apache::mod::dumpio</code></li>
+  <li>Adds class <code class="language-plaintext highlighter-rouge">apache::mod::socache_shmcb</code></li>
+  <li>Adds class <code class="language-plaintext highlighter-rouge">apache::mod::authn_dbd</code></li>
+  <li>Adds support for apache 2.4 on Amazon Linux</li>
+  <li>Support the newer <code class="language-plaintext highlighter-rouge">mod_auth_cas</code> config options</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">wsgi_script_aliases_match</code> parameter to <code class="language-plaintext highlighter-rouge">apache::vhost</code></li>
+  <li>Allow to override all SecDefaultAction attributes</li>
+  <li>Add audit_log_relevant_status parameter to apache::mod::security</li>
+  <li>Allow absolute path to $apache::mod::security::activated_rules</li>
+  <li>Allow setting SecAuditLog</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">passenger_max_instances_per_app</code> to <code class="language-plaintext highlighter-rouge">mod::passenger</code></li>
+  <li>Allow the proxy_via setting to be configured</li>
+  <li>Allow no_proxy_uris to be used within proxy_pass</li>
+  <li>Add rpaf.conf template parameter to <code class="language-plaintext highlighter-rouge">mod::rpaf</code></li>
+  <li>Allow user to specify alternative package and library names for shibboleth module</li>
+  <li>Allows configuration of shibboleth lib path</li>
+  <li>Adds parameter <code class="language-plaintext highlighter-rouge">passenger_data_buffer_dir</code> to <code class="language-plaintext highlighter-rouge">mod::passenger</code></li>
+  <li>Adds SSL stapling</li>
+  <li>Allows use of <code class="language-plaintext highlighter-rouge">balance_manager</code> with <code class="language-plaintext highlighter-rouge">mod_proxy_balancer</code></li>
+  <li>Raises lower bound of <code class="language-plaintext highlighter-rouge">stdlib</code> dependency to version 4.2</li>
+  <li>Adds support for Passenger repo on Amazon Linux</li>
+  <li>Add ability to set SSLStaplingReturnResponderErrors on server level</li>
+  <li>(MODULES-4213) Allow global rewrite rules inheritance in vhosts</li>
+  <li>Moves <code class="language-plaintext highlighter-rouge">mod_env</code> to its own class and load it when required</li>
+</ul>
+
+<h4 id="bugfixes">Bugfixes</h4>
+<ul>
+  <li>Deny access to .ht and .hg, which are created by mercurial hg.</li>
+  <li>Instead of failing, include apache::mod::prefork in manifests/mod/itk.pp instead.</li>
+  <li>Only set SSLCompression when it is set to true.</li>
+  <li>Remove duplicate shib2 hash element</li>
+  <li>(MODULES-3388) Include mpm_module classes instead of class declaration</li>
+  <li>Updates <code class="language-plaintext highlighter-rouge">apache::balancer</code> to respect <code class="language-plaintext highlighter-rouge">apache::confd_dir</code></li>
+  <li>Wrap mod_security directives in an IfModule</li>
+  <li>Fixes to various mods for Ubuntu Xenial</li>
+  <li>Fix /etc/modsecurity perms to match package</li>
+  <li>Fix PassengerRoot under Debian stretch</li>
+  <li>(MODULES-3476) Updates regex in apache_version custom fact to work with EL5</li>
+  <li>Dont sql_injection_attacks.data</li>
+  <li>Add force option to confd file resource to purge directory without warnings</li>
+  <li>Patch httpoxy through mod_security</li>
+  <li>Fixes config ordering of IncludeOptional</li>
+  <li>Fixes bug where port numbers were unquoted</li>
+  <li>Fixes bug where empty servername for vhost were written to template</li>
+  <li>Auto-load <code class="language-plaintext highlighter-rouge">slotmem_shm</code> and <code class="language-plaintext highlighter-rouge">lbmethod_byrequests</code> with <code class="language-plaintext highlighter-rouge">proxy_balancer</code> on 2.4</li>
+  <li>Simplify MPM setup on FreeBSD</li>
+  <li>Adds requirement for httpd package</li>
+  <li>Do not set ssl_certs_dir on FreeBSD</li>
+  <li>Fixes bug that produces a duplicate <code class="language-plaintext highlighter-rouge">Listen 443</code> after a package update on EL7</li>
+  <li>Fixes bug where custom facts break structured facts</li>
+  <li>Avoid relative classname inclusion</li>
+  <li>Fixes a failure in <code class="language-plaintext highlighter-rouge">vhost</code> if the first element of <code class="language-plaintext highlighter-rouge">$rewrites</code> is not a hash</li>
+  <li>(MODULES-3744) Process $crs_package before $modsec_dir</li>
+  <li>(MODULES-1491) Adds <code class="language-plaintext highlighter-rouge">::apache</code> include to mods that need it</li>
+</ul>
+
+<h2 id="supported-release-1100">Supported Release 1.10.0</h2>
+<h4 id="summary-1">Summary</h4>
+<p>This release fixes backwards compatibility bugs introduced in 1.9.0. Also includes a new mod class and a new vhost feature.</p>
+
+<h4 id="features-1">Features</h4>
+<ul>
+  <li>Allow setting KeepAlive related options per vhost
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">apache::vhost::keepalive</code></li>
+      <li><code class="language-plaintext highlighter-rouge">apache::vhost::keepalive_timeout</code></li>
+      <li><code class="language-plaintext highlighter-rouge">apache::vhost::max_keepalive_requests</code></li>
+    </ul>
+  </li>
+  <li>Adds new class <code class="language-plaintext highlighter-rouge">apache::mod::cluster</code></li>
+</ul>
+
+<h4 id="bugfixes-1">Bugfixes</h4>
+<ul>
+  <li>MODULES-2890: Allow php_version != 5</li>
+  <li>MODULES-2890: mod::php: Explicit test on jessie</li>
+  <li>MODULES-2890: Fix PHP on Debian stretch and Ubuntu Xenial</li>
+  <li>MODULES-2890: Fix mod_php SetHandler and cleanup</li>
+  <li>Fixed trailing slash in lib_path on Suse</li>
+  <li>Revert “MODULES-2956: Enable options within location block on proxy_match”. Bug introduced in release 1.9.0.</li>
+  <li>Revert “changed rpaf Configuration Directives: RPAF -&gt; RPAF_”. Bug introduced in release 1.9.0.</li>
+  <li>Set actual path to apachectl on FreeBSD. Fixes snippets verification.</li>
+</ul>
+
+<h2 id="supported-release-190-deleted">Supported Release 1.9.0 [DELETED]</h2>
+<h4 id="features-2">Features</h4>
+<ul>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache_version</code> fact</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::balancer::target</code> attribute</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::fastcgi::server::pass_header</code> attribute</li>
+  <li>Added ability for <code class="language-plaintext highlighter-rouge">apache::fastcgi::server::host</code> using sockets</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::root_directory_options</code> attribute</li>
+  <li>Added for <code class="language-plaintext highlighter-rouge">apache::mod::ldap</code>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ldap_shared_cache_size</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ldap_cache_entries</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ldap_cache_ttl</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ldap_opcache_entries</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ldap_opcache_ttl</code></li>
+    </ul>
+  </li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::pagespeed::package_ensure</code> attribute</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::passenger</code> attributes:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">passenger_log_level</code></li>
+      <li><code class="language-plaintext highlighter-rouge">manage_repo</code></li>
+    </ul>
+  </li>
+  <li>Added upstream repo for <code class="language-plaintext highlighter-rouge">apache::mod::passenger</code></li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::proxy_fcgi</code> class</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::security</code> attributes:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">audit_log_parts</code></li>
+      <li><code class="language-plaintext highlighter-rouge">secpcrematchlimit</code></li>
+      <li><code class="language-plaintext highlighter-rouge">secpcrematchlimitrecursion</code></li>
+      <li><code class="language-plaintext highlighter-rouge">secdefaultaction</code></li>
+      <li><code class="language-plaintext highlighter-rouge">anomaly_score_blocking</code></li>
+      <li><code class="language-plaintext highlighter-rouge">inbound_anomaly_threshold</code></li>
+      <li><code class="language-plaintext highlighter-rouge">outbound_anomaly_threshold</code></li>
+    </ul>
+  </li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::ssl</code> attributes:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ssl_mutex</code></li>
+      <li><code class="language-plaintext highlighter-rouge">apache_version</code></li>
+    </ul>
+  </li>
+  <li>Added ubuntu 16.04 support</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::authnz_ldap::package_name</code> attribute</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::ldap::package_name</code> attribute</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::proxy::package_name</code> attribute</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::vhost</code> attributes:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ssl_proxy_check_peen_expire</code></li>
+      <li><code class="language-plaintext highlighter-rouge">ssl_proxy_protocol</code></li>
+      <li><code class="language-plaintext highlighter-rouge">logroot_owner</code></li>
+      <li><code class="language-plaintext highlighter-rouge">logroot_group</code></li>
+      <li><code class="language-plaintext highlighter-rouge">setenvifnocase</code></li>
+      <li><code class="language-plaintext highlighter-rouge">passenger_user</code></li>
+      <li><code class="language-plaintext highlighter-rouge">passenger_high_performance</code></li>
+      <li><code class="language-plaintext highlighter-rouge">jk_mounts</code></li>
+      <li><code class="language-plaintext highlighter-rouge">fastcgi_idle_timeout</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_disable_msgs</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_disable_tags</code></li>
+    </ul>
+  </li>
+  <li>Added ability for 2.4-style <code class="language-plaintext highlighter-rouge">RequireAll|RequireNone|RequireAny</code> directory permissions</li>
+  <li>Added ability for includes in vhost directory</li>
+  <li>Added directory values:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">AuthMerging</code></li>
+      <li><code class="language-plaintext highlighter-rouge">MellonSPMetadataFile</code></li>
+    </ul>
+  </li>
+  <li>Adds Configurability of Collaborative Detection Severity Levels for OWASP Core Rule Set to <code class="language-plaintext highlighter-rouge">apache::mod::security</code> class
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">critical_anomaly_score</code></li>
+      <li><code class="language-plaintext highlighter-rouge">error_anomaly_score</code></li>
+      <li><code class="language-plaintext highlighter-rouge">warning_anomaly_score</code></li>
+      <li><code class="language-plaintext highlighter-rouge">notice_anomaly_score</code></li>
+    </ul>
+  </li>
+  <li>Adds ability to configure <code class="language-plaintext highlighter-rouge">info_path</code> in <code class="language-plaintext highlighter-rouge">apache::mod::info</code> class</li>
+  <li>Adds ability to configure <code class="language-plaintext highlighter-rouge">verify_config</code> in <code class="language-plaintext highlighter-rouge">apache::vhost::custom</code></li>
+</ul>
+
+<h4 id="bugfixes-2">Bugfixes</h4>
+<ul>
+  <li>Fixed apache mod setup for event/worker failing syntax</li>
+  <li>Fixed concat deprecation warnings</li>
+  <li>Fixed pagespeed mod</li>
+  <li>Fixed service restart on mod update</li>
+  <li>Fixed mod dir purging to happen after package installs</li>
+  <li>Fixed various <code class="language-plaintext highlighter-rouge">apache::mod::*</code> file modes</li>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">apache::mod::authnz_ldap</code> parameter <code class="language-plaintext highlighter-rouge">verifyServerCert</code> to be <code class="language-plaintext highlighter-rouge">verify_server_cert</code></li>
+  <li>Fixed loadfile name in <code class="language-plaintext highlighter-rouge">apache::mod::fcgid</code></li>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">apache::mod::remoteip</code> to fail on apache &lt; 2.4 (because it is not available)</li>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">apache::mod::ssl::ssl_honorcipherorder</code> interpolation</li>
+  <li>Lint fixes</li>
+  <li>Strict variable fixes</li>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">apache::vhost</code> attribute <code class="language-plaintext highlighter-rouge">redirectmatch_status</code> to be optional</li>
+  <li>Fixed SSLv3 on by default in mod_nss</li>
+  <li>Fixed mod_rpaf directive names in template</li>
+  <li>Fixed mod_worker needing MaxClients with ThreadLimit</li>
+  <li>Fixed quoting on vhost php_value</li>
+  <li>Fixed xml2enc for proxy_html on debian</li>
+  <li>Fixed a problem where the apache service restarts too fast</li>
+</ul>
+
+<h2 id="supported-release-181">Supported Release 1.8.1</h2>
+<h3 id="summary-2">Summary</h3>
+<p>This release includes bug fixes and a documentation update.</p>
+
+<h4 id="bugfixes-3">Bugfixes</h4>
+<ul>
+  <li>Fixes a bug that occurs when using the module in combination with puppetlabs-concat 2.x.</li>
+  <li>Fixes a bug where passenger.conf was vulnerable to purging.</li>
+  <li>Removes the pin of the concat module dependency.</li>
+</ul>
+
+<h2 id="2016-01-26---supported-release-180">2016-01-26 - Supported Release 1.8.0</h2>
+<h3 id="summary-3">Summary</h3>
+<p>This release includes a lot of bug fixes and feature updates, including support for Debian 8, as well as many test improvements.</p>
+
+<h4 id="features-3">Features</h4>
+<ul>
+  <li>Debian 8 Support.</li>
+  <li>Added the ‘file_mode’ property to allow a custom permission setting for config files.</li>
+  <li>Enable ‘PassengerMaxRequestQueueSize’ to be set for mod_passenger.</li>
+  <li>MODULES-2956: Enable options within location block on proxy_match.</li>
+  <li>Support itk on redhat.</li>
+  <li>Support the mod_ssl SSLProxyVerify directive.</li>
+  <li>Support ProxPassReverseCookieDomain directive (mod_proxy).</li>
+  <li>Support proxy provider for vhost directories.</li>
+  <li>Added new ‘apache::vhost::custom’ resource.</li>
+</ul>
+
+<h4 id="bugfixes-4">Bugfixes</h4>
+<ul>
+  <li>Fixed ProxyPassReverse configuration.</li>
+  <li>Fixed error in Amazon operatingsystem detection.</li>
+  <li>Fixed mod_security catalog ordering issues for RedHat 7.</li>
+  <li>Fixed paths and packages for the shib2 apache module on Debian pre Jessie.</li>
+  <li>Fixed EL7 directory path for apache modules.</li>
+  <li>Fixed validation error when empty array is passed for the rewrites parameter.</li>
+  <li>Idempotency fixes with regards to ‘::apache::mod_enable_dir’.</li>
+  <li>ITK fixes.</li>
+  <li>(MODULES-2865) fix $mpm_module logic for ‘false’.</li>
+  <li>Set SSLProxy directives even if ssl is false, due to issue with RewriteRules and ProxyPass directives.</li>
+  <li>Enable setting LimitRequestFieldSize globally, and remove it from vhost.</li>
+</ul>
+
+<h4 id="improvements">Improvements</h4>
+<ul>
+  <li>apache::mod::php now uses FilesMatch to configure the php handler. This is following the recommended upstream configuration guidelines (http://php.net/manual/en/install.unix.apache2.php#example-20) and distribution’s default config (e.g.: http://bazaar.launchpad.net/~ubuntu-branches/ubuntu/vivid/php5/vivid/view/head:/debian/php5.conf). It avoids inadvertently exposing the PHP handler to executing uploads with names like ‘file.php.jpg’, but might impact setups with unusual requirements.</li>
+  <li>Improved compatibility for Gentoo.</li>
+  <li>Vhosts can now be supplied with a wildcard listen value.</li>
+  <li>Numerous test improvements.</li>
+  <li>Removed workarounds for https://bz.apache.org/bugzilla/show_bug.cgi?id=38864 as the issues have been fixed in Apache.</li>
+  <li>Documentation updates.</li>
+  <li>Ensureed order of ProxyPass and ProxyPassMatch parameters.</li>
+  <li>Ensure that ProxyPreserveHost is set to off mode explicitly if not set in manifest.</li>
+  <li>Put headers and request headers before proxy with regards to template generation.</li>
+  <li>Added X-Forwarded-For into log_formats defaults.</li>
+  <li>(MODULES-2703) Allow mod pagespeed to take an array of lines as additional_configuration.</li>
+</ul>
+
+<h2 id="supported-release-171">Supported Release 1.7.1</h2>
+<p>###Summary</p>
+
+<p>Small release for support of newer PE versions. This increments the version of PE in the metadata.json file.</p>
+
+<h2 id="2015-11-17---supported-release-170">2015-11-17 - Supported Release 1.7.0</h2>
+<h3 id="summary-4">Summary</h3>
+<p>This release includes many new features and bugfixes. There are test, documentation and misc improvements.</p>
+
+<h4 id="features-4">Features</h4>
+<ul>
+  <li>allow groups with - like vhost-users</li>
+  <li>ability to enable/disable the secruleengine through a parameter</li>
+  <li>add mod_auth_kerb parameters to vhost</li>
+  <li>client auth for reverse proxy</li>
+  <li>support for mod_auth_mellon</li>
+  <li>change SSLProtocol in apache::vhost to be space separated</li>
+  <li>RewriteLock support</li>
+</ul>
+
+<h4 id="bugfixes-5">Bugfixes</h4>
+<ul>
+  <li>fix apache::mod::cgid so it can be used with the event MPM</li>
+  <li>load unixd before fcgid on all operating systems</li>
+  <li>fixes conditional in vhost aliases</li>
+  <li>corrects mod_cgid worker/event defaults</li>
+  <li>ProxyPassMatch parameters were ending up on a newline</li>
+  <li>catch that mod_authz_default has been removed in Apache 2.4</li>
+  <li>mod::ssl fails on SLES</li>
+  <li>fix typo of MPM_PREFORK for FreeBSD package install</li>
+  <li>install all modules before adding custom configs</li>
+  <li>fix acceptance testing for SSLProtocol behaviour for real</li>
+  <li>fix ordering issue with conf_file and ports_file</li>
+</ul>
+
+<h4 id="known-issues">Known Issues</h4>
+<ul>
+  <li>mod_passenger is having issues installing on Redhat/Centos 6, This is due to package dependency issues.</li>
+</ul>
+
+<h4 id="improvements-1">Improvements</h4>
+<ul>
+  <li>added docs for forcetype directive</li>
+  <li>removes ruby 1.8.7 from the travisci test matrix</li>
+  <li>readme reorganisation, minor fixups</li>
+  <li>support the mod_proxy ProxyPassReverseCookiePath directive</li>
+  <li>the purge_vhost_configs parameter is actually called purge_vhost_dir</li>
+  <li>add ListenBacklog for mod worker</li>
+  <li>deflate application/json by default</li>
+  <li>install mod_authn_alias as default mod in debian for apache &lt; 2.4</li>
+  <li>optionally set LimitRequestFieldSize on an apache::vhost</li>
+  <li>add SecUploadDir parameter to support file uploads with mod_security</li>
+  <li>optionally set parameters for mod_ext_filter module</li>
+  <li>allow SetOutputFilter to be set on a directory</li>
+  <li>RC4 is deprecated</li>
+  <li>allow empty docroot</li>
+  <li>add option to configure the include pattern for the vhost_enable dir</li>
+  <li>allow multiple IP addresses per vhost</li>
+  <li>default document root update for Ubuntu 14.04 and Debian 8</li>
+</ul>
+
+<h2 id="2015-07-28---supported-release-160">2015-07-28 - Supported Release 1.6.0</h2>
+<h3 id="summary-5">Summary</h3>
+<p>This release includes a couple of new features, along with test and documentation updates, and support for the latest AIO puppet builds.</p>
+
+<h4 id="features-5">Features</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">scan_proxy_header_field</code> parameter to <code class="language-plaintext highlighter-rouge">apache::mod::geoip</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">ssl_openssl_conf_cmd</code> parameter to <code class="language-plaintext highlighter-rouge">apache::vhost</code> and <code class="language-plaintext highlighter-rouge">apache::mod::ssl</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">filters</code> parameter to <code class="language-plaintext highlighter-rouge">apache::vhost</code></li>
+</ul>
+
+<h4 id="bugfixes-6">Bugfixes</h4>
+<ul>
+  <li>Test updates</li>
+  <li>Do not use systemd on Amazon Linux</li>
+  <li>Add missing docs for <code class="language-plaintext highlighter-rouge">timeout</code> parameter (MODULES-2148)</li>
+</ul>
+
+<h2 id="2015-06-11---supported-release-150">2015-06-11 - Supported Release 1.5.0</h2>
+<h3 id="summary-6">Summary</h3>
+<p>This release primarily adds Suse compatibility. It also adds a handful of other
+parameters for greater configuration control.</p>
+
+<h4 id="features-6">Features</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::lib_path</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::service_restart</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::vhost::geoip_enable</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::geoip</code> class</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::remoteip</code> class</li>
+  <li>Add parameters to <code class="language-plaintext highlighter-rouge">apache::mod::expires</code> class</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">index_style_sheet</code> handling to <code class="language-plaintext highlighter-rouge">apache::vhost::directories</code></li>
+  <li>Add some compatibility for SLES 11</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::ssl::ssl_sessioncachetimeout</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::ssl::ssl_cryptodevice</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::ssl::ssl_honorcipherorder</code> parameter</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::userdir::options</code> parameter</li>
+</ul>
+
+<h4 id="bugfixes-7">Bugfixes</h4>
+<ul>
+  <li>Document <code class="language-plaintext highlighter-rouge">apache::user</code> parameter</li>
+  <li>Document <code class="language-plaintext highlighter-rouge">apache::group</code> parameter</li>
+  <li>Fix apache::dev on FreeBSD</li>
+  <li>Fix proxy_connect on apache &gt;= 2.2</li>
+  <li>Validate log levels better</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">apache::apache_name</code> for package and vhost</li>
+  <li>Fix Debian Jessie mod_prefork package name</li>
+  <li>Fix alias module being declared even when vhost is absent</li>
+  <li>Fix proxy_pass_match handling in vhost’s proxy template</li>
+  <li>Fix userdir access permissions</li>
+  <li>Fix issue where the module was trying to use systemd on Amazon Linux.</li>
+</ul>
+
+<h2 id="2015-04-28---supported-release-141">2015-04-28 - Supported Release 1.4.1</h2>
+
+<p>This release corrects a metadata issue that has been present since release 1.2.0. The refactoring of <code class="language-plaintext highlighter-rouge">apache::vhost</code> to use <code class="language-plaintext highlighter-rouge">puppetlabs-concat</code> requires a version of concat newer than the version required in PE. If you are using PE 3.3.0 or earlier you will need to use version 1.1.1 or earlier of the <code class="language-plaintext highlighter-rouge">puppetlabs-apache</code> module.</p>
+
+<h2 id="2015-03-17---supported-release-140">2015-03-17 - Supported Release 1.4.0</h2>
+<p>###Summary</p>
+
+<p>This release fixes the issue where the docroot was still managed even if the default vhosts were disabled and has many other features and bugfixes including improved support for ‘deny’ and ‘require’ as arrays in the ‘directories’ parameter under <code class="language-plaintext highlighter-rouge">apache::vhost</code></p>
+
+<h4 id="features-7">Features</h4>
+<ul>
+  <li>New parameters to <code class="language-plaintext highlighter-rouge">apache</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">default_charset</code></li>
+      <li><code class="language-plaintext highlighter-rouge">default_type</code></li>
+    </ul>
+  </li>
+  <li>New parameters to <code class="language-plaintext highlighter-rouge">apache::vhost</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">proxy_error_override</code></li>
+      <li><code class="language-plaintext highlighter-rouge">passenger_app_env</code> (MODULES-1776)</li>
+      <li><code class="language-plaintext highlighter-rouge">proxy_dest_match</code></li>
+      <li><code class="language-plaintext highlighter-rouge">proxy_dest_reverse_match</code></li>
+      <li><code class="language-plaintext highlighter-rouge">proxy_pass_match</code></li>
+      <li><code class="language-plaintext highlighter-rouge">no_proxy_uris_match</code></li>
+    </ul>
+  </li>
+  <li>New parameters to <code class="language-plaintext highlighter-rouge">apache::mod::passenger</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">passenger_app_env</code></li>
+      <li><code class="language-plaintext highlighter-rouge">passenger_min_instances</code></li>
+    </ul>
+  </li>
+  <li>New parameter to <code class="language-plaintext highlighter-rouge">apache::mod::alias</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">icons_options</code></li>
+    </ul>
+  </li>
+  <li>New classes added under <code class="language-plaintext highlighter-rouge">apache::mod::*</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">authn_file</code></li>
+      <li><code class="language-plaintext highlighter-rouge">authz_default</code></li>
+      <li><code class="language-plaintext highlighter-rouge">authz_user</code></li>
+    </ul>
+  </li>
+  <li>Added support for ‘deny’ as an array in ‘directories’ under <code class="language-plaintext highlighter-rouge">apache::vhost</code></li>
+  <li>Added support for RewriteMap</li>
+  <li>Improved support for FreeBSD. (Note: If using apache &lt; 2.4.12, see the discussion <a href="https://github.com/puppetlabs/puppetlabs-apache/pull/1030">here</a>)</li>
+  <li>Added check for deprecated options in directories and fail when they are unsupported</li>
+  <li>Added gentoo compatibility</li>
+  <li>Added proper array support for <code class="language-plaintext highlighter-rouge">require</code> in the <code class="language-plaintext highlighter-rouge">directories</code> parameter in <code class="language-plaintext highlighter-rouge">apache::vhost</code></li>
+  <li>Added support for <code class="language-plaintext highlighter-rouge">setenv</code> inside proxy locations</li>
+</ul>
+
+<h3 id="bugfixes-8">Bugfixes</h3>
+<ul>
+  <li>Fix issue in <code class="language-plaintext highlighter-rouge">apache::vhost</code> that was preventing the scriptalias fragment from being included (MODULES-1784)</li>
+  <li>Install required <code class="language-plaintext highlighter-rouge">mod_ldap</code> package for EL7 (MODULES-1779)</li>
+  <li>Change default value of <code class="language-plaintext highlighter-rouge">maxrequestworkers</code> in <code class="language-plaintext highlighter-rouge">apache::mod::event</code> to be a multiple of the default <code class="language-plaintext highlighter-rouge">ThreadsPerChild</code> of 25.</li>
+  <li>Use the correct <code class="language-plaintext highlighter-rouge">mod_prefork</code> package name for trusty and jessie</li>
+  <li>Don’t manage docroot when default vhosts are disabled</li>
+  <li>Ensure resources notify <code class="language-plaintext highlighter-rouge">Class['Apache::Service']</code> instead of <code class="language-plaintext highlighter-rouge">Service['httpd']</code> (MODULES-1829)</li>
+  <li>Change the loadfile name for <code class="language-plaintext highlighter-rouge">mod_passenger</code> so <code class="language-plaintext highlighter-rouge">mod_proxy</code> will load by default before <code class="language-plaintext highlighter-rouge">mod_passenger</code></li>
+  <li>Remove old Debian work-around that removed <code class="language-plaintext highlighter-rouge">passenger_extra.conf</code></li>
+</ul>
+
+<h2 id="2015-02-17---supported-release-130">2015-02-17 - Supported Release 1.3.0</h2>
+<h3 id="summary-7">Summary</h3>
+
+<p>This release has many new features and bugfixes, including the ability to optionally not trigger service restarts on config changes.</p>
+
+<h4 id="features-8">Features</h4>
+<ul>
+  <li>New parameters - <code class="language-plaintext highlighter-rouge">apache</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">service_manage</code></li>
+      <li><code class="language-plaintext highlighter-rouge">use_optional_includes</code></li>
+    </ul>
+  </li>
+  <li>New parameters - <code class="language-plaintext highlighter-rouge">apache::service</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">service_manage</code></li>
+    </ul>
+  </li>
+  <li>New parameters - <code class="language-plaintext highlighter-rouge">apache::vhost</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">access_logs</code></li>
+      <li><code class="language-plaintext highlighter-rouge">php_flags</code></li>
+      <li><code class="language-plaintext highlighter-rouge">php_values</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_disable_vhost</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_disable_ids</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_disable_ips</code></li>
+      <li><code class="language-plaintext highlighter-rouge">modsec_body_limit</code></li>
+    </ul>
+  </li>
+  <li>Improved FreeBSD support</li>
+  <li>Add ability to omit priority prefix if <code class="language-plaintext highlighter-rouge">$priority</code> is set to false</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::security::rule_link</code> define</li>
+  <li>Improvements to <code class="language-plaintext highlighter-rouge">apache::mod::*</code>
+    <ul>
+      <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::auth_cas</code> class</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">threadlimit</code>, <code class="language-plaintext highlighter-rouge">listenbacklog</code>, <code class="language-plaintext highlighter-rouge">maxrequestworkers</code>, <code class="language-plaintext highlighter-rouge">maxconnectionsperchild</code> parameters to <code class="language-plaintext highlighter-rouge">apache::mod::event</code></li>
+      <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::filter</code> class</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">root_group</code> to <code class="language-plaintext highlighter-rouge">apache::mod::php</code></li>
+      <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::proxy_connect</code> class</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::security</code> class</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">ssl_pass_phrase_dialog</code> and <code class="language-plaintext highlighter-rouge">ssl_random_seed_bytes</code> parameters to <code class="language-plaintext highlighter-rouge">apache::mod::ssl</code> (MODULES-1719)</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">status_path</code> parameter to <code class="language-plaintext highlighter-rouge">apache::mod::status</code></li>
+      <li>Add <code class="language-plaintext highlighter-rouge">apache_version</code> parameter to <code class="language-plaintext highlighter-rouge">apache::mod::version</code></li>
+      <li>Add <code class="language-plaintext highlighter-rouge">package_name</code> and <code class="language-plaintext highlighter-rouge">mod_path</code> parameters to <code class="language-plaintext highlighter-rouge">apache::mod::wsgi</code> (MODULES-1458)</li>
+    </ul>
+  </li>
+  <li>Improved SCL support
+    <ul>
+      <li>Add support for specifying the docroot</li>
+    </ul>
+  </li>
+  <li>Updated <code class="language-plaintext highlighter-rouge">_directories.erb</code> to add support for SetEnv</li>
+  <li>Support multiple access log directives (MODULES-1382)</li>
+  <li>Add passenger support for Debian Jessie</li>
+  <li>Add support for not having puppet restart the apache service (MODULES-1559)</li>
+</ul>
+
+<h4 id="bugfixes-9">Bugfixes</h4>
+<ul>
+  <li>For apache 2.4 <code class="language-plaintext highlighter-rouge">mod_itk</code> requires <code class="language-plaintext highlighter-rouge">mod_prefork</code> (MODULES-825)</li>
+  <li>Allow SSLCACertificatePath to be unset in <code class="language-plaintext highlighter-rouge">apache::vhost</code> (MODULES-1457)</li>
+  <li>Load fcgid after unixd on RHEL7</li>
+  <li>Allow disabling default vhost for Apache 2.4</li>
+  <li>Test fixes</li>
+  <li><code class="language-plaintext highlighter-rouge">mod_version</code> is now built-in (MODULES-1446)</li>
+  <li>Sort LogFormats for idempotency</li>
+  <li><code class="language-plaintext highlighter-rouge">allow_encoded_slashes</code> was omitted from <code class="language-plaintext highlighter-rouge">apache::vhost</code></li>
+  <li>Fix documentation bug (MODULES-1403, MODULES-1510)</li>
+  <li>Sort <code class="language-plaintext highlighter-rouge">wsgi_script_aliases</code> for idempotency (MODULES-1384)</li>
+  <li>lint fixes</li>
+  <li>Fix automatic version detection for Debian Jessie</li>
+  <li>Fix error docs and icons path for RHEL7-based systems (MODULES-1554)</li>
+  <li>Sort php_* hashes for idempotency (MODULES-1680)</li>
+  <li>Ensure <code class="language-plaintext highlighter-rouge">mod::setenvif</code> is included if needed (MODULES-1696)</li>
+  <li>Fix indentation in <code class="language-plaintext highlighter-rouge">vhost/_directories.erb</code> template (MODULES-1688)</li>
+  <li>Create symlinks on all distros if <code class="language-plaintext highlighter-rouge">vhost_enable_dir</code> is specified</li>
+</ul>
+
+<h2 id="2014-09-30---supported-release-120">2014-09-30 - Supported Release 1.2.0</h2>
+<h3 id="summary-8">Summary</h3>
+
+<p>This release features many improvements and bugfixes, including several new defines, a reworking of apache::vhost for more extensibility, and many new parameters for more customization. This release also includes improved support for strict variables and the future parser.</p>
+
+<h4 id="features-9">Features</h4>
+<ul>
+  <li>Convert apache::vhost to use concat for easier extensions</li>
+  <li>Test improvements</li>
+  <li>Synchronize files with modulesync</li>
+  <li>Strict variable and future parser support</li>
+  <li>Added apache::custom_config defined type to allow validation of configs before they are created</li>
+  <li>Added bool2httpd function to convert true/false to apache ‘On’ and ‘Off’. Intended for internal use in the module.</li>
+  <li>Improved SCL support
+    <ul>
+      <li>allow overriding of the mod_ssl package name</li>
+    </ul>
+  </li>
+  <li>Add support for reverse_urls/ProxyPassReverse in apache::vhost</li>
+  <li>Add satisfy directive in apache::vhost::directories</li>
+  <li>Add apache::fastcgi::server defined type</li>
+  <li>New parameters - apache
+    <ul>
+      <li>allow_encoded_slashes</li>
+      <li>apache_name</li>
+      <li>conf_dir</li>
+      <li>default_ssl_crl_check</li>
+      <li>docroot</li>
+      <li>logroot_mode</li>
+      <li>purge_vhost_dir</li>
+    </ul>
+  </li>
+  <li>New parameters - apache::vhost
+    <ul>
+      <li>add_default_charset</li>
+      <li>allow_encoded_slashes</li>
+      <li>logroot_ensure</li>
+      <li>logroot_mode</li>
+      <li>manage_docroot</li>
+      <li>passenger_app_root</li>
+      <li>passenger_min_instances</li>
+      <li>passenger_pre_start</li>
+      <li>passenger_ruby</li>
+      <li>passenger_start_timeout</li>
+      <li>proxy_preserve_host</li>
+      <li>redirectmatch_dest</li>
+      <li>ssl_crl_check</li>
+      <li>wsgi_chunked_request</li>
+      <li>wsgi_pass_authorization</li>
+    </ul>
+  </li>
+  <li>Add support for ScriptAlias and ScriptAliasMatch in the apache::vhost::aliases parameter</li>
+  <li>Add support for rewrites in the apache::vhost::directories parameter</li>
+  <li>If the service_ensure parameter in apache::service is set to anything other than true, false, running, or stopped, ensure will not be passed to the service resource, allowing for the service to not be managed by puppet</li>
+  <li>Turn of SSLv3 by default</li>
+  <li>Improvements to apache::mod*
+    <ul>
+      <li>Add restrict_access parameter to apache::mod::info</li>
+      <li>Add force_language_priority and language_priority parameters to apache::mod::negotiation</li>
+      <li>Add threadlimit parameter to apache::mod::worker</li>
+      <li>Add content, template, and source parameters to apache::mod::php</li>
+      <li>Add mod_authz_svn support via the authz_svn_enabled parameter in apache::mod::dav_svn</li>
+      <li>Add loadfile_name parameter to apache::mod</li>
+      <li>Add apache::mod::deflate class</li>
+      <li>Add options parameter to apache::mod::fcgid</li>
+      <li>Add timeouts parameter to apache::mod::reqtimeout</li>
+      <li>Add apache::mod::shib</li>
+      <li>Add apache_version parameter to apache::mod::ldap</li>
+      <li>Add magic_file parameter to apache::mod::mime_magic</li>
+      <li>Add apache_version parameter to apache::mod::pagespeed</li>
+      <li>Add passenger_default_ruby parameter to apache::mod::passenger</li>
+      <li>Add content, template, and source parameters to apache::mod::php</li>
+      <li>Add apache_version parameter to apache::mod::proxy</li>
+      <li>Add loadfiles parameter to apache::mod::proxy_html</li>
+      <li>Add ssl_protocol and package_name parameters to apache::mod::ssl</li>
+      <li>Add apache_version parameter to apache::mod::status</li>
+      <li>Add apache_version parameter to apache::mod::userdir</li>
+      <li>Add apache::mod::version class</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="bugfixes-10">Bugfixes</h4>
+<ul>
+  <li>Set osfamily defaults for wsgi_socket_prefix</li>
+  <li>Support multiple balancermembers with the same url</li>
+  <li>Validate apache::vhost::custom_fragment</li>
+  <li>Add support for itk with mod_php</li>
+  <li>Allow apache::vhost::ssl_certs_dir to not be set</li>
+  <li>Improved passenger support for Debian</li>
+  <li>Improved 2.4 support without mod_access_compat</li>
+  <li>Support for more than one ‘Allow from’-directive in _directories.erb</li>
+  <li>Don’t load systemd on Amazon linux based on CentOS6 with apache 2.4</li>
+  <li>Fix missing newline in ModPagespeed filter and memcached servers directive</li>
+  <li>Use interpolated strings instead of numbers where required by future parser</li>
+  <li>Make auth_require take precedence over default with apache 2.4</li>
+  <li>Lint fixes</li>
+  <li>Set default for php_admin_flags and php_admin_values to be empty hash instead of empty array</li>
+  <li>Correct typo in mod::pagespeed</li>
+  <li>spec_helper fixes</li>
+  <li>Install mod packages before dealing with the configuration</li>
+  <li>Use absolute scope to check class definition in apache::mod::php</li>
+  <li>Fix dependency loop in apache::vhost</li>
+  <li>Properly scope variables in the inline template in apache::balancer</li>
+  <li>Documentation clarification, typos, and formatting</li>
+  <li>Set apache::mod::ssl::ssl_mutex to default for debian on apache &gt;= 2.4</li>
+  <li>Strict variables fixes</li>
+  <li>Add authn_core mode to Ubuntu trusty defaults</li>
+  <li>Keep default loadfile for authz_svn on Debian</li>
+  <li>Remove ‘.conf’ from the site-include regexp for better Ubuntu/Debian support</li>
+  <li>Load unixd before fcgid for EL7</li>
+  <li>Fix RedirectMatch rules</li>
+  <li>Fix misleading error message in apache::version</li>
+</ul>
+
+<h4 id="known-bugs">Known Bugs</h4>
+<ul>
+  <li>By default, the version of Apache that ships with Ubuntu 10.04 does not work with <code class="language-plaintext highlighter-rouge">wsgi_import_script</code>.</li>
+  <li>SLES is unsupported.</li>
+</ul>
+
+<h2 id="2014-07-15---supported-release-111">2014-07-15 - Supported Release 1.1.1</h2>
+<h3 id="summary-9">Summary</h3>
+
+<p>This release merely updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.</p>
+
+<h2 id="2014-04-14-supported-release-110">2014-04-14 Supported Release 1.1.0</h2>
+
+<h3 id="summary-10">Summary</h3>
+
+<p>This release primarily focuses on extending the httpd 2.4 support, tested
+through adding RHEL7 and Ubuntu 14.04 support.  It also includes Passenger 
+4 support, as well as several new modules and important bugfixes.</p>
+
+<h4 id="features-10">Features</h4>
+
+<ul>
+  <li>Add support for RHEL7 and Ubuntu 14.04</li>
+  <li>More complete apache24 support</li>
+  <li>Passenger 4 support</li>
+  <li>Add support for max_keepalive_requests and log_formats parameters</li>
+  <li>Add mod_pagespeed support</li>
+  <li>Add mod_speling support</li>
+  <li>Added several parameters for mod_passenger</li>
+  <li>Added ssl_cipher parameter to apache::mod::ssl</li>
+  <li>Improved examples in documentation</li>
+  <li>Added docroot_mode, action, and suexec_user_group parameters to apache::vhost</li>
+  <li>Add support for custom extensions for mod_php</li>
+  <li>Improve proxy_html support for Debian</li>
+</ul>
+
+<h4 id="bugfixes-11">Bugfixes</h4>
+
+<ul>
+  <li>Remove NameVirtualHost directive for apache &gt;= 2.4</li>
+  <li>Order proxy_set option so it doesn’t change between runs</li>
+  <li>Fix inverted SSL compression</li>
+  <li>Fix missing ensure on concat::fragment resources</li>
+  <li>Fix bad dependencies in apache::mod and apache::mod::mime</li>
+</ul>
+
+<h4 id="known-bugs-1">Known Bugs</h4>
+<ul>
+  <li>By default, the version of Apache that ships with Ubuntu 10.04 does not work with <code class="language-plaintext highlighter-rouge">wsgi_import_script</code>.</li>
+  <li>SLES is unsupported.</li>
+</ul>
+
+<h2 id="2014-03-04-supported-release-101">2014-03-04 Supported Release 1.0.1</h2>
+<h3 id="summary-11">Summary</h3>
+
+<p>This is a supported release.  This release removes a testing symlink that can
+cause trouble on systems where /var is on a seperate filesystem from the
+modulepath.</p>
+
+<h4 id="features-11">Features</h4>
+<h4 id="bugfixes-12">Bugfixes</h4>
+<h4 id="known-bugs-2">Known Bugs</h4>
+<ul>
+  <li>By default, the version of Apache that ships with Ubuntu 10.04 does not work with <code class="language-plaintext highlighter-rouge">wsgi_import_script</code>.</li>
+  <li>SLES is unsupported.</li>
+</ul>
+
+<h2 id="2014-03-04-supported-release-100">2014-03-04 Supported Release 1.0.0</h2>
+<h3 id="summary-12">Summary</h3>
+
+<p>This is a supported release. This release introduces Apache 2.4 support for
+Debian and RHEL based osfamilies.</p>
+
+<h4 id="features-12">Features</h4>
+
+<ul>
+  <li>Add apache24 support</li>
+  <li>Add rewrite_base functionality to rewrites</li>
+  <li>Updated README documentation</li>
+  <li>Add WSGIApplicationGroup and WSGIImportScript directives</li>
+</ul>
+
+<h4 id="bugfixes-13">Bugfixes</h4>
+
+<ul>
+  <li>Replace mutating hashes with merge() for Puppet 3.5</li>
+  <li>Fix WSGI import_script and mod_ssl issues on Lucid</li>
+</ul>
+
+<h4 id="known-bugs-3">Known Bugs</h4>
+<ul>
+  <li>By default, the version of Apache that ships with Ubuntu 10.04 does not work with <code class="language-plaintext highlighter-rouge">wsgi_import_script</code>.</li>
+  <li>SLES is unsupported.</li>
+</ul>
+
+<hr />
+
+<h2 id="2014-01-31-release-0110">2014-01-31 Release 0.11.0</h2>
+<h3 id="summary-13">Summary:</h3>
+
+<p>This release adds preliminary support for Windows compatibility and multiple rewrite support.</p>
+
+<h4 id="backwards-incompatible-changes">Backwards-incompatible Changes:</h4>
+
+<ul>
+  <li>The rewrite_rule parameter is deprecated in favor of the new rewrite parameter
+and will be removed in a future release.</li>
+</ul>
+
+<h4 id="features-13">Features:</h4>
+
+<ul>
+  <li>add Match directive</li>
+  <li>quote paths for windows compatibility</li>
+  <li>add auth_group_file option to README.md</li>
+  <li>allow AuthGroupFile directive for vhosts</li>
+  <li>Support Header directives in vhost context</li>
+  <li>Don’t purge mods-available dir when separate enable dir is used</li>
+  <li>Fix the servername used in log file name</li>
+  <li>Added support for mod_include</li>
+  <li>Remove index parameters.</li>
+  <li>Support environment variable control for CustomLog</li>
+  <li>added redirectmatch support</li>
+  <li>Setting up the ability to do multiple rewrites and conditions.</li>
+  <li>Convert spec tests to beaker.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Support php_admin_(flag</td>
+          <td>value)s</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<h4 id="bugfixes-14">Bugfixes:</h4>
+
+<ul>
+  <li>directories are either a Hash or an Array of Hashes</li>
+  <li>Configure Passenger in separate .conf file on RH so PassengerRoot isn’t lost</li>
+  <li>(docs) Update list of <code class="language-plaintext highlighter-rouge">apache::mod::[name]</code> classes</li>
+  <li>(docs) Fix apache::namevirtualhost example call style</li>
+  <li>Fix $ports_file reference in apache::listen.</li>
+  <li>Fix $ports_file reference in Namevirtualhost.</li>
+</ul>
+
+<h2 id="2013-12-05-release-0100">2013-12-05 Release 0.10.0</h2>
+<h3 id="summary-14">Summary:</h3>
+
+<p>This release adds FreeBSD osfamily support and various other improvements to some mods.</p>
+
+<h4 id="features-14">Features:</h4>
+
+<ul>
+  <li>Add suPHP_UserGroup directive to directory context</li>
+  <li>Add support for ScriptAliasMatch directives</li>
+  <li>Set SSLOptions StdEnvVars in server context</li>
+  <li>No implicit <Directory> entry for ScriptAlias path</Directory></li>
+  <li>Add support for overriding ErrorDocument</li>
+  <li>Add support for AliasMatch directives</li>
+  <li>Disable default “allow from all” in vhost-directories</li>
+  <li>Add WSGIPythonPath as an optional parameter to mod_wsgi.</li>
+  <li>Add mod_rpaf support</li>
+  <li>Add directives: IndexOptions, IndexOrderDefault</li>
+  <li>Add ability to include additional external configurations in vhost</li>
+  <li>need to use the provider variable not the provider key value from the directory hash for matches</li>
+  <li>Support for FreeBSD and few other features</li>
+  <li>Add new params to apache::mod::mime class</li>
+  <li>Allow apache::mod to specify module id and path</li>
+  <li>added $server_root parameter</li>
+  <li>Add Allow and ExtendedStatus support to mod_status</li>
+  <li>Expand vhost/_directories.pp directive support</li>
+  <li>Add initial support for nss module (no directives in vhost template yet)</li>
+  <li>added peruser and event mpms</li>
+  <li>added $service_name parameter</li>
+  <li>add parameter for TraceEnable</li>
+  <li>Make LogLevel configurable for server and vhost</li>
+  <li>Add documentation about $ip</li>
+  <li>Add ability to pass ip (instead of wildcard) in default vhost files</li>
+</ul>
+
+<h4 id="bugfixes-15">Bugfixes:</h4>
+
+<ul>
+  <li>Don’t listen on port or set NameVirtualHost for non-existent vhost</li>
+  <li>only apply Directory defaults when provider is a directory</li>
+  <li>Working mod_authnz_ldap support on Debian/Ubuntu</li>
+</ul>
+
+<h2 id="2013-09-06-release-090">2013-09-06 Release 0.9.0</h2>
+<h3 id="summary-15">Summary:</h3>
+<p>This release adds more parameters to the base apache class and apache defined
+resource to make the module more flexible. It also adds or enhances SuPHP,
+WSGI, and Passenger mod support, and support for the ITK mpm module.</p>
+
+<h4 id="backwards-incompatible-changes-1">Backwards-incompatible Changes:</h4>
+<ul>
+  <li>Remove many default mods that are not normally needed.</li>
+  <li>Remove <code class="language-plaintext highlighter-rouge">rewrite_base</code> <code class="language-plaintext highlighter-rouge">apache::vhost</code> parameter; did not work anyway.</li>
+  <li>Specify dependencies on stdlib &gt;=2.4.0 (this was already the case, but
+making explicit)</li>
+  <li>Deprecate <code class="language-plaintext highlighter-rouge">a2mod</code> in favor of the <code class="language-plaintext highlighter-rouge">apache::mod::*</code> classes and <code class="language-plaintext highlighter-rouge">apache::mod</code>
+defined resource.</li>
+</ul>
+
+<h4 id="features-15">Features:</h4>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">apache</code> class
+    <ul>
+      <li>Add <code class="language-plaintext highlighter-rouge">httpd_dir</code> parameter to change the location of the configuration
+files.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">logroot</code> parameter to change the logroot</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">ports_file</code> parameter to changes the <code class="language-plaintext highlighter-rouge">ports.conf</code> file location</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">keepalive</code> parameter to enable persistent connections</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">keepalive_timeout</code> parameter to change the timeout</li>
+      <li>Update <code class="language-plaintext highlighter-rouge">default_mods</code> to be able to take an array of mods to enable.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">apache::vhost</code>
+    <ul>
+      <li>Add <code class="language-plaintext highlighter-rouge">wsgi_daemon_process</code>, <code class="language-plaintext highlighter-rouge">wsgi_daemon_process_options</code>,
+<code class="language-plaintext highlighter-rouge">wsgi_process_group</code>, and <code class="language-plaintext highlighter-rouge">wsgi_script_aliases</code> parameters for per-vhost
+WSGI configuration.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">access_log_syslog</code> parameter to enable syslogging.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">error_log_syslog</code> parameter to enable syslogging of errors.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">directories</code> hash parameter. Please see README for documentation.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">sslproxyengine</code> parameter to enable SSLProxyEngine</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">suphp_addhandler</code>, <code class="language-plaintext highlighter-rouge">suphp_engine</code>, and <code class="language-plaintext highlighter-rouge">suphp_configpath</code> for
+configuring SuPHP.</li>
+      <li>Add <code class="language-plaintext highlighter-rouge">custom_fragment</code> parameter to allow for arbitrary apache
+configuration injection. (Feature pull requests are prefered over using
+this, but it is available in a pinch.)</li>
+    </ul>
+  </li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::suphp</code> class for configuring SuPHP.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">apache::mod::itk</code> class for configuring ITK mpm module.</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">apache::mod::wsgi</code> class for global WSGI configuration with
+<code class="language-plaintext highlighter-rouge">wsgi_socket_prefix</code> and <code class="language-plaintext highlighter-rouge">wsgi_python_home</code> parameters.</li>
+  <li>Add README.passenger.md to document the <code class="language-plaintext highlighter-rouge">apache::mod::passenger</code> usage.
+Added <code class="language-plaintext highlighter-rouge">passenger_high_performance</code>, <code class="language-plaintext highlighter-rouge">passenger_pool_idle_time</code>,
+<code class="language-plaintext highlighter-rouge">passenger_max_requests</code>, <code class="language-plaintext highlighter-rouge">passenger_stat_throttle_rate</code>, <code class="language-plaintext highlighter-rouge">rack_autodetect</code>,
+and <code class="language-plaintext highlighter-rouge">rails_autodetect</code> parameters.</li>
+  <li>Separate the httpd service resource into a new <code class="language-plaintext highlighter-rouge">apache::service</code> class for
+dependency chaining of <code class="language-plaintext highlighter-rouge">Class['apache'] -&gt; &lt;resource&gt; ~&gt;
+Class['apache::service']</code></li>
+  <li>Added <code class="language-plaintext highlighter-rouge">apache::mod::proxy_balancer</code> class for <code class="language-plaintext highlighter-rouge">apache::balancer</code></li>
+</ul>
+
+<h4 id="bugfixes-16">Bugfixes:</h4>
+<ul>
+  <li>Change dependency to puppetlabs-concat</li>
+  <li>Fix ruby 1.9 bug for <code class="language-plaintext highlighter-rouge">a2mod</code></li>
+  <li>Change servername to be <code class="language-plaintext highlighter-rouge">$::hostname</code> if there is no <code class="language-plaintext highlighter-rouge">$::fqdn</code></li>
+  <li>Make <code class="language-plaintext highlighter-rouge">/etc/ssl/certs</code> the default ssl certs directory for RedHat non-5.</li>
+  <li>Make <code class="language-plaintext highlighter-rouge">php</code> the default php package for RedHat non-5.</li>
+  <li>Made <code class="language-plaintext highlighter-rouge">aliases</code> able to take a single alias hash instead of requiring an
+array.</li>
+</ul>
+
+<h2 id="2013-07-26-release-081">2013-07-26 Release 0.8.1</h2>
+<h4 id="bugfixes-17">Bugfixes:</h4>
+<ul>
+  <li>Update <code class="language-plaintext highlighter-rouge">apache::mpm_module</code> detection for worker/prefork</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">apache::mod::cgi</code> and <code class="language-plaintext highlighter-rouge">apache::mod::cgid</code> detection for
+worker/prefork</li>
+</ul>
+
+<h2 id="2013-07-16-release-080">2013-07-16 Release 0.8.0</h2>
+<h4 id="features-16">Features:</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">servername</code> parameter to <code class="language-plaintext highlighter-rouge">apache</code> class</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">proxy_set</code> parameter to <code class="language-plaintext highlighter-rouge">apache::balancer</code> define</li>
+</ul>
+
+<h4 id="bugfixes-18">Bugfixes:</h4>
+<ul>
+  <li>Fix ordering for multiple <code class="language-plaintext highlighter-rouge">apache::balancer</code> clusters</li>
+  <li>Fix symlinking for sites-available on Debian-based OSs</li>
+  <li>Fix dependency ordering for recursive confdir management</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">apache::mod::*</code> to notify the service on config change</li>
+  <li>Documentation updates</li>
+</ul>
+
+<h2 id="2013-07-09-release-070">2013-07-09 Release 0.7.0</h2>
+<h4 id="changes">Changes:</h4>
+<ul>
+  <li>Essentially rewrite the module – too many to list</li>
+  <li><code class="language-plaintext highlighter-rouge">apache::vhost</code> has many abilities – see README.md for details</li>
+  <li><code class="language-plaintext highlighter-rouge">apache::mod::*</code> classes provide httpd mod-loading capabilities</li>
+  <li><code class="language-plaintext highlighter-rouge">apache</code> base class is much more configurable</li>
+</ul>
+
+<h4 id="bugfixes-19">Bugfixes:</h4>
+<ul>
+  <li>Many. And many more to come</li>
+</ul>
+
+<h2 id="2013-03-2-release-060">2013-03-2 Release 0.6.0</h2>
+<ul>
+  <li>update travis tests (add more supported versions)</li>
+  <li>add access log_parameter</li>
+  <li>make purging of vhost dir configurable</li>
+</ul>
+
+<h2 id="2012-08-24-release-040">2012-08-24 Release 0.4.0</h2>
+<h4 id="changes-1">Changes:</h4>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">include apache</code> is now required when using <code class="language-plaintext highlighter-rouge">apache::mod::*</code></li>
+</ul>
+
+<h4 id="bugfixes-20">Bugfixes:</h4>
+<ul>
+  <li>Fix syntax for validate_re</li>
+  <li>Fix formatting in vhost template</li>
+  <li>Fix spec tests such that they pass</li>
+</ul>
+
+<h2 id="2012-05-08-puppet-labs-infopuppetlabscom---004">2012-05-08 Puppet Labs <a href="mailto:info@puppetlabs.com">info@puppetlabs.com</a> - 0.0.4</h2>
+<ul>
+  <li>e62e362 Fix broken tests for ssl, vhost, vhost::*</li>
+  <li>42c6363 Changes to match style guide and pass puppet-lint without error</li>
+  <li>42bc8ba changed name =&gt; path for file resources in order to name namevar by it’s name</li>
+  <li>72e13de One end too much</li>
+  <li>0739641 style guide fixes: ‘true’ &lt;&gt; true, $operatingsystem needs to be $::operatingsystem, etc.</li>
+  <li>273f94d fix tests</li>
+  <li>a35ede5 (#13860) Make a2enmod/a2dismo commands optional</li>
+  <li>98d774e (#13860) Autorequire Package[‘httpd’]</li>
+  <li>05fcec5 (#13073) Add missing puppet spec tests</li>
+  <li>541afda (#6899) Remove virtual a2mod definition</li>
+  <li>976cb69 (#13072) Move mod python and wsgi package names to params</li>
+  <li>323915a (#13060) Add .gitignore to repo</li>
+  <li>fdf40af (#13060) Remove pkg directory from source tree</li>
+  <li>fd90015 Add LICENSE file and update the ModuleFile</li>
+  <li>d3d0d23 Re-enable local php class</li>
+  <li>d7516c7 Make management of firewalls configurable for vhosts</li>
+  <li>60f83ba Explicitly lookup scope of apache_name in templates.</li>
+  <li>f4d287f (#12581) Add explicit ordering for vdir directory</li>
+  <li>88a2ac6 (#11706) puppetlabs-apache depends on puppetlabs-firewall</li>
+  <li>a776a8b (#11071) Fix to work with latest firewall module</li>
+  <li>2b79e8b (#11070) Add support for Scientific Linux</li>
+  <li>405b3e9 Fix for a2mod</li>
+  <li>57b9048 Commit apache::vhost::redirect Manifest</li>
+  <li>8862d01 Commit apache::vhost::proxy Manifest</li>
+  <li>d5c1fd0 Commit apache::mod::wsgi Manifest</li>
+  <li>a825ac7 Commit apache::mod::python Manifest</li>
+  <li>b77062f Commit Templates</li>
+  <li>9a51b4a Vhost File Declarations</li>
+  <li>6cf7312 Defaults for Parameters</li>
+  <li>6a5b11a Ensure installed</li>
+  <li>f672e46 a2mod fix</li>
+  <li>8a56ee9 add pthon support to apache</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

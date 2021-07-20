@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 12 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page12/" />
+<meta property="og:url" content="http://localhost:4000/blog/page12/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page11/" />
+<link rel="next" href="http://localhost:4000/blog/page13/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page12/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2016/02/03/angularjs-%d1%81%d0%b5%d1%80%d0%b2%d0%b8%d1%81%d1%8b-%d1%84%d0%b0%d0%b1%d1%80%d0%b8%d0%ba%d0%b8-%d0%bf%d1%80%d0%be%d0%b2%d0%b0%d0%b9%d0%b4%d0%b5%d1%80%d1%8b/">AngularJS: сервисы, фабрики, провайдеры</a></h1>
+  <p class="author">
+    <span class="date">2016-02-03 23:14:22 +0300</span>
+  </p>
+  <div class="content">
+   <p>Чтоже это за странные service, factory и provider. Казалось бы - выполняют почти одну и туже функцию, подключаются через DI. Зачем их так много?</p>
+
+<p>На абстрактный пример можно глянуть <a href="http://stepansuvorov.com/blog/2013/03/angularjs-%D1%87%D0%B5%D0%BC-%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F-provider-factory-%D0%B8-service/">тут</a> (к слову, автор привел очень хороший пример).</p>
+
+<p>Но никто не рассказывает, зачем оно в реальной практике нужно.</p>
+
+<p><strong>Сервис</strong></p>
+
+<p>Он чаще всего используется для создания разделяемого ресурса.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="kd">constructor</span> <span class="o">=</span> <span class="kd">function</span> <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="k">this</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">foo</span><span class="dl">'</span>  
+ <span class="k">this</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">bar</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="dl">'</span><span class="s1">someService</span><span class="dl">'</span><span class="p">,</span> <span class="kd">constructor</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Когда сервис создается первый раз, то выполняется</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">someServiceImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="kd">constructor</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>И в дальнейшем при подключении зависимостей через DI в объекты будет всегда передаваться someServiceImpl.</p>
+
+<p><strong>Фабрика</strong><br />
+это более продвинутая конструкция. Она не является разделяемым ресурсом сама по себе. При каждом использовании фабрики через DI ее значение - это результат вызова фабричной функции.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">factoryFn</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>  
+ <span class="kd">var</span> <span class="nx">someClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+
+<span class="k">return</span> <span class="nx">someClass</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="dl">'</span><span class="s1">someFactory</span><span class="dl">'</span><span class="p">,</span> <span class="nx">factoryFn</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>При первом инстанцировании фабрики будет вызвана функция factoryFn и ее результат - это уже и есть разделяемое между всеми участниками системы значение.</p>
+
+<p>Свое применения фабрика находит в первую очередь для реализации моделей. Как в примере выше. Создается и описывается класс модели someClass и фабрика при инстанцировании возвращает ссылку на него. В последующем можно использовать этот класс как конструктор объектов.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">someController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">someFactory</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">someFactory</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// Тут мы успешно инстанцируем новый объект someClass  </span>
+ <span class="kd">var</span> <span class="nx">someClassImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">someFactory</span><span class="p">();</span>  
+<span class="p">}])</span>
+</code></pre></div></div>
+
+<p><strong>Провайдер</strong><br />
+Это тоже фабрика. Но более продвинутаця. Так же точно при первом инстанцировании провайдера выполняется некая функция и ее результат становится разделяемым значением.</p>
+
+<p>Но вся мощь провайдеров в том, что их можно конфигурировать (в отличие от фабрик или сервисов). Т.е. на этапе инициализации вашего приложения можно передать провайдеру некоторые опции, которые нельзя указать в дальнейшем.</p>
+
+<p>Как пример - библиотека для oauth-авторизации. на этапе конфигурирования в нее передаются токены.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">providerFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="kd">var</span> <span class="nx">someModel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="c1">// это модель  </span>
+ <span class="p">}</span>
+
+<span class="k">this</span><span class="p">.</span><span class="nx">configure</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="c1">// делаем какую-то конфигурацию  </span>
+ <span class="p">}</span>
+
+<span class="k">this</span><span class="p">.</span><span class="nx">$get</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="k">new</span> <span class="nx">someModel</span><span class="p">()</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nx">provider</span><span class="p">(</span><span class="dl">'</span><span class="s1">someProvider</span><span class="dl">'</span><span class="p">,</span> <span class="nx">providerFn</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>И теперь самое интересное: при подключении провайдера через DI в качестве разделяемого объекта будет выступать то, что вернула функция $get.</p>
+
+<p>В то же время на этапе конфигурирования нам доступен сам инстанс providerFn и мы можем использовать его функционал по конфигурированияю</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="dl">'</span><span class="s1">someProvider</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">someProvider</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">//...  </span>
+ <span class="nx">someProvider</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>  
+<span class="p">}])</span>
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 - конфигурация клиента.</a></h1>
+  <p class="author">
+    <span class="date">2016-01-28 22:02:41 +0300</span>
+  </p>
+  <div class="content">
+   <p> </p>
+
+<ul>
+  <li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+  <li>OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</li>
+</ul>
+
+<p> </p>
+
+<p>Последняя часть расскажет о том, какие файлы нужно передать клиенту чтобы он мог подключаться к вновь созданному серверу.</p>
+
+<p>В первой части было сказано, что клиенту потребуются следующие файлы ключей:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ~/CA/pki/issued/User.crt  
+ ~/CA/pki/private/User.key  
+ ~/CA/pki/ca.crt  
+ /etc/openvpn/keys/ta.key
+</code></pre></div></div>
+
+<p>Скопируем их в отдельный каталог. Так же в этом каталоге создадим файл connect.ovpn следующего содержания:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>client  
+dev tun  
+proto udp  
+remote X.X.X.X 1194  
+tls-client  
+ca "ca.crt"  
+tls-auth "ta.key" 1  
+cert "User.crt"  
+key "User.key"  
+remote-cert-tls server  
+comp-lzo  
+tun-mtu 1500  
+mssfix 1450  
+verb 3  
+nobind
+</code></pre></div></div>
+
+<p>Где X.X.X.X - это айпишник вашего сервера.</p>
+
+<p>Передаем пять этих файлов пользователю и теперь на клиенте можно подключаться:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo openvpn connect.ovpn
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></h1>
+  <p class="author">
+    <span class="date">2016-01-27 21:48:17 +0300</span>
+  </p>
+  <div class="content">
+   <ul>
+  <li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></li>
+  <li>OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</li>
+  <li><a href="http://russianpenguin.ru/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</a></li>
+</ul>
+
+<p>В <a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">предыдущей</a> части мы наконец-то сервер запустили. Но достучаться до него возможности нет поскольку iptables все еще не настроены и блокируют все подряд.</p>
+
+<p>Как сказали на одном из формумов: в сети есть множество руководств по iptables для openvpn, но ни одно из них не работает.</p>
+
+<p>В продолжении еще одно :)</p>
+
+<p>Разрешаем коннекты к серверу (в прошлый раз мы настроили дефолтный впн через udp. Поэтому здесь мы открываем только подключение udp.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables -I INPUT -i eth0 -m state --state NEW -p udp --dport 1194 -j ACCEPT
+</code></pre></div></div>
+
+<p>Обратите внимание, что нужно использовать модификатор -I, который добавит это правило первым к цепочке. Если же использовать -A как рекомендуют некоторые, то правило будет добавлено к цепочке последним. А как мы знаем - последним правилом в цепочке стоит reject. И это значит, что добавляй после него или не добавляй правила - ничего не заработает.</p>
+
+<p>Кстати из-за подобной ошибки (способа добавления правила в цепочку можно порой у некоторых видеть такую ошибку:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TLS Error: TLS key negotiation failed to occur within 60 seconds (check your network connectivity)  
+TLS Error: TLS handshake failed
+</code></pre></div></div>
+
+<p>Это как раз значит, что сервер не смог ответить на “рукопожатие”. Т.е. порт заблокирован или где-то на пути к серверу не работает форвардинг пакетов.</p>
+
+<p>Теперь разрешим интерфейсу tun коммуникацию с другими интерфейсами в системе.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables -I FORWARD -i tun+ -j ACCEPT  
+iptables -I FORWARD -i tun+ -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT  
+iptables -I FORWARD -i eth0 -o tun+ -m state --state RELATED,ESTABLISHED -j ACCEPT
+</code></pre></div></div>
+
+<p>Включим nat (как вы помните из предыдущей части - сервер настроен в режиме роутера, а не моста - поэтому nat обязателен).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+</code></pre></div></div>
+
+<p>В цепочке POSTROUTE чаще всего нет reject. Поэтому смело используем -A.</p>
+
+<p>И последний шаг - разрешить исходящий трафик на tun-инмерфейсе.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables -A OUTPUT -o tun+ -j ACCEPT
+</code></pre></div></div>
+
+<p>Теперь самый важный шаг: проверить, что все заработало</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo nmap -sU -p1194 X.X.X.X
+
+Starting Nmap 7.00 ( https://nmap.org ) at 2016-01-24 21:33 MSK  
+Nmap scan report for X.X.X.X  
+Host is up (0.089s latency).  
+PORT STATE SERVICE  
+1194/udp open|filtered openvpn
+
+Nmap done: 1 IP address (1 host up) scanned in 1.08 seconds
+</code></pre></div></div>
+
+<p>Если у вас похожий вывод - сохраняем правила iptables и генерируем клиентский конфиг в следующей части.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo /usr/libexec/iptables.init save
+</code></pre></div></div>
+
+<p>Ниже конфиг /etc/sysconfig/iptables, который я приведу для сравнения (если у вас что-то не заработало).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\*nat  
+:PREROUTING ACCEPT [80:8210]  
+:INPUT ACCEPT [0:0]  
+:OUTPUT ACCEPT [24:11832]  
+:POSTROUTING ACCEPT [24:11832]  
+-A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE  
+COMMIT  
+\*filter  
+:INPUT ACCEPT [0:0]  
+:FORWARD ACCEPT [0:0]  
+:OUTPUT ACCEPT [66:10292]  
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT  
+-A INPUT -p icmp -j ACCEPT  
+-A INPUT -i lo -j ACCEPT  
+-A INPUT -i eth0 -p udp -m state --state NEW -m udp --dport 1194 -j ACCEPT  
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT  
+-A INPUT -i tun+ -j ACCEPT  
+-A INPUT -j REJECT --reject-with icmp-host-prohibited  
+-A FORWARD -i tun+ -j ACCEPT  
+-A FORWARD -i tun+ -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT  
+-A FORWARD -i eth0 -o tun+ -m state --state RELATED,ESTABLISHED -j ACCEPT  
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited  
+-A OUTPUT -o tun+ -j ACCEPT  
+COMMIT
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></h1>
+  <p class="author">
+    <span class="date">2016-01-26 21:11:32 +0300</span>
+  </p>
+  <div class="content">
+   <p> </p>
+
+<ul>
+  <li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+  <li>OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</li>
+  <li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</a></li>
+</ul>
+
+<p> </p>
+
+<p>Ключи <a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">сгенерировали</a>. Теперь можно запускать сервер.</p>
+
+<p>Обращаю внимание, что дальше речь пойдет о дефолтной настройке openvpn в режиме роутера. Это тот режим, когда вам нет необходимости интегрировать подключенных клиентов в локальную сеть.</p>
+
+<p>В случае необхоидмости пустить клиентов в локальную сеть вам потребуется режим моста.</p>
+
+<p>Поддробнее про разные режимы работы можно почитать в официальной документации: <a href="https://community.openvpn.net/openvpn/wiki/BridgingAndRouting">https://community.openvpn.net/openvpn/wiki/BridgingAndRouting</a>.</p>
+
+<p>Копируем конфиг сервера</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo cp /usr/share/doc/openvpn-\*/sample/sample-config-files/server.conf /etc/openvpn
+</code></pre></div></div>
+
+<p>Теперь нужно отредактировать этот конфиг поправив следующие параметры</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># пути к сертификатам ставим свои  
+ca /etc/openvpn/keys/ca.crt  
+cert /etc/openvpn/keys/vpn-server.crt  
+key /etc/openvpn/keys/vpn-server.key # This file should be kept secret  
+dh /etc/openvpn/keys/dh.pem
+
+# заставляем клиент направлять весь трафик через сервер (чтобы избежать всяких утечек днс-запросов)  
+push "redirect-gateway def1 bypass-dhcp"
+
+# пропишем собственные dns  
+push "dhcp-option DNS 8.8.8.8"  
+push "dhcp-option DNS 8.8.4.4"
+
+# защита от флуда  
+tls-auth /etc/openvpn/keys/ta.key 0 # This file is secret
+
+# сразу после запуска у сервера будут отобраны рутовые права (безопасности больше)  
+user nobody  
+group nobody
+</code></pre></div></div>
+
+<p>Если есть желание - можно поправить порт.</p>
+
+<p>Теперь сервер можно активировать и запустить. Толку от этого пока будет мало. поскольку настройкой брандмауэра мы займемся в следующей части.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo systemctl -f enable openvpn@server.service  
+$ sudo systemctl start openvpn@server.service
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></h1>
+  <p class="author">
+    <span class="date">2016-01-25 20:57:44 +0300</span>
+  </p>
+  <div class="content">
+   <p> </p>
+
+<ul>
+  <li><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</a></li>
+  <li>OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</li>
+  <li><a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</a></li>
+</ul>
+
+<p> </p>
+
+<p><a href="http://russianpenguin.ru/2016/01/24/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0/">Первоначальная</a> настройка успешно завершена и нам необходимо позаботится о безопасности. Т.е. о сертификатах, с которыми будут работать клиенты и сервер.</p>
+
+<p>Для этого нужно три компонента:</p>
+
+<ul>
+  <li>Корневой сертификат (назовем его для простоты CA), которым будут подписываться ключи клиента и сервере. Крайне желательно чтобы он был на отдельной машине.</li>
+  <li>Сертификат сервера, который будет подписан корневым доверительным сертификатом.</li>
+  <li>Сертификат для каждого из клиентов, который тай жэ будет подписан CA</li>
+</ul>
+
+<h2 id="корневой-сертификат-и-сертификат-сервера">Корневой сертификат и сертификат сервера</h2>
+
+<p>Создаем корневой центр собственной сертификации (лучше делать это не на той машине, где запуен openvpn и там должен быть установлен пакет easy-rsa)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cp -R /usr/share/easy-rsa/3.0.0/ ~/CA  
+$ cp /usr/share/doc/easy-rsa/vars.example ~/CA/vars  
+$ cd ~/CA
+</code></pre></div></div>
+
+<p>Нужно отредактировать vars и поправить те параметры, которые будут вам интересны. Это имя домена, имя сервера и прочее - все подробно прокомментировано в файле.</p>
+
+<p>Инициализировать PKI (Public Key Infrastructure — Инфраструктура открытых ключей):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa init-pki
+</code></pre></div></div>
+
+<p>Создать корневой сертификат. Common Name сервера вводить на ваше успотрение. (лучше придумать что-то вроде vpn-server). Сложный пароль ключа обязателе. Не менее 128 бит.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa build-ca
+</code></pre></div></div>
+
+<p>Создать ключи Диффи-Хелмана</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa gen-dh
+</code></pre></div></div>
+
+<p>Создать запрос на сертификат для сервера OVPN. Обращаю внимание, что сертификат будет незапаролен (параметр nopass), иначе при каждом старте OpenVPN будет запрашивать этот пароль.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa gen-req vpn-server nopass
+</code></pre></div></div>
+
+<p>Создать и подписать сертификат</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa sign-req server vpn-server
+</code></pre></div></div>
+
+<p>Скопировать полученные ключи в рабочий каталог openvpn</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo mkdir -p /etc/openvpn/keys  
+$ sudo mkdir cp ~/CA/pki/ca.crt /etc/openvpn/keys  
+$ sudo mkdir cp ~/CA/pki/issued/vpn-server.crt /etc/openvpn/keys  
+$ sudo mkdir cp ~/CA/pki/private/vpn-server.key /etc/openvpn/keys  
+$ sudo mkdir cp ~/CA/pki/dh.pem /etc/openvpn/keys
+</code></pre></div></div>
+
+<p>Создать «HMAC firewall» для защиты от DoS аттак и флуда UDP порта.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd /etc/openvpn/keys/  
+$ sudo openvpn --genkey --secret ta.key
+</code></pre></div></div>
+
+<h2 id="генерация-пользовательских-ключей">Генерация пользовательских ключей</h2>
+
+<p>Создание запроса запароленного ключа для клиента (потребуется вводить при каждом подключении) с именем User</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ~/CA  
+$ ./easyrsa gen-req User
+</code></pre></div></div>
+
+<p>User - это имя пользователя для которого вы генерируете ключ.</p>
+
+<p>При такой генерации при каждом подключении будет запрашиваться пароль.</p>
+
+<p>Если вам не требуется такого уровня. Или авторизация будет осуществляться иными методами, то генерируйте ключ без пароля.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa gen-req User nopass
+</code></pre></div></div>
+
+<p>Теперь ключ надо подписать</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa sign-req client User
+</code></pre></div></div>
+
+<p>Дефолтно ключ выдается на 10 лет. Можно ограничить время. И ключи придется только перевыпускать по завершению работы.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$./easyrsa sign-req client User -days 90
+</code></pre></div></div>
+
+<p>Клиенту потребуется следующий набор файлов</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ~/CA/pki/issued/User.crt  
+ ~/CA/pki/private/User.key  
+ ~/CA/pki/ca.crt  
+ /etc/openvpn/keys/ta.key
+</code></pre></div></div>
+
+<h2 id="отзывы-сертификатов">Отзывы сертификатов</h2>
+
+<p>Герируем файл отозванных ключей</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cd ~/CA  
+$ ./easyrsa gen-crl
+</code></pre></div></div>
+
+<p>Если вы все же сделали центр сертификации на той же машине, на которой у вас сервер, то можете слинковать файл отозванных ключей. Но лучше скопировать. И эту операцию нужно повторять каждый раз при отзыве ключей.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo cp ~/CA/pki/crl.pem /etc/openvpn/keys
+</code></pre></div></div>
+
+<p>В /etc/openvpn/server.conf добавить строку</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crl-verify /etc/openvpn/keys/crl.pem
+</code></pre></div></div>
+
+<p>Отзыв сертификата пользователя User</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa revoke User
+</code></pre></div></div>
+
+<p>Каждый раз при отзыве сертификата необходимо обновлять crl.pem, чтобы внести в него изменения</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./easyrsa gen-crl
+</code></pre></div></div>
+
+<p>Примечание: одноименный файл ключа не может быть создан пока не отозван старый. При попытке создать сертификат с уже имеющимся именем выдаст ошибку</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>failed to update database  
+Easy-RSA error:  
+signing failed (openssl output above may have more detail)
+</code></pre></div></div>
+
+<p>Для исключения возможности mitm атаки, ошибка которого так выглядит в логах клиента как показано ниже служит параметр remote-cert-tls server в конфиге клиента.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WARNING: No server certificate verification method has been enabled. See http://openvpn.net/howto.html#mitm for more info.
+</code></pre></div></div>
+
+<p>Ссылки:</p>
+
+<ul>
+  <li><a href="https://wiki.archlinux.org/index.php/Create_a_Public_Key_Infrastructure_Using_the_easy-rsa_Scripts">https://wiki.archlinux.org/index.php/Create_a_Public_Key_Infrastructure_Using_the_easy-rsa_Scripts</a></li>
+  <li><a href="http://notessysadmin.com/quickstart-openvpn-server">http://notessysadmin.com/quickstart-openvpn-server</a></li>
+  <li><a href="https://wiki.archlinux.org/index.php/OpenVPN">https://wiki.archlinux.org/index.php/OpenVPN</a></li>
+</ul>
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page11/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 12 из 35</span>
+  
+    <a href="/blog/page13/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

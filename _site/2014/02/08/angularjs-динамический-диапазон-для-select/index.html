@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>AngularJS: Динамический диапазон для select | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="AngularJS: Динамический диапазон для select" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="С сервера приходит максимальное и минимальное значение в выпадающем списке. Нам нужно построить по этим значениям сам список. Делаем фильтр angular.module(&#39;app&#39;).filter(&#39;range&#39;, function() { return function(input, min, max) { min = parseInt(min, 10); max = parseInt(max, 10); for (var i = min; i \&lt; max; i++) input.push(i); return input; }; }); И делаем динамический селект. \&lt;select ng-model=&quot;value&quot; ng-options=&quot;item for item in [] | range:min:max&quot;\&gt;\&lt;/select\&gt; JSFiddle" />
+<meta property="og:description" content="С сервера приходит максимальное и минимальное значение в выпадающем списке. Нам нужно построить по этим значениям сам список. Делаем фильтр angular.module(&#39;app&#39;).filter(&#39;range&#39;, function() { return function(input, min, max) { min = parseInt(min, 10); max = parseInt(max, 10); for (var i = min; i \&lt; max; i++) input.push(i); return input; }; }); И делаем динамический селект. \&lt;select ng-model=&quot;value&quot; ng-options=&quot;item for item in [] | range:min:max&quot;\&gt;\&lt;/select\&gt; JSFiddle" />
+<link rel="canonical" href="http://localhost:4000/2014/02/08/angularjs-%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%B4%D0%B8%D0%B0%D0%BF%D0%B0%D0%B7%D0%BE%D0%BD-%D0%B4%D0%BB%D1%8F-select/" />
+<meta property="og:url" content="http://localhost:4000/2014/02/08/angularjs-%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%B4%D0%B8%D0%B0%D0%BF%D0%B0%D0%B7%D0%BE%D0%BD-%D0%B4%D0%BB%D1%8F-select/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-02-08T15:01:22+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="AngularJS: Динамический диапазон для select" />
+<script type="application/ld+json">
+{"headline":"AngularJS: Динамический диапазон для select","dateModified":"2014-02-08T15:01:22+04:00","datePublished":"2014-02-08T15:01:22+04:00","description":"С сервера приходит максимальное и минимальное значение в выпадающем списке. Нам нужно построить по этим значениям сам список. Делаем фильтр angular.module(&#39;app&#39;).filter(&#39;range&#39;, function() { return function(input, min, max) { min = parseInt(min, 10); max = parseInt(max, 10); for (var i = min; i \\&lt; max; i++) input.push(i); return input; }; }); И делаем динамический селект. \\&lt;select ng-model=&quot;value&quot; ng-options=&quot;item for item in [] | range:min:max&quot;\\&gt;\\&lt;/select\\&gt; JSFiddle","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/02/08/angularjs-%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%B4%D0%B8%D0%B0%D0%BF%D0%B0%D0%B7%D0%BE%D0%BD-%D0%B4%D0%BB%D1%8F-select/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/02/08/angularjs-%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9-%D0%B4%D0%B8%D0%B0%D0%BF%D0%B0%D0%B7%D0%BE%D0%BD-%D0%B4%D0%BB%D1%8F-select/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">AngularJS: Динамический диапазон для select</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>AngularJS: Динамический диапазон для select</h1>
+<p>08 Feb 2014</p>
+
+<p>С сервера приходит максимальное и минимальное значение в выпадающем списке. Нам нужно построить по этим значениям сам список.</p>
+
+<p>Делаем фильтр</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">angular</span><span class="mf">.</span><span class="nf">module</span><span class="p">(</span><span class="s1">'app'</span><span class="p">)</span><span class="mf">.</span><span class="nf">filter</span><span class="p">(</span><span class="s1">'range'</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="kt">input</span><span class="p">,</span> <span class="kt">min</span><span class="p">,</span> <span class="kt">max</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="n">min</span> <span class="o">=</span> <span class="nf">parseInt</span><span class="p">(</span><span class="n">min</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>  
+ <span class="n">max</span> <span class="o">=</span> <span class="nf">parseInt</span><span class="p">(</span><span class="n">max</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>  
+ <span class="k">for</span> <span class="p">(</span><span class="k">var</span> <span class="n">i</span> <span class="o">=</span> <span class="n">min</span><span class="p">;</span> <span class="n">i</span> <span class="err">\</span><span class="o">&lt;</span> <span class="n">max</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>  
+ <span class="n">input</span><span class="mf">.</span><span class="nf">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>  
+ <span class="k">return</span> <span class="n">input</span><span class="p">;</span>  
+ <span class="p">};</span>  
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>И делаем динамический селект.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\<span class="nt">&lt;select</span> <span class="na">ng-model=</span><span class="s">"value"</span> <span class="na">ng-options=</span><span class="s">"item for item in [] | range:min:max"</span><span class="err">\</span><span class="nt">&gt;</span>\<span class="nt">&lt;/select</span><span class="err">\</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p><a href="http://jsfiddle.net/russianpenguin/bYUFb" title="Пример на JSFiddle">JSFiddle</a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

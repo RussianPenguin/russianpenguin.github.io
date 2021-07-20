@@ -1,0 +1,1 @@
+angular.module("app", ['ngRoute', 'ngResource', 'yandex', 'pasvaz.bindonce', 'sly'])

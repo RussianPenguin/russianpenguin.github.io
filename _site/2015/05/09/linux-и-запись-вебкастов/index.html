@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux и запись вебкастов | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux и запись вебкастов" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Довольно долго искал, чем же можно нормально писать вебинары. В итоге остановился на vokoscreen. Из достоинств: выбор объект для записи (отдельный монитор, отдельное окно, область экрана); выбор источника записи звука; настройка формата получаемого видео (все равно видео потребует дальнешего редактирование, но приятно); простой и безглючный интерфейс. Да. Можно и из консоли писать, но при записи неудобно задавать набор опций, которые как раз дают возможность выбирать объект для захвата. Даже если запись изначально прошла удачно, то итоговый файл все равно мало пригоден для аплоада на ютуб или куда-нибдь еще (для разрешения 1920х1080 и 60 минутах записи объем итогового файла перевалит далеко за 2 гига). Поэтому можно воспользоваться кодемо ffmpeg. Для меня подошли следующие опции. ffmpeg -i input.mkv -vcodec libx264 -strict -2 -crf 20 -threads 7 -r 25 output.mp4 Где: -i input.mkv - исходный файл -vcodec libx264 - кодек видео x264 -strict -2 - этот набор опций включает поддержку эекспериментального энкодера aac -crf 20 - опция энкодера, которая задает степень сжатия (в мануале - это квантование). от 0 до 51. 0 - лучшее качество картинки, а 51 - наихудшее. -threads 7 - количество потоков (равно количество реально-виртуальных ядер минус один. в таком случае можно за компьютером еще что-то делать) -r 25 - кадры в секунду для выходного видео output.mp4 - куда пишем Подробный мануал по кодирования x264." />
+<meta property="og:description" content="Довольно долго искал, чем же можно нормально писать вебинары. В итоге остановился на vokoscreen. Из достоинств: выбор объект для записи (отдельный монитор, отдельное окно, область экрана); выбор источника записи звука; настройка формата получаемого видео (все равно видео потребует дальнешего редактирование, но приятно); простой и безглючный интерфейс. Да. Можно и из консоли писать, но при записи неудобно задавать набор опций, которые как раз дают возможность выбирать объект для захвата. Даже если запись изначально прошла удачно, то итоговый файл все равно мало пригоден для аплоада на ютуб или куда-нибдь еще (для разрешения 1920х1080 и 60 минутах записи объем итогового файла перевалит далеко за 2 гига). Поэтому можно воспользоваться кодемо ffmpeg. Для меня подошли следующие опции. ffmpeg -i input.mkv -vcodec libx264 -strict -2 -crf 20 -threads 7 -r 25 output.mp4 Где: -i input.mkv - исходный файл -vcodec libx264 - кодек видео x264 -strict -2 - этот набор опций включает поддержку эекспериментального энкодера aac -crf 20 - опция энкодера, которая задает степень сжатия (в мануале - это квантование). от 0 до 51. 0 - лучшее качество картинки, а 51 - наихудшее. -threads 7 - количество потоков (равно количество реально-виртуальных ядер минус один. в таком случае можно за компьютером еще что-то делать) -r 25 - кадры в секунду для выходного видео output.mp4 - куда пишем Подробный мануал по кодирования x264." />
+<link rel="canonical" href="http://localhost:4000/2015/05/09/linux-%D0%B8-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C-%D0%B2%D0%B5%D0%B1%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%B2/" />
+<meta property="og:url" content="http://localhost:4000/2015/05/09/linux-%D0%B8-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C-%D0%B2%D0%B5%D0%B1%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%B2/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-05-09T22:21:56+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux и запись вебкастов" />
+<script type="application/ld+json">
+{"headline":"Linux и запись вебкастов","dateModified":"2015-05-09T22:21:56+03:00","datePublished":"2015-05-09T22:21:56+03:00","description":"Довольно долго искал, чем же можно нормально писать вебинары. В итоге остановился на vokoscreen. Из достоинств: выбор объект для записи (отдельный монитор, отдельное окно, область экрана); выбор источника записи звука; настройка формата получаемого видео (все равно видео потребует дальнешего редактирование, но приятно); простой и безглючный интерфейс. Да. Можно и из консоли писать, но при записи неудобно задавать набор опций, которые как раз дают возможность выбирать объект для захвата. Даже если запись изначально прошла удачно, то итоговый файл все равно мало пригоден для аплоада на ютуб или куда-нибдь еще (для разрешения 1920х1080 и 60 минутах записи объем итогового файла перевалит далеко за 2 гига). Поэтому можно воспользоваться кодемо ffmpeg. Для меня подошли следующие опции. ffmpeg -i input.mkv -vcodec libx264 -strict -2 -crf 20 -threads 7 -r 25 output.mp4 Где: -i input.mkv - исходный файл -vcodec libx264 - кодек видео x264 -strict -2 - этот набор опций включает поддержку эекспериментального энкодера aac -crf 20 - опция энкодера, которая задает степень сжатия (в мануале - это квантование). от 0 до 51. 0 - лучшее качество картинки, а 51 - наихудшее. -threads 7 - количество потоков (равно количество реально-виртуальных ядер минус один. в таком случае можно за компьютером еще что-то делать) -r 25 - кадры в секунду для выходного видео output.mp4 - куда пишем Подробный мануал по кодирования x264.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/05/09/linux-%D0%B8-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C-%D0%B2%D0%B5%D0%B1%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%B2/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/05/09/linux-%D0%B8-%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D1%8C-%D0%B2%D0%B5%D0%B1%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%B2/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux и запись вебкастов</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux и запись вебкастов</h1>
+<p>09 May 2015</p>
+
+<p>Довольно долго искал, чем же можно нормально писать вебинары.</p>
+
+<p>В итоге остановился на <a href="https://github.com/vkohaupt/vokoscreen" title="GitHub - Vokoscreen">vokoscreen</a>.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/05/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_024.png"><img src="/assets/images/2015/05/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_024.png" alt="Vokoscreen" /></a></p>
+
+<p>Из достоинств:</p>
+
+<ul>
+  <li>выбор объект для записи (отдельный монитор, отдельное окно, область экрана);</li>
+  <li>выбор источника записи звука;</li>
+  <li>настройка формата получаемого видео (все равно видео потребует дальнешего редактирование, но приятно);</li>
+  <li>простой и безглючный интерфейс.</li>
+</ul>
+
+<p>Да. Можно и из консоли писать, но при записи неудобно задавать набор опций, которые как раз дают возможность выбирать объект для захвата.</p>
+
+<p>Даже если запись изначально прошла удачно, то итоговый файл все равно мало пригоден для аплоада на ютуб или куда-нибдь еще (для разрешения 1920х1080 и 60 минутах записи объем итогового файла перевалит далеко за 2 гига).</p>
+
+<p>Поэтому можно воспользоваться кодемо ffmpeg. Для меня подошли следующие опции.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-i</span> input.mkv <span class="nt">-vcodec</span> libx264 <span class="nt">-strict</span> <span class="nt">-2</span> <span class="nt">-crf</span> 20 <span class="nt">-threads</span> 7 <span class="nt">-r</span> 25 output.mp4  
+
+</code></pre></div></div>
+
+<p>Где:</p>
+
+<ul>
+  <li>-i input.mkv - исходный файл</li>
+  <li>-vcodec libx264 - кодек видео x264</li>
+  <li>-strict -2 - этот набор опций включает поддержку эекспериментального энкодера aac</li>
+  <li>-crf 20 - опция энкодера, которая задает степень сжатия (в мануале - это квантование). от 0 до 51. 0 - лучшее качество картинки, а 51 - наихудшее.</li>
+  <li>-threads 7 - количество потоков (равно количество реально-виртуальных ядер минус один. в таком случае можно за компьютером еще что-то делать)</li>
+  <li>-r 25 - кадры в секунду для выходного видео</li>
+  <li>output.mp4 - куда пишем</li>
+</ul>
+
+<p>Подробный <a href="https://trac.ffmpeg.org/wiki/Encode/H.264" title="FFmpeg and H.264 Encoding Guide">мануал</a> по кодирования x264.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

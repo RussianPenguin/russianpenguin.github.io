@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Supported Release 1.8.1 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Supported Release 1.8.1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/firewall/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/firewall/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Supported Release 1.8.1" />
+<script type="application/ld+json">
+{"headline":"Supported Release 1.8.1","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/firewall/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Supported Release 1.8.1</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="supported-release-181">Supported Release 1.8.1</h2>
+<h3 id="summary">Summary</h3>
+<p>This release documents an important issue with mcollective that may impact users of the firewall module. Workarounds are suggested as part of this advisory until mcollective can be patched.</p>
+
+<h4 id="bugfixes">Bugfixes</h4>
+<ul>
+  <li>Add mcollective rule-reversal known limitation</li>
+</ul>
+
+<h2 id="supported-release-180">Supported Release 1.8.0</h2>
+<h3 id="summary-1">Summary</h3>
+
+<p>This release includes numerous features, bugfixes and other improvements including better handling when trying to delete already absent rules.</p>
+
+<h4 id="features">Features</h4>
+<ul>
+  <li>Added new ‘pkg_ensure’ parameter to allow the updating of the iptables package.</li>
+  <li>Added new ‘log_uid’ property.</li>
+  <li>Added ‘sctp’ to the ‘proto’ property.</li>
+  <li>Added support for IPv6 NAT in Linux kernels &gt;= 3.7.</li>
+  <li>Added support for the security table.</li>
+</ul>
+
+<h4 id="bugfixes-1">Bugfixes</h4>
+<ul>
+  <li>(MODULES-2783) Replaced hardcoded iptables service references with $service_name variable.</li>
+  <li>(MODULES-1341) Recover when deleting absent rules.</li>
+  <li>(MODULES-3032) Facter flush is called to clear Facter cache get up to date value for ‘:iptables_persistent_version’.</li>
+  <li>(MODULES-2159) Fixed idempotency issue when using connlimit.</li>
+  <li>Fixed the handling of chain names that contain ‘-f’.</li>
+</ul>
+
+<h4 id="improvements">Improvements</h4>
+<ul>
+  <li>Numerous unit and acceptance test improvements.</li>
+  <li>Improved handling/use of the ‘$::iptables_persistent_version’ custom fact.</li>
+  <li>Better handling of operating systems that use SELinux.</li>
+</ul>
+
+<h2 id="supported-release-172">Supported Release 1.7.2</h2>
+<h3 id="summary-2">Summary</h3>
+
+<p>Small release for support of newer PE versions. This increments the version of PE in the metadata.json file.</p>
+
+<h2 id="2015-08-25---supported-release-171">2015-08-25 - Supported Release 1.7.1</h2>
+<h3 id="summary-3">Summary</h3>
+
+<p>This is a bugfix release to deprecate the port parameter. Using the unspecific ‘port’ parameter can lead to firewall rules that are unexpectedly too lax. It is recommended to always use the specific dport and sport parameters to avoid this ambiguity.</p>
+
+<h4 id="bugfixes-2">Bugfixes</h4>
+<ul>
+  <li>Deprecate the port parameter</li>
+</ul>
+
+<h2 id="2015-07-28---supported-release-170">2015-07-28 - Supported Release 1.7.0</h2>
+<h3 id="summary-4">Summary</h3>
+
+<p>This release includes numerous features, bugfixes and other improvements including Puppet 4 &amp; PE 2015.2 support as well as ClusterIP and DSCP jump target support.</p>
+
+<h4 id="features-1">Features</h4>
+<ul>
+  <li>Puppet 4 and PE 2015.2 official support</li>
+  <li>ClusterIP jump target (including options) now supported</li>
+  <li>DSCP jump target (including options) now supported</li>
+  <li>SLES 10 now compatible (but not supported)</li>
+</ul>
+
+<h4 id="bugfixes-3">Bugfixes</h4>
+<ul>
+  <li>(MODULES-1967) Parse escape sequences from iptables</li>
+  <li>(MODULES-1592) Allow src_type and dst_type prefixed with ‘!’ to pass validation</li>
+  <li>(MODULES-2186) - iptables rules with -A in comment now supported</li>
+  <li>(MODULES-1976) Revise rule name validation for ruby 1.9</li>
+  <li>Fix installation hang on Debian Jessie</li>
+  <li>Fix for physdev idempotency on EL5</li>
+</ul>
+
+<h4 id="improvements-1">Improvements</h4>
+<ul>
+  <li>Documentation improvements</li>
+  <li>Enforce the seluser on selinux systems</li>
+  <li>All the relevent services are now autorequired by the firewall and firewallchain types</li>
+  <li>Replace Facter.fact().value() calls with Facter.value() to support Facter 3</li>
+</ul>
+
+<h2 id="2015-05-19---supported-release-160">2015-05-19 - Supported Release 1.6.0</h2>
+<h3 id="summary-5">Summary</h3>
+
+<p>This release includes support for TEE, MSS, the time ipt module, Debian 8 support, and a number of test fixes and other improvements.</p>
+
+<h4 id="features-2">Features</h4>
+<ul>
+  <li>Add TEE support</li>
+  <li>Add MSS support (including clamp-mss-to-pmtu support)</li>
+  <li>Add support for the time ipt module (-m time)</li>
+  <li>Add support for Debian 8</li>
+  <li>Add support for ICMPv6 types ‘neighbour-{solicitation,advertisement}’</li>
+  <li>Add support for ICMPv6 type ‘too-big’</li>
+  <li>Add support for new ‘match_mark’ property</li>
+  <li>Added ‘ipv4’ and ‘ipv6’ options to ‘proto’ property</li>
+</ul>
+
+<h4 id="bugfixes-4">Bugfixes</h4>
+<ul>
+  <li>Fix for Systemd-based OSes where systemd needs restarted before being able to pick up new services (MODULES-1984)</li>
+  <li>Arch Linux package management fix</li>
+</ul>
+
+<h2 id="2015-03-31---supported-release-150">2015-03-31 - Supported Release 1.5.0</h2>
+<h3 id="summary-6">Summary</h3>
+
+<p>This release includes physdev_is_bridged support, checksum_fill support, basic Gentoo compatibility, and a number of test fixes and improvements.</p>
+
+<h4 id="features-3">Features</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">physdev_is_bridged</code> support</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">checksum_fill</code> support</li>
+  <li>Add basic Gentoo compatibility (unsupported)</li>
+</ul>
+
+<h4 id="bugfixes-5">Bugfixes</h4>
+<ul>
+  <li>Implementation for resource map munging to allow a single ipt module to be used multiple times in a single rule on older versions of iptables (MODULES-1808)</li>
+  <li>Test fixes</li>
+</ul>
+
+<h2 id="2015-01-27---supported-release-140">2015-01-27 - Supported Release 1.4.0</h2>
+<h3 id="summary-7">Summary</h3>
+
+<p>This release includes physdev support, the ability to look up usernames from uuid, and a number of bugfixes</p>
+
+<h4 id="features-4">Features</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">netmap</code> feature</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">physdev</code> support</li>
+  <li>Add ability to look up username from uuid (MODULES-753, MODULES-1688)</li>
+</ul>
+
+<h4 id="bugfixes-6">Bugfixes</h4>
+<ul>
+  <li>Sync iptables/ip6tables providers (MODULES-1612)</li>
+  <li>Fix package names for Amazon and Ubuntu 14.10 (MODULES-1029)</li>
+  <li>Fix overly aggressive gsub when <code class="language-plaintext highlighter-rouge">ensure =&gt; absent</code> (MODULES-1453)</li>
+  <li>Unable to parse <code class="language-plaintext highlighter-rouge">-m (tcp|udp)</code> rules (MODULES-1552)</li>
+  <li>Fix ip6tables provider when <code class="language-plaintext highlighter-rouge">iptables-ipv6</code> package isn’t installed for EL6 (MODULES-633)</li>
+  <li>Test fixes</li>
+</ul>
+
+<h2 id="2014-12-16---supported-release-130">2014-12-16 - Supported Release 1.3.0</h2>
+<h3 id="summary-8">Summary</h3>
+
+<p>This release includes a number of bugfixes and features, including fixing <code class="language-plaintext highlighter-rouge">tcp_flags</code> support, and added support for interface aliases, negation for iniface and outiface, and extra configurability for packages and service names.</p>
+
+<h4 id="features-5">Features</h4>
+<ul>
+  <li>Add support for interface aliases (eth0:0) (MODULES-1469)</li>
+  <li>Add negation for iniface, outiface (MODULES-1470)</li>
+  <li>Make package and service names configurable (MODULES-1309)</li>
+</ul>
+
+<h4 id="bugfixes-7">Bugfixes</h4>
+<ul>
+  <li>Fix test regexes for EL5 (MODULES-1565)</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">tcp_flags</code> support for ip6tables (MODULES-556)</li>
+  <li>Don’t arbitrarily limit <code class="language-plaintext highlighter-rouge">set_mark</code> for certain chains</li>
+</ul>
+
+<h2 id="2014-11-04---supported-release-120">2014-11-04 - Supported Release 1.2.0</h2>
+<h3 id="summary-9">Summary</h3>
+
+<p>This release has a number of new features and bugfixes, including rule inversion, future parser support, improved EL7 support, and the ability to purge ip6tables rules.</p>
+
+<h4 id="features-6">Features</h4>
+<ul>
+  <li>Documentation updates!</li>
+  <li>Test updates!</li>
+  <li>Add ipset support</li>
+  <li>Enable rule inversion</li>
+  <li>Future parser support</li>
+  <li>Improved support for EL7</li>
+  <li>Support netfilter-persistent</li>
+  <li>Add support for statistics module</li>
+  <li>Add support for mac address source rules</li>
+  <li>Add cbt protocol</li>
+</ul>
+
+<h4 id="bugfixes-8">Bugfixes</h4>
+<ul>
+  <li>Incorrect use of <code class="language-plaintext highlighter-rouge">source =&gt; :iptables</code> in the ip6tables provider was making it impossible to purge ip6tables rules (MODULES-41)</li>
+  <li>Don’t require <code class="language-plaintext highlighter-rouge">toports</code> when <code class="language-plaintext highlighter-rouge">jump =&gt; 'REDIRECT'</code> (MODULES-1086)</li>
+  <li>Don’t limit which chains iniface and outiface parameters can be used in</li>
+  <li>Don’t fail on rules added with ipsec/strongswan (MODULES-796)</li>
+</ul>
+
+<h2 id="2014-07-08---supported-release-113">2014-07-08 - Supported Release 1.1.3</h2>
+<h3 id="summary-10">Summary</h3>
+<p>This is a supported release with test coverage enhancements.</p>
+
+<h4 id="bugfixes-9">Bugfixes</h4>
+<ul>
+  <li>Confine to supported kernels</li>
+</ul>
+
+<h2 id="2014-06-04---release-112">2014-06-04 - Release 1.1.2</h2>
+<h3 id="summary-11">Summary</h3>
+
+<p>This is a release of the code previously released as 1.1.1, with updated metadata.</p>
+
+<h2 id="2014-05-16-release-111">2014-05-16 Release 1.1.1</h2>
+<h3 id="summary-12">Summary</h3>
+
+<p>This release reverts the alphabetical ordering of 1.1.0.  We found this caused
+a regression in the Openstack modules so in the interest of safety we have
+removed this for now.</p>
+
+<h2 id="2014-05-13-release-110">2014-05-13 Release 1.1.0</h2>
+<h3 id="summary-13">Summary</h3>
+
+<p>This release has a significant change from previous releases; we now apply the
+firewall resources alphabetically by default, removing the need to create pre
+and post classes just to enforce ordering.  It only effects default ordering
+and further information can be found in the README about this.  Please test
+this in development before rolling into production out of an abundance of
+caution.</p>
+
+<p>We’ve also added <code class="language-plaintext highlighter-rouge">mask</code> which is required for –recent in recent (no pun
+intended) versions of iptables, as well as connlimit and connmark.  This
+release has been validated against Ubuntu 14.04 and RHEL7 and should be fully
+working on those platforms.</p>
+
+<h4 id="features-7">Features</h4>
+
+<ul>
+  <li>Apply firewall resources alphabetically.</li>
+  <li>Add support for connlimit and connmark.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">mask</code> as a parameter. (Used exclusively with the recent parameter).</li>
+</ul>
+
+<h4 id="bugfixes-10">Bugfixes</h4>
+
+<ul>
+  <li>Add systemd support for RHEL7.</li>
+  <li>Replace &amp;&amp;’s with the correct and in manifests.</li>
+  <li>Fix tests on Trusty and RHEL7</li>
+  <li>Fix for Fedora Rawhide.</li>
+  <li>Fix boolean flag tests.</li>
+  <li>Fix DNAT-&gt;SNAT typo in an error message.</li>
+</ul>
+
+<h4 id="known-bugs">Known Bugs</h4>
+
+<ul>
+  <li>For Oracle, the <code class="language-plaintext highlighter-rouge">owner</code> and <code class="language-plaintext highlighter-rouge">socket</code> parameters require a workaround to function. Please see the Limitations section of the README.</li>
+</ul>
+
+<h2 id="2014-03-04-supported-release-102">2014-03-04 Supported Release 1.0.2</h2>
+<h3 id="summary-14">Summary</h3>
+
+<p>This is a supported release.  This release removes a testing symlink that can
+cause trouble on systems where /var is on a seperate filesystem from the
+modulepath.</p>
+
+<h4 id="features-8">Features</h4>
+<h4 id="bugfixes-11">Bugfixes</h4>
+<h4 id="known-bugs-1">Known Bugs</h4>
+
+<ul>
+  <li>For Oracle, the <code class="language-plaintext highlighter-rouge">owner</code> and <code class="language-plaintext highlighter-rouge">socket</code> parameters require a workaround to function. Please see the Limitations section of the README.</li>
+</ul>
+
+<h3 id="supported-release---2014-03-04-101">Supported release - 2014-03-04 1.0.1</h3>
+
+<h4 id="summary-15">Summary</h4>
+
+<p>An important bugfix was made to the offset calculation for unmanaged rules
+to handle rules with 9000+ in the name.</p>
+
+<h4 id="features-9">Features</h4>
+
+<h4 id="bugfixes-12">Bugfixes</h4>
+<ul>
+  <li>Offset calculations assumed unmanaged rules were numbered 9000+.</li>
+  <li>Gracefully fail to manage ip6tables on iptables 1.3.x</li>
+</ul>
+
+<h4 id="known-bugs-2">Known Bugs</h4>
+
+<ul>
+  <li>For Oracle, the <code class="language-plaintext highlighter-rouge">owner</code> and <code class="language-plaintext highlighter-rouge">socket</code> parameters require a workaround to function. Please see the Limitations section of the README.</li>
+</ul>
+
+<hr />
+<h3 id="100---2014-02-11">1.0.0 - 2014-02-11</h3>
+
+<p>No changes, just renumbering to 1.0.0.</p>
+
+<hr />
+<h3 id="050---2014-02-10">0.5.0 - 2014-02-10</h3>
+
+<h5 id="summary-16">Summary:</h5>
+<p>This is a bigger release that brings in “recent” connection limiting (think
+“port knocking”), firewall chain purging on a per-chain/per-table basis, and
+support for a few other use cases. This release also fixes a major bug which
+could cause modifications to the wrong rules when unmanaged rules are present.</p>
+
+<h5 id="new-features">New Features:</h5>
+<ul>
+  <li>Add “recent” limiting via parameters <code class="language-plaintext highlighter-rouge">rdest</code>, <code class="language-plaintext highlighter-rouge">reap</code>, <code class="language-plaintext highlighter-rouge">recent</code>, <code class="language-plaintext highlighter-rouge">rhitcount</code>,
+<code class="language-plaintext highlighter-rouge">rname</code>, <code class="language-plaintext highlighter-rouge">rseconds</code>, <code class="language-plaintext highlighter-rouge">rsource</code>, and <code class="language-plaintext highlighter-rouge">rttl</code></li>
+  <li>Add negation support for source and destination</li>
+  <li>Add per-chain/table purging support to <code class="language-plaintext highlighter-rouge">firewallchain</code></li>
+  <li>IPv4 specific
+    <ul>
+      <li>Add random port forwarding support</li>
+      <li>Add ipsec policy matching via <code class="language-plaintext highlighter-rouge">ipsec_dir</code> and <code class="language-plaintext highlighter-rouge">ipsec_policy</code></li>
+    </ul>
+  </li>
+  <li>IPv6 specific
+    <ul>
+      <li>Add support for hop limiting via <code class="language-plaintext highlighter-rouge">hop_limit</code> parameter</li>
+      <li>Add fragmentation matchers via <code class="language-plaintext highlighter-rouge">ishasmorefrags</code>, <code class="language-plaintext highlighter-rouge">islastfrag</code>, and <code class="language-plaintext highlighter-rouge">isfirstfrag</code></li>
+      <li>Add support for conntrack stateful firewall matching via <code class="language-plaintext highlighter-rouge">ctstate</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="bugfixes-13">Bugfixes:</h5>
+<ul>
+  <li>Boolean fixups allowing false values</li>
+  <li>Better detection of unmanaged rules</li>
+  <li>Fix multiport rule detection</li>
+  <li>Fix sport/dport rule detection</li>
+  <li>Make INPUT, OUTPUT, and FORWARD not autorequired for firewall chain filter</li>
+  <li>Allow INPUT with the nat table</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">src_range</code> &amp; <code class="language-plaintext highlighter-rouge">dst_range</code> order detection</li>
+  <li>Documentation clarifications</li>
+  <li>Fixes to spec tests</li>
+</ul>
+
+<hr />
+
+<h3 id="042---2013-09-10">0.4.2 - 2013-09-10</h3>
+
+<p>Another attempt to fix the packaging issue.  We think we understand exactly
+what is failing and this should work properly for the first time.</p>
+
+<hr />
+
+<h3 id="041---2013-08-09">0.4.1 - 2013-08-09</h3>
+
+<p>Bugfix release to fix a packaging issue that may have caused puppet module
+install commands to fail.</p>
+
+<hr />
+
+<h3 id="040---2013-07-11">0.4.0 - 2013-07-11</h3>
+
+<p>This release adds support for address type, src/dest ip ranges, and adds
+additional testing and bugfixes.</p>
+
+<h4 id="features-10">Features</h4>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">src_type</code> and <code class="language-plaintext highlighter-rouge">dst_type</code> attributes (Nick Stenning)</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">src_range</code> and <code class="language-plaintext highlighter-rouge">dst_range</code> attributes (Lei Zhang)</li>
+  <li>Add SL and SLC operatingsystems as supported (Steve Traylen)</li>
+</ul>
+
+<h4 id="bugfixes-14">Bugfixes</h4>
+<ul>
+  <li>Fix parser for bursts other than 5 (Chris Rutter)</li>
+  <li>Fix parser for -f in –comment (Georg Koester)</li>
+  <li>Add doc headers to class files (Dan Carley)</li>
+  <li>Fix lint warnings/errors (Wolf Noble)</li>
+</ul>
+
+<hr />
+
+<h3 id="031---2013610">0.3.1 - 2013/6/10</h3>
+
+<p>This minor release provides some bugfixes and additional tests.</p>
+
+<h4 id="changes">Changes</h4>
+
+<ul>
+  <li>Update tests for rspec-system-puppet 2 (Ken Barber)</li>
+  <li>Update rspec-system tests for rspec-system-puppet 1.5 (Ken Barber)</li>
+  <li>Ensure all services have ‘hasstatus =&gt; true’ for Puppet 2.6 (Ken Barber)</li>
+  <li>Accept pre-existing rule with invalid name (Joe Julian)</li>
+  <li>Swap log_prefix and log_level order to match the way it’s saved (Ken Barber)</li>
+  <li>Fix log test to replicate bug #182 (Ken Barber)</li>
+  <li>Split argments while maintaining quoted strings (Joe Julian)</li>
+  <li>Add more log param tests (Ken Barber)</li>
+  <li>Add extra tests for logging parameters (Ken Barber)</li>
+  <li>Clarify OS support (Ken Barber)</li>
+</ul>
+
+<hr />
+
+<h3 id="030---2013425">0.3.0 - 2013/4/25</h3>
+
+<p>This release introduces support for Arch Linux and extends support for Fedora 15 and up. There are also lots of bugs fixed and improved testing to prevent regressions.</p>
+
+<h5 id="changes-1">Changes</h5>
+
+<ul>
+  <li>Fix error reporting for insane hostnames (Tomas Doran)</li>
+  <li>Support systemd on Fedora 15 and up (Eduardo Gutierrez)</li>
+  <li>Move examples to docs (Ken Barber)</li>
+  <li>Add support for Arch Linux platform (Ingmar Steen)</li>
+  <li>Add match rule for fragments (Georg Koester)</li>
+  <li>Fix boolean rules being recognized as changed (Georg Koester)</li>
+  <li>Same rules now get deleted (Anastasis Andronidis)</li>
+  <li>Socket params test (Ken Barber)</li>
+  <li>Ensure parameter can disable firewall (Marc Tardif)</li>
+</ul>
+
+<hr />
+
+<h3 id="021---2012313">0.2.1 - 2012/3/13</h3>
+
+<p>This maintenance release introduces the new README layout, and fixes a bug with iptables_persistent_version.</p>
+
+<h5 id="changes-2">Changes</h5>
+
+<ul>
+  <li>(GH-139) Throw away STDERR from dpkg-query in Fact</li>
+  <li>Update README to be consistent with module documentation template</li>
+  <li>Fix failing spec tests due to dpkg change in iptables_persistent_version</li>
+</ul>
+
+<hr />
+
+<h3 id="020---201233">0.2.0 - 2012/3/3</h3>
+
+<p>This release introduces automatic persistence, removing the need for the previous manual dependency requirement for persistent the running rules to the OS persistence file.</p>
+
+<p>Previously you would have required the following in your site.pp (or some other global location):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Always persist firewall rules
+exec { 'persist-firewall':
+  command     =&gt; $operatingsystem ? {
+    'debian'          =&gt; '/sbin/iptables-save &gt; /etc/iptables/rules.v4',
+    /(RedHat|CentOS)/ =&gt; '/sbin/iptables-save &gt; /etc/sysconfig/iptables',
+  },
+  refreshonly =&gt; true,
+}
+Firewall {
+  notify  =&gt; Exec['persist-firewall'],
+  before  =&gt; Class['my_fw::post'],
+  require =&gt; Class['my_fw::pre'],
+}
+Firewallchain {
+  notify  =&gt; Exec['persist-firewall'],
+}
+resources { "firewall":
+  purge =&gt; true
+}
+</code></pre></div></div>
+
+<p>You only need:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class { 'firewall': }
+Firewall {
+  before  =&gt; Class['my_fw::post'],
+  require =&gt; Class['my_fw::pre'],
+}
+</code></pre></div></div>
+
+<p>To install pre-requisites and to create dependencies on your pre &amp; post rules. Consult the README for more information.</p>
+
+<h5 id="changes-3">Changes</h5>
+
+<ul>
+  <li>Firewall class manifests (Dan Carley)</li>
+  <li>Firewall and firewallchain persistence (Dan Carley)</li>
+  <li>(GH-134) Autorequire iptables related packages (Dan Carley)</li>
+  <li>Typo in #persist_iptables OS normalisation (Dan Carley)</li>
+  <li>Tests for #persist_iptables (Dan Carley)</li>
+  <li>(GH-129) Replace errant return in autoreq block (Dan Carley)</li>
+</ul>
+
+<hr />
+
+<h3 id="011---2012228">0.1.1 - 2012/2/28</h3>
+
+<p>This release primarily fixes changing parameters in 3.x</p>
+
+<h5 id="changes-4">Changes</h5>
+
+<ul>
+  <li>(GH-128) Change method_missing usage to define_method for 3.x compatibility</li>
+  <li>Update travis.yml gem specifications to actually test 2.6</li>
+  <li>Change source in Gemfile to use a specific URL for Ruby 2.0.0 compatibility</li>
+</ul>
+
+<hr />
+
+<h3 id="010---2012224">0.1.0 - 2012/2/24</h3>
+
+<p>This release is somewhat belated, so no summary as there are far too many changes this time around. Hopefully we won’t fall this far behind again :-).</p>
+
+<h5 id="changes-5">Changes</h5>
+
+<ul>
+  <li>Add support for MARK target and set-mark property (Johan Huysmans)</li>
+  <li>Fix broken call to super for ruby-1.9.2 in munge (Ken Barber)</li>
+  <li>simple fix of the error message for allowed values of the jump property (Daniel Black)</li>
+  <li>Adding OSPF(v3) protocol to puppetlabs-firewall (Arnoud Vermeer)</li>
+  <li>Display multi-value: port, sport, dport and state command seperated (Daniel Black)</li>
+  <li>Require jump=&gt;LOG for log params (Daniel Black)</li>
+  <li>Reject and document icmp =&gt; “any” (Dan Carley)</li>
+  <li>add firewallchain type and iptables_chain provider (Daniel Black)</li>
+  <li>Various fixes for firewallchain resource (Ken Barber)</li>
+  <li>Modify firewallchain name to be chain:table:protocol (Ken Barber)</li>
+  <li>Fix allvalidchain iteration (Ken Barber)</li>
+  <li>Firewall autorequire Firewallchains (Dan Carley)</li>
+  <li>Tests and docstring for chain autorequire (Dan Carley)</li>
+  <li>Fix README so setup instructions actually work (Ken Barber)</li>
+  <li>Support vlan interfaces (interface containing “.”) (Johan Huysmans)</li>
+  <li>Add tests for VLAN support for iniface/outiface (Ken Barber)</li>
+  <li>Add the table when deleting rules (Johan Huysmans)</li>
+  <li>Fix tests since we are now prefixing -t)</li>
+  <li>Changed ‘jump’ to ‘action’, commands to lower case (Jason Short)</li>
+  <li>Support interface names containing “+” (Simon Deziel)</li>
+  <li>Fix for when iptables-save spews out “FATAL” errors (Sharif Nassar)</li>
+  <li>Fix for incorrect limit command arguments for ip6tables provider (Michael Hsu)</li>
+  <li>Document Util::Firewall.host_to_ip (Dan Carley)</li>
+  <li>Nullify addresses with zero prefixlen (Dan Carley)</li>
+  <li>Add support for –tcp-flags (Thomas Vander Stichele)</li>
+  <li>Make tcp_flags support a feature (Ken Barber)</li>
+  <li>OUTPUT is a valid chain for the mangle table (Adam Gibbins)</li>
+  <li>Enable travis-ci support (Ken Barber)</li>
+  <li>Convert an existing test to CIDR (Dan Carley)</li>
+  <li>Normalise iptables-save to CIDR (Dan Carley)</li>
+  <li>be clearer about what distributions we support (Ken Barber)</li>
+  <li>add gre protocol to list of acceptable protocols (Jason Hancock)</li>
+  <li>Added pkttype property (Ashley Penney)</li>
+  <li>Fix mark to not repeat rules with iptables 1.4.1+ (Sharif Nassar)</li>
+  <li>Stub iptables_version for now so tests run on non-Linux hosts (Ken Barber)</li>
+  <li>Stub iptables facts for set_mark tests (Dan Carley)</li>
+  <li>Update formatting of README to meet Puppet Labs best practices (Will Hopper)</li>
+  <li>Support for ICMP6 type code resolutions (Dan Carley)</li>
+  <li>Insert order hash included chains from different tables (Ken Barber)</li>
+  <li>rspec 2.11 compatibility (Jonathan Boyett)</li>
+  <li>Add missing class declaration in README (sfozz)</li>
+  <li>array_matching is contraindicated (Sharif Nassar)</li>
+  <li>Convert port Fixnum into strings (Sharif Nassar)</li>
+  <li>Update test framework to the modern age (Ken Barber)</li>
+  <li>working with ip6tables support (wuwx)</li>
+  <li>Remove gemfile.lock and add to gitignore (William Van Hevelingen)</li>
+  <li>Update travis and gemfile to be like stdlib travis files (William Van Hevelingen)</li>
+  <li>Add support for -m socket option (Ken Barber)</li>
+  <li>Add support for single –sport and –dport parsing (Ken Barber)</li>
+  <li>Fix tests for Ruby 1.9.3 from 3e13bf3 (Dan Carley)</li>
+  <li>Mock Resolv.getaddress in #host_to_ip (Dan Carley)</li>
+  <li>Update docs for source and dest - they are not arrays (Ken Barber)</li>
+</ul>
+
+<hr />
+
+<h3 id="004---20111205">0.0.4 - 2011/12/05</h3>
+
+<p>This release adds two new parameters, ‘uid’ and ‘gid’. As a part of the owner module, these params allow you to specify a uid, username, gid, or group got a match:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { '497 match uid':
+  port =&gt; '123',
+  proto =&gt; 'mangle',
+  chain =&gt; 'OUTPUT',
+  action =&gt; 'drop'
+  uid =&gt; '123'
+}
+</code></pre></div></div>
+
+<p>This release also adds value munging for the ‘log_level’, ‘source’, and ‘destination’ parameters. The ‘source’ and ‘destination’ now support hostnames:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { '498 accept from puppetlabs.com':
+  port =&gt; '123',
+  proto =&gt; 'tcp',
+  source =&gt; 'puppetlabs.com',
+  action =&gt; 'accept'
+}
+</code></pre></div></div>
+
+<p>The ‘log_level’ parameter now supports using log level names, such as ‘warn’, ‘debug’, and ‘panic’:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { '499 logging':
+  port =&gt; '123',
+  proto =&gt; 'udp',
+  log_level =&gt; 'debug',
+  action =&gt; 'drop'
+}
+</code></pre></div></div>
+
+<p>Additional changes include iptables and ip6tables version facts, general whitespace cleanup, and adding additional unit tests.</p>
+
+<h5 id="changes-6">Changes</h5>
+
+<ul>
+  <li>(#10957) add iptables_version and ip6tables_version facts</li>
+  <li>(#11093) Improve log_level property so it converts names to numbers</li>
+  <li>(#10723) Munge hostnames and IPs to IPs with CIDR</li>
+  <li>(#10718) Add owner-match support</li>
+  <li>(#10997) Add fixtures for ipencap</li>
+  <li>(#11034) Whitespace cleanup</li>
+  <li>(#10690) add port property support to ip6tables</li>
+</ul>
+
+<hr />
+
+<h3 id="003---20111112">0.0.3 - 2011/11/12</h3>
+
+<p>This release introduces a new parameter ‘port’ which allows you to set both
+source and destination ports for a match:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { "500 allow NTP requests":
+  port =&gt; "123",
+  proto =&gt; "udp",
+  action =&gt; "accept",
+}
+</code></pre></div></div>
+
+<p>We also have the limit parameter finally working:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { "500 limit HTTP requests":
+  dport =&gt; 80,
+  proto =&gt; tcp,
+  limit =&gt; "60/sec",
+  burst =&gt; 30,
+  action =&gt; accept,
+}
+</code></pre></div></div>
+
+<p>State ordering has been fixed now, and more characters are allowed in the
+namevar:</p>
+
+<ul>
+  <li>Alphabetical</li>
+  <li>Numbers</li>
+  <li>Punctuation</li>
+  <li>Whitespace</li>
+</ul>
+
+<h5 id="changes-7">Changes</h5>
+
+<ul>
+  <li>(#10693) Ensure -m limit is added for iptables when using ‘limit’ param</li>
+  <li>(#10690) Create new port property</li>
+  <li>(#10700) allow additional characters in comment string</li>
+  <li>(#9082) Sort iptables –state option values internally to keep it consistent across runs</li>
+  <li>(#10324) Remove extraneous whitespace from iptables rule line in spec tests</li>
+</ul>
+
+<hr />
+
+<h3 id="002---20111026">0.0.2 - 2011/10/26</h3>
+
+<p>This is largely a maintanence and cleanup release, but includes the ability to
+specify ranges of ports in the sport/dport parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firewall { "500 allow port range":
+  dport =&gt; ["3000-3030","5000-5050"],
+  sport =&gt; ["1024-65535"],
+  action =&gt; "accept",
+}
+</code></pre></div></div>
+
+<h5 id="changes-8">Changes</h5>
+
+<ul>
+  <li>(#10295) Work around bug #4248 whereby the puppet/util paths are not being loaded correctly on the puppetmaster</li>
+  <li>(#10002) Change to dport and sport to handle ranges, and fix handling of name to name to port</li>
+  <li>(#10263) Fix tests on Puppet 2.6.x</li>
+  <li>(#10163) Cleanup some of the inline documentation and README file to align with general forge usage</li>
+</ul>
+
+<hr />
+
+<h3 id="001---20111018">0.0.1 - 2011/10/18</h3>
+
+<p>Initial release.</p>
+
+<h5 id="changes-9">Changes</h5>
+
+<ul>
+  <li>(#9362) Create action property and perform transformation for accept, drop, reject value for iptables jump parameter</li>
+  <li>(#10088) Provide a customised version of CONTRIBUTING.md</li>
+  <li>(#10026) Re-arrange provider and type spec files to align with Puppet</li>
+  <li>(#10026) Add aliases for test,specs,tests to Rakefile and provide -T as default</li>
+  <li>(#9439) fix parsing and deleting existing rules</li>
+  <li>(#9583) Fix provider detection for gentoo and unsupported linuxes for the iptables provider</li>
+  <li>(#9576) Stub provider so it works properly outside of Linux</li>
+  <li>(#9576) Align spec framework with Puppet core</li>
+  <li>and lots of other earlier development tasks …</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

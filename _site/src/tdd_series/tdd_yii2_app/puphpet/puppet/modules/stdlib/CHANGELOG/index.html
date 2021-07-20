@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Supported Release 4.12.0 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Supported Release 4.12.0" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/stdlib/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/stdlib/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Supported Release 4.12.0" />
+<script type="application/ld+json">
+{"headline":"Supported Release 4.12.0","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/stdlib/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Supported Release 4.12.0</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="supported-release-4120">Supported Release 4.12.0</h2>
+<p>###Summary</p>
+
+<p>This release provides several new functions, bugfixes, modulesync changes, and some documentation updates.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Adds <code class="language-plaintext highlighter-rouge">clamp</code>. This function keeps values within a specified range.</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">validate_x509_rsa_key_pair</code>. This function validates an x509 RSA certificate and key pair.</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">dig</code>. This function performs a deep lookup in nested hashes or arrays.</li>
+  <li>Extends the <code class="language-plaintext highlighter-rouge">base64</code> support to fit <code class="language-plaintext highlighter-rouge">rfc2045</code> and <code class="language-plaintext highlighter-rouge">rfc4648</code>.</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">is_ipv6_address</code> and <code class="language-plaintext highlighter-rouge">is_ipv4_address</code>. These functions validate the specified ipv4 or ipv6 addresses.</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">enclose_ipv6</code>. This function encloses IPv6 addresses in square brackets.</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">ensure_resources</code>. This function takes a list of resources and creates them if they do not exist.</li>
+  <li>Extends <code class="language-plaintext highlighter-rouge">suffix</code> to support applying a suffix to keys in a hash.</li>
+  <li>Apply modulesync changes.</li>
+  <li>Add validate_email_address function.</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fixes <code class="language-plaintext highlighter-rouge">fqdn_rand_string</code> tests, since Puppet 4.4.0 and later have a higher <code class="language-plaintext highlighter-rouge">fqdn_rand</code> ceiling.</li>
+  <li>(MODULES-3152) Adds a check to <code class="language-plaintext highlighter-rouge">package_provider</code> to prevent failures if Gem is not installed.</li>
+  <li>Fixes to README.md.</li>
+  <li>Fixes catch StandardError rather than the gratuitous Exception</li>
+  <li>Fixes file_line attribute validation.</li>
+  <li>Fixes concat with Hash arguments.</li>
+</ul>
+
+<h2 id="supported-release-4110">Supported Release 4.11.0</h2>
+<p>###Summary</p>
+
+<p>Provides a validate_absolute_paths and Debian 8 support. There is a fix to the is_package_provider fact and a test improvement.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Adds new parser called is_absolute_path</li>
+  <li>Supports Debian 8</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Allow package_provider fact to resolve on PE 3.x</li>
+</ul>
+
+<p>####Improvements</p>
+<ul>
+  <li>ensures that the test passes independently of changes to rubygems for ensure_resource</li>
+</ul>
+
+<p>##2015-12-15 - Supported Release 4.10.0
+###Summary</p>
+
+<p>Includes the addition of several new functions and considerable improvements to the existing functions, tests and documentation. Includes some bug fixes which includes compatibility, test and fact issues.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Adds service_provider fact</li>
+  <li>Adds is_a() function</li>
+  <li>Adds package_provider fact</li>
+  <li>Adds validate_ip_address function</li>
+  <li>Adds seeded_rand function</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix backwards compatibility from an improvement to the parseyaml function</li>
+  <li>Renaming of load_module_metadata test to include _spec.rb</li>
+  <li>Fix root_home fact on AIX 5.x, now ‘-c’ rather than ‘-C’</li>
+  <li>Fixed Gemfile to work with ruby 1.8.7</li>
+</ul>
+
+<p>####Improvements</p>
+<ul>
+  <li>(MODULES-2462) Improvement of parseyaml function</li>
+  <li>Improvement of str2bool function</li>
+  <li>Improvement to readme</li>
+  <li>Improvement of intersection function</li>
+  <li>Improvement of validate_re function</li>
+  <li>Improved speed on Facter resolution of service_provider</li>
+  <li>empty function now handles numeric values</li>
+  <li>Package_provider now prevents deprecation warning about the allow_virtual parameter</li>
+  <li>load_module_metadata now succeeds on empty file</li>
+  <li>Check added to ensure puppetversion value is not nil</li>
+  <li>Improvement to bool2str to return a string of choice using boolean</li>
+  <li>Improvement to naming convention in validate_ipv4_address function</li>
+</ul>
+
+<h2 id="supported-release-491">Supported Release 4.9.1</h2>
+<p>###Summary</p>
+
+<p>Small release for support of newer PE versions. This increments the version of PE in the metadata.json file.</p>
+
+<p>##2015-09-08 - Supported Release 4.9.0
+###Summary</p>
+
+<p>This release adds new features including the new functions dos2unix, unix2dos, try_get_value, convert_base as well as other features and improvements.</p>
+
+<p>####Features</p>
+<ul>
+  <li>(MODULES-2370) allow <code class="language-plaintext highlighter-rouge">match</code> parameter to influence <code class="language-plaintext highlighter-rouge">ensure =&gt; absent</code> behavior</li>
+  <li>(MODULES-2410) Add new functions dos2unix and unix2dos</li>
+  <li>(MODULE-2456) Modify union to accept more than two arrays</li>
+  <li>Adds a convert_base function, which can convert numbers between bases</li>
+  <li>Add a new function “try_get_value”</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>n/a</li>
+</ul>
+
+<p>####Improvements</p>
+<ul>
+  <li>(MODULES-2478) Support root_home fact on AIX through “lsuser” command</li>
+  <li>Acceptance test improvements</li>
+  <li>Unit test improvements</li>
+  <li>Readme improvements</li>
+</ul>
+
+<h2 id="2015-08-10---supported-release-480">2015-08-10 - Supported Release 4.8.0</h2>
+<h3 id="summary">Summary</h3>
+<p>This release adds a function for reading metadata.json from any module, and expands file_line’s abilities.</p>
+
+<h4 id="features">Features</h4>
+<ul>
+  <li>New parameter <code class="language-plaintext highlighter-rouge">replace</code> on <code class="language-plaintext highlighter-rouge">file_line</code></li>
+  <li>New function <code class="language-plaintext highlighter-rouge">load_module_metadata()</code> to load metadata.json and return the content as a hash.</li>
+  <li>Added hash support to <code class="language-plaintext highlighter-rouge">size()</code></li>
+</ul>
+
+<h4 id="bugfixes">Bugfixes</h4>
+<ul>
+  <li>Fix various docs typos</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">file_line</code> resource on puppet &lt; 3.3</li>
+</ul>
+
+<p>##2015-06-22 - Supported Release 4.7.0
+###Summary</p>
+
+<p>Adds Solaris 12 support along with improved Puppet 4 support. There are significant test improvements, and some minor fixes.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Add support for Solaris 12</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix for AIO Puppet 4</li>
+  <li>Fix time for ruby 1.8.7</li>
+  <li>Specify rspec-puppet version</li>
+  <li>range() fix for typeerror and missing functionality</li>
+  <li>Fix pw_hash() on JRuby &lt; 1.7.17</li>
+  <li>fqdn_rand_string: fix argument error message</li>
+  <li>catch and rescue from looking up non-existent facts</li>
+  <li>Use puppet_install_helper, for Puppet 4</li>
+</ul>
+
+<p>####Improvements</p>
+<ul>
+  <li>Enforce support for Puppet 4 testing</li>
+  <li>fqdn_rotate/fqdn_rand_string acceptance tests and implementation</li>
+  <li>Simplify mac address regex</li>
+  <li>validate_integer, validate_numeric: explicitely reject hashes in arrays</li>
+  <li>Readme edits</li>
+  <li>Remove all the pops stuff for rspec-puppet</li>
+  <li>Sync via modulesync</li>
+  <li>Add validate_slength optional 3rd arg</li>
+  <li>Move tests directory to examples directory</li>
+</ul>
+
+<p>##2015-04-14 - Supported Release 4.6.0
+###Summary</p>
+
+<p>Adds functions and function argument abilities, and improves compatibility with the new puppet parser</p>
+
+<p>####Features</p>
+<ul>
+  <li>MODULES-444: <code class="language-plaintext highlighter-rouge">concat()</code> can now take more than two arrays</li>
+  <li><code class="language-plaintext highlighter-rouge">basename()</code> added to have Ruby File.basename functionality</li>
+  <li><code class="language-plaintext highlighter-rouge">delete()</code> can now take an array of items to remove</li>
+  <li><code class="language-plaintext highlighter-rouge">prefix()</code> can now take a hash</li>
+  <li><code class="language-plaintext highlighter-rouge">upcase()</code> can now take a hash or array of upcaseable things</li>
+  <li><code class="language-plaintext highlighter-rouge">validate_absolute_path()</code> can now take an array</li>
+  <li><code class="language-plaintext highlighter-rouge">validate_cmd()</code> can now use % in the command to embed the validation file argument in the string</li>
+  <li>MODULES-1473: deprecate <code class="language-plaintext highlighter-rouge">type()</code> function in favor of <code class="language-plaintext highlighter-rouge">type3x()</code></li>
+  <li>MODULES-1473: Add <code class="language-plaintext highlighter-rouge">type_of()</code> to give better type information on future parser</li>
+  <li>Deprecate <code class="language-plaintext highlighter-rouge">private()</code> for <code class="language-plaintext highlighter-rouge">assert_private()</code> due to future parser</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">ceiling()</code> to take the ceiling of a number</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">fqdn_rand_string()</code> to generate random string based on fqdn</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">pw_hash()</code> to generate password hashes</li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">validate_integer()</code></li>
+  <li>Adds <code class="language-plaintext highlighter-rouge">validate_numeric()</code> (like <code class="language-plaintext highlighter-rouge">validate_integer()</code> but also accepts floats)</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix seeding of <code class="language-plaintext highlighter-rouge">fqdn_rotate()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ensure_resource()</code> is more verbose on debug mode</li>
+  <li>Stricter argument checking for <code class="language-plaintext highlighter-rouge">dirname()</code></li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">is_domain_name()</code> to better match RFC</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">uriescape()</code> when called with array</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">file_line</code> resource when using the <code class="language-plaintext highlighter-rouge">after</code> attribute with <code class="language-plaintext highlighter-rouge">match</code></li>
+</ul>
+
+<p>##2015-01-14 - Supported Release 4.5.1
+###Summary</p>
+
+<p>This release changes the temporary facter_dot_d cache locations outside of the /tmp directory due to a possible security vunerability. CVE-2015-1029</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Facter_dot_d cache will now be stored in puppet libdir instead of tmp</li>
+</ul>
+
+<p>##2014-12-15 - Supported Release 4.5.0
+###Summary</p>
+
+<p>This release improves functionality of the member function and adds improved future parser support.</p>
+
+<p>####Features</p>
+<ul>
+  <li>MODULES-1329: Update member() to allow the variable to be an array.</li>
+  <li>Sync .travis.yml, Gemfile, Rakefile, and CONTRIBUTING.md via modulesync</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix range() to work with numeric ranges with the future parser</li>
+  <li>Accurately express SLES support in metadata.json (was missing 10SP4 and 12)</li>
+  <li>Don’t require <code class="language-plaintext highlighter-rouge">line</code> to match the <code class="language-plaintext highlighter-rouge">match</code> parameter</li>
+</ul>
+
+<p>##2014-11-10 - Supported Release 4.4.0
+###Summary
+This release has an overhauled readme, new private manifest function, and fixes many future parser bugs.</p>
+
+<p>####Features</p>
+<ul>
+  <li>All new shiny README</li>
+  <li>New <code class="language-plaintext highlighter-rouge">private()</code> function for making private manifests (yay!)</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Code reuse in <code class="language-plaintext highlighter-rouge">bool2num()</code> and <code class="language-plaintext highlighter-rouge">zip()</code></li>
+  <li>Fix many functions to handle <code class="language-plaintext highlighter-rouge">generate()</code> no longer returning a string on new puppets</li>
+  <li><code class="language-plaintext highlighter-rouge">concat()</code> no longer modifies the first argument (whoops)</li>
+  <li>strict variable support for <code class="language-plaintext highlighter-rouge">getvar()</code>, <code class="language-plaintext highlighter-rouge">member()</code>, <code class="language-plaintext highlighter-rouge">values_at</code>, and <code class="language-plaintext highlighter-rouge">has_interface_with()</code></li>
+  <li><code class="language-plaintext highlighter-rouge">to_bytes()</code> handles PB and EB now</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">tempfile</code> ruby requirement for <code class="language-plaintext highlighter-rouge">validate_augeas()</code> and <code class="language-plaintext highlighter-rouge">validate_cmd()</code></li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">validate_cmd()</code> for windows</li>
+  <li>Correct <code class="language-plaintext highlighter-rouge">validate_string()</code> docs to reflect non-handling of <code class="language-plaintext highlighter-rouge">undef</code></li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">file_line</code> matching on older rubies</li>
+</ul>
+
+<p>##2014-07-15 - Supported Release 4.3.2
+###Summary</p>
+
+<p>This release merely updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.</p>
+
+<p>##2014-07-14 - Supported Release 4.3.1</p>
+<h3 id="summary-1">Summary</h3>
+<p>This supported release updates the metadata.json to work around upgrade behavior of the PMT.</p>
+
+<h4 id="bugfixes-1">Bugfixes</h4>
+<ul>
+  <li>Synchronize metadata.json with PMT-generated metadata to pass checksums</li>
+</ul>
+
+<p>##2014-06-27 - Supported Release 4.3.0</p>
+<h3 id="summary-2">Summary</h3>
+<p>This release is the first supported release of the stdlib 4 series. It remains
+backwards-compatible with the stdlib 3 series. It adds two new functions, one bugfix, and many testing updates.</p>
+
+<h4 id="features-1">Features</h4>
+<ul>
+  <li>New <code class="language-plaintext highlighter-rouge">bool2str()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">camelcase()</code> function</li>
+</ul>
+
+<h4 id="bugfixes-2">Bugfixes</h4>
+<ul>
+  <li>Fix <code class="language-plaintext highlighter-rouge">has_interface_with()</code> when interfaces fact is nil</li>
+</ul>
+
+<p>##2014-06-04 - Release 4.2.2</p>
+<h3 id="summary-3">Summary</h3>
+
+<p>This release adds PE3.3 support in the metadata and fixes a few tests.</p>
+
+<h2 id="2014-05-08---release---421">2014-05-08 - Release - 4.2.1</h2>
+<h3 id="summary-4">Summary</h3>
+<p>This release moves a stray symlink that can cause problems.</p>
+
+<h2 id="2014-05-08---release---420">2014-05-08 - Release - 4.2.0</h2>
+<h3 id="summary-5">Summary</h3>
+<p>This release adds many new functions and fixes, and continues to be backwards compatible with stdlib 3.x</p>
+
+<h4 id="features-2">Features</h4>
+<ul>
+  <li>New <code class="language-plaintext highlighter-rouge">base64()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">deep_merge()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">delete_undef_values()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">delete_values()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">difference()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">intersection()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">is_bool()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">pick_default()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">union()</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">validate_ipv4_address</code> function</li>
+  <li>New <code class="language-plaintext highlighter-rouge">validate_ipv6_address</code> function</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">ensure_packages()</code> to take an option hash as a second parameter.</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">range()</code> to take an optional third argument for range step</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">validate_slength()</code> to take an optional third argument for minimum length</li>
+  <li>Update <code class="language-plaintext highlighter-rouge">file_line</code> resource to take <code class="language-plaintext highlighter-rouge">after</code> and <code class="language-plaintext highlighter-rouge">multiple</code> attributes</li>
+</ul>
+
+<h4 id="bugfixes-3">Bugfixes</h4>
+<ul>
+  <li>Correct <code class="language-plaintext highlighter-rouge">is_string</code>, <code class="language-plaintext highlighter-rouge">is_domain_name</code>, <code class="language-plaintext highlighter-rouge">is_array</code>, <code class="language-plaintext highlighter-rouge">is_float</code>, and <code class="language-plaintext highlighter-rouge">is_function_available</code> for parsing odd types such as bools and hashes.</li>
+  <li>Allow facts.d facts to contain <code class="language-plaintext highlighter-rouge">=</code> in the value</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">root_home</code> fact on darwin systems</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">concat()</code> to work with a second non-array argument</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">floor()</code> to work with integer strings</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">is_integer()</code> to return true if passed integer strings</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">is_numeric()</code> to return true if passed integer strings</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">merge()</code> to work with empty strings</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">pick()</code> to raise the correct error type</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">uriescape()</code> to use the default URI.escape list</li>
+  <li>Add/update unit &amp; acceptance tests.</li>
+</ul>
+
+<p>##2014-03-04 - Supported Release - 3.2.1
+###Summary
+This is a supported release</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fixed <code class="language-plaintext highlighter-rouge">is_integer</code>/<code class="language-plaintext highlighter-rouge">is_float</code>/<code class="language-plaintext highlighter-rouge">is_numeric</code> for checking the value of arithmatic expressions.</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>No known bugs</li>
+</ul>
+
+<hr />
+
+<h5 id="2013-05-06---jeff-mccune-jeffpuppetlabscom---410">2013-05-06 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.1.0</h5>
+
+<ul>
+  <li>(#20582) Restore facter_dot_d to stdlib for PE users (3b887c8)</li>
+  <li>(maint) Update Gemfile with GEM_FACTER_VERSION (f44d535)</li>
+</ul>
+
+<h5 id="2013-05-06---alex-cline-aclineusibmcom---410">2013-05-06 - Alex Cline <a href="mailto:acline@us.ibm.com">acline@us.ibm.com</a> - 4.1.0</h5>
+
+<ul>
+  <li>Terser method of string to array conversion courtesy of ethooz. (d38bce0)</li>
+</ul>
+
+<h5 id="2013-05-06---alex-cline-aclineusibmcom-410">2013-05-06 - Alex Cline <a href="mailto:acline@us.ibm.com">acline@us.ibm.com</a> 4.1.0</h5>
+
+<ul>
+  <li>Refactor ensure_resource expectations (b33cc24)</li>
+</ul>
+
+<h5 id="2013-05-06---alex-cline-aclineusibmcom-410-1">2013-05-06 - Alex Cline <a href="mailto:acline@us.ibm.com">acline@us.ibm.com</a> 4.1.0</h5>
+
+<ul>
+  <li>Changed str-to-array conversion and removed abbreviation. (de253db)</li>
+</ul>
+
+<h5 id="2013-05-03---alex-cline-aclineusibmcom-410">2013-05-03 - Alex Cline <a href="mailto:acline@us.ibm.com">acline@us.ibm.com</a> 4.1.0</h5>
+
+<ul>
+  <li>(#20548) Allow an array of resource titles to be passed into the ensure_resource function (e08734a)</li>
+</ul>
+
+<h5 id="2013-05-02---raphaël-pinson-raphaelpinsoncamptocampcom---410">2013-05-02 - Raphaël Pinson <a href="mailto:raphael.pinson@camptocamp.com">raphael.pinson@camptocamp.com</a> - 4.1.0</h5>
+
+<ul>
+  <li>Add a dirname function (2ba9e47)</li>
+</ul>
+
+<h5 id="2013-04-29---mark-smith-guerrero-msmithgugmailcom---410">2013-04-29 - Mark Smith-Guerrero <a href="mailto:msmithgu@gmail.com">msmithgu@gmail.com</a> - 4.1.0</h5>
+
+<ul>
+  <li>(maint) Fix a small typo in hash() description (928036a)</li>
+</ul>
+
+<h5 id="2013-04-12---jeff-mccune-jeffpuppetlabscom---402">2013-04-12 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.2</h5>
+
+<ul>
+  <li>Update user information in gemspec to make the intent of the Gem clear.</li>
+</ul>
+
+<h5 id="2013-04-11---jeff-mccune-jeffpuppetlabscom---401">2013-04-11 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.1</h5>
+
+<ul>
+  <li>Fix README function documentation (ab3e30c)</li>
+</ul>
+
+<h5 id="2013-04-11---jeff-mccune-jeffpuppetlabscom---400">2013-04-11 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>stdlib 4.0 drops support with Puppet 2.7</li>
+  <li>stdlib 4.0 preserves support with Puppet 3</li>
+</ul>
+
+<h5 id="2013-04-11---jeff-mccune-jeffpuppetlabscom---400-1">2013-04-11 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add ability to use puppet from git via bundler (9c5805f)</li>
+</ul>
+
+<h5 id="2013-04-10---jeff-mccune-jeffpuppetlabscom---400">2013-04-10 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>(maint) Make stdlib usable as a Ruby GEM (e81a45e)</li>
+</ul>
+
+<h5 id="2013-04-10---erik-dalén-dalenspotifycom---400">2013-04-10 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add a count function (f28550e)</li>
+</ul>
+
+<h5 id="2013-03-31---amos-shapira-ashapiraatlassiancom---400">2013-03-31 - Amos Shapira <a href="mailto:ashapira@atlassian.com">ashapira@atlassian.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>(#19998) Implement any2array (7a2fb80)</li>
+</ul>
+
+<h5 id="2013-03-29---steve-huff-shuffvecnaorg---400">2013-03-29 - Steve Huff <a href="mailto:shuff@vecna.org">shuff@vecna.org</a> - 4.0.0</h5>
+
+<ul>
+  <li>(19864) num2bool match fix (8d217f0)</li>
+</ul>
+
+<h5 id="2013-03-20---erik-dalén-dalenspotifycom---400">2013-03-20 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Allow comparisons of Numeric and number as String (ff5dd5d)</li>
+</ul>
+
+<h5 id="2013-03-26---richard-soderberg-rsoderbergmozillacom---400">2013-03-26 - Richard Soderberg <a href="mailto:rsoderberg@mozilla.com">rsoderberg@mozilla.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>add suffix function to accompany the prefix function (88a93ac)</li>
+</ul>
+
+<h5 id="2013-03-19---kristof-willaert-kristofwillaertgmailcom---400">2013-03-19 - Kristof Willaert <a href="mailto:kristof.willaert@gmail.com">kristof.willaert@gmail.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add floor function implementation and unit tests (0527341)</li>
+</ul>
+
+<h5 id="2012-04-03---eric-shamow-ericpuppetlabscom---400">2012-04-03 - Eric Shamow <a href="mailto:eric@puppetlabs.com">eric@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>(#13610) Add is_function_available to stdlib (961dcab)</li>
+</ul>
+
+<h5 id="2012-12-17---justin-lambert-jlambertemlcc---400">2012-12-17 - Justin Lambert <a href="mailto:jlambert@eml.cc">jlambert@eml.cc</a> - 4.0.0</h5>
+
+<ul>
+  <li>str2bool should return a boolean if called with a boolean (5d5a4d4)</li>
+</ul>
+
+<h5 id="2012-10-23---uwe-stuehler-ustuehlerteammobilede---400">2012-10-23 - Uwe Stuehler <a href="mailto:ustuehler@team.mobile.de">ustuehler@team.mobile.de</a> - 4.0.0</h5>
+
+<ul>
+  <li>Fix number of arguments check in flatten() (e80207b)</li>
+</ul>
+
+<h5 id="2013-03-11---jeff-mccune-jeffpuppetlabscom---400">2013-03-11 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add contributing document (96e19d0)</li>
+</ul>
+
+<h5 id="2013-03-04---raphaël-pinson-raphaelpinsoncamptocampcom---400">2013-03-04 - Raphaël Pinson <a href="mailto:raphael.pinson@camptocamp.com">raphael.pinson@camptocamp.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add missing documentation for validate_augeas and validate_cmd to README.markdown (a1510a1)</li>
+</ul>
+
+<h5 id="2013-02-14---joshua-hoblitt-jhoblittcpanorg---400">2013-02-14 - Joshua Hoblitt <a href="mailto:jhoblitt@cpan.org">jhoblitt@cpan.org</a> - 4.0.0</h5>
+
+<ul>
+  <li>(#19272) Add has_element() function (95cf3fe)</li>
+</ul>
+
+<h5 id="2013-02-07---raphaël-pinson-raphaelpinsoncamptocampcom---400">2013-02-07 - Raphaël Pinson <a href="mailto:raphael.pinson@camptocamp.com">raphael.pinson@camptocamp.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>validate_cmd(): Use Puppet::Util::Execution.execute when available (69248df)</li>
+</ul>
+
+<h5 id="2012-12-06---raphaël-pinson-raphinkgmailcom---400">2012-12-06 - Raphaël Pinson <a href="mailto:raphink@gmail.com">raphink@gmail.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add validate_augeas function (3a97c23)</li>
+</ul>
+
+<h5 id="2012-12-06---raphaël-pinson-raphinkgmailcom---400-1">2012-12-06 - Raphaël Pinson <a href="mailto:raphink@gmail.com">raphink@gmail.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add validate_cmd function (6902cc5)</li>
+</ul>
+
+<h5 id="2013-01-14---david-schmitt-daviddaszat---400">2013-01-14 - David Schmitt <a href="mailto:david@dasz.at">david@dasz.at</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add geppetto project definition (b3fc0a3)</li>
+</ul>
+
+<h5 id="2013-01-02---jaka-hudoklin-jakahudoklingmailcom---400">2013-01-02 - Jaka Hudoklin <a href="mailto:jakahudoklin@gmail.com">jakahudoklin@gmail.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add getparam function to get defined resource parameters (20e0e07)</li>
+</ul>
+
+<h5 id="2013-01-05---jeff-mccune-jeffpuppetlabscom---400">2013-01-05 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>(maint) Add Travis CI Support (d082046)</li>
+</ul>
+
+<h5 id="2012-12-04---jeff-mccune-jeffpuppetlabscom---400">2012-12-04 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>Clarify that stdlib 3 supports Puppet 3 (3a6085f)</li>
+</ul>
+
+<h5 id="2012-11-30---erik-dalén-dalenspotifycom---400">2012-11-30 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>maint: style guideline fixes (7742e5f)</li>
+</ul>
+
+<h5 id="2012-11-09---james-fryman-jamesfrymanetcom---400">2012-11-09 - James Fryman <a href="mailto:james@frymanet.com">james@frymanet.com</a> - 4.0.0</h5>
+
+<ul>
+  <li>puppet-lint cleanup (88acc52)</li>
+</ul>
+
+<h5 id="2012-11-06---joe-julian-mejoejulianname---400">2012-11-06 - Joe Julian <a href="mailto:me@joejulian.name">me@joejulian.name</a> - 4.0.0</h5>
+
+<ul>
+  <li>Add function, uriescape, to URI.escape strings. Redmine #17459 (fd52b8d)</li>
+</ul>
+
+<h5 id="2012-09-18---chad-metcalf-chadwibidatacom---320">2012-09-18 - Chad Metcalf <a href="mailto:chad@wibidata.com">chad@wibidata.com</a> - 3.2.0</h5>
+
+<ul>
+  <li>Add an ensure_packages function. (8a8c09e)</li>
+</ul>
+
+<h5 id="2012-11-23---erik-dalén-dalenspotifycom---320">2012-11-23 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 3.2.0</h5>
+
+<ul>
+  <li>(#17797) min() and max() functions (9954133)</li>
+</ul>
+
+<h5 id="2012-05-23---peter-meier-petermeierimmerdach---320">2012-05-23 - Peter Meier <a href="mailto:peter.meier@immerda.ch">peter.meier@immerda.ch</a> - 3.2.0</h5>
+
+<ul>
+  <li>(#14670) autorequire a file_line resource’s path (dfcee63)</li>
+</ul>
+
+<h5 id="2012-11-19---joshua-harlan-lifton-liftonpuppetlabscom---320">2012-11-19 - Joshua Harlan Lifton <a href="mailto:lifton@puppetlabs.com">lifton@puppetlabs.com</a> - 3.2.0</h5>
+
+<ul>
+  <li>Add join_keys_to_values function (ee0f2b3)</li>
+</ul>
+
+<h5 id="2012-11-17---joshua-harlan-lifton-liftonpuppetlabscom---320">2012-11-17 - Joshua Harlan Lifton <a href="mailto:lifton@puppetlabs.com">lifton@puppetlabs.com</a> - 3.2.0</h5>
+
+<ul>
+  <li>Extend delete function for strings and hashes (7322e4d)</li>
+</ul>
+
+<h5 id="2012-08-03---gary-larizza-garypuppetlabscom---320">2012-08-03 - Gary Larizza <a href="mailto:gary@puppetlabs.com">gary@puppetlabs.com</a> - 3.2.0</h5>
+
+<ul>
+  <li>Add the pick() function (ba6dd13)</li>
+</ul>
+
+<h5 id="2012-03-20---wil-cooley-wcooleypdxedu---320">2012-03-20 - Wil Cooley <a href="mailto:wcooley@pdx.edu">wcooley@pdx.edu</a> - 3.2.0</h5>
+
+<ul>
+  <li>(#13974) Add predicate functions for interface facts (f819417)</li>
+</ul>
+
+<h5 id="2012-11-06---joe-julian-mejoejulianname---320">2012-11-06 - Joe Julian <a href="mailto:me@joejulian.name">me@joejulian.name</a> - 3.2.0</h5>
+
+<ul>
+  <li>Add function, uriescape, to URI.escape strings. Redmine #17459 (70f4a0e)</li>
+</ul>
+
+<h5 id="2012-10-25---jeff-mccune-jeffpuppetlabscom---311">2012-10-25 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 3.1.1</h5>
+
+<ul>
+  <li>(maint) Fix spec failures resulting from Facter API changes (97f836f)</li>
+</ul>
+
+<h5 id="2012-10-23---matthaus-owens-matthauspuppetlabscom---310">2012-10-23 - Matthaus Owens <a href="mailto:matthaus@puppetlabs.com">matthaus@puppetlabs.com</a> - 3.1.0</h5>
+
+<ul>
+  <li>Add PE facts to stdlib (cdf3b05)</li>
+</ul>
+
+<h5 id="2012-08-16---jeff-mccune-jeffpuppetlabscom---301">2012-08-16 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 3.0.1</h5>
+
+<ul>
+  <li>Fix accidental removal of facts_dot_d.rb in 3.0.0 release</li>
+</ul>
+
+<h5 id="2012-08-16---jeff-mccune-jeffpuppetlabscom---300">2012-08-16 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 3.0.0</h5>
+
+<ul>
+  <li>stdlib 3.0 drops support with Puppet 2.6</li>
+  <li>stdlib 3.0 preserves support with Puppet 2.7</li>
+</ul>
+
+<h5 id="2012-08-07---dan-bode-danpuppetlabscom---300">2012-08-07 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 3.0.0</h5>
+
+<ul>
+  <li>Add function ensure_resource and defined_with_params (ba789de)</li>
+</ul>
+
+<h5 id="2012-07-10---hailee-kenney-haileepuppetlabscom---300">2012-07-10 - Hailee Kenney <a href="mailto:hailee@puppetlabs.com">hailee@puppetlabs.com</a> - 3.0.0</h5>
+
+<ul>
+  <li>(#2157) Remove facter_dot_d for compatibility with external facts (f92574f)</li>
+</ul>
+
+<h5 id="2012-04-10---chris-price-chrispuppetlabscom---300">2012-04-10 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 3.0.0</h5>
+
+<ul>
+  <li>(#13693) moving logic from local spec_helper to puppetlabs_spec_helper (85f96df)</li>
+</ul>
+
+<h5 id="2012-10-25---jeff-mccune-jeffpuppetlabscom---251">2012-10-25 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.5.1</h5>
+
+<ul>
+  <li>(maint) Fix spec failures resulting from Facter API changes (97f836f)</li>
+</ul>
+
+<h5 id="2012-10-23---matthaus-owens-matthauspuppetlabscom---250">2012-10-23 - Matthaus Owens <a href="mailto:matthaus@puppetlabs.com">matthaus@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Add PE facts to stdlib (cdf3b05)</li>
+</ul>
+
+<h5 id="2012-08-15---dan-bode-danpuppetlabscom---250">2012-08-15 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Explicitly load functions used by ensure_resource (9fc3063)</li>
+</ul>
+
+<h5 id="2012-08-13---dan-bode-danpuppetlabscom---250">2012-08-13 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Add better docs about duplicate resource failures (97d327a)</li>
+</ul>
+
+<h5 id="2012-08-13---dan-bode-danpuppetlabscom---250-1">2012-08-13 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Handle undef for parameter argument (4f8b133)</li>
+</ul>
+
+<h5 id="2012-08-07---dan-bode-danpuppetlabscom---250">2012-08-07 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Add function ensure_resource and defined_with_params (a0cb8cd)</li>
+</ul>
+
+<h5 id="2012-08-20---jeff-mccune-jeffpuppetlabscom---250">2012-08-20 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Disable tests that fail on 2.6.x due to #15912 (c81496e)</li>
+</ul>
+
+<h5 id="2012-08-20---jeff-mccune-jeffpuppetlabscom---250-1">2012-08-20 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>(Maint) Fix mis-use of rvalue functions as statements (4492913)</li>
+</ul>
+
+<h5 id="2012-08-20---jeff-mccune-jeffpuppetlabscom---250-2">2012-08-20 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.5.0</h5>
+
+<ul>
+  <li>Add .rspec file to repo root (88789e8)</li>
+</ul>
+
+<h5 id="2012-06-07---chris-price-chrispuppetlabscom---240">2012-06-07 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 2.4.0</h5>
+
+<ul>
+  <li>Add support for a ‘match’ parameter to file_line (a06c0d8)</li>
+</ul>
+
+<h5 id="2012-08-07---erik-dalén-dalenspotifycom---240">2012-08-07 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 2.4.0</h5>
+
+<ul>
+  <li>(#15872) Add to_bytes function (247b69c)</li>
+</ul>
+
+<h5 id="2012-07-19---jeff-mccune-jeffpuppetlabscom---240">2012-07-19 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.4.0</h5>
+
+<ul>
+  <li>(Maint) use PuppetlabsSpec::PuppetInternals.scope (master) (deafe88)</li>
+</ul>
+
+<h5 id="2012-07-10---hailee-kenney-haileepuppetlabscom---240">2012-07-10 - Hailee Kenney <a href="mailto:hailee@puppetlabs.com">hailee@puppetlabs.com</a> - 2.4.0</h5>
+
+<ul>
+  <li>(#2157) Make facts_dot_d compatible with external facts (5fb0ddc)</li>
+</ul>
+
+<h5 id="2012-03-16---steve-traylen-stevetraylencernch---240">2012-03-16 - Steve Traylen <a href="mailto:steve.traylen@cern.ch">steve.traylen@cern.ch</a> - 2.4.0</h5>
+
+<ul>
+  <li>(#13205) Rotate array/string randomley based on fqdn, fqdn_rotate() (fef247b)</li>
+</ul>
+
+<h5 id="2012-05-22---peter-meier-petermeierimmerdach---233">2012-05-22 - Peter Meier <a href="mailto:peter.meier@immerda.ch">peter.meier@immerda.ch</a> - 2.3.3</h5>
+
+<ul>
+  <li>fix regression in #11017 properly (f0a62c7)</li>
+</ul>
+
+<h5 id="2012-05-10---jeff-mccune-jeffpuppetlabscom---233">2012-05-10 - Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 2.3.3</h5>
+
+<ul>
+  <li>Fix spec tests using the new spec_helper (7d34333)</li>
+</ul>
+
+<h5 id="2012-05-10---puppet-labs-supportpuppetlabscom---232">2012-05-10 - Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.3.2</h5>
+
+<ul>
+  <li>Make file_line default to ensure =&gt; present (1373e70)</li>
+  <li>Memoize file_line spec instance variables (20aacc5)</li>
+  <li>Fix spec tests using the new spec_helper (1ebfa5d)</li>
+  <li>(#13595) initialize_everything_for_tests couples modules Puppet ver (3222f35)</li>
+  <li>(#13439) Fix MRI 1.9 issue with spec_helper (15c5fd1)</li>
+  <li>(#13439) Fix test failures with Puppet 2.6.x (665610b)</li>
+  <li>(#13439) refactor spec helper for compatibility with both puppet 2.7 and master (82194ca)</li>
+  <li>(#13494) Specify the behavior of zero padded strings (61891bb)</li>
+</ul>
+
+<h5 id="2012-03-29-puppet-labs-supportpuppetlabscom---213">2012-03-29 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.1.3</h5>
+
+<ul>
+  <li>(#11607) Add Rakefile to enable spec testing</li>
+  <li>(#12377) Avoid infinite loop when retrying require json</li>
+</ul>
+
+<h5 id="2012-03-13-puppet-labs-supportpuppetlabscom---231">2012-03-13 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.3.1</h5>
+
+<ul>
+  <li>(#13091) Fix LoadError bug with puppet apply and puppet_vardir fact</li>
+</ul>
+
+<h5 id="2012-03-12-puppet-labs-supportpuppetlabscom---230">2012-03-12 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.3.0</h5>
+
+<ul>
+  <li>Add a large number of new Puppet functions</li>
+  <li>Backwards compatibility preserved with 2.2.x</li>
+</ul>
+
+<h5 id="2011-12-30-puppet-labs-supportpuppetlabscom---221">2011-12-30 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.2.1</h5>
+
+<ul>
+  <li>Documentation only release for the Forge</li>
+</ul>
+
+<h5 id="2011-12-30-puppet-labs-supportpuppetlabscom---212">2011-12-30 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.1.2</h5>
+
+<ul>
+  <li>Documentation only release for PE 2.0.x</li>
+</ul>
+
+<h5 id="2011-11-08-puppet-labs-supportpuppetlabscom---220">2011-11-08 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.2.0</h5>
+
+<ul>
+  <li>#10285 - Refactor json to use pson instead.</li>
+  <li>Maint  - Add watchr autotest script</li>
+  <li>Maint  - Make rspec tests work with Puppet 2.6.4</li>
+  <li>#9859  - Add root_home fact and tests</li>
+</ul>
+
+<h5 id="2011-08-18-puppet-labs-supportpuppetlabscom---211">2011-08-18 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.1.1</h5>
+
+<ul>
+  <li>Change facts.d paths to match Facter 2.0 paths.</li>
+  <li>/etc/facter/facts.d</li>
+  <li>/etc/puppetlabs/facter/facts.d</li>
+</ul>
+
+<h5 id="2011-08-17-puppet-labs-supportpuppetlabscom---210">2011-08-17 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.1.0</h5>
+
+<ul>
+  <li>Add R.I. Pienaar’s facts.d custom facter fact</li>
+  <li>facts defined in /etc/facts.d and /etc/puppetlabs/facts.d are
+automatically loaded now.</li>
+</ul>
+
+<h5 id="2011-08-04-puppet-labs-supportpuppetlabscom---200">2011-08-04 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 2.0.0</h5>
+
+<ul>
+  <li>Rename whole_line to file_line</li>
+  <li>This is an API change and as such motivating a 2.0.0 release according to semver.org.</li>
+</ul>
+
+<h5 id="2011-08-04-puppet-labs-supportpuppetlabscom---110">2011-08-04 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 1.1.0</h5>
+
+<ul>
+  <li>Rename append_line to whole_line</li>
+  <li>This is an API change and as such motivating a 1.1.0 release.</li>
+</ul>
+
+<h5 id="2011-08-04-puppet-labs-supportpuppetlabscom---100">2011-08-04 Puppet Labs <a href="mailto:support@puppetlabs.com">support@puppetlabs.com</a> - 1.0.0</h5>
+
+<ul>
+  <li>Initial stable release</li>
+  <li>Add validate_array and validate_string functions</li>
+  <li>Make merge() function work with Ruby 1.8.5</li>
+  <li>Add hash merging function</li>
+  <li>Add has_key function</li>
+  <li>Add loadyaml() function</li>
+  <li>Add append_line native</li>
+</ul>
+
+<h5 id="2011-06-21-jeff-mccune-jeffpuppetlabscom---017">2011-06-21 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 0.1.7</h5>
+
+<ul>
+  <li>Add validate_hash() and getvar() functions</li>
+</ul>
+
+<h5 id="2011-06-15-jeff-mccune-jeffpuppetlabscom---016">2011-06-15 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 0.1.6</h5>
+
+<ul>
+  <li>Add anchor resource type to provide containment for composite classes</li>
+</ul>
+
+<h5 id="2011-06-03-jeff-mccune-jeffpuppetlabscom---015">2011-06-03 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a> - 0.1.5</h5>
+
+<ul>
+  <li>Add validate_bool() function to stdlib</li>
+</ul>
+
+<h5 id="014-2011-05-26-jeff-mccune-jeffpuppetlabscom">0.1.4 2011-05-26 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a></h5>
+
+<ul>
+  <li>Move most stages after main</li>
+</ul>
+
+<h5 id="013-2011-05-25-jeff-mccune-jeffpuppetlabscom">0.1.3 2011-05-25 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a></h5>
+
+<ul>
+  <li>Add validate_re() function</li>
+</ul>
+
+<h5 id="012-2011-05-24-jeff-mccune-jeffpuppetlabscom">0.1.2 2011-05-24 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a></h5>
+
+<ul>
+  <li>Update to add annotated tag</li>
+</ul>
+
+<h5 id="011-2011-05-24-jeff-mccune-jeffpuppetlabscom">0.1.1 2011-05-24 Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a></h5>
+
+<ul>
+  <li>Add stdlib::stages class with a standard set of stages</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

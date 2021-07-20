@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Fedora: гибернация | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Fedora: гибернация" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В статье рассмотрим как заставить работать гибернацию в дистрибутивах Fedora. А так же кратко рассмотрим теоретическую составляющую процесса." />
+<meta property="og:description" content="В статье рассмотрим как заставить работать гибернацию в дистрибутивах Fedora. А так же кратко рассмотрим теоретическую составляющую процесса." />
+<link rel="canonical" href="http://localhost:4000/2017/12/31/fedora-%D0%B3%D0%B8%D0%B1%D0%B5%D1%80%D0%BD%D0%B0%D1%86%D0%B8%D1%8F/" />
+<meta property="og:url" content="http://localhost:4000/2017/12/31/fedora-%D0%B3%D0%B8%D0%B1%D0%B5%D1%80%D0%BD%D0%B0%D1%86%D0%B8%D1%8F/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-12-31T18:07:00+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fedora: гибернация" />
+<script type="application/ld+json">
+{"headline":"Fedora: гибернация","dateModified":"2017-12-31T18:07:00+03:00","datePublished":"2017-12-31T18:07:00+03:00","description":"В статье рассмотрим как заставить работать гибернацию в дистрибутивах Fedora. А так же кратко рассмотрим теоретическую составляющую процесса.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/12/31/fedora-%D0%B3%D0%B8%D0%B1%D0%B5%D1%80%D0%BD%D0%B0%D1%86%D0%B8%D1%8F/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/12/31/fedora-%D0%B3%D0%B8%D0%B1%D0%B5%D1%80%D0%BD%D0%B0%D1%86%D0%B8%D1%8F/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Fedora: гибернация</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Fedora: гибернация</h1>
+<p>31 Dec 2017</p>
+
+<p>Вы закрываете крышку ноутбука и он выключается. “Но то не то что я ожидаю!” - воскликните вы. Да. Так и есть. Потому что уже много времени подряд гибернация работает из рук вон плохо. Эдакое бедствие в линупсе.</p>
+
+<p>Сначала рассмотрим теорию, а после - практику сна базе дистрибутива Fedora 26.</p>
+
+<p>Основные режимы энергосбережения, которые чаще всего упоминаются пользователями::</p>
+
+<ul>
+  <li>ждущий режим - это когда отключается питание внешних устройств, но при этом сохраняется питание памяти, что позволяет относительно быстро восстанавливать рабочее состояние системы  В спецификации аппаратного обеспечения указано пять уровней энергосохранения. И разработчики различных операционных систем часто выбирают различающиеся между собой уровни.</li>
+  <li>Спящий режим - это особая разновидность выключения компьютера при котором слепок содержимого оперативной памяти сохраняется на диске. При повторной загрузке ОС проверяет, есть ли слепок памяти. И если да, то восстанавливает слепок в оперативную память и начинает с того места, на котором вы остановились ранее.</li>
+  <li>гибридный спящий режим - это тот же ждущий режим при котором содержимое оперативной памяти сохраняется в энергонезависимой памяти на случай отключения питания (windows-only)</li>
+</ul>
+
+<p>И если со ждущим режимом все более-менее понятно и он работает в большинстве современных дистрибутивов, то со спящим режимом не все так гладко. Попытавшись увести систему в спячку и нажав на кнопку питания для пробуждения вы просто заново загрузите систему.</p>
+
+<p><strong>Предупреждение: все описанные ниже манипуляции требуют физической перезагрузки компьютера для того, чтобы ядро восприняло новые параметры.</strong></p>
+
+<!--more-->
+
+<h2 id="требования-к-разбиению-дисков">Требования к разбиению дисков</h2>
+
+<p>Для возможности работы гибернации необходимо чтобы:</p>
+
+<ul>
+  <li>В вашей системе присутствовал только один файл или раздел подкачки. Комбинировать несколько файлов, разделов или файл  и раздел нельзя - гибернация работать не будет.</li>
+  <li>Размер раздела (файла подкачки был как минимум равен или превышал размер оперативной памяти (но это не гарантирует успешного срабатывания в случае, когда система активно используется свопом).</li>
+</ul>
+
+<h2 id="гибернации-через-раздел-подкачки">Гибернации через раздел подкачки</h2>
+
+<p>Необходимо отредактировать файл /etc/defaults/grub и указать в параметре GRUB_CMDLINE_LINUX опцию resume, которая укажет, на раздел, который является свопом.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GRUB\_CMDLINE\_LINUX="rd.lvm.lv=rfremix/root rd.lvm.lv=rfremix/swap rhgb quiet usbcore.autosuspend=-1 resume=UUID=7d55bdde-03ef-4adf-a1c3-9b85e2a7f4be"
+</code></pre></div></div>
+
+<p>Параметр resume может быть записан в нескольких вариантах:</p>
+
+<h3 id="перегенерация-конфига-grub2-на-efi-системах">Перегенерация конфига grub2 на efi-системах</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+</code></pre></div></div>
+
+<h3 id="ссылка-на-раздел">Ссылка на раздел</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resume=/dev/...[/code[
+
+Указываем раздел, на котором находится подкачка  
+\&lt;h3\&gt;UUID раздела\&lt;/h3\&gt;  
+</code></pre></div></div>
+<p>resume=UUID=&lt;uuid&gt;</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Получить uuid можно при помощи blkid.
+
+Предварительно чистим кеш блочных устройств.
+
+</code></pre></div></div>
+<p>sudo blkid -g</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+И лишь затем получаем идентификатор.
+
+</code></pre></div></div>
+<p>sudo blkid /dev/…</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Узнать имя устройства, которое вам интересно можно при помощи команды lsblk.
+
+## Гибернация через файл подкачки
+
+Практически ничем не отличается от гибернации через раздел за исключением следующих нюансов
+
+В качестве параметра resume указываем раздел, на котором расположен файл подкачки. А дальше требуется добавить опцию resume\_offset, которая содержит смещение файла в файловой системе.
+
+</code></pre></div></div>
+<p>GRUB_CMDLINE_LINUX=”rd.lvm.lv=rfremix/root rd.lvm.lv=rfremix/swap rhgb quiet usbcore.autosuspend=-1 resume=UUID=7d55bdde-03ef-4adf-a1c3-9b85e2a7f4be  resume_offset=123456”</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+### Как получить значение параметра resume\_offset
+
+</code></pre></div></div>
+<p>sudo filefrag -v /hibfile</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+<p>Filesystem type is: ef53<br />
+File size of /hibfile is 2147479552 (524287 blocks of 4096 bytes)<br />
+ ext: logical_offset: physical_offset: length: expected: flags:<br />
+ 0: 0.. 32767: 3342336.. 3375103: 32768:<br />
+ 1: 32768.. 65535: 3375104.. 3407871: 32768:<br />
+ 2: 65536.. 98303: 3407872.. 3440639: 32768:<br />
+ 3: 98304.. 131071: 3440640.. 3473407: 32768:<br />
+ 4: 131072.. 163839: 3473408.. 3506175: 32768:<br />
+ 5: 163840.. 196607: 3506176.. 3538943: 32768:<br />
+ 6: 196608.. 229375: 3538944.. 3571711: 32768:<br />
+ 7: 229376.. 262143: 3571712.. 3604479: 32768:<br />
+ 8: 262144.. 294911: 3604480.. 3637247: 32768:<br />
+ 9: 294912.. 327679: 3637248.. 3670015: 32768:<br />
+ 10: 327680.. 360447: 3772416.. 3805183: 32768: 3670016:<br />
+ 11: 360448.. 393215: 3805184.. 3837951: 32768:<br />
+ 12: 393216.. 425983: 3837952.. 3870719: 32768:<br />
+ 13: 425984.. 458751: 3870720.. 3903487: 32768:<br />
+ 14: 458752.. 491519: 3903488.. 3936255: 32768:<br />
+ 15: 491520.. 524286: 3936256.. 3969022: 32767: last,eof<br />
+/hibfile: 2 extents found<br />
+&lt;span data-mce-type=”bookmark” id=”mce_SELREST_start” data-mce-style=”overflow:hidden;line-height:0” style=”overflow:hidden;line-height:0” &gt;&lt;/span&gt;</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Первое значение столба&amp;nbsp;physical\_offset в первой строке и есть то, что нам надо - смещение файла. Именно его требуется подставить в параметр resume\_offset.
+
+### Как создать файл подкачки
+
+Сгенерировать пустой файл нужного размера заполненный нулями (XX - требуемый размер в байтах).
+
+</code></pre></div></div>
+<p>sudo dd if=/dev/zero of=/swapfile bs=1024 count=XX</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Задать нужные разрешения и подключить сгенерировать стыруктуры файла.
+
+</code></pre></div></div>
+<p>sudo chmod 600 /swapfile &amp;&amp; sudo mkswap /swapfile</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Активируем новый своп.
+
+</code></pre></div></div>
+<p>sudo swapoff -a<br />
+sudo swapon /swapfile</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+В файле /etc/fstab потребуется деактивировать (закомментировать или удалить) все записи, которые относятся к другим своп-файлам или разделам и добавить строчку, которая будет инициализировать&amp;nbsp;только что созданный.
+
+</code></pre></div></div>
+<p>/swapfile none swap sw 0 0</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+## Можно ли использовать отдельный своп для гибернации и отдельный для подкачки?
+
+Это вполне логичный вопрос. Допустим, что наш своп равен или больше размера оперативной памяти. Что произойдет если мы попытаемся перевести систему в спящий режим когда пустое место в подкачке меньше, нежели занимаемая оперативная память? Ничего. Получим сообщение об ошибке в dmesg.
+
+Конечно же нам захочется для улучшения надежности работы системы сделать отдельную подкачку и файл (раздел) для гибернации, который не будет подключен через swapon.
+
+Увы, при попытке реализации такой схемы мы увидим сообщение об ошибке
+
+</code></pre></div></div>
+<p>PM: Cannot find swap device, try swapon -a
+```</p>
+
+<p>Эта ошибка наглядно показывает, что код управления питанием пока еще очень сильно переплетен с кодом управления памятью.</p>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="https://bbs.archlinux.org/viewtopic.php?id=169587">https://bbs.archlinux.org/viewtopic.php?id=169587</a></li>
+  <li><a href="https://ubuntuforums.org/showthread.php?t=1042946">https://ubuntuforums.org/showthread.php?t=1042946</a></li>
+  <li><a href="https://wiki.archlinux.org/index.php/Power_management/Suspend_and_hibernate">https://wiki.archlinux.org/index.php/Power_management/Suspend_and_hibernate</a></li>
+</ul>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Как жить в локальной сети без dns для локальных ресурсов | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Как жить в локальной сети без dns для локальных ресурсов" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Или сказ о том, как перестать бояться и начать раздавать динамические адреса в локальной сети. Задача: необходимо автоматизировать распределение имен различным устройствам в сети. Проблемы доисторический (ископаемый) роутер, который не умеет dd-wrt/openwrt и иже. А вместе с этим он не умеет статические адреса или локальный dns. много iot-желаза в локальной сети к которому хочется получать доступ по имени (доменному конечно же). Очень много железа, которое появляется в сети лишь на короткое время, а доступ к нему по сети нужен (ну не прописывать же ему постоянно статику?) большое количество скриптов автоматизации, которым надо откуда-то брать именя устройств. Проблему можно решить несколькими путями: Поставить слабую железку, поставить на нее bind, поднять локальную доменную зону и убрать с роутера роль dhcp и dns-сервера. Минус в том, что слабой железки может и не быть. Поменять роутер на менее доисторический. Минус в том, что роутера может не быть под рукой. Воспользоваться протоколом zeroconf. Минусы тоже есть - возможный конфликт имен устройств. Если с первыми двума вариантами все более-менее понятно, то на третьем стоит остановиться подробно. Так как он решает проблему наименее затратным способом. Протокол описывает: назначение адресов устройствам в сети (диапазон 169.254.*) разрешение имен обнаружение сервисов Поскольку адреса у устройств уже есть (dhcp же), то нас будет интересовать только та часть протокола, где рассказывается про обнаружение сервисов и разрешение имен. Это mDNS+DNSSD. В nix\bsd за эту часть протокола отвечает сервис avahi В ряде дистрибутивов он включен и нормально настроен сразу. На примере федоры посмотрим как его поставить и настроить. ```shell $ sudo dnf install avahi-daemon avahi-utils $ sudo systemctl enable avahi-daemon $ sudo systemctl start avahi-daemon ``` Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства ```shell $ avahi-browse -alr + eth0 IPv4 workstation Remote Disk Management local = eth0 IPv4 workstation Remote Disk Management local hostname = [workstation.local] address = [192.168.1.10] port = [22] txt = [] ``` Как видим что-то нашло. Мы можем попробовать его попинговать. ```shell $ ping workstation.local ping: unknown host workstation.local ``` Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен. Чтобы его включить требуется отредактировать /etc/nsswitch.conf. В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns. ``` hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines ``` После перезагрузки или перезапуска соотвествующего сервиса пингуем снова. ```shell $ ping -c 4 workstation.local PING workstation.local (192.168.1.10) 56(84) bytes of data. 64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=3 ttl=64 time=0.467 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=4 ttl=64 time=0.393 ms --- workstation.local ping statistics --- 4 packets transmitted, 4 received, 0% packet loss, time 3004ms rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms ``` Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\_minimal. Задача раздачи локальных имен полностью решена. В данном случае я не затрагиваю dnssd поскольку цель была лишь обеспечить доступность хостов по имени. При желании поднять zeroconf можно как на ардуине, так и на модулях esp8266. Вы можете столнуться с проблемами из-за того, что некоторые продукты используют зону local для своих целей. Например торренты часто используют [retracker.local](https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80) для обозначения внутрисетевого трекера." />
+<meta property="og:description" content="Или сказ о том, как перестать бояться и начать раздавать динамические адреса в локальной сети. Задача: необходимо автоматизировать распределение имен различным устройствам в сети. Проблемы доисторический (ископаемый) роутер, который не умеет dd-wrt/openwrt и иже. А вместе с этим он не умеет статические адреса или локальный dns. много iot-желаза в локальной сети к которому хочется получать доступ по имени (доменному конечно же). Очень много железа, которое появляется в сети лишь на короткое время, а доступ к нему по сети нужен (ну не прописывать же ему постоянно статику?) большое количество скриптов автоматизации, которым надо откуда-то брать именя устройств. Проблему можно решить несколькими путями: Поставить слабую железку, поставить на нее bind, поднять локальную доменную зону и убрать с роутера роль dhcp и dns-сервера. Минус в том, что слабой железки может и не быть. Поменять роутер на менее доисторический. Минус в том, что роутера может не быть под рукой. Воспользоваться протоколом zeroconf. Минусы тоже есть - возможный конфликт имен устройств. Если с первыми двума вариантами все более-менее понятно, то на третьем стоит остановиться подробно. Так как он решает проблему наименее затратным способом. Протокол описывает: назначение адресов устройствам в сети (диапазон 169.254.*) разрешение имен обнаружение сервисов Поскольку адреса у устройств уже есть (dhcp же), то нас будет интересовать только та часть протокола, где рассказывается про обнаружение сервисов и разрешение имен. Это mDNS+DNSSD. В nix\bsd за эту часть протокола отвечает сервис avahi В ряде дистрибутивов он включен и нормально настроен сразу. На примере федоры посмотрим как его поставить и настроить. ```shell $ sudo dnf install avahi-daemon avahi-utils $ sudo systemctl enable avahi-daemon $ sudo systemctl start avahi-daemon ``` Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства ```shell $ avahi-browse -alr + eth0 IPv4 workstation Remote Disk Management local = eth0 IPv4 workstation Remote Disk Management local hostname = [workstation.local] address = [192.168.1.10] port = [22] txt = [] ``` Как видим что-то нашло. Мы можем попробовать его попинговать. ```shell $ ping workstation.local ping: unknown host workstation.local ``` Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен. Чтобы его включить требуется отредактировать /etc/nsswitch.conf. В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns. ``` hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines ``` После перезагрузки или перезапуска соотвествующего сервиса пингуем снова. ```shell $ ping -c 4 workstation.local PING workstation.local (192.168.1.10) 56(84) bytes of data. 64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=3 ttl=64 time=0.467 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=4 ttl=64 time=0.393 ms --- workstation.local ping statistics --- 4 packets transmitted, 4 received, 0% packet loss, time 3004ms rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms ``` Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\_minimal. Задача раздачи локальных имен полностью решена. В данном случае я не затрагиваю dnssd поскольку цель была лишь обеспечить доступность хостов по имени. При желании поднять zeroconf можно как на ардуине, так и на модулях esp8266. Вы можете столнуться с проблемами из-за того, что некоторые продукты используют зону local для своих целей. Например торренты часто используют [retracker.local](https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80) для обозначения внутрисетевого трекера." />
+<link rel="canonical" href="http://localhost:4000/2016/04/08/%D0%BA%D0%B0%D0%BA-%D0%B6%D0%B8%D1%82%D1%8C-%D0%B2-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D0%B5%D1%82%D0%B8-%D0%B1%D0%B5%D0%B7-dns/" />
+<meta property="og:url" content="http://localhost:4000/2016/04/08/%D0%BA%D0%B0%D0%BA-%D0%B6%D0%B8%D1%82%D1%8C-%D0%B2-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D0%B5%D1%82%D0%B8-%D0%B1%D0%B5%D0%B7-dns/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-04-08T00:24:37+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Как жить в локальной сети без dns для локальных ресурсов" />
+<script type="application/ld+json">
+{"headline":"Как жить в локальной сети без dns для локальных ресурсов","dateModified":"2016-04-08T00:24:37+03:00","datePublished":"2016-04-08T00:24:37+03:00","description":"Или сказ о том, как перестать бояться и начать раздавать динамические адреса в локальной сети. Задача: необходимо автоматизировать распределение имен различным устройствам в сети. Проблемы доисторический (ископаемый) роутер, который не умеет dd-wrt/openwrt и иже. А вместе с этим он не умеет статические адреса или локальный dns. много iot-желаза в локальной сети к которому хочется получать доступ по имени (доменному конечно же). Очень много железа, которое появляется в сети лишь на короткое время, а доступ к нему по сети нужен (ну не прописывать же ему постоянно статику?) большое количество скриптов автоматизации, которым надо откуда-то брать именя устройств. Проблему можно решить несколькими путями: Поставить слабую железку, поставить на нее bind, поднять локальную доменную зону и убрать с роутера роль dhcp и dns-сервера. Минус в том, что слабой железки может и не быть. Поменять роутер на менее доисторический. Минус в том, что роутера может не быть под рукой. Воспользоваться протоколом zeroconf. Минусы тоже есть - возможный конфликт имен устройств. Если с первыми двума вариантами все более-менее понятно, то на третьем стоит остановиться подробно. Так как он решает проблему наименее затратным способом. Протокол описывает: назначение адресов устройствам в сети (диапазон 169.254.*) разрешение имен обнаружение сервисов Поскольку адреса у устройств уже есть (dhcp же), то нас будет интересовать только та часть протокола, где рассказывается про обнаружение сервисов и разрешение имен. Это mDNS+DNSSD. В nix\\bsd за эту часть протокола отвечает сервис avahi В ряде дистрибутивов он включен и нормально настроен сразу. На примере федоры посмотрим как его поставить и настроить. ```shell $ sudo dnf install avahi-daemon avahi-utils $ sudo systemctl enable avahi-daemon $ sudo systemctl start avahi-daemon ``` Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства ```shell $ avahi-browse -alr + eth0 IPv4 workstation Remote Disk Management local = eth0 IPv4 workstation Remote Disk Management local hostname = [workstation.local] address = [192.168.1.10] port = [22] txt = [] ``` Как видим что-то нашло. Мы можем попробовать его попинговать. ```shell $ ping workstation.local ping: unknown host workstation.local ``` Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен. Чтобы его включить требуется отредактировать /etc/nsswitch.conf. В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns. ``` hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines ``` После перезагрузки или перезапуска соотвествующего сервиса пингуем снова. ```shell $ ping -c 4 workstation.local PING workstation.local (192.168.1.10) 56(84) bytes of data. 64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=3 ttl=64 time=0.467 ms 64 bytes from workstation.local (192.168.1.10): icmp_req=4 ttl=64 time=0.393 ms --- workstation.local ping statistics --- 4 packets transmitted, 4 received, 0% packet loss, time 3004ms rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms ``` Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\\_minimal. Задача раздачи локальных имен полностью решена. В данном случае я не затрагиваю dnssd поскольку цель была лишь обеспечить доступность хостов по имени. При желании поднять zeroconf можно как на ардуине, так и на модулях esp8266. Вы можете столнуться с проблемами из-за того, что некоторые продукты используют зону local для своих целей. Например торренты часто используют [retracker.local](https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80) для обозначения внутрисетевого трекера.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/04/08/%D0%BA%D0%B0%D0%BA-%D0%B6%D0%B8%D1%82%D1%8C-%D0%B2-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D0%B5%D1%82%D0%B8-%D0%B1%D0%B5%D0%B7-dns/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/04/08/%D0%BA%D0%B0%D0%BA-%D0%B6%D0%B8%D1%82%D1%8C-%D0%B2-%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B9-%D1%81%D0%B5%D1%82%D0%B8-%D0%B1%D0%B5%D0%B7-dns/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Как жить в локальной сети без dns для локальных ресурсов</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Как жить в локальной сети без dns для локальных ресурсов</h1>
+<p>08 Apr 2016</p>
+
+<p><img class="alignleft size-thumbnail wp-image-1354" src="/assets/images/2016/04/extra-bonjour.png?w=150" alt="Extra-Bonjour" width="150" height="150" />Или сказ о том, как перестать бояться и начать раздавать динамические адреса в локальной сети.</p>
+<p>Задача:</p>
+<ul>
+<li>необходимо автоматизировать распределение имен различным устройствам в сети.</li>
+</ul>
+<p>Проблемы</p>
+<ul>
+<li>доисторический (ископаемый) роутер, который не умеет dd-wrt/openwrt и иже. А вместе с этим он не умеет статические адреса или локальный dns.</li>
+<li>много iot-желаза в локальной сети к которому хочется получать доступ по имени (доменному конечно же).</li>
+<li>Очень много железа, которое появляется в сети лишь на короткое время, а доступ к нему по сети нужен (ну не прописывать же ему постоянно статику?)</li>
+<li>большое количество скриптов автоматизации, которым надо откуда-то брать именя устройств.</li>
+</ul>
+<p>Проблему можно решить несколькими путями:</p>
+<ul>
+<li>Поставить слабую железку, поставить на нее bind, поднять локальную доменную зону и убрать с роутера роль dhcp и dns-сервера. Минус в том, что слабой железки может и не быть.</li>
+<li>Поменять роутер на менее доисторический. Минус в том, что роутера может не быть под рукой.</li>
+<li>Воспользоваться протоколом <a href="https://en.wikipedia.org/wiki/Zero-configuration_networking">zeroconf</a>. Минусы тоже есть - возможный конфликт имен устройств.</li>
+</ul>
+<p>Если с первыми двума вариантами все более-менее понятно, то на третьем стоит остановиться подробно. Так как он решает проблему наименее затратным способом.</p>
+<p>Протокол описывает:</p>
+<ul>
+<li>назначение адресов устройствам в сети (диапазон 169.254.*)</li>
+<li>разрешение имен</li>
+<li>обнаружение сервисов</li>
+</ul>
+<p>Поскольку адреса у устройств уже есть (dhcp же), то нас будет интересовать только та часть протокола, где рассказывается про обнаружение сервисов и разрешение имен. Это mDNS+DNSSD.</p>
+<p>В nix\bsd за эту часть протокола отвечает сервис avahi</p>
+<p>В ряде дистрибутивов он включен и нормально настроен сразу.</p>
+<p>На примере федоры посмотрим как его поставить и настроить.</p>
+<p>```shell
+$ sudo dnf install avahi-daemon avahi-utils<br />
+$ sudo systemctl enable avahi-daemon<br />
+$ sudo systemctl start avahi-daemon
+```</p>
+<p>Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства</p>
+<p>```shell
+$ avahi-browse -alr<br />
++   eth0 IPv4 workstation                                   Remote Disk Management local<br />
+=   eth0 IPv4 workstation                                   Remote Disk Management local<br />
+   hostname = [workstation.local]<br />
+   address = [192.168.1.10]<br />
+   port = [22]<br />
+   txt = []
+```</p>
+<p>Как видим что-то нашло.</p>
+<p>Мы можем попробовать его попинговать.</p>
+<p>```shell
+$ ping workstation.local<br />
+ping: unknown host workstation.local
+```</p>
+<p>Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен.</p>
+<p>Чтобы его включить требуется отредактировать /etc/nsswitch.conf.</p>
+<p>В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns.</p>
+<p>```
+hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines
+```</p>
+<p>После перезагрузки или перезапуска соотвествующего сервиса пингуем снова.</p>
+<p>```shell
+$ ping -c 4 workstation.local<br />
+PING workstation.local (192.168.1.10) 56(84) bytes of data.<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=3 ttl=64 time=0.467 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=4 ttl=64 time=0.393 ms</p>
+<p>--- workstation.local ping statistics ---
+  
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms  
+rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms
+```
+
+Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\_minimal.
+
+Задача раздачи локальных имен полностью решена. В данном случае я не затрагиваю dnssd поскольку цель была лишь обеспечить доступность хостов по имени.
+
+При желании поднять zeroconf можно как на ардуине, так и на модулях esp8266.
+
+Вы можете столнуться с проблемами из-за того, что некоторые продукты используют зону local для своих целей.
+
+Например торренты часто используют [retracker.local](https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80) для обозначения внутрисетевого трекера.
+
+</p>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

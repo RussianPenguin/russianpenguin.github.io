@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Git: выделяем глобальный репозитарий для проекта | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Git: выделяем глобальный репозитарий для проекта" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Иногда мы копируем папку с проектом на отдельную машину, а затем пытаемся использовать его в качестве мастер-репозитария. Но при попытке сделать пуш в этот репозитарий нас подстерегает ошибка.``` $ git push origin master Counting objects: 30, done. Delta compression using up to 4 threads. Compressing objects: 100% (16/16), done. Writing objects: 100% (17/17), 3.31 KiB | 0 bytes/s, done. Total 17 (delta 4), reused 0 (delta 0) remote: error: refusing to update checked out branch: refs/heads/master remote: error: By default, updating the current branch in a non-bare repository remote: error: is denied, because it will make the index and work tree inconsistent remote: error: with what you pushed, and will require ‘git reset –hard’ to match remote: error: the work tree to HEAD. remote: error: remote: error: You can set ‘receive.denyCurrentBranch’ configuration variable to remote: error: ‘ignore’ or ‘warn’ in the remote repository to allow pushing into remote: error: its current branch; however, this is not recommended unless you remote: error: arranged to update its work tree to match what you pushed in some remote: error: other way. remote: error: remote: error: To squelch this message and still keep the default behaviour, set remote: error: ‘receive.denyCurrentBranch’ configuration variable to ‘refuse’. To /project/path  ! [remote rejected] master -&gt; master (branch is currently checked out) error: failed to push some refs to ‘/project/path’ Вообще почему она возникает-то? Разве гит это не распределенная система контроля версий? Распределенная и даже чутка децентрализованная. Совсем-совсем распределенная. А это значит, что пушить изменения можно не только на одно хранилище, а вообще в любой репозитарий. Хоть чуваку за соседний комп. Таким образом разработчикии могут делиться своими наработками. Но это подразумевает один нюанс: нельзя пушить в ту ветку удаленного репозитария с которой сейчас идет работа. Суть сообщения в том, что в удаленном репозитарии ветвь, которую мы хотим запушить сейчас, активна (т.е. сделан чекаут на удаленной машине). А значит и правки в эту ветвь якобы удаленной машиной вносятся (слава роботам!). Способ первый. Мы заходим в репозитарий и просто чекаутим другую ветку проекта. Профит. :) Способ второй. Мы узнаем, что существует два типа хранилищ: bare и non bare. Дефолтно при выполнении git init будет создано хранилище второго типа (и при чекауте чужого репощитария так же создается локальный non-bare репозитарий). Bare значит, то это не рабочий репозитарий, а просто склад веток, куда каждый может пушить. И если мы попробуем поработать с ним напрямую (покоммитить), то нас ждет облом. Гитхаб предоставляет хранилища именно такого типа. Второй же тип - это репозитарии разработчика. Активная в данный момент ветвь блокируется на изменение от нелокальных клиентов. А что делать? Если реп у нас удаленный и для совместной работы - конвертируем его в bare ```shell git config --bool core.bare true Если нет - смотрим выше. А еще можно сказать иниту, чтобы создавал bare сразу. git init --bare" />
+<meta property="og:description" content="Иногда мы копируем папку с проектом на отдельную машину, а затем пытаемся использовать его в качестве мастер-репозитария. Но при попытке сделать пуш в этот репозитарий нас подстерегает ошибка.``` $ git push origin master Counting objects: 30, done. Delta compression using up to 4 threads. Compressing objects: 100% (16/16), done. Writing objects: 100% (17/17), 3.31 KiB | 0 bytes/s, done. Total 17 (delta 4), reused 0 (delta 0) remote: error: refusing to update checked out branch: refs/heads/master remote: error: By default, updating the current branch in a non-bare repository remote: error: is denied, because it will make the index and work tree inconsistent remote: error: with what you pushed, and will require ‘git reset –hard’ to match remote: error: the work tree to HEAD. remote: error: remote: error: You can set ‘receive.denyCurrentBranch’ configuration variable to remote: error: ‘ignore’ or ‘warn’ in the remote repository to allow pushing into remote: error: its current branch; however, this is not recommended unless you remote: error: arranged to update its work tree to match what you pushed in some remote: error: other way. remote: error: remote: error: To squelch this message and still keep the default behaviour, set remote: error: ‘receive.denyCurrentBranch’ configuration variable to ‘refuse’. To /project/path  ! [remote rejected] master -&gt; master (branch is currently checked out) error: failed to push some refs to ‘/project/path’ Вообще почему она возникает-то? Разве гит это не распределенная система контроля версий? Распределенная и даже чутка децентрализованная. Совсем-совсем распределенная. А это значит, что пушить изменения можно не только на одно хранилище, а вообще в любой репозитарий. Хоть чуваку за соседний комп. Таким образом разработчикии могут делиться своими наработками. Но это подразумевает один нюанс: нельзя пушить в ту ветку удаленного репозитария с которой сейчас идет работа. Суть сообщения в том, что в удаленном репозитарии ветвь, которую мы хотим запушить сейчас, активна (т.е. сделан чекаут на удаленной машине). А значит и правки в эту ветвь якобы удаленной машиной вносятся (слава роботам!). Способ первый. Мы заходим в репозитарий и просто чекаутим другую ветку проекта. Профит. :) Способ второй. Мы узнаем, что существует два типа хранилищ: bare и non bare. Дефолтно при выполнении git init будет создано хранилище второго типа (и при чекауте чужого репощитария так же создается локальный non-bare репозитарий). Bare значит, то это не рабочий репозитарий, а просто склад веток, куда каждый может пушить. И если мы попробуем поработать с ним напрямую (покоммитить), то нас ждет облом. Гитхаб предоставляет хранилища именно такого типа. Второй же тип - это репозитарии разработчика. Активная в данный момент ветвь блокируется на изменение от нелокальных клиентов. А что делать? Если реп у нас удаленный и для совместной работы - конвертируем его в bare ```shell git config --bool core.bare true Если нет - смотрим выше. А еще можно сказать иниту, чтобы создавал bare сразу. git init --bare" />
+<link rel="canonical" href="http://localhost:4000/2014/07/27/git-%D0%B2%D1%8B%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D0%B3%D0%BB%D0%BE%D0%B1%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%B4%D0%BB%D1%8F/" />
+<meta property="og:url" content="http://localhost:4000/2014/07/27/git-%D0%B2%D1%8B%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D0%B3%D0%BB%D0%BE%D0%B1%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%B4%D0%BB%D1%8F/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-07-27T22:04:02+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Git: выделяем глобальный репозитарий для проекта" />
+<script type="application/ld+json">
+{"headline":"Git: выделяем глобальный репозитарий для проекта","dateModified":"2014-07-27T22:04:02+04:00","datePublished":"2014-07-27T22:04:02+04:00","description":"Иногда мы копируем папку с проектом на отдельную машину, а затем пытаемся использовать его в качестве мастер-репозитария. Но при попытке сделать пуш в этот репозитарий нас подстерегает ошибка.``` $ git push origin master Counting objects: 30, done. Delta compression using up to 4 threads. Compressing objects: 100% (16/16), done. Writing objects: 100% (17/17), 3.31 KiB | 0 bytes/s, done. Total 17 (delta 4), reused 0 (delta 0) remote: error: refusing to update checked out branch: refs/heads/master remote: error: By default, updating the current branch in a non-bare repository remote: error: is denied, because it will make the index and work tree inconsistent remote: error: with what you pushed, and will require ‘git reset –hard’ to match remote: error: the work tree to HEAD. remote: error: remote: error: You can set ‘receive.denyCurrentBranch’ configuration variable to remote: error: ‘ignore’ or ‘warn’ in the remote repository to allow pushing into remote: error: its current branch; however, this is not recommended unless you remote: error: arranged to update its work tree to match what you pushed in some remote: error: other way. remote: error: remote: error: To squelch this message and still keep the default behaviour, set remote: error: ‘receive.denyCurrentBranch’ configuration variable to ‘refuse’. To /project/path  ! [remote rejected] master -&gt; master (branch is currently checked out) error: failed to push some refs to ‘/project/path’ Вообще почему она возникает-то? Разве гит это не распределенная система контроля версий? Распределенная и даже чутка децентрализованная. Совсем-совсем распределенная. А это значит, что пушить изменения можно не только на одно хранилище, а вообще в любой репозитарий. Хоть чуваку за соседний комп. Таким образом разработчикии могут делиться своими наработками. Но это подразумевает один нюанс: нельзя пушить в ту ветку удаленного репозитария с которой сейчас идет работа. Суть сообщения в том, что в удаленном репозитарии ветвь, которую мы хотим запушить сейчас, активна (т.е. сделан чекаут на удаленной машине). А значит и правки в эту ветвь якобы удаленной машиной вносятся (слава роботам!). Способ первый. Мы заходим в репозитарий и просто чекаутим другую ветку проекта. Профит. :) Способ второй. Мы узнаем, что существует два типа хранилищ: bare и non bare. Дефолтно при выполнении git init будет создано хранилище второго типа (и при чекауте чужого репощитария так же создается локальный non-bare репозитарий). Bare значит, то это не рабочий репозитарий, а просто склад веток, куда каждый может пушить. И если мы попробуем поработать с ним напрямую (покоммитить), то нас ждет облом. Гитхаб предоставляет хранилища именно такого типа. Второй же тип - это репозитарии разработчика. Активная в данный момент ветвь блокируется на изменение от нелокальных клиентов. А что делать? Если реп у нас удаленный и для совместной работы - конвертируем его в bare ```shell git config --bool core.bare true Если нет - смотрим выше. А еще можно сказать иниту, чтобы создавал bare сразу. git init --bare","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/07/27/git-%D0%B2%D1%8B%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D0%B3%D0%BB%D0%BE%D0%B1%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%B4%D0%BB%D1%8F/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/07/27/git-%D0%B2%D1%8B%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D0%B3%D0%BB%D0%BE%D0%B1%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%B4%D0%BB%D1%8F/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Git: выделяем глобальный репозитарий для проекта</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Git: выделяем глобальный репозитарий для проекта</h1>
+<p>27 Jul 2014</p>
+
+<p>Иногда мы копируем папку с проектом на отдельную машину, а затем пытаемся использовать его в качестве мастер-репозитария.<br />
+ Но при попытке сделать пуш в этот репозитарий нас подстерегает ошибка.```
+$ git push origin master<br />
+Counting objects: 30, done.<br />
+Delta compression using up to 4 threads.<br />
+Compressing objects: 100% (16/16), done.<br />
+Writing objects: 100% (17/17), 3.31 KiB | 0 bytes/s, done.<br />
+Total 17 (delta 4), reused 0 (delta 0)<br />
+remote: error: refusing to update checked out branch: refs/heads/master<br />
+remote: error: By default, updating the current branch in a non-bare repository<br />
+remote: error: is denied, because it will make the index and work tree inconsistent<br />
+remote: error: with what you pushed, and will require ‘git reset –hard’ to match<br />
+remote: error: the work tree to HEAD.<br />
+remote: error:<br />
+remote: error: You can set ‘receive.denyCurrentBranch’ configuration variable to<br />
+remote: error: ‘ignore’ or ‘warn’ in the remote repository to allow pushing into<br />
+remote: error: its current branch; however, this is not recommended unless you<br />
+remote: error: arranged to update its work tree to match what you pushed in some<br />
+remote: error: other way.<br />
+remote: error:<br />
+remote: error: To squelch this message and still keep the default behaviour, set<br />
+remote: error: ‘receive.denyCurrentBranch’ configuration variable to ‘refuse’.<br />
+To /project/path<br />
+ ! [remote rejected] master -&gt; master (branch is currently checked out)<br />
+error: failed to push some refs to ‘/project/path’</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+Вообще почему она возникает-то? Разве гит это не распределенная система контроля версий? Распределенная и даже чутка децентрализованная. Совсем-совсем распределенная. А это значит, что пушить изменения можно не только на одно хранилище, а вообще в любой репозитарий. Хоть чуваку за соседний комп. Таким образом разработчикии могут делиться своими наработками.
+
+Но это подразумевает один нюанс: нельзя пушить в ту ветку удаленного репозитария с которой сейчас идет работа.
+
+Суть сообщения в том, что в удаленном репозитарии ветвь, которую мы хотим запушить сейчас, активна (т.е. сделан чекаут на удаленной машине).
+
+А значит и правки в эту ветвь якобы удаленной машиной вносятся (слава роботам!).
+
+Способ первый. Мы заходим в репозитарий и просто чекаутим другую ветку проекта. Профит. :)
+
+Способ второй. Мы узнаем, что существует два типа хранилищ: bare и non bare. Дефолтно при выполнении git init будет создано хранилище второго типа (и при чекауте чужого репощитария так же создается локальный non-bare репозитарий).
+
+Bare значит, то это не рабочий репозитарий, а просто склад веток, куда каждый может пушить. И если мы попробуем поработать с ним напрямую (покоммитить), то нас ждет облом.
+
+Гитхаб предоставляет хранилища именно такого типа.
+
+Второй же тип - это репозитарии разработчика. Активная в данный момент ветвь блокируется на изменение от нелокальных клиентов.
+
+А что делать?
+
+Если реп у нас удаленный и для совместной работы - конвертируем его в bare
+
+```shell
+git config --bool core.bare true
+</code></pre></div></div>
+
+<p>Если нет - смотрим выше.</p>
+
+<p>А еще можно сказать иниту, чтобы создавал bare сразу.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init --bare
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

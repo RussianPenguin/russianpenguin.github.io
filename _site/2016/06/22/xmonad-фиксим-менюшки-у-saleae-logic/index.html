@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Xmonad: Фиксим менюшки у saleae logic | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Xmonad: Фиксим менюшки у saleae logic" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Есть довольно хороший бюджетный логический анализатор от saleae (и масса совместимых китайских клонов). Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же). Софт написан на qt. И выглядит как бы совсем нестандартно. В обычных DE с ним все нормально, но во всяких WM наступают грабли из-за нестандартной реализации менюшек. В частности очень сильно страдает xmonad. В нем при попытке открыть менюшки появляется цветная рамка и меню пропадает. Фикс проблемы есть у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам. className =? &quot;Logic&quot; --\&gt; doIgnore" />
+<meta property="og:description" content="Есть довольно хороший бюджетный логический анализатор от saleae (и масса совместимых китайских клонов). Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же). Софт написан на qt. И выглядит как бы совсем нестандартно. В обычных DE с ним все нормально, но во всяких WM наступают грабли из-за нестандартной реализации менюшек. В частности очень сильно страдает xmonad. В нем при попытке открыть менюшки появляется цветная рамка и меню пропадает. Фикс проблемы есть у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам. className =? &quot;Logic&quot; --\&gt; doIgnore" />
+<link rel="canonical" href="http://localhost:4000/2016/06/22/xmonad-%D1%84%D0%B8%D0%BA%D1%81%D0%B8%D0%BC-%D0%BC%D0%B5%D0%BD%D1%8E%D1%88%D0%BA%D0%B8-%D1%83-saleae-logic/" />
+<meta property="og:url" content="http://localhost:4000/2016/06/22/xmonad-%D1%84%D0%B8%D0%BA%D1%81%D0%B8%D0%BC-%D0%BC%D0%B5%D0%BD%D1%8E%D1%88%D0%BA%D0%B8-%D1%83-saleae-logic/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-06-22T23:00:40+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Xmonad: Фиксим менюшки у saleae logic" />
+<script type="application/ld+json">
+{"headline":"Xmonad: Фиксим менюшки у saleae logic","dateModified":"2016-06-22T23:00:40+03:00","datePublished":"2016-06-22T23:00:40+03:00","description":"Есть довольно хороший бюджетный логический анализатор от saleae (и масса совместимых китайских клонов). Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же). Софт написан на qt. И выглядит как бы совсем нестандартно. В обычных DE с ним все нормально, но во всяких WM наступают грабли из-за нестандартной реализации менюшек. В частности очень сильно страдает xmonad. В нем при попытке открыть менюшки появляется цветная рамка и меню пропадает. Фикс проблемы есть у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам. className =? &quot;Logic&quot; --\\&gt; doIgnore","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/06/22/xmonad-%D1%84%D0%B8%D0%BA%D1%81%D0%B8%D0%BC-%D0%BC%D0%B5%D0%BD%D1%8E%D1%88%D0%BA%D0%B8-%D1%83-saleae-logic/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/06/22/xmonad-%D1%84%D0%B8%D0%BA%D1%81%D0%B8%D0%BC-%D0%BC%D0%B5%D0%BD%D1%8E%D1%88%D0%BA%D0%B8-%D1%83-saleae-logic/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Xmonad: Фиксим менюшки у saleae logic</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Xmonad: Фиксим менюшки у saleae logic</h1>
+<p>22 Jun 2016</p>
+
+<p><img src="/assets/images/2016/06/2016-06-22-224947_409x324.png?w=300" alt="2016-06-22-22:49:47_409x324" /> Есть довольно хороший бюджетный логический <a href="https://www.saleae.com/">анализатор</a> от saleae (и масса совместимых китайских клонов).</p>
+
+<p>Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же).</p>
+
+<p>Софт написан на qt. И выглядит как бы совсем нестандартно.</p>
+
+<p>В обычных DE с ним все нормально, но во всяких WM наступают грабли из-за нестандартной реализации менюшек. В частности очень сильно страдает xmonad. В нем при попытке открыть менюшки появляется цветная рамка и меню пропадает.</p>
+
+<p>Фикс проблемы <a href="http://support.saleae.com/hc/communities/public/questions/204345355-menus-aren-t-working-under-xmonad">есть</a> у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>className =? "Logic" --\&gt; doIgnore
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

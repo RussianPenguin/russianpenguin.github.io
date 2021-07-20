@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux: XScreenSaver не гасит подсветку монитора | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux: XScreenSaver не гасит подсветку монитора" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Немного о проблеме выключения подсветки монитора хранителями экрана в linux." />
+<meta property="og:description" content="Немного о проблеме выключения подсветки монитора хранителями экрана в linux." />
+<link rel="canonical" href="http://localhost:4000/2019/05/03/linux-xscreensaver-%D0%BD%D0%B5-%D0%B3%D0%B0%D1%81%D0%B8%D1%82-%D0%BF%D0%BE%D0%B4%D1%81%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2019/05/03/linux-xscreensaver-%D0%BD%D0%B5-%D0%B3%D0%B0%D1%81%D0%B8%D1%82-%D0%BF%D0%BE%D0%B4%D1%81%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-03T21:12:53+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux: XScreenSaver не гасит подсветку монитора" />
+<script type="application/ld+json">
+{"headline":"Linux: XScreenSaver не гасит подсветку монитора","dateModified":"2019-05-03T21:12:53+03:00","datePublished":"2019-05-03T21:12:53+03:00","description":"Немного о проблеме выключения подсветки монитора хранителями экрана в linux.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/05/03/linux-xscreensaver-%D0%BD%D0%B5-%D0%B3%D0%B0%D1%81%D0%B8%D1%82-%D0%BF%D0%BE%D0%B4%D1%81%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2019/05/03/linux-xscreensaver-%D0%BD%D0%B5-%D0%B3%D0%B0%D1%81%D0%B8%D1%82-%D0%BF%D0%BE%D0%B4%D1%81%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux: XScreenSaver не гасит подсветку монитора</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux: XScreenSaver не гасит подсветку монитора</h1>
+<p>03 May 2019</p>
+
+<p><img src="/assets/images/2019/05/xscreensaver-settings-1.png?w=300" alt="xscreensaver-settings-1" />Начиная с какого-то обновления системы у меня перестал выключаться монитор. Xscreensaver настроен в режим “только пустой экран” и на вкладке энергосбережения выставлен флажок “быстрое отключение питания в режиме пустого экрана”.</p>
+
+<p>Никакими комбинациями опций нельзя было заставить его гаснуть нормально.</p>
+
+<p><img src="/assets/images/2019/05/xscreensaver-settings-2.png" alt="xscreensaver-settings-2.png" /></p>
+
+<p>Вдобавок к этому я использую <a href="https://www.mankier.com/1/xss-lock">xss-lock</a> чтобы при открытии крышки не было момента когда выдно содержимое экрана. Подробнее можно почитать в похожем <a href="https://bugs.launchpad.net/ubuntu/+source/gnome-screensaver/+bug/1280300">багрепорте</a> для gnome-screensaver (проблема имеет одни и те же корни у всех вариаций скринсейверов).</p>
+
+<p>Проблема выглядит так:</p>
+
+<ul>
+  <li>если активировать блокировку через консоль
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xscreensaver-command <span class="nt">-lock</span>
+</code></pre></div>    </div>
+    <p>то все работает как надо и экран гаснет;</p>
+  </li>
+  <li>если активировать блокировку через хоткеи lxde, то после активации на долю секунды виден рабочий стол и после этого черный экран с активной подсветкой.</li>
+</ul>
+
+<p>Конечно же надо читать логи.</p>
+
+<p>Прибиваем активного хранителя и стартуем verbose-mode.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>killall xscreensaver  
+<span class="nv">$ </span>xscreensaver <span class="nt">-no-splash</span> <span class="nt">-v</span>
+</code></pre></div></div>
+
+<p>После этого можно пытаться заблокировать экран из консоли и с клавиатуры. Смотрим.</p>
+
+<p>Блокировка с консоли</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xscreensaver: 20:03:18: LOCK ClientMessage received; activating and locking.  
+xscreensaver: 20:03:19: 0: locked mode switching.  
+xscreensaver: 20:03:19: user is idle (ClientMessage)  
+xscreensaver: 20:03:19: blanking screen at Fri May 3 20:03:19 2019.  
+xscreensaver: 20:03:19: mouse is on screen 1 of 2  
+xscreensaver: 20:03:19: 1: grabbing keyboard on 0x16a... GrabSuccess.  
+xscreensaver: 20:03:19: 1: grabbing mouse on 0x16a... GrabSuccess.  
+xscreensaver: 20:03:19: LOCK ClientMessage received while already locked.  
+xscreensaver: 20:03:33: user is active (keyboard activity)  
+xscreensaver: 20:03:33: pam\_start ("xscreensaver", "penguin", ...) ==\&gt; 0 (Succes  
+s)  
+...
+</code></pre></div></div>
+
+<p>Блокировка с хоткея</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xscreensaver: 20:01:46: LOCK ClientMessage received; activating and locking.  
+xscreensaver: 20:01:46: 0: locked mode switching.  
+xscreensaver: 20:01:46: user is idle (ClientMessage)  
+xscreensaver: 20:01:46: blanking screen at Fri May 3 20:01:46 2019.  
+xscreensaver: 20:01:46: mouse is on screen 1 of 2  
+xscreensaver: 20:01:46: 1: grabbing keyboard on 0x16a... GrabSuccess.  
+xscreensaver: 20:01:46: 1: grabbing mouse on 0x16a... GrabSuccess.  
+xscreensaver: 20:01:48: DPMSForceLevel(dpy, DPMSModeOff) did not change monitor power state.  
+xscreensaver: 20:01:48: LOCK ClientMessage received while already locked.  
+xscreensaver: 20:02:05: user is active (keyboard activity)  
+xscreensaver: 20:02:05: pam\_start ("xscreensaver", "penguin", ...) ==\&gt; 0 (Success)  
+...
+</code></pre></div></div>
+
+<p>Ага. Во втором случае у нас почему-то не смог выключиться монитор.</p>
+
+<p>В интернетах ответа я не нашел, но предполагается, что хоткей передается дальше в активированный скринсейвер.</p>
+
+<p>Поэтому я просто модифицировал команду, которую вызываю с клавиатуры добавив sleep 0.1. Это помогло. Вероятно значение слипа вам придется выбрать самостоятельно. На одной из машин этот фикс у меня сработал только при задержке в 0.5.</p>
+
+<p><img src="/assets/images/2019/05/lxde-hotkey.png" alt="lxde-hotkey.png" /></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

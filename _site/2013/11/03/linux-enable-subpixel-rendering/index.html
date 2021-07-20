@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux: Включение субпиксельного рендеринга | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux: Включение субпиксельного рендеринга" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="[caption id=”attachment_7” align=”alignleft” width=”250”] Вот так выглядят шрифты с отключенным субпиксельным рендерингом[/caption] По умолчанию шрифты в линупсе более чем УГ. За исключением убунту и “пропатченных” дистрибутивов, которые не подвластны патентным тролям из яблочной корпорации. И если в убунту субпиксельный рендеринг включен, то для его включения в других дистрибутивах нужно потанцевать с бубном." />
+<meta property="og:description" content="[caption id=”attachment_7” align=”alignleft” width=”250”] Вот так выглядят шрифты с отключенным субпиксельным рендерингом[/caption] По умолчанию шрифты в линупсе более чем УГ. За исключением убунту и “пропатченных” дистрибутивов, которые не подвластны патентным тролям из яблочной корпорации. И если в убунту субпиксельный рендеринг включен, то для его включения в других дистрибутивах нужно потанцевать с бубном." />
+<link rel="canonical" href="http://localhost:4000/2013/11/03/linux-enable-subpixel-rendering/" />
+<meta property="og:url" content="http://localhost:4000/2013/11/03/linux-enable-subpixel-rendering/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-11-03T22:58:18+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux: Включение субпиксельного рендеринга" />
+<script type="application/ld+json">
+{"headline":"Linux: Включение субпиксельного рендеринга","dateModified":"2013-11-03T22:58:18+04:00","datePublished":"2013-11-03T22:58:18+04:00","description":"[caption id=”attachment_7” align=”alignleft” width=”250”] Вот так выглядят шрифты с отключенным субпиксельным рендерингом[/caption] По умолчанию шрифты в линупсе более чем УГ. За исключением убунту и “пропатченных” дистрибутивов, которые не подвластны патентным тролям из яблочной корпорации. И если в убунту субпиксельный рендеринг включен, то для его включения в других дистрибутивах нужно потанцевать с бубном.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2013/11/03/linux-enable-subpixel-rendering/"},"@type":"BlogPosting","url":"http://localhost:4000/2013/11/03/linux-enable-subpixel-rendering/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux: Включение субпиксельного рендеринга</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux: Включение субпиксельного рендеринга</h1>
+<p>03 Nov 2013</p>
+
+<p>[caption id=”attachment_7” align=”alignleft” width=”250”]<a href="http://russianpenguin.files.wordpress.com/2013/11/004.png"><img src="/assets/images/2013/11/004.png" alt="Вот так выглядят шрифты с отключенным субпиксельным рендерингом" title="Шрифты по умолчанию" /></a> Вот так выглядят шрифты с отключенным субпиксельным рендерингом[/caption]</p>
+
+<p>По умолчанию шрифты в линупсе более чем УГ. За исключением убунту и “пропатченных” дистрибутивов, которые не подвластны патентным тролям из яблочной корпорации.</p>
+
+<p>И если в убунту субпиксельный рендеринг включен, то для его включения в других дистрибутивах нужно потанцевать с бубном.<!--more--></p>
+
+<p>Для RedHat и производных:</p>
+
+<p>Подключить репозитарии <a href="http://rpmfusion.org/Configuration" title="RPMFusion configuration">RPMFusion</a> (nonfree) и скомандовать</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo yum install freetype-freeworlddpkg-reconfigure fontconfig-config
+</code></pre></div></div>
+
+<p>Последовательно выбираем</p>
+
+<ul>
+  <li>способ подстройки - native (лучше подходит для отрисовки шрифтов dejavu*). тут можно экспериментировать.</li>
+  <li>“использовать субпиксельный рендеринг - всегда</li>
+  <li>включить растровые шрифты по умолчанию - нет</li>
+</ul>
+
+<p>Все. Теперь у нас нормальные шрифты (в красной шапке и иже надо перезагрузиться). Недостает еще рецепта для SuSE. Если буду с ней работать - добавлю.</p>
+
+<p><a href="http://russianpenguin.files.wordpress.com/2013/11/005.png"><img src="/assets/images/2013/11/005.png" alt="Включенный субпиксельный рендеринг" /></a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

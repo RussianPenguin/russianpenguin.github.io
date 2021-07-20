@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Release 0.5.0 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Release 0.5.0" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Release 0.5.0" />
+<script type="application/ld+json">
+{"headline":"Release 0.5.0","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/git/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Release 0.5.0</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="release-050">Release 0.5.0</h2>
+<h3 id="summary">Summary</h3>
+<p>A few new features in this release, including work around supporting default git config and accepting flat git config values. Also a couple of bugfixes and a small readme update.</p>
+
+<h4 id="features">Features</h4>
+<ul>
+  <li>Now accepts flat git config values</li>
+  <li>Supports defaults for git config</li>
+  <li>Added check for git package presence to define config::git</li>
+</ul>
+
+<h4 id="bugfixes">Bugfixes</h4>
+<ul>
+  <li>Adds missing ownership in git::subtree</li>
+  <li>Now escapes git config values for shell execution</li>
+  <li>Improved table of contents in readme</li>
+</ul>
+
+<p>##2015-05-26 - Release 0.4.0
+###Summary
+This release adds greater flexibility to <code class="language-plaintext highlighter-rouge">git</code> and <code class="language-plaintext highlighter-rouge">git_config</code> and includes a couple of bug fixes, including fixing <code class="language-plaintext highlighter-rouge">git_config</code> with multiple users.</p>
+
+<p>####Deprecations</p>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">section</code> parameter in <code class="language-plaintext highlighter-rouge">git_config</code> and <code class="language-plaintext highlighter-rouge">git::config</code> has been deprecated. The full option name should be passed to the <code class="language-plaintext highlighter-rouge">key</code> parameter instead (i.e., “user.email”)</li>
+</ul>
+
+<p>####Features</p>
+<ul>
+  <li>Refactored existing facts and added spec tests (MODULES-1571)</li>
+  <li>Test and doc updates</li>
+  <li>New parameters in class <code class="language-plaintext highlighter-rouge">git</code>:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">package_manage</code></li>
+      <li><code class="language-plaintext highlighter-rouge">package_ensure</code></li>
+      <li><code class="language-plaintext highlighter-rouge">configs</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Only run if git is actually installed (MODULES-1238)</li>
+  <li>Fix <code class="language-plaintext highlighter-rouge">git_config</code> to work with multiple users (MODULES-1863)</li>
+</ul>
+
+<p>##2014-11-18 - Release 0.3.0
+###Summary
+This release primarily includes improvements to <code class="language-plaintext highlighter-rouge">git::config</code> and the addition of the <code class="language-plaintext highlighter-rouge">git_config</code> type&amp;provider, along with much improved testing</p>
+
+<p>####Features</p>
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">user</code> and <code class="language-plaintext highlighter-rouge">scope</code> parameter to <code class="language-plaintext highlighter-rouge">git::config</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">git_config</code> type</li>
+  <li>Refactor <code class="language-plaintext highlighter-rouge">git::config</code> to use <code class="language-plaintext highlighter-rouge">git_config</code></li>
+  <li>Test improvements</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Redirect stderr to the correct place on windows</li>
+</ul>
+
+<p>##2014-07-15 - Release 0.2.0
+###Summary
+This release updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.  It also lets you set the
+<code class="language-plaintext highlighter-rouge">package_name</code>.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Ability to set <code class="language-plaintext highlighter-rouge">package_name</code></li>
+</ul>
+
+<p>##2014-06-25 - Release 0.1.0
+###Summary
+This release adds git::subtree and git::config, as well as fixes up the
+documentation and unit tests.</p>
+
+<p>####Features</p>
+<ul>
+  <li>README improvements.</li>
+  <li>Add git::subtree class to install git-subtree.</li>
+  <li>Add git::config resource</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix git_version fact.</li>
+</ul>
+
+<p>##2011-06-03 - Release 0.0.1</p>
+<ul>
+  <li>Initial commit</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

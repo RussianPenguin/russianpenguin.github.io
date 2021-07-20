@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Symfony2: обработка исключения 404 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Symfony2: обработка исключения 404" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Допустим, что нам нужно обработать исключение 404 и вместо стандартного ответа сервера (или шаблона ошибки ответить специфической страницей. Как кастомизировать страницы подробно описано в официальной документации. Нас будет интересовать пункт работы с эвентом kernel.exception. Можно посмотреть один из примеров его использования. Наш кейс: если symfony не смог обработать роут, то управление передается своему обработчику. namespace AppBundle\Listener; use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent; use Symfony\Component\HttpFoundation\Response; use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface; use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface; use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; class ExceptionListener { protected $templating; protected $kernel; public function \_\_construct(EngineInterface $templating, $kernel) { $this-\&gt;templating = $templating; $this-\&gt;kernel = $kernel; } public function onKernelException(GetResponseForExceptionEvent $event) { if ($event-\&gt;getException() instanceof NotFoundHttpException) { $response = new Response(); $response-\&gt;setContent(&quot;Какие-то данные&quot;); //$response-\&gt;setStatusCode(200) работать не будет $response-\&gt;headers-\&gt;set(&#39;X-Status-Code&#39;, 200); $event-\&gt;setResponse($response); } } } В config.yml прописывем что-то вроде services: kernel.listener.app\_exception\_listener: class: AppBundle\Listener\ExceptionListener arguments: [@templating, @kernel] tags: - { name: kernel.event\_listener, event: kernel.exception, method: onKernelException } И обратите внимание, что переопределение статуса ответа в виде $response-\&gt;setStatusCode(200) работать не будет. Мы не сможем переопределить статус отвта на 2хх с помощью этого метода (на любой другой можно). Для того, чтобы мы могли переопределить ответ 404 нужно использовать метод $response-\&gt;headers-\&gt;set(&#39;X-Status-Code&#39;, 200);" />
+<meta property="og:description" content="Допустим, что нам нужно обработать исключение 404 и вместо стандартного ответа сервера (или шаблона ошибки ответить специфической страницей. Как кастомизировать страницы подробно описано в официальной документации. Нас будет интересовать пункт работы с эвентом kernel.exception. Можно посмотреть один из примеров его использования. Наш кейс: если symfony не смог обработать роут, то управление передается своему обработчику. namespace AppBundle\Listener; use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent; use Symfony\Component\HttpFoundation\Response; use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface; use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface; use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; class ExceptionListener { protected $templating; protected $kernel; public function \_\_construct(EngineInterface $templating, $kernel) { $this-\&gt;templating = $templating; $this-\&gt;kernel = $kernel; } public function onKernelException(GetResponseForExceptionEvent $event) { if ($event-\&gt;getException() instanceof NotFoundHttpException) { $response = new Response(); $response-\&gt;setContent(&quot;Какие-то данные&quot;); //$response-\&gt;setStatusCode(200) работать не будет $response-\&gt;headers-\&gt;set(&#39;X-Status-Code&#39;, 200); $event-\&gt;setResponse($response); } } } В config.yml прописывем что-то вроде services: kernel.listener.app\_exception\_listener: class: AppBundle\Listener\ExceptionListener arguments: [@templating, @kernel] tags: - { name: kernel.event\_listener, event: kernel.exception, method: onKernelException } И обратите внимание, что переопределение статуса ответа в виде $response-\&gt;setStatusCode(200) работать не будет. Мы не сможем переопределить статус отвта на 2хх с помощью этого метода (на любой другой можно). Для того, чтобы мы могли переопределить ответ 404 нужно использовать метод $response-\&gt;headers-\&gt;set(&#39;X-Status-Code&#39;, 200);" />
+<link rel="canonical" href="http://localhost:4000/2015/08/19/symfony2-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-404/" />
+<meta property="og:url" content="http://localhost:4000/2015/08/19/symfony2-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-404/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-08-19T12:11:31+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Symfony2: обработка исключения 404" />
+<script type="application/ld+json">
+{"headline":"Symfony2: обработка исключения 404","dateModified":"2015-08-19T12:11:31+03:00","datePublished":"2015-08-19T12:11:31+03:00","description":"Допустим, что нам нужно обработать исключение 404 и вместо стандартного ответа сервера (или шаблона ошибки ответить специфической страницей. Как кастомизировать страницы подробно описано в официальной документации. Нас будет интересовать пункт работы с эвентом kernel.exception. Можно посмотреть один из примеров его использования. Наш кейс: если symfony не смог обработать роут, то управление передается своему обработчику. namespace AppBundle\\Listener; use Symfony\\Component\\HttpKernel\\Event\\GetResponseForExceptionEvent; use Symfony\\Component\\HttpFoundation\\Response; use Symfony\\Component\\HttpKernel\\Exception\\HttpExceptionInterface; use Symfony\\Bundle\\FrameworkBundle\\Templating\\EngineInterface; use Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException; class ExceptionListener { protected $templating; protected $kernel; public function \\_\\_construct(EngineInterface $templating, $kernel) { $this-\\&gt;templating = $templating; $this-\\&gt;kernel = $kernel; } public function onKernelException(GetResponseForExceptionEvent $event) { if ($event-\\&gt;getException() instanceof NotFoundHttpException) { $response = new Response(); $response-\\&gt;setContent(&quot;Какие-то данные&quot;); //$response-\\&gt;setStatusCode(200) работать не будет $response-\\&gt;headers-\\&gt;set(&#39;X-Status-Code&#39;, 200); $event-\\&gt;setResponse($response); } } } В config.yml прописывем что-то вроде services: kernel.listener.app\\_exception\\_listener: class: AppBundle\\Listener\\ExceptionListener arguments: [@templating, @kernel] tags: - { name: kernel.event\\_listener, event: kernel.exception, method: onKernelException } И обратите внимание, что переопределение статуса ответа в виде $response-\\&gt;setStatusCode(200) работать не будет. Мы не сможем переопределить статус отвта на 2хх с помощью этого метода (на любой другой можно). Для того, чтобы мы могли переопределить ответ 404 нужно использовать метод $response-\\&gt;headers-\\&gt;set(&#39;X-Status-Code&#39;, 200);","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/08/19/symfony2-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-404/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/08/19/symfony2-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%B8%D1%81%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-404/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Symfony2: обработка исключения 404</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Symfony2: обработка исключения 404</h1>
+<p>19 Aug 2015</p>
+
+<p>Допустим, что нам нужно обработать исключение 404 и вместо стандартного ответа сервера (или шаблона ошибки ответить специфической страницей.</p>
+
+<p>Как кастомизировать страницы подробно описано в <a href="http://symfony.com/doc/current/cookbook/controller/error_pages.html">официальной документации</a>.</p>
+
+<p>Нас будет интересовать пункт работы с эвентом kernel.exception.</p>
+
+<p>Можно посмотреть один из <a href="http://symfonybricks.com/en/brick/custom-exception-page-404-not-found-and-other-exceptions">примеров</a> его использования.</p>
+
+<p>Наш кейс: если symfony не смог обработать роут, то управление передается своему обработчику.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">AppBundle\Listener</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\HttpExceptionInterface</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Bundle\FrameworkBundle\Templating\EngineInterface</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\NotFoundHttpException</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">ExceptionListener</span>  
+<span class="p">{</span>  
+ <span class="k">protected</span> <span class="nv">$templating</span><span class="p">;</span>  
+ <span class="k">protected</span> <span class="nv">$kernel</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nc">EngineInterface</span> <span class="nv">$templating</span><span class="p">,</span> <span class="nv">$kernel</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">templating</span> <span class="o">=</span> <span class="nv">$templating</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">kernel</span> <span class="o">=</span> <span class="nv">$kernel</span><span class="p">;</span>  
+ <span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">onKernelException</span><span class="p">(</span><span class="kt">GetResponseForExceptionEvent</span> <span class="nv">$event</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$event</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getException</span><span class="p">()</span> <span class="k">instanceof</span> <span class="nc">NotFoundHttpException</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Response</span><span class="p">();</span>  
+ <span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setContent</span><span class="p">(</span><span class="s2">"Какие-то данные"</span><span class="p">);</span>  
+ <span class="c1">//$response-\&gt;setStatusCode(200) работать не будет  </span>
+ <span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">headers</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">set</span><span class="p">(</span><span class="s1">'X-Status-Code'</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>  
+ <span class="nv">$event</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setResponse</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>В config.yml прописывем что-то вроде</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>services:  
+ kernel.listener.app\_exception\_listener:  
+ class: AppBundle\Listener\ExceptionListener  
+ arguments: [@templating, @kernel]  
+ tags:  
+ - { name: kernel.event\_listener, event: kernel.exception, method: onKernelException }
+</code></pre></div></div>
+
+<p>И обратите внимание, что переопределение статуса ответа в виде</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setStatusCode</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>работать не будет. Мы не сможем переопределить статус отвта на 2хх с помощью этого метода (на любой другой можно).</p>
+
+<p>Для того, чтобы мы могли переопределить ответ 404 нужно использовать метод</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">headers</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">set</span><span class="p">(</span><span class="s1">'X-Status-Code'</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

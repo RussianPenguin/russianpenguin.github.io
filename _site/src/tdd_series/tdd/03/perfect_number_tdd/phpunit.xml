@@ -1,0 +1,29 @@
+<!--
+ Обратите внимание, что схема должна соответствовать той версии phpunit, которую вы используете.
+ Схема - это значение атрибута xsi:noNamespaceSchemaLocation
+-->
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.7/phpunit.xsd"
+        bootstrap="vendor/autoload.php">
+    <!--
+     Указываем где размещаются тесты.
+     Секций testsuites может быть более одной.
+     Нужно это для того,
+     чтобы иметь возможность тестировать различные аспекты системы.
+    -->
+    <testsuites>
+        <testsuite name="Core functionality">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <!--
+     whitelist для указания того,
+     какие файлы будут проверяться на покрытие тестами
+    -->
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

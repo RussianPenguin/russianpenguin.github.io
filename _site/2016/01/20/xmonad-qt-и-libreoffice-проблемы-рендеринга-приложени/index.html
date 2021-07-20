@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>XMonad, Qt и LibreOffice - проблемы рендеринга приложений | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="XMonad, Qt и LibreOffice - проблемы рендеринга приложений" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Многие пользователи сталкиваются с тем, что за пределами kde или гнома у приложений qt пропадают иконки. Но это не единственная проблема. Вторая проблема - это странное поведение приложений из пакета libreoffice - при каждом щелчке мышью в окне или вводе текста окно полностью перерисовывается. И это заметно даже невооруженным глазом. И очень сильно мешает работать. Происходит это из-за того, что эти приложения пытаются брать свои настройки из запущенного DE, но для кедов и гнома все хорошо, а вот для менее популярных окружений все плохо. Самый простой способ решить проблему - указать, из какого окружения нужно брать настройки - выставить переменную окружения XDG_CURRENT_DESKTOP в значение KDE или GNOME (а может быть XFCE - такое значение тоже возможно). Все зависит от того, каким de должен прикидываться ваш wm :) Сходу мне не попалась спецификация по этой переменной окружения. Поэтому ссылок не вставляют. Для своей конфигурации xmonad я прописал в .xinitrc export XDG\_CURRENT\_DESKTOP=KDE И все нормально работает. В приложениях qt появились значки, а libreoffice пропали лаги отрисовки.  " />
+<meta property="og:description" content="Многие пользователи сталкиваются с тем, что за пределами kde или гнома у приложений qt пропадают иконки. Но это не единственная проблема. Вторая проблема - это странное поведение приложений из пакета libreoffice - при каждом щелчке мышью в окне или вводе текста окно полностью перерисовывается. И это заметно даже невооруженным глазом. И очень сильно мешает работать. Происходит это из-за того, что эти приложения пытаются брать свои настройки из запущенного DE, но для кедов и гнома все хорошо, а вот для менее популярных окружений все плохо. Самый простой способ решить проблему - указать, из какого окружения нужно брать настройки - выставить переменную окружения XDG_CURRENT_DESKTOP в значение KDE или GNOME (а может быть XFCE - такое значение тоже возможно). Все зависит от того, каким de должен прикидываться ваш wm :) Сходу мне не попалась спецификация по этой переменной окружения. Поэтому ссылок не вставляют. Для своей конфигурации xmonad я прописал в .xinitrc export XDG\_CURRENT\_DESKTOP=KDE И все нормально работает. В приложениях qt появились значки, а libreoffice пропали лаги отрисовки.  " />
+<link rel="canonical" href="http://localhost:4000/2016/01/20/xmonad-qt-%D0%B8-libreoffice-%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B-%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8/" />
+<meta property="og:url" content="http://localhost:4000/2016/01/20/xmonad-qt-%D0%B8-libreoffice-%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B-%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-01-20T22:16:44+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XMonad, Qt и LibreOffice - проблемы рендеринга приложений" />
+<script type="application/ld+json">
+{"headline":"XMonad, Qt и LibreOffice - проблемы рендеринга приложений","dateModified":"2016-01-20T22:16:44+03:00","datePublished":"2016-01-20T22:16:44+03:00","description":"Многие пользователи сталкиваются с тем, что за пределами kde или гнома у приложений qt пропадают иконки. Но это не единственная проблема. Вторая проблема - это странное поведение приложений из пакета libreoffice - при каждом щелчке мышью в окне или вводе текста окно полностью перерисовывается. И это заметно даже невооруженным глазом. И очень сильно мешает работать. Происходит это из-за того, что эти приложения пытаются брать свои настройки из запущенного DE, но для кедов и гнома все хорошо, а вот для менее популярных окружений все плохо. Самый простой способ решить проблему - указать, из какого окружения нужно брать настройки - выставить переменную окружения XDG_CURRENT_DESKTOP в значение KDE или GNOME (а может быть XFCE - такое значение тоже возможно). Все зависит от того, каким de должен прикидываться ваш wm :) Сходу мне не попалась спецификация по этой переменной окружения. Поэтому ссылок не вставляют. Для своей конфигурации xmonad я прописал в .xinitrc export XDG\\_CURRENT\\_DESKTOP=KDE И все нормально работает. В приложениях qt появились значки, а libreoffice пропали лаги отрисовки.  ","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/01/20/xmonad-qt-%D0%B8-libreoffice-%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B-%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/01/20/xmonad-qt-%D0%B8-libreoffice-%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B-%D1%80%D0%B5%D0%BD%D0%B4%D0%B5%D1%80%D0%B8%D0%BD%D0%B3%D0%B0-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">XMonad, Qt и LibreOffice - проблемы рендеринга приложений</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>XMonad, Qt и LibreOffice - проблемы рендеринга приложений</h1>
+<p>20 Jan 2016</p>
+
+<p><img src="/assets/images/2016/01/xmonad-qt_without_icons_in_console.png?w=300" alt="xmonad-qt_without_icons_in_console" /> Многие пользователи сталкиваются с тем, что за пределами kde или гнома у приложений qt пропадают иконки. Но это не единственная проблема.</p>
+
+<p>Вторая проблема - это странное поведение приложений из пакета libreoffice - при каждом щелчке мышью в окне или вводе текста окно полностью перерисовывается. И это заметно даже невооруженным глазом. И очень сильно мешает работать.</p>
+
+<p><img src="/assets/images/2016/01/xmonad-qt_without_icons.png?w=300" alt="xmonad-qt_without_icons" /></p>
+
+<p>Происходит это из-за того, что эти приложения пытаются брать свои настройки из запущенного DE, но для кедов и гнома все хорошо, а вот для менее популярных окружений все плохо.</p>
+
+<p>Самый простой способ решить проблему - указать, из какого окружения нужно брать настройки - выставить переменную окружения XDG_CURRENT_DESKTOP в значение KDE или GNOME (а может быть XFCE - такое значение тоже возможно). Все зависит от того, каким de должен прикидываться ваш wm :)</p>
+
+<p>Сходу мне не попалась спецификация по этой переменной окружения. Поэтому ссылок не вставляют.</p>
+
+<p>Для своей конфигурации xmonad я прописал в .xinitrc</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export XDG\_CURRENT\_DESKTOP=KDE
+</code></pre></div></div>
+
+<p>И все нормально работает. В приложениях qt появились значки, а libreoffice пропали лаги отрисовки.</p>
+
+<p><img src="/assets/images/2016/01/xmonad-qt_without_icons_with_fix.png?w=300" alt="xmonad-qt_without_icons_with_fix" /></p>
+
+<p> </p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

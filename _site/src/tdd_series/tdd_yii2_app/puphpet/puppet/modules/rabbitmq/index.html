@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>rabbitmq | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="rabbitmq" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/rabbitmq/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/rabbitmq/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="rabbitmq" />
+<script type="application/ld+json">
+{"headline":"rabbitmq","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/rabbitmq/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">rabbitmq</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="rabbitmq">rabbitmq</h1>
+
+<h4 id="table-of-contents">Table of Contents</h4>
+
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#module-description">Module Description - What the module does and why it is useful</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with rabbitmq</a>
+    <ul>
+      <li><a href="#what-rabbitmq-affects">What rabbitmq affects</a></li>
+      <li><a href="#setup-requirements">Setup requirements</a></li>
+      <li><a href="#beginning-with-rabbitmq">Beginning with rabbitmq</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a></li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a></li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a>
+    <ul>
+      <li><a href="#redhat-module-dependecies">RedHat module dependencies</a></li>
+    </ul>
+  </li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<h2 id="overview">Overview</h2>
+
+<p>This module manages RabbitMQ (www.rabbitmq.com)</p>
+
+<h2 id="module-description">Module Description</h2>
+<p>The rabbitmq module sets up rabbitmq and has a number of providers to manage
+everything from vhosts to exchanges after setup.</p>
+
+<p>This module has been tested against 2.7.1 and is known to not support
+all features against earlier versions.</p>
+
+<h2 id="setup">Setup</h2>
+
+<h3 id="what-rabbitmq-affects">What rabbitmq affects</h3>
+
+<ul>
+  <li>rabbitmq repository files.</li>
+  <li>rabbitmq package.</li>
+  <li>rabbitmq configuration file.</li>
+  <li>rabbitmq service.</li>
+</ul>
+
+<h3 id="beginning-with-rabbitmq">Beginning with rabbitmq</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">include</span> <span class="s1">'::rabbitmq'</span>
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<p>All options and configuration can be done through interacting with the parameters
+on the main rabbitmq class.  These are documented below.</p>
+
+<h2 id="rabbitmq-class">rabbitmq class</h2>
+
+<p>To begin with the rabbitmq class controls the installation of rabbitmq.  In here
+you can control many parameters relating to the package and service, such as
+disabling puppet support of the service:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'::rabbitmq'</span><span class="p">:</span>
+  <span class="py">service_manage</span>    <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="py">port</span>              <span class="p">=&gt;</span> <span class="s1">'5672'</span><span class="p">,</span>
+  <span class="py">delete_guest_user</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Or such as offline installation from intranet or local mirrors:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'::rabbitmq'</span><span class="p">:</span>
+   <span class="py">key_content</span>      <span class="p">=&gt;</span> <span class="nf">template</span><span class="p">(</span><span class="s1">'openstack/rabbit.pub.key'</span><span class="p">),</span>
+   <span class="py">package_gpg_key</span>  <span class="p">=&gt;</span> <span class="s1">'/tmp/rabbit.pub.key'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And this one will use external package key source for any (apt/rpm) package provider:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'::rabbitmq'</span><span class="p">:</span>
+   <span class="py">package_gpg_key</span>  <span class="p">=&gt;</span> <span class="s1">'http://www.some_site.some_domain/some_key.pub.key'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="environment-variables">Environment Variables</h3>
+<p>To use RabbitMQ Environment Variables, use the parameters <code class="language-plaintext highlighter-rouge">environment_variables</code> e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">port</span>              <span class="p">=&gt;</span> <span class="s1">'5672'</span><span class="p">,</span>
+  <span class="py">environment_variables</span>   <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'NODENAME'</span>     <span class="p">=&gt;</span> <span class="s1">'node01'</span><span class="p">,</span>
+    <span class="s1">'SERVICENAME'</span>  <span class="p">=&gt;</span> <span class="s1">'RabbitMQ'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="variables-configurable-in-rabbitmqconfig">Variables Configurable in rabbitmq.config</h3>
+<p>To change RabbitMQ Config Variables in rabbitmq.config, use the parameters <code class="language-plaintext highlighter-rouge">config_variables</code> e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">port</span>              <span class="p">=&gt;</span> <span class="s1">'5672'</span><span class="p">,</span>
+  <span class="py">config_variables</span>   <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'hipe_compile'</span>  <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'frame_max'</span>     <span class="p">=&gt;</span> <span class="m">131072</span><span class="p">,</span>
+    <span class="s1">'log_levels'</span>    <span class="p">=&gt;</span> <span class="s2">"[{connection, info}]"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To change Erlang Kernel Config Variables in rabbitmq.config, use the parameters
+<code class="language-plaintext highlighter-rouge">config_kernel_variables</code> e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">port</span>              <span class="p">=&gt;</span> <span class="s1">'5672'</span><span class="p">,</span>
+  <span class="py">config_kernel_variables</span>  <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'inet_dist_listen_min'</span> <span class="p">=&gt;</span> <span class="m">9100</span><span class="p">,</span>
+    <span class="s1">'inet_dist_listen_max'</span> <span class="p">=&gt;</span> <span class="m">9105</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To change Management Plugin Config Variables in rabbitmq.config, use the parameters
+<code class="language-plaintext highlighter-rouge">config_management_variables</code> e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">config_management_variables</span>  <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'rates_mode'</span> <span class="p">=&gt;</span> <span class="s1">'basic'</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="additional-variables-configurable-in-rabbitmqconfig">Additional Variables Configurable in rabbitmq.config</h3>
+<p>To change Additional Config Variables in rabbitmq.config, use the parameter
+<code class="language-plaintext highlighter-rouge">config_additional_variables</code> e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">config_additional_variables</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'autocluster'</span> <span class="p">=&gt;</span> <span class="s1">'[{consul_service, "rabbit"},{cluster_name, "rabbit"}]'</span><span class="p">,</span>
+    <span class="s1">'foo'</span> <span class="p">=&gt;</span> <span class="s1">'[{bar, "baz"}]'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This will result in the following config appended to the config file:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>% Additional config
+  {autocluster, [{consul_service, "rabbit"},{cluster_name, "rabbit"}]},
+  {foo, [{bar, "baz"}]}
+</code></pre></div></div>
+<p>(This is required for the <a href="https://github.com/aweber/rabbitmq-autocluster">autocluster plugin</a></p>
+
+<h3 id="clustering">Clustering</h3>
+<p>To use RabbitMQ clustering facilities, use the rabbitmq parameters
+<code class="language-plaintext highlighter-rouge">config_cluster</code>, <code class="language-plaintext highlighter-rouge">cluster_nodes</code>, and <code class="language-plaintext highlighter-rouge">cluster_node_type</code>, e.g.:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'rabbitmq'</span><span class="p">:</span>
+  <span class="py">config_cluster</span>           <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">cluster_nodes</span>            <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'rabbit1'</span><span class="p">,</span> <span class="s1">'rabbit2'</span><span class="p">],</span>
+  <span class="py">cluster_node_type</span>        <span class="p">=&gt;</span> <span class="s1">'ram'</span><span class="p">,</span>
+  <span class="py">erlang_cookie</span>            <span class="p">=&gt;</span> <span class="s1">'A_SECRET_COOKIE_STRING'</span><span class="p">,</span>
+  <span class="py">wipe_db_on_cookie_change</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+
+<h2 id="classes">Classes</h2>
+
+<ul>
+  <li>rabbitmq: Main class for installation and service management.</li>
+  <li>rabbitmq::config: Main class for rabbitmq configuration/management.</li>
+  <li>rabbitmq::install: Handles package installation.</li>
+  <li>rabbitmq::params: Different configuration data for different systems.</li>
+  <li>rabbitmq::service: Handles the rabbitmq service.</li>
+  <li>rabbitmq::repo::apt: Handles apt repo for Debian systems.</li>
+  <li>rabbitmq::repo::rhel: Handles rpm repo for Redhat systems.</li>
+</ul>
+
+<h3 id="parameters">Parameters</h3>
+
+<p>####<code class="language-plaintext highlighter-rouge">admin_enable</code></p>
+
+<p>Boolean, if enabled sets up the management interface/plugin for RabbitMQ.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">auth_backends</code></p>
+
+<p>An array specifying authorization/authentication backend to use. Syntax:
+single quotes should be placed around array entries, ex. [‘{foo, baz}’, ‘baz’]
+Defaults to [rabbit_auth_backend_internal], and if using LDAP defaults to
+[rabbit_auth_backend_internal, rabbit_auth_backend_ldap].</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">cluster_node_type</code></p>
+
+<p>Choose between disc and ram nodes.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">cluster_nodes</code></p>
+
+<p>An array of nodes for clustering.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">cluster_partition_handling</code></p>
+
+<p>Value to set for <code class="language-plaintext highlighter-rouge">cluster_partition_handling</code> RabbitMQ configuration variable.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">collect_statistics_interval</code></p>
+
+<p>Integer, set the collect_statistics_interval in rabbitmq.config</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config</code></p>
+
+<p>The file to use as the rabbitmq.config template.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_additional_variables</code></p>
+
+<p>String, dditional config variables in rabbitmq.config</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_cluster</code></p>
+
+<p>Boolean to enable or disable clustering support.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_kernel_variables</code></p>
+
+<p>Hash of Erlang kernel configuration variables to set (see <a href="#variables-configurable-in-rabbitmq.config">Variables Configurable in rabbitmq.config</a>).</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_mirrored_queues</code></p>
+
+<p>DEPRECATED</p>
+
+<p>Configuring queue mirroring should be done by setting the according policy for
+the queue. You can read more about it
+<a href="http://www.rabbitmq.com/ha.html#genesis">here</a></p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_path</code></p>
+
+<p>The path to write the RabbitMQ configuration file to.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_management_variables</code></p>
+
+<p>Hash of configuration variables for the <a href="https://www.rabbitmq.com/management.html">Management Plugin</a>.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_stomp</code></p>
+
+<p>Boolean to enable or disable stomp.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_shovel</code></p>
+
+<p>Boolean to enable or disable shovel.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_shovel_statics</code></p>
+
+<p>Hash of static shovel configurations</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">config_variables</code></p>
+
+<p>To set config variables in rabbitmq.config</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">default_user</code></p>
+
+<p>Username to set for the <code class="language-plaintext highlighter-rouge">default_user</code> in rabbitmq.config.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">default_pass</code></p>
+
+<p>Password to set for the <code class="language-plaintext highlighter-rouge">default_user</code> in rabbitmq.config.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">delete_guest_user</code></p>
+
+<p>Boolean to decide if we should delete the default guest user.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">env_config</code></p>
+
+<p>The template file to use for rabbitmq_env.config.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">env_config_path</code></p>
+
+<p>The path to write the rabbitmq_env.config file to.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">environment_variables</code></p>
+
+<p>RabbitMQ Environment Variables in rabbitmq_env.config</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">erlang_cookie</code></p>
+
+<p>The erlang cookie to use for clustering - must be the same between all nodes.
+This value has no default and must be set explicitly if using clustering.
+If you run Pacemaker and you don’t want to use RabbitMQ buildin cluster, you can
+set config_cluster to ‘False’ and set ‘erlang_cookie’.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">file_limit</code></p>
+
+<p>Set rabbitmq file ulimit. Defaults to 16384. Only available on systems with
+<code class="language-plaintext highlighter-rouge">$::osfamily == 'Debian'</code> or <code class="language-plaintext highlighter-rouge">$::osfamily == 'RedHat'</code>.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">heartbeat</code></p>
+
+<p>Set the heartbeat timeout interval, default is unset which uses the builtin server
+defaultsof 60 seconds. Setting this to <code class="language-plaintext highlighter-rouge">0</code> will disable heartbeats.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">key_content</code></p>
+
+<p>Uses content method for Debian OS family. Should be a template for apt::source
+class. Overrides <code class="language-plaintext highlighter-rouge">package_gpg_key</code> behavior, if enabled. Undefined by default.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_auth</code></p>
+
+<p>Boolean, set to true to enable LDAP auth.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_server</code></p>
+
+<p>LDAP server to use for auth.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_user_dn_pattern</code></p>
+
+<p>User DN pattern for LDAP auth.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_other_bind</code></p>
+
+<p>How to bind to the LDAP server. Defaults to ‘anon’.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_config_variables</code></p>
+
+<p>Hash of other LDAP config variables.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_use_ssl</code></p>
+
+<p>Boolean, set to true to use SSL for the LDAP server.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_port</code></p>
+
+<p>Numeric port for LDAP server.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ldap_log</code></p>
+
+<p>Boolean, set to true to log LDAP auth.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">manage_repos</code></p>
+
+<p>Boolean, whether or not to manage package repositories.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">management_port</code></p>
+
+<p>The port for the RabbitMQ management interface.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">management_ssl</code></p>
+
+<p>Enable/Disable SSL for the management port.
+Has an effect only if ssl =&gt; true.
+Default is true.
+Valid values are true or false.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">node_ip_address</code></p>
+
+<p>The value of NODE_IP_ADDRESS in rabbitmq_env.config and of the
+rabbitmq_management server if it is enabled.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">package_ensure</code></p>
+
+<p>Determines the ensure state of the package.  Set to installed by default, but could
+be changed to latest.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">package_gpg_key</code></p>
+
+<p>RPM package GPG key to import. Uses source method. Should be a URL for Debian/RedHat
+OS family, or a file name for RedHat OS family.
+Set to http://www.rabbitmq.com/rabbitmq-signing-key-public.asc by default.
+Note, that <code class="language-plaintext highlighter-rouge">key_content</code>, if specified, would override this parameter for Debian OS family.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">package_name</code></p>
+
+<p>The name of the package to install.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">package_provider</code></p>
+
+<p>What provider to use to install the package.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">package_source</code></p>
+
+<p>Where should the package be installed from?</p>
+
+<p>On Debian- and Arch-based systems using the default package provider,
+this parameter is ignored and the package is installed from the
+rabbitmq repository, if enabled with manage_repo =&gt; true, or from the
+system repository otherwise. If you want to use dpkg as the
+package_provider, you must specify a local package_source.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">plugin_dir</code></p>
+
+<p>Location of RabbitMQ plugins.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">port</code></p>
+
+<p>The RabbitMQ port.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">service_ensure</code></p>
+
+<p>The state of the service.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">service_manage</code></p>
+
+<p>Determines if the service is managed.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">service_name</code></p>
+
+<p>The name of the service to manage.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl</code></p>
+
+<p>Configures the service for using SSL.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_only</code></p>
+
+<p>Configures the service to only use SSL.  No cleartext TCP listeners will be created.
+Requires that ssl =&gt; true and port =&gt; UNSET also</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_cacert</code></p>
+
+<p>CA cert path to use for SSL.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_cert</code></p>
+
+<p>Cert to use for SSL.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_key</code></p>
+
+<p>Key to use for SSL.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_management_port</code></p>
+
+<p>SSL management port.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_stomp_port</code></p>
+
+<p>SSL stomp port.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_verify</code></p>
+
+<p>rabbitmq.config SSL verify setting.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_fail_if_no_peer_cert</code></p>
+
+<p>rabbitmq.config <code class="language-plaintext highlighter-rouge">fail_if_no_peer_cert</code> setting.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_versions</code></p>
+
+<p>Choose which SSL versions to enable. Example: <code class="language-plaintext highlighter-rouge">['tlsv1.2', 'tlsv1.1']</code>.</p>
+
+<p>Note that it is recommended to disable <code class="language-plaintext highlighter-rouge">sslv3</code> and <code class="language-plaintext highlighter-rouge">tlsv1</code> to prevent against POODLE and BEAST attacks. Please see the <a href="https://www.rabbitmq.com/ssl.html">RabbitMQ SSL</a> documentation for more information.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">ssl_ciphers</code></p>
+
+<p>Support only a given list of SSL ciphers. Example: <code class="language-plaintext highlighter-rouge">['dhe_rsa,aes_256_cbc,sha','dhe_dss,aes_256_cbc,sha','ecdhe_rsa,aes_256_cbc,sha']</code>.</p>
+
+<p>Supported ciphers in your install can be listed with:
+ rabbitmqctl eval ‘ssl:cipher_suites().’
+Functionality can be tested with cipherscan or similar tool: https://github.com/jvehent/cipherscan.git</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">stomp_port</code></p>
+
+<p>The port to use for Stomp.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">stomp_ssl_only</code></p>
+
+<p>Configures STOMP to only use SSL.  No cleartext STOMP TCP listeners will be created.
+Requires setting ssl_stomp_port also.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">stomp_ensure</code></p>
+
+<p>Boolean to install the stomp plugin.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">tcp_backlog</code></p>
+
+<p>Integer, the size of the backlog on TCP connections.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">tcp_keepalive</code></p>
+
+<p>Boolean to enable TCP connection keepalive for RabbitMQ service.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">tcp_recbuf</code></p>
+
+<p>Integer, corresponds to recbuf in RabbitMQ <code class="language-plaintext highlighter-rouge">tcp_listen_options</code></p>
+
+<p>####<code class="language-plaintext highlighter-rouge">tcp_sndbuf</code></p>
+
+<p>Integer, corresponds to sndbuf in RabbitMQ <code class="language-plaintext highlighter-rouge">tcp_listen_options</code></p>
+
+<p>####<code class="language-plaintext highlighter-rouge">version</code></p>
+
+<p>Sets the version to install.</p>
+
+<p>On Debian- and Arch-based operating systems, the version parameter is
+ignored and the latest version is installed from the rabbitmq
+repository, if enabled with manage_repo =&gt; true, or from the system
+repository otherwise.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">wipe_db_on_cookie_change</code></p>
+
+<p>Boolean to determine if we should DESTROY AND DELETE the RabbitMQ database.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">rabbitmq_user</code></p>
+
+<p>String: OS dependent, default defined in param.pp. The system user the rabbitmq daemon runs as.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">rabbitmq_group</code></p>
+
+<p>String: OS dependent, default defined in param.pp. The system group the rabbitmq daemon runs as.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">rabbitmq_home</code></p>
+
+<p>String: OS dependent. default defined in param.pp. The home directory of the rabbitmq deamon.</p>
+
+<h2 id="native-types">Native Types</h2>
+
+<h3 id="rabbitmq_user">rabbitmq_user</h3>
+
+<p>query all current users: <code class="language-plaintext highlighter-rouge">$ puppet resource rabbitmq_user</code></p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_user</span> <span class="p">{</span> <span class="s1">'dan'</span><span class="p">:</span>
+  <span class="py">admin</span>    <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Optional parameter tags will set further rabbitmq tags like monitoring, policymaker, etc.
+To set the administrator tag use admin-flag.</p>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_user</span> <span class="p">{</span> <span class="s1">'dan'</span><span class="p">:</span>
+  <span class="py">admin</span>    <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+  <span class="py">tags</span>     <span class="p">=&gt;</span> <span class="p">[</span><span class="s1">'monitoring'</span><span class="p">,</span> <span class="s1">'tag1'</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_vhost">rabbitmq_vhost</h3>
+
+<p>query all current vhosts: <code class="language-plaintext highlighter-rouge">$ puppet resource rabbitmq_vhost</code></p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_vhost</span> <span class="p">{</span> <span class="s1">'myvhost'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_exchange">rabbitmq_exchange</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_exchange</span> <span class="p">{</span> <span class="s1">'myexchange@myvhost'</span><span class="p">:</span>
+  <span class="py">user</span>     <span class="p">=&gt;</span> <span class="s1">'dan'</span><span class="p">,</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+  <span class="py">type</span>     <span class="p">=&gt;</span> <span class="s1">'topic'</span><span class="p">,</span>
+  <span class="py">ensure</span>   <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">internal</span> <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="py">auto_delete</span> <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="py">durable</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">arguments</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="n">hash</span><span class="o">-</span><span class="py">header</span> <span class="p">=&gt;</span> <span class="s1">'message-distribution-hash'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_queue">rabbitmq_queue</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_queue</span> <span class="p">{</span> <span class="s1">'myqueue@myvhost'</span><span class="p">:</span>
+  <span class="py">user</span>        <span class="p">=&gt;</span> <span class="s1">'dan'</span><span class="p">,</span>
+  <span class="py">password</span>    <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+  <span class="py">durable</span>     <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">auto_delete</span> <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="py">arguments</span>   <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="n">x</span><span class="o">-</span><span class="n">message</span><span class="o">-</span><span class="py">ttl</span> <span class="p">=&gt;</span> <span class="m">123</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">-</span><span class="n">dead</span><span class="o">-</span><span class="n">letter</span><span class="o">-</span><span class="py">exchange</span> <span class="p">=&gt;</span> <span class="s1">'other'</span>
+  <span class="p">},</span>
+  <span class="py">ensure</span>      <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_binding">rabbitmq_binding</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_binding</span> <span class="p">{</span> <span class="s1">'myexchange@myqueue@myvhost'</span><span class="p">:</span>
+  <span class="py">user</span>             <span class="p">=&gt;</span> <span class="s1">'dan'</span><span class="p">,</span>
+  <span class="py">password</span>         <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+  <span class="py">destination_type</span> <span class="p">=&gt;</span> <span class="s1">'queue'</span><span class="p">,</span>
+  <span class="py">routing_key</span>      <span class="p">=&gt;</span> <span class="s1">'#'</span><span class="p">,</span>
+  <span class="py">arguments</span>        <span class="p">=&gt;</span> <span class="p">{},</span>
+  <span class="py">ensure</span>           <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_user_permissions">rabbitmq_user_permissions</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_user_permissions</span> <span class="p">{</span> <span class="s1">'dan@myvhost'</span><span class="p">:</span>
+  <span class="py">configure_permission</span> <span class="p">=&gt;</span> <span class="s1">'.*'</span><span class="p">,</span>
+  <span class="py">read_permission</span>      <span class="p">=&gt;</span> <span class="s1">'.*'</span><span class="p">,</span>
+  <span class="py">write_permission</span>     <span class="p">=&gt;</span> <span class="s1">'.*'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_policy">rabbitmq_policy</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_policy</span> <span class="p">{</span> <span class="s1">'ha-all@myvhost'</span><span class="p">:</span>
+  <span class="py">pattern</span>    <span class="p">=&gt;</span> <span class="s1">'.*'</span><span class="p">,</span>
+  <span class="py">priority</span>   <span class="p">=&gt;</span> <span class="m">0</span><span class="p">,</span>
+  <span class="py">applyto</span>    <span class="p">=&gt;</span> <span class="s1">'all'</span><span class="p">,</span>
+  <span class="py">definition</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'ha-mode'</span>      <span class="p">=&gt;</span> <span class="s1">'all'</span><span class="p">,</span>
+    <span class="s1">'ha-sync-mode'</span> <span class="p">=&gt;</span> <span class="s1">'automatic'</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_plugin">rabbitmq_plugin</h3>
+
+<p>query all currently enabled plugins <code class="language-plaintext highlighter-rouge">$ puppet resource rabbitmq_plugin</code></p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rabbitmq_plugin</span> <span class="p">{</span><span class="s1">'rabbitmq_stomp'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_parameter">rabbitmq_parameter</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">rabbitmq_parameter</span> <span class="p">{</span> <span class="s1">'documentumShovel@/'</span><span class="p">:</span>
+    <span class="py">component_name</span> <span class="p">=&gt;</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="py">value</span>          <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'src-uri'</span>    <span class="p">=&gt;</span> <span class="s1">'amqp://'</span><span class="p">,</span>
+        <span class="s1">'src-queue'</span>  <span class="p">=&gt;</span> <span class="s1">'my-queue'</span><span class="p">,</span>
+        <span class="s1">'dest-uri'</span>   <span class="p">=&gt;</span> <span class="s1">'amqp://remote-server'</span><span class="p">,</span>
+        <span class="s1">'dest-queue'</span> <span class="p">=&gt;</span> <span class="s1">'another-queue'</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">}</span>
+
+  <span class="n">rabbitmq_parameter</span> <span class="p">{</span> <span class="s1">'documentumFed@/'</span><span class="p">:</span>
+    <span class="py">component_name</span> <span class="p">=&gt;</span> <span class="s1">'federation-upstream'</span><span class="p">,</span>
+    <span class="py">value</span>          <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'uri'</span>    <span class="p">=&gt;</span> <span class="s1">'amqp://myserver'</span><span class="p">,</span>
+        <span class="s1">'expires'</span> <span class="p">=&gt;</span> <span class="s1">'360000'</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="rabbitmq_erlang_cookie">rabbitmq_erlang_cookie</h3>
+
+<p>This is essentially a private type used by the rabbitmq::config class
+to manage the erlang cookie. It replaces the rabbitmq_erlang_cookie fact
+from earlier versions of this module. It manages the content of the cookie
+usually located at “${rabbitmq_home}/.erlang.cookie”, which includes
+stopping the rabbitmq service and wiping out the database at
+“${rabbitmq_home}/mnesia” if the user agrees to it. We don’t recommend using
+this type directly.</p>
+
+<h2 id="limitations">Limitations</h2>
+
+<p>This module has been built on and tested against Puppet 3.x.</p>
+
+<p>The module has been tested on:</p>
+
+<ul>
+  <li>RedHat Enterprise Linux 5/6</li>
+  <li>Debian 6/7</li>
+  <li>CentOS 5/6</li>
+  <li>Ubuntu 12.04/14.04</li>
+</ul>
+
+<p>Testing on other platforms has been light and cannot be guaranteed.</p>
+
+<h3 id="apt-module-compatibility">Apt module compatibility</h3>
+
+<p>While this module supports both 1.x and 2.x versions of the puppetlabs-apt module, it does not support puppetlabs-apt 2.0.0 or 2.0.1.</p>
+
+<h3 id="module-dependencies">Module dependencies</h3>
+
+<p>If running CentOS/RHEL, and using the yum provider, ensure the epel repo is present.</p>
+
+<p>To have a suitable erlang version installed on RedHat and Debian systems,
+you have to install another puppet module from http://forge.puppetlabs.com/garethr/erlang with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puppet module install garethr-erlang
+</code></pre></div></div>
+
+<p>This module handles the packages for erlang.
+To use the module, add the following snippet to your site.pp or an appropriate profile class:</p>
+
+<p>For RedHat systems:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include 'erlang'
+class { 'erlang': epel_enable =&gt; true}
+</code></pre></div></div>
+
+<p>For Debian systems:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include 'erlang'
+package { 'erlang-base':
+  ensure =&gt; 'latest',
+}
+</code></pre></div></div>
+
+<p>This module also depends on the excellent puppet/staging module on the Forge:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puppet module install puppet-staging
+</code></pre></div></div>
+
+<h3 id="downgrade-issues">Downgrade Issues</h3>
+
+<p>Be advised that there were configuration file syntax and other changes made between RabbitMQ
+versions 2 and 3. In order to downgrade from 3 to 2 (not that this is a terribly good idea)
+you will need to manually remove all RabbitMQ configuration files (<code class="language-plaintext highlighter-rouge">/etc/rabbitmq</code>) and
+the mnesia directory (usually <code class="language-plaintext highlighter-rouge">/var/lib/rabbitmq/mnesia</code>). The latter action will delete
+any and all messages stored to disk.</p>
+
+<p>Failure to do this will result in RabbitMQ failing to start with a cryptic error message about
+“init terminating in do_boot”, containing “rabbit_upgrade,maybe_upgrade_mnesia”.</p>
+
+<h2 id="development">Development</h2>
+
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community
+contributions are essential for keeping them great. We can’t access the
+huge number of platforms and myriad of hardware, software, and deployment
+configurations that Puppet is intended to serve.</p>
+
+<p>We want to keep it as easy as possible to contribute changes so that our
+modules work in your environment. There are a few guidelines that we need
+contributors to follow so that we can have a chance of keeping on top of things.</p>
+
+<p>You can read the complete module contribution guide <a href="http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing">on the Puppet Labs wiki.</a></p>
+
+<h3 id="authors">Authors</h3>
+<ul>
+  <li>Jeff McCune <a href="mailto:jeff@puppetlabs.com">jeff@puppetlabs.com</a></li>
+  <li>Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a></li>
+  <li>RPM/RHEL packages by Vincent Janelle <a href="mailto:randomfrequency@gmail.com">randomfrequency@gmail.com</a></li>
+  <li>Puppetlabs Module Team</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

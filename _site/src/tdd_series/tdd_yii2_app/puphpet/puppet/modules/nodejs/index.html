@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>puppet-nodejs | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="puppet-nodejs" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/nodejs/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/nodejs/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="puppet-nodejs" />
+<script type="application/ld+json">
+{"headline":"puppet-nodejs","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/nodejs/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">puppet-nodejs</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="puppet-nodejs">puppet-nodejs</h1>
+
+<p><a href="https://travis-ci.org/willdurand/puppet-nodejs"><img src="https://travis-ci.org/willdurand/puppet-nodejs.png?branch=master" alt="Build
+Status" /></a></p>
+
+<p>This module allows you to install <a href="http://nodejs.org/">Node.js</a> and
+<a href="https://npmjs.org/">NPM</a>. This module is published on the Puppet Forge as
+<a href="http://forge.puppetlabs.com/willdurand/nodejs">willdurand/nodejs</a>.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="manual-installation">Manual installation</h3>
+
+<p>This modules depends on
+<a href="https://github.com/puppetlabs/puppetlabs-stdlib">puppetlabs/stdlib</a> and <a href="https://github.com/maestrodev/puppet-wget">maestrodev/puppet-wget</a>.
+So all repositories have to be checked out:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git://github.com/willdurand/puppet-nodejs.git modules/nodejs
+git clone git://github.com/puppetlabs/puppetlabs-stdlib.git modules/stdlib
+git clone git://github.com/maestrodev/puppet-wget.git modules/wget
+</code></pre></div></div>
+
+<p>For Redhat based OS, the following are (typical) additional requirements:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git://github.com/treydock/puppet-gpg_key.git modules/gpg_key
+</code></pre></div></div>
+
+<h3 id="puppet-module-tool">Puppet Module Tool:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puppet module install willdurand/nodejs
+</code></pre></div></div>
+
+<h3 id="librarian-puppet">Librarian-puppet:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mod 'willdurand/nodejs', '1.x.x'
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<p>There are a few ways to use this puppet module. The easiest one is just using the class definition:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'nodejs'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'v0.10.25'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This will compile and install Node.js version <code class="language-plaintext highlighter-rouge">v0.10.25</code> to your machine. <code class="language-plaintext highlighter-rouge">node</code> and <code class="language-plaintext highlighter-rouge">npm</code> will be available in your <code class="language-plaintext highlighter-rouge">$PATH</code> via <code class="language-plaintext highlighter-rouge">/usr/local/node/node-default/bin</code> so you can just start using <code class="language-plaintext highlighter-rouge">node</code>.</p>
+
+<p>Shortcuts are provided to easily install the <code class="language-plaintext highlighter-rouge">latest</code> or <code class="language-plaintext highlighter-rouge">stable</code> release by setting the <code class="language-plaintext highlighter-rouge">version</code> parameter to <code class="language-plaintext highlighter-rouge">latest</code> or <code class="language-plaintext highlighter-rouge">stable</code>. It will automatically look for the last release available on http://nodejs.org.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'nodejs'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'stable'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="setup-using-the-pre-built-installer">Setup using the pre-built installer</h3>
+
+<p>To use the pre-built installer version provided via http://nodejs.org/download you have to set <code class="language-plaintext highlighter-rouge">make_install</code> to <code class="language-plaintext highlighter-rouge">false</code></p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'nodejs'</span><span class="p">:</span>
+  <span class="py">version</span>      <span class="p">=&gt;</span> <span class="s1">'stable'</span><span class="p">,</span>
+  <span class="py">make_install</span> <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="setup-multiple-versions-of-nodejs">Setup multiple versions of Node.js</h3>
+
+<p>If you need more than one installed version of Node.js on your machine, you can just do it using the <code class="language-plaintext highlighter-rouge">nodejs::install</code> puppet define.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">nodejs::install</span> <span class="p">{</span> <span class="s1">'v0.10.17'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'v0.10.17'</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">nodejs::install</span> <span class="p">{</span> <span class="s1">'v0.10.25'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'v0.10.25'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This snippet will install version <code class="language-plaintext highlighter-rouge">v0.10.17</code> and <code class="language-plaintext highlighter-rouge">v0.10.25</code> on your machine. Keep in mind that a Node.js version installed via <code class="language-plaintext highlighter-rouge">nodejs::install</code> will provide only versioned binaries inside <code class="language-plaintext highlighter-rouge">/usr/local/bin</code>!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/local/bin/node-v0.10.17
+/usr/local/bin/node-v0.10.25
+</code></pre></div></div>
+
+<p>By default, this module creates a symlink for the node binary (and npm) with Node.js version appended into <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> e.g. <code class="language-plaintext highlighter-rouge">/usr/local/bin/node-v0.10.17</code>.
+All parameters available in the <code class="language-plaintext highlighter-rouge">class</code> definition are also available for <code class="language-plaintext highlighter-rouge">nodejs::install</code>.</p>
+
+<p>NPM symlinks cannot be created since every npm instance would use the default node interpreter which may cause errors.
+If you’d like to use another npm interpreter, please do something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/local/node/node-vx.x/bin/node /usr/local/node/node-vx.x/bin/npm run your_command
+</code></pre></div></div>
+
+<p>For 2.x it is planned to use NVM and refactor the whole nodejs installer (See <a href="https://github.com/willdurand/puppet-nodejs/issues/119">#119</a></p>
+
+<p>It is also possible to remove those versions again:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">::</span><span class="n">nodejs::install</span> <span class="p">{</span> <span class="s1">'node-v5.4'</span><span class="p">:</span>
+  <span class="py">ensure</span>  <span class="p">=&gt;</span> <span class="n">absent</span><span class="p">,</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'v5.4.1'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>After the run the directory <strong>/usr/local/node/node-v5.4.1</strong> has been purged.
+The link <strong>/usr/local/bin/node-v5.4.1</strong> is also purged.</p>
+
+<p>If the instance is the default one, an error will be thrown.</p>
+
+<p><strong>Note:</strong> It is not possible to install and uninstall an instance in the same run.
+<strong>Note:</strong> The default instance of nodejs cannot be removed. In this case an error will be raised.</p>
+
+<h3 id="configuring-node_path">Configuring $NODE_PATH</h3>
+
+<p>The environment variable $NODE_PATH can be configured using the <code class="language-plaintext highlighter-rouge">init</code> manifest:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'::nodejs'</span><span class="p">:</span>
+  <span class="py">version</span>   <span class="p">=&gt;</span> <span class="s1">'latest'</span><span class="p">,</span>
+  <span class="py">node_path</span> <span class="p">=&gt;</span> <span class="s1">'/your/custom/node/path'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It is not possible to adjust a $NODE_PATH through <code class="language-plaintext highlighter-rouge">::nodejs::install</code>.</p>
+
+<h3 id="binary-path">Binary path</h3>
+
+<p><code class="language-plaintext highlighter-rouge">node</code> and <code class="language-plaintext highlighter-rouge">npm</code> are linked to <code class="language-plaintext highlighter-rouge">/usr/local/bin</code> to be available in your system <code class="language-plaintext highlighter-rouge">$PATH</code> by default. To link those binaries to e.g <code class="language-plaintext highlighter-rouge">/bin</code>, just set the parameter <code class="language-plaintext highlighter-rouge">target_dir</code>.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'nodejs'</span><span class="p">:</span>
+  <span class="py">version</span>    <span class="p">=&gt;</span> <span class="s1">'stable'</span><span class="p">,</span>
+  <span class="py">target_dir</span> <span class="p">=&gt;</span> <span class="s1">'/bin'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="npm">NPM</h3>
+
+<p>Also, this module installs <a href="https://npmjs.org/">NPM</a> by default. Since versions <code class="language-plaintext highlighter-rouge">v0.6.3</code> of Node.js <code class="language-plaintext highlighter-rouge">npm</code> is included in every installation! For older versions, you can set parameter <code class="language-plaintext highlighter-rouge">with_npm =&gt; false</code> to not install <code class="language-plaintext highlighter-rouge">npm</code>.</p>
+
+<h3 id="npm-provider">NPM Provider</h3>
+
+<p>This module adds a new provider: <code class="language-plaintext highlighter-rouge">npm</code>. You can use it as usual:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">package</span> <span class="p">{</span> <span class="s1">'express'</span><span class="p">:</span>
+  <span class="py">provider</span> <span class="p">=&gt;</span> <span class="n">npm</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Note: When deploying a new machine without nodejs already installed, your npm package definition requires the nodejs class:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'nodejs'</span><span class="p">:</span>
+  <span class="py">version</span> <span class="p">=&gt;</span> <span class="s1">'stable'</span>
+<span class="p">}</span>
+
+<span class="n">package</span> <span class="p">{</span> <span class="s1">'express'</span><span class="p">:</span>
+  <span class="py">provider</span> <span class="p">=&gt;</span> <span class="s1">'npm'</span><span class="p">,</span>
+  <span class="kp">require</span>  <span class="p">=&gt;</span> <span class="nc">Class</span><span class="p">[</span><span class="s1">'nodejs'</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="npm-installer">NPM installer</h3>
+
+<p>The nodejs installer can be used if a npm package should not be installed globally, but in a certain directory.</p>
+
+<p>There are two approaches how to use this feature:</p>
+
+<h4 id="installing-a-single-package-into-a-directory">Installing a single package into a directory</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">::</span><span class="n">nodejs::npm</span> <span class="p">{</span> <span class="s1">'npm-webpack'</span><span class="p">:</span>
+  <span class="py">ensure</span>       <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span> <span class="c"># absent would uninstall this package
+</span>  <span class="py">pkg_name</span>     <span class="p">=&gt;</span> <span class="s1">'webpack'</span><span class="p">,</span>
+  <span class="py">version</span>      <span class="p">=&gt;</span> <span class="s1">'x.x'</span><span class="p">,</span> <span class="c"># optional
+</span>  <span class="py">install_opt</span>  <span class="p">=&gt;</span> <span class="s1">'-x -y -z'</span><span class="p">,</span> <span class="c"># options passed to the "npm install" cmd, optional
+</span>  <span class="py">remove_opt</span>   <span class="p">=&gt;</span> <span class="s1">'-x -y -z'</span><span class="p">,</span> <span class="c"># options passed to the "npm remove" cmd (in case of ensure =&gt; absent), optional
+</span>  <span class="py">exec_as_user</span> <span class="p">=&gt;</span> <span class="s1">'vagrant'</span><span class="p">,</span>  <span class="c"># exec user, optional
+</span>  <span class="py">directory</span>    <span class="p">=&gt;</span> <span class="s1">'/target/directory'</span><span class="p">,</span> <span class="c"># target directory
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>This would install the package <code class="language-plaintext highlighter-rouge">webpack</code> into <code class="language-plaintext highlighter-rouge">/target/directory</code> with version <code class="language-plaintext highlighter-rouge">x.x</code>.</p>
+
+<h4 id="executing-a-packagejson-file">Executing a <code class="language-plaintext highlighter-rouge">package.json</code> file</h4>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">::</span><span class="n">nodejs::npm</span> <span class="p">{</span> <span class="s1">'npm-install-dir'</span><span class="p">:</span>
+  <span class="py">list</span>         <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span> <span class="c"># flag to tell puppet to execute the package.json file
+</span>  <span class="py">directory</span>    <span class="p">=&gt;</span> <span class="s1">'/target'</span><span class="p">,</span>
+  <span class="py">exec_as_user</span> <span class="p">=&gt;</span> <span class="s1">'vagrant'</span><span class="p">,</span>
+  <span class="py">install_opt</span>  <span class="p">=&gt;</span> <span class="s1">'-x -y -z'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="proxy">Proxy</h3>
+
+<p>When your puppet agent is behind a web proxy, export the <code class="language-plaintext highlighter-rouge">http_proxy</code> environment variable:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">http_proxy</span><span class="o">=</span>http://myHttpProxy:8888
+</code></pre></div></div>
+
+<h2 id="running-the-tests">Running the tests</h2>
+
+<p>Install the dependencies using <a href="http://gembundler.com">Bundler</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BUNDLE_GEMFILE=.gemfile bundle install
+</code></pre></div></div>
+
+<p>Run the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BUNDLE_GEMFILE=.gemfile bundle exec rake test
+</code></pre></div></div>
+
+<h2 id="authors">Authors</h2>
+
+<ul>
+  <li>William Durand <a href="mailto:william.durand1@gmail.com">william.durand1@gmail.com</a></li>
+  <li>Johannes Graf (<a href="https://github.com/grafjo">@grafjo</a>)</li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>puppet-nodejs is released under the MIT License. See the bundled LICENSE file
+for details.</p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

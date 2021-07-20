@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Puppet Archive | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Puppet Archive" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/archive/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/archive/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Puppet Archive" />
+<script type="application/ld+json">
+{"headline":"Puppet Archive","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/archive/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Puppet Archive</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="puppet-archive">Puppet Archive</h1>
+
+<p><a href="https://forge.puppetlabs.com/puppet/archive"><img src="http://img.shields.io/puppetforge/v/puppet/archive.svg" alt="Puppet Forge" /></a>
+<a href="https://forge.puppetlabs.com/puppet/archive"><img src="https://img.shields.io/puppetforge/dt/puppet/archive.svg" alt="Puppet Forge downloads" /></a>
+<a href="https://forge.puppetlabs.com/puppet/archive"><img src="https://img.shields.io/puppetforge/f/puppet/archive.svg" alt="Puppet Forge score" /></a>
+<a href="https://travis-ci.org/voxpupuli/puppet-archive"><img src="https://travis-ci.org/voxpupuli/puppet-archive.png" alt="Build Status" /></a>
+<a href="https://forge.puppet.com/camptocamp/archive"><img src="https://img.shields.io/badge/camptocamp-compatible-orange.svg" alt="Camptocamp compatible" /></a></p>
+
+<h4 id="table-of-contents">Table of Contents</h4>
+
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#module-description">Module Description</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#usage">Usage</a>
+    <ul>
+      <li><a href="#usage-example">Example</a></li>
+      <li><a href="#puppet-url">Puppet URL</a></li>
+      <li><a href="#file-permission">File permission</a></li>
+      <li><a href="#network-files">Network files</a></li>
+      <li><a href="#extract-customization">Extract customization</a></li>
+      <li><a href="#s3-bucket">S3 Bucket</a></li>
+    </ul>
+  </li>
+  <li><a href="#reference">Reference</a></li>
+  <li><a href="#development">Development</a></li>
+</ol>
+
+<h2 id="overview">Overview</h2>
+
+<p>This module manages download, deployment, and cleanup of archive files.</p>
+
+<h2 id="module-description">Module Description</h2>
+
+<p>This module uses types and providers to download and manage compress files,
+with optional lifecycle functionality such as checksum, extraction, and
+cleanup. The benefits over existing modules such as
+<a href="https://github.com/voxpupoli/puppet-staging">puppet-staging</a>:</p>
+
+<ul>
+  <li>Implemented via types and provider instead of exec resource.</li>
+  <li>Follows 302 redirect and propagate download failure.</li>
+  <li>Optional checksum verification of archive files.</li>
+  <li>Automatic dependency to parent directory.</li>
+  <li>Support Windows file extraction via 7zip.</li>
+  <li>Able to cleanup archive files after extraction.</li>
+</ul>
+
+<p>This module is compatible with <a href="https://forge.puppet.com/camptocamp/archive">camptocamp/archive</a>. For this it provides compatibility shims.</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>The module requires 7zip for windows clients which is installed via <code class="language-plaintext highlighter-rouge">include
+'::archive'</code>. On posix systems, curl is the default provider. The default
+provider can be overwritten by configuring resource defaults in site.pp:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Archive</span> <span class="p">{</span>
+  <span class="py">provider</span> <span class="p">=&gt;</span> <span class="s1">'ruby'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Users of the module is responsbile for archive package dependencies for
+alternative providers and all extraction utilities such as tar, gunzip, bunzip:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="nv">$::facts</span><span class="p">[</span><span class="s1">'osfamily'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'windows'</span> <span class="p">{</span>
+  <span class="n">package</span> <span class="p">{</span> <span class="s1">'wget'</span><span class="p">:</span>
+    <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="n">package</span> <span class="p">{</span> <span class="s1">'bunzip'</span><span class="p">:</span>
+    <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="p">}</span>
+
+  <span class="nc">Archive</span> <span class="p">{</span>
+    <span class="py">provider</span> <span class="p">=&gt;</span> <span class="s1">'wget'</span><span class="p">,</span>
+    <span class="kp">require</span>  <span class="p">=&gt;</span> <span class="nc">Package</span><span class="p">[</span><span class="s1">'wget'</span><span class="p">,</span> <span class="s1">'bunzip'</span><span class="p">],</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="usage">Usage</h2>
+
+<p>Archive module dependency is managed by the archive class. This is only
+required for windows platform. By default 7zip is installed via chocolatey, but
+can be adjusted to use the msi package instead:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'archive'</span><span class="p">:</span>
+  <span class="py">seven_zip_name</span>     <span class="p">=&gt;</span> <span class="s1">'7-Zip 9.20 (x64 edition)'</span><span class="p">,</span>
+  <span class="py">seven_zip_source</span>   <span class="p">=&gt;</span> <span class="s1">'C:/Windows/Temp/7z920-x64.msi'</span><span class="p">,</span>
+  <span class="py">seven_zip_provider</span> <span class="p">=&gt;</span> <span class="s1">'windows'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="usage-example">Usage Example</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">include</span> <span class="s1">'::archive'</span> <span class="c"># NOTE: optional for posix platforms
+</span>
+<span class="n">archive</span> <span class="p">{</span> <span class="s1">'/tmp/jta-1.1.jar'</span><span class="p">:</span>
+  <span class="py">ensure</span>        <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="s1">'/tmp'</span><span class="p">,</span>
+  <span class="py">source</span>        <span class="p">=&gt;</span> <span class="s1">'http://central.maven.org/maven2/javax/transaction/jta/1.1/jta-1.1.jar'</span><span class="p">,</span>
+  <span class="py">checksum</span>      <span class="p">=&gt;</span> <span class="s1">'2ca09f0b36ca7d71b762e14ea2ff09d5eac57558'</span><span class="p">,</span>
+  <span class="py">checksum_type</span> <span class="p">=&gt;</span> <span class="s1">'sha1'</span><span class="p">,</span>
+  <span class="py">creates</span>       <span class="p">=&gt;</span> <span class="s1">'/tmp/javax'</span><span class="p">,</span>
+  <span class="py">cleanup</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">archive</span> <span class="p">{</span> <span class="s1">'/tmp/test100k.db'</span><span class="p">:</span>
+  <span class="py">source</span>   <span class="p">=&gt;</span> <span class="s1">'ftp://ftp.otenet.gr/test100k.db'</span><span class="p">,</span>
+  <span class="py">username</span> <span class="p">=&gt;</span> <span class="s1">'speedtest'</span><span class="p">,</span>
+  <span class="py">password</span> <span class="p">=&gt;</span> <span class="s1">'speedtest'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="puppet-url">Puppet URL</h3>
+
+<p>Below is an example of how to deploy a tar.gz to a local directory when it is served via the <code class="language-plaintext highlighter-rouge">puppet:///</code> style url which is not currently supported.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$docs_filename</span> <span class="o">=</span> <span class="s1">'help.tar.gz'</span>
+<span class="nv">$docs_gz_path</span>  <span class="o">=</span> <span class="s2">"/tmp/</span><span class="nv">${docs_filename}</span><span class="s2">"</span>
+<span class="nv">$homedir</span> <span class="o">=</span> <span class="s1">'/home/myuser/'</span>
+
+<span class="c"># First, deploy the archive to the local filesystem
+</span><span class="n">file</span> <span class="p">{</span><span class="nv">$docs_gz_path</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+  <span class="py">source</span> <span class="p">=&gt;</span> <span class="s2">"puppet:///modules/profile/</span><span class="nv">${docs_filename}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c"># Then expand the archive where you need it to go
+</span><span class="n">archive</span> <span class="p">{</span> <span class="nv">$docs_gz_path</span><span class="p">:</span>
+  <span class="py">path</span>          <span class="p">=&gt;</span> <span class="nv">$docs_gz_path</span><span class="p">,</span>
+  <span class="c">#cleanup       =&gt; true, # Do not use this argument with this workaround for idempotency reasons
+</span>  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="nv">$homedir</span><span class="p">,</span>
+  <span class="py">creates</span>       <span class="p">=&gt;</span> <span class="s2">"</span><span class="nv">${homedir}</span><span class="s2">/help"</span> <span class="c">#directory inside tgz
+</span>  <span class="kp">require</span>       <span class="p">=&gt;</span> <span class="p">[</span> <span class="nc">File</span><span class="p">[</span><span class="nv">$docs_gz_path</span><span class="p">]</span> <span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="file-permission">File permission</h3>
+
+<p>When extracting files as non-root user, either ensure the target directory
+exists with the appropriate permission (see <a href="tests/tomcat.pp">tomcat.pp</a> for
+full working example):</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$dirname</span> <span class="o">=</span> <span class="s1">'apache-tomcat-9.0.0.M3'</span>
+<span class="nv">$filename</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">${dirname}</span><span class="s2">.zip"</span>
+<span class="nv">$install_path</span> <span class="o">=</span> <span class="s2">"/opt/</span><span class="nv">${dirname}</span><span class="s2">"</span>
+
+<span class="n">file</span> <span class="p">{</span> <span class="nv">$install_path</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">directory</span><span class="p">,</span>
+  <span class="py">owner</span>  <span class="p">=&gt;</span> <span class="s1">'tomcat'</span><span class="p">,</span>
+  <span class="py">group</span>  <span class="p">=&gt;</span> <span class="s1">'tomcat'</span><span class="p">,</span>
+  <span class="py">mode</span>   <span class="p">=&gt;</span> <span class="s1">'0755'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">archive</span> <span class="p">{</span> <span class="nv">$filename</span><span class="p">:</span>
+  <span class="py">path</span>          <span class="p">=&gt;</span> <span class="s2">"/tmp/</span><span class="nv">${filename}</span><span class="s2">"</span><span class="p">,</span>
+  <span class="py">source</span>        <span class="p">=&gt;</span> <span class="s1">'http://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.0.M3/bin/apache-tomcat-9.0.0.M3.zip'</span><span class="p">,</span>
+  <span class="py">checksum</span>      <span class="p">=&gt;</span> <span class="s1">'f2aaf16f5e421b97513c502c03c117fab6569076'</span><span class="p">,</span>
+  <span class="py">checksum_type</span> <span class="p">=&gt;</span> <span class="s1">'sha1'</span><span class="p">,</span>
+  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="s1">'/opt'</span><span class="p">,</span>
+  <span class="py">creates</span>       <span class="p">=&gt;</span> <span class="s2">"</span><span class="nv">${install_path}</span><span class="s2">/bin"</span><span class="p">,</span>
+  <span class="py">cleanup</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">user</span>          <span class="p">=&gt;</span> <span class="s1">'tomcat'</span><span class="p">,</span>
+  <span class="py">group</span>         <span class="p">=&gt;</span> <span class="s1">'tomcat'</span><span class="p">,</span>
+  <span class="kp">require</span>       <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="nv">$install_path</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>or use an subscribing exec to chmod the directory afterwards:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$dirname</span> <span class="o">=</span> <span class="s1">'apache-tomcat-9.0.0.M3'</span>
+<span class="nv">$filename</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">${dirname}</span><span class="s2">.zip"</span>
+<span class="nv">$install_path</span> <span class="o">=</span> <span class="s2">"/opt/</span><span class="nv">${dirname}</span><span class="s2">"</span>
+
+<span class="n">file</span> <span class="p">{</span> <span class="s1">'/opt/tomcat'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="s1">'link'</span><span class="p">,</span>
+  <span class="py">target</span> <span class="p">=&gt;</span> <span class="nv">$install_path</span>
+<span class="p">}</span>
+
+<span class="n">archive</span> <span class="p">{</span> <span class="nv">$filename</span><span class="p">:</span>
+  <span class="py">path</span>          <span class="p">=&gt;</span> <span class="s2">"/tmp/</span><span class="nv">${filename}</span><span class="s2">"</span><span class="p">,</span>
+  <span class="py">source</span>        <span class="p">=&gt;</span> <span class="s2">"http://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.0.M3/bin/apache-tomcat-9.0.0.M3.zip"</span><span class="p">,</span>
+  <span class="py">checksum</span>      <span class="p">=&gt;</span> <span class="s1">'f2aaf16f5e421b97513c502c03c117fab6569076'</span><span class="p">,</span>
+  <span class="py">checksum_type</span> <span class="p">=&gt;</span> <span class="s1">'sha1'</span><span class="p">,</span>
+  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="s1">'/opt'</span><span class="p">,</span>
+  <span class="py">creates</span>       <span class="p">=&gt;</span> <span class="nv">$install_path</span><span class="p">,</span>
+  <span class="py">cleanup</span>       <span class="p">=&gt;</span> <span class="s1">'true'</span><span class="p">,</span>
+  <span class="kp">require</span>       <span class="p">=&gt;</span> <span class="nc">File</span><span class="p">[</span><span class="nv">$install_path</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">exec</span> <span class="p">{</span> <span class="s1">'tomcat permission'</span><span class="p">:</span>
+  <span class="py">command</span>   <span class="p">=&gt;</span> <span class="s2">"chown tomcat:tomcat </span><span class="nv">$install_path</span><span class="s2">"</span><span class="p">,</span>
+  <span class="py">path</span>      <span class="p">=&gt;</span> <span class="nv">$::path</span><span class="p">,</span>
+  <span class="kp">subscribe</span> <span class="p">=&gt;</span> <span class="nc">Archive</span><span class="p">[</span><span class="nv">$filename</span><span class="p">],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="network-files">Network files</h3>
+
+<p>For large binary files that needs to be extracted locally, instead of copying
+the file from the network fileshare, simply set the file path to be the same as
+the source and archive will use the network file location:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">archive</span> <span class="p">{</span> <span class="s1">'/nfs/repo/software.zip'</span><span class="p">:</span>
+  <span class="py">source</span>        <span class="p">=&gt;</span> <span class="s1">'/nfs/repo/software.zip'</span>
+  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="s1">'/opt'</span><span class="p">,</span>
+  <span class="py">checksum_type</span> <span class="p">=&gt;</span> <span class="s1">'none'</span><span class="p">,</span> <span class="c"># typically unecessary
+</span>  <span class="py">cleanup</span>       <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>  <span class="c"># keep the file on the server
+</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="extract-customization">Extract Customization</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">extract_flags</code> or <code class="language-plaintext highlighter-rouge">extract_command</code> parameters can be used to override the
+default extraction command/flag (defaults are specified in
+<a href="/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/archive/lib/puppet_x/bodeco/archive.rb">achive.rb</a>).</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># tar striping directories:
+</span><span class="n">archive</span> <span class="p">{</span> <span class="s1">'/var/lib/kafka/kafka_2.10-0.8.2.1.tgz'</span><span class="p">:</span>
+  <span class="py">ensure</span>          <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">extract</span>         <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_command</span> <span class="p">=&gt;</span> <span class="s1">'tar xfz %s --strip-components=1'</span><span class="p">,</span>
+  <span class="py">extract_path</span>    <span class="p">=&gt;</span> <span class="s1">'/opt/kafka_2.10-0.8.2.1'</span><span class="p">,</span>
+  <span class="py">cleanup</span>         <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">creates</span>         <span class="p">=&gt;</span> <span class="s1">'/opt/kafka_2.10-0.8.2.1/config'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c"># zip freshen existing files (zip -of %s instead of zip -o %s):
+</span><span class="n">archive</span> <span class="p">{</span> <span class="s1">'/var/lib/example.zip'</span><span class="p">:</span>
+  <span class="py">extract</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span>  <span class="p">=&gt;</span> <span class="s1">'/opt'</span><span class="p">,</span>
+  <span class="py">extract_flags</span> <span class="p">=&gt;</span> <span class="s1">'-of'</span><span class="p">,</span>
+  <span class="py">cleanup</span>       <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="kp">subscribe</span>     <span class="p">=&gt;</span> <span class="o">...</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="s3-bucket">S3 bucket</h3>
+
+<p>S3 support is implemented via the <a href="http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">AWS
+CLI</a>.
+By default this dependency is only installed for Linux VMs running on AWS, or
+enabled via <code class="language-plaintext highlighter-rouge">aws_cli_install</code> option:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'::archive'</span><span class="p">:</span>
+  <span class="py">aws_cli_install</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c"># See AWS cli guide for credential and configuration settings:
+# http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+</span><span class="n">file</span> <span class="p">{</span> <span class="s1">'/root/.aws/credential'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+  <span class="o">...</span>
+<span class="p">}</span>
+
+<span class="n">archive</span> <span class="p">{</span> <span class="s1">'/tmp/gravatar.png'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">source</span> <span class="p">=&gt;</span> <span class="s1">'s3://bodecoio/gravatar.png'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>NOTE: Alternative s3 provider support can be implemented by overriding the <a href="/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/archive/lib/puppet/provider/archive/ruby.rb">s3_download method</a>:</p>
+
+<h2 id="reference">Reference</h2>
+
+<h3 id="classes">Classes</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">archive</code>: install 7zip package (Windows only) and aws cli for s3 support.</li>
+  <li><code class="language-plaintext highlighter-rouge">archive::staging</code>: install package dependencies and creates staging directory for backwards compatibility. Use the archive class instead if you do not need the staging directory.</li>
+</ul>
+
+<h3 id="define-resources">Define Resources</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">archive::artifactory</code>: archive wrapper for <a href="http://www.jfrog.com/open-source/#os-arti">JFrog Artifactory</a> files with checksum.</li>
+  <li><code class="language-plaintext highlighter-rouge">archive::go</code>: archive wrapper for <a href="http://www.go.cd/">GO Continuous Delivery</a> files with checksum.</li>
+  <li><code class="language-plaintext highlighter-rouge">archive::nexus</code>: archive wrapper for <a href="http://www.sonatype.org/nexus/">Sonatype Nexus</a> files with checksum.</li>
+  <li><code class="language-plaintext highlighter-rouge">archive::download</code>: archive wrapper and compatibility shim for <a href="https://forge.puppet.com/camptocamp/archive">camptocamp/archive</a>. This is considered private API, as it has to change with camptocamp/archive. For this reason it will remain undocumented, and removed when no longer needed. We suggest not using it directly. Instead please consider migrating to archive itself where possible.</li>
+</ul>
+
+<h3 id="resources">Resources</h3>
+
+<h4 id="archive">Archive</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ensure</code>: whether archive file should be present/absent (default: present)</li>
+  <li><code class="language-plaintext highlighter-rouge">path</code>: namevar, archive file fully qualified file path.</li>
+  <li><code class="language-plaintext highlighter-rouge">filename</code>: archive file name (derived from path).</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">source</code>: archive file source, supports http</td>
+          <td>https</td>
+          <td>ftp</td>
+          <td>file</td>
+          <td>s3 uri.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">username</code>: username to download source file.</li>
+  <li><code class="language-plaintext highlighter-rouge">password</code>: password to download source file.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">allow_insecure</code>: Ignore HTTPS certificate errors (true</td>
+          <td>false). (default: false)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">cookie</code>: archive file download cookie.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">checksum_type</code>: archive file checksum type (none</td>
+          <td>md5</td>
+          <td>sha1</td>
+          <td>sha2</td>
+          <td>sh256</td>
+          <td>sha384</td>
+          <td>sha512). (default: none)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">checksum</code>: archive file checksum (match checksum_type)</li>
+  <li><code class="language-plaintext highlighter-rouge">checksum_url</code>: archive file checksum source (instead of specify checksum)</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">checksum_verify</code>: whether checksum will be verified (true</td>
+          <td>false). (default: true)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">extract</code>: whether archive will be extracted after download (true</td>
+          <td>false). (default: false)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">extract_path</code>: target folder path to extract archive.</li>
+  <li><code class="language-plaintext highlighter-rouge">extract_command</code>: custom extraction command (‘tar xvf example.tar.gz’), also support sprintf format (‘tar xvf %s’) which will be processed with the filename: sprintf(‘tar xvf %s’, filename)</li>
+  <li><code class="language-plaintext highlighter-rouge">extract_flags</code>: custom extraction options, this replaces the default flags. A string such as ‘xvf’ for a tar file would replace the default xf flag. A hash is useful when custom flags are needed for different platforms. {‘tar’ =&gt; ‘xzf’, ‘7z’ =&gt; ‘x -aot’}.</li>
+  <li><code class="language-plaintext highlighter-rouge">user</code>: extract command user (using this option will configure the archive file permission to 0644 so the user can read the file).</li>
+  <li><code class="language-plaintext highlighter-rouge">group</code>: extract command group (using this option will configure the archive file permission to 0644 so the user can read the file).</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">cleanup</code>: whether archive file will be removed after extraction (true</td>
+          <td>false). (default: true)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">creates</code>: if file/directory exists, will not download/extract archive.</li>
+  <li><code class="language-plaintext highlighter-rouge">proxy_server</code>: specify a proxy server, with port number if needed. ie: https://example.com:8080.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">proxy_type</code>: proxy server type (none</td>
+          <td>http</td>
+          <td>https</td>
+          <td>ftp)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<h4 id="archiveartifactory">Archive::Artifactory</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">path</code>: fully qualified filepath for the download the file or use archive_path and only supply filename. (namevar).</li>
+  <li><code class="language-plaintext highlighter-rouge">ensure</code>: ensure the file is present/absent.</li>
+  <li><code class="language-plaintext highlighter-rouge">url</code>: artifactory download url filepath. NOTE: replaces server, port, url_path parameters.</li>
+  <li><code class="language-plaintext highlighter-rouge">server</code>: artifactory server name (deprecated).</li>
+  <li><code class="language-plaintext highlighter-rouge">port</code>: artifactory server port (deprecated).</li>
+  <li><code class="language-plaintext highlighter-rouge">url_path</code>: artifactory file path http<code class="language-plaintext highlighter-rouge">:</code>://{server}`:{port}/artifactory/{url_path} (deprecated).</li>
+  <li><code class="language-plaintext highlighter-rouge">owner</code>: file owner (see archive params for defaults).</li>
+  <li><code class="language-plaintext highlighter-rouge">group</code>: file group (see archive params for defaults).</li>
+  <li><code class="language-plaintext highlighter-rouge">mode</code>: file mode (see archive params for defaults).</li>
+  <li><code class="language-plaintext highlighter-rouge">archive_path</code>: the parent directory of local filepath.</li>
+  <li><code class="language-plaintext highlighter-rouge">extract</code>: whether to extract the files (true/false).</li>
+  <li><code class="language-plaintext highlighter-rouge">creates</code>: the file created when the archive is extracted (true/false).</li>
+  <li><code class="language-plaintext highlighter-rouge">cleanup</code>: remove archive file after file extraction (true/false).</li>
+</ul>
+
+<h4 id="archiveartifactory-example">Archive::Artifactory Example:</h4>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$dirname</span> <span class="o">=</span> <span class="s1">'gradle-1.0-milestone-4-20110723151213+0300'</span>
+<span class="nv">$filename</span> <span class="o">=</span> <span class="s2">"</span><span class="nv">${dirname}</span><span class="s2">-bin.zip"</span>
+
+<span class="n">archive::artifactory</span> <span class="p">{</span> <span class="nv">$filename</span><span class="p">:</span>
+  <span class="py">archive_path</span> <span class="p">=&gt;</span> <span class="s1">'/tmp'</span><span class="p">,</span>
+  <span class="py">url</span>          <span class="p">=&gt;</span> <span class="s2">"http://repo.jfrog.org/artifactory/distributions/org/gradle/</span><span class="nv">${filename}</span><span class="s2">"</span><span class="p">,</span>
+  <span class="py">extract</span>      <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="py">extract_path</span> <span class="p">=&gt;</span> <span class="s1">'/opt'</span><span class="p">,</span>
+  <span class="py">creates</span>      <span class="p">=&gt;</span> <span class="s2">"/opt/</span><span class="nv">${dirname}</span><span class="s2">"</span><span class="p">,</span>
+  <span class="py">cleanup</span>      <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">file</span> <span class="p">{</span> <span class="s1">'/opt/gradle'</span><span class="p">:</span>
+  <span class="py">ensure</span> <span class="p">=&gt;</span> <span class="n">link</span><span class="p">,</span>
+  <span class="py">target</span> <span class="p">=&gt;</span> <span class="s2">"/opt/</span><span class="nv">${dirname}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="archivenexus">Archive::Nexus</h4>
+
+<h4 id="archivenexus-example">Archive::Nexus Example:</h4>
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">archive::nexus</span> <span class="p">{</span> <span class="s1">'/tmp/jtstand-ui-0.98.jar'</span><span class="p">:</span>
+  <span class="py">url</span>        <span class="p">=&gt;</span> <span class="s1">'https://oss.sonatype.org'</span><span class="p">,</span>
+  <span class="py">gav</span>        <span class="p">=&gt;</span> <span class="s1">'org.codehaus.jtstand:jtstand-ui:0.98'</span><span class="p">,</span>
+  <span class="py">repository</span> <span class="p">=&gt;</span> <span class="s1">'codehaus-releases'</span><span class="p">,</span>
+  <span class="py">packaging</span>  <span class="p">=&gt;</span> <span class="s1">'jar'</span><span class="p">,</span>
+  <span class="py">extract</span>    <span class="p">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="development">Development</h2>
+
+<p>We highly welcome new contributions to this module, especially those that
+include documentation, and rspec tests ;) but will happily guide you through
+the process, so, yes, please submit that pull request!</p>
+
+<p>Note: If you are writing a dependent module that include specs in it, you will
+need to set the puppetversion fact in your puppet-rspec tests. You can do that
+by adding it to the default facts of your spec/spec_helper.rb:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">RSpec</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span>
+  <span class="n">c</span><span class="p">.</span><span class="nf">default_facts</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:puppetversion</span> <span class="o">=&gt;</span> <span class="no">Puppet</span><span class="p">.</span><span class="nf">version</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

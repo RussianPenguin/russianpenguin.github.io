@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>OpenWRT: блокировка рекламы | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="OpenWRT: блокировка рекламы" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это OpenWRT. А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство. Рассматривать будем ситуацию при которой у нас установлена дефолтная конфигурация c dnsmasq. Сначала нам потребуется поставить пакет dnsmasq-full взамен стандартного (он чуть больше по объему и тянет больше зависимостей, и предоставляет больше возможностей по настройке). # opkg update # opkg remove dnsmasq # opkg install dnsmasq-full # /etc/init.d/dnsmasq restart Посмотрим на файл /tmp/etc/dnsmasq.conf. Нас будут интересовать следующие два параметра. addn-hosts=/tmp/hosts conf-dir=/tmp/dnsmasq.d Буквально это значит, что дополнительные файлы в формате /etc/hosts хранятся в /tmp/hosts, а дополнительные конфиги - в /tmp/dnsmasq.d. Теперь нам потребуется скрипт, который будет скачивать листы. Поместим его в /root/bin/adblock.sh #!/bin/sh echo &quot;download adblock rules&quot; if [! -d /tmp/dnsmasq.d]; then mkdir /tmp/dnsmasq.d fi if [! -d /tmp/hosts]; then mkdir /tmp/hosts fi touch /tmp/dnsmasq.d/adblock.conf wget -O /tmp/dnsmasq.d/adblock.conf &quot;http://pgl.yoyo.org/adservers/serverlist.php?hostformat=dnsmasq&amp;amp;showintro=0&amp;amp;mimetype=plaintext&quot; echo &quot;&quot; \&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://hosts-file.net/ad\_servers.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://adaway.org/hosts.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock wget -O /tmp/adblock http://winhelp2002.mvps.org/hosts.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock if [-f /tmp/adblock]; then rm /tmp/adblock fi /etc/init.d/dnsmasq enabled &amp;&amp; /etc/init.d/dnsmasq restart Первым мы скачиваем файл с блокировками в формате dnsmasq, а последующие запросы - это блокировки в формате hosts. Соответственно раскладываем их по разным папкам и рестартим сервис. Не забываем поставить +x на файл. Теперь нужно добавить этот скрипт в крон дабы он обновлялся. # crontab -e и пишем туда что-то вроде \* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh Это означает, что раз в 12 часов списки будут обновляться. Естественно, что надо включить крон. По дефолту он выключен. # /etc/init.d/cron enable # /etc/init.d/cron enabled &amp;&amp; /etc/init.d/cron start Теперь осталось сделать так, чтобы при поднятии сетевого интерфейса скрипт сразу же обновлял правила. А для этого нам потребуется создать файл /etc/hotplug.d/iface/50-adblock примерно следующего вида. #!/bin/sh [ifup = &quot;$ACTION&quot; -a &quot;$DEVICE&quot; = eth1] &amp;&amp; { /bin/sh /root/bin/update\_adblock.sh } Где eth1 - это ваш wan-интерфейс. Все. Можно перезагрузить роутер для проверки что все настроено корректно. Рекламные домены вроде doubleclick.de должны резолвиться либо на 0.0.0.0, либо на 127.0.0.1. $ nslookup doubleclick.de Server: 192.168.0.1 Address: 192.168.0.1#53 Name: doubleclick.de Address: 127.0.0.1 Чтобы точно убедиться, что все работает как надо - проверяйте что сразу после поднятия wan появились файлы /tmp/dnsmasq.d/adblock.conf и /tmp/hosts/adblock. Учтите, что в сумме размер списков блокировки составит более 100 тысяч записей. И если роутер слабоват, то придется какой-то из списков отключать. И да - это не панацея. Это просто хороший способ обезопасить электронные читалки, телефоны и разную мелкую технику, которая ходит в инет от баннеров и прочего добра. Источники: https://wiki.openwrt.org/doc/networking/routing https://forum.openwrt.org/viewtopic.php?id=50407 https://wiki.openwrt.org/doc/howto/cron https://wiki.openwrt.org/ru/doc/howto/dhcp.dnsmasq https://forum.openwrt.org/viewtopic.php?id=25304 https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/ru/doc/uci/dhcp" />
+<meta property="og:description" content="Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это OpenWRT. А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство. Рассматривать будем ситуацию при которой у нас установлена дефолтная конфигурация c dnsmasq. Сначала нам потребуется поставить пакет dnsmasq-full взамен стандартного (он чуть больше по объему и тянет больше зависимостей, и предоставляет больше возможностей по настройке). # opkg update # opkg remove dnsmasq # opkg install dnsmasq-full # /etc/init.d/dnsmasq restart Посмотрим на файл /tmp/etc/dnsmasq.conf. Нас будут интересовать следующие два параметра. addn-hosts=/tmp/hosts conf-dir=/tmp/dnsmasq.d Буквально это значит, что дополнительные файлы в формате /etc/hosts хранятся в /tmp/hosts, а дополнительные конфиги - в /tmp/dnsmasq.d. Теперь нам потребуется скрипт, который будет скачивать листы. Поместим его в /root/bin/adblock.sh #!/bin/sh echo &quot;download adblock rules&quot; if [! -d /tmp/dnsmasq.d]; then mkdir /tmp/dnsmasq.d fi if [! -d /tmp/hosts]; then mkdir /tmp/hosts fi touch /tmp/dnsmasq.d/adblock.conf wget -O /tmp/dnsmasq.d/adblock.conf &quot;http://pgl.yoyo.org/adservers/serverlist.php?hostformat=dnsmasq&amp;amp;showintro=0&amp;amp;mimetype=plaintext&quot; echo &quot;&quot; \&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://hosts-file.net/ad\_servers.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://adaway.org/hosts.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock wget -O /tmp/adblock http://winhelp2002.mvps.org/hosts.txt sed &#39;s/^\(.\*\).$/\1/&#39; /tmp/adblock \&gt;\&gt; /tmp/hosts/adblock if [-f /tmp/adblock]; then rm /tmp/adblock fi /etc/init.d/dnsmasq enabled &amp;&amp; /etc/init.d/dnsmasq restart Первым мы скачиваем файл с блокировками в формате dnsmasq, а последующие запросы - это блокировки в формате hosts. Соответственно раскладываем их по разным папкам и рестартим сервис. Не забываем поставить +x на файл. Теперь нужно добавить этот скрипт в крон дабы он обновлялся. # crontab -e и пишем туда что-то вроде \* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh Это означает, что раз в 12 часов списки будут обновляться. Естественно, что надо включить крон. По дефолту он выключен. # /etc/init.d/cron enable # /etc/init.d/cron enabled &amp;&amp; /etc/init.d/cron start Теперь осталось сделать так, чтобы при поднятии сетевого интерфейса скрипт сразу же обновлял правила. А для этого нам потребуется создать файл /etc/hotplug.d/iface/50-adblock примерно следующего вида. #!/bin/sh [ifup = &quot;$ACTION&quot; -a &quot;$DEVICE&quot; = eth1] &amp;&amp; { /bin/sh /root/bin/update\_adblock.sh } Где eth1 - это ваш wan-интерфейс. Все. Можно перезагрузить роутер для проверки что все настроено корректно. Рекламные домены вроде doubleclick.de должны резолвиться либо на 0.0.0.0, либо на 127.0.0.1. $ nslookup doubleclick.de Server: 192.168.0.1 Address: 192.168.0.1#53 Name: doubleclick.de Address: 127.0.0.1 Чтобы точно убедиться, что все работает как надо - проверяйте что сразу после поднятия wan появились файлы /tmp/dnsmasq.d/adblock.conf и /tmp/hosts/adblock. Учтите, что в сумме размер списков блокировки составит более 100 тысяч записей. И если роутер слабоват, то придется какой-то из списков отключать. И да - это не панацея. Это просто хороший способ обезопасить электронные читалки, телефоны и разную мелкую технику, которая ходит в инет от баннеров и прочего добра. Источники: https://wiki.openwrt.org/doc/networking/routing https://forum.openwrt.org/viewtopic.php?id=50407 https://wiki.openwrt.org/doc/howto/cron https://wiki.openwrt.org/ru/doc/howto/dhcp.dnsmasq https://forum.openwrt.org/viewtopic.php?id=25304 https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/ru/doc/uci/dhcp" />
+<link rel="canonical" href="http://localhost:4000/2016/08/26/openwrt-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-%D1%80%D0%B5%D0%BA%D0%BB%D0%B0%D0%BC%D1%8B/" />
+<meta property="og:url" content="http://localhost:4000/2016/08/26/openwrt-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-%D1%80%D0%B5%D0%BA%D0%BB%D0%B0%D0%BC%D1%8B/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-08-26T00:14:12+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="OpenWRT: блокировка рекламы" />
+<script type="application/ld+json">
+{"headline":"OpenWRT: блокировка рекламы","dateModified":"2016-08-26T00:14:12+03:00","datePublished":"2016-08-26T00:14:12+03:00","description":"Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это OpenWRT. А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство. Рассматривать будем ситуацию при которой у нас установлена дефолтная конфигурация c dnsmasq. Сначала нам потребуется поставить пакет dnsmasq-full взамен стандартного (он чуть больше по объему и тянет больше зависимостей, и предоставляет больше возможностей по настройке). # opkg update # opkg remove dnsmasq # opkg install dnsmasq-full # /etc/init.d/dnsmasq restart Посмотрим на файл /tmp/etc/dnsmasq.conf. Нас будут интересовать следующие два параметра. addn-hosts=/tmp/hosts conf-dir=/tmp/dnsmasq.d Буквально это значит, что дополнительные файлы в формате /etc/hosts хранятся в /tmp/hosts, а дополнительные конфиги - в /tmp/dnsmasq.d. Теперь нам потребуется скрипт, который будет скачивать листы. Поместим его в /root/bin/adblock.sh #!/bin/sh echo &quot;download adblock rules&quot; if [! -d /tmp/dnsmasq.d]; then mkdir /tmp/dnsmasq.d fi if [! -d /tmp/hosts]; then mkdir /tmp/hosts fi touch /tmp/dnsmasq.d/adblock.conf wget -O /tmp/dnsmasq.d/adblock.conf &quot;http://pgl.yoyo.org/adservers/serverlist.php?hostformat=dnsmasq&amp;amp;showintro=0&amp;amp;mimetype=plaintext&quot; echo &quot;&quot; \\&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://hosts-file.net/ad\\_servers.txt sed &#39;s/^\\(.\\*\\).$/\\1/&#39; /tmp/adblock \\&gt;\\&gt; /tmp/hosts/adblock wget -O /tmp/adblock https://adaway.org/hosts.txt sed &#39;s/^\\(.\\*\\).$/\\1/&#39; /tmp/adblock \\&gt;\\&gt; /tmp/hosts/adblock wget -O /tmp/adblock http://winhelp2002.mvps.org/hosts.txt sed &#39;s/^\\(.\\*\\).$/\\1/&#39; /tmp/adblock \\&gt;\\&gt; /tmp/hosts/adblock if [-f /tmp/adblock]; then rm /tmp/adblock fi /etc/init.d/dnsmasq enabled &amp;&amp; /etc/init.d/dnsmasq restart Первым мы скачиваем файл с блокировками в формате dnsmasq, а последующие запросы - это блокировки в формате hosts. Соответственно раскладываем их по разным папкам и рестартим сервис. Не забываем поставить +x на файл. Теперь нужно добавить этот скрипт в крон дабы он обновлялся. # crontab -e и пишем туда что-то вроде \\* \\*/12 \\* \\* \\* /bin/sh /root/bin/adblock.sh Это означает, что раз в 12 часов списки будут обновляться. Естественно, что надо включить крон. По дефолту он выключен. # /etc/init.d/cron enable # /etc/init.d/cron enabled &amp;&amp; /etc/init.d/cron start Теперь осталось сделать так, чтобы при поднятии сетевого интерфейса скрипт сразу же обновлял правила. А для этого нам потребуется создать файл /etc/hotplug.d/iface/50-adblock примерно следующего вида. #!/bin/sh [ifup = &quot;$ACTION&quot; -a &quot;$DEVICE&quot; = eth1] &amp;&amp; { /bin/sh /root/bin/update\\_adblock.sh } Где eth1 - это ваш wan-интерфейс. Все. Можно перезагрузить роутер для проверки что все настроено корректно. Рекламные домены вроде doubleclick.de должны резолвиться либо на 0.0.0.0, либо на 127.0.0.1. $ nslookup doubleclick.de Server: 192.168.0.1 Address: 192.168.0.1#53 Name: doubleclick.de Address: 127.0.0.1 Чтобы точно убедиться, что все работает как надо - проверяйте что сразу после поднятия wan появились файлы /tmp/dnsmasq.d/adblock.conf и /tmp/hosts/adblock. Учтите, что в сумме размер списков блокировки составит более 100 тысяч записей. И если роутер слабоват, то придется какой-то из списков отключать. И да - это не панацея. Это просто хороший способ обезопасить электронные читалки, телефоны и разную мелкую технику, которая ходит в инет от баннеров и прочего добра. Источники: https://wiki.openwrt.org/doc/networking/routing https://forum.openwrt.org/viewtopic.php?id=50407 https://wiki.openwrt.org/doc/howto/cron https://wiki.openwrt.org/ru/doc/howto/dhcp.dnsmasq https://forum.openwrt.org/viewtopic.php?id=25304 https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/doc/techref/initscripts https://wiki.openwrt.org/ru/doc/uci/dhcp","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/08/26/openwrt-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-%D1%80%D0%B5%D0%BA%D0%BB%D0%B0%D0%BC%D1%8B/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/08/26/openwrt-%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0-%D1%80%D0%B5%D0%BA%D0%BB%D0%B0%D0%BC%D1%8B/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">OpenWRT: блокировка рекламы</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>OpenWRT: блокировка рекламы</h1>
+<p>26 Aug 2016</p>
+
+<p><a href="https://openwrt.org/"><img src="/assets/images/2016/08/1280px-openwrt_logo-svg.png?w=150" alt="1280px-openwrt_logo-svg" /></a>Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это <a href="https://openwrt.org/">OpenWRT</a>.</p>
+
+<p>А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство.</p>
+
+<p>Рассматривать будем ситуацию при которой у нас установлена дефолтная конфигурация c dnsmasq.</p>
+
+<p>Сначала нам потребуется поставить пакет dnsmasq-full взамен стандартного (он чуть больше по объему и тянет больше зависимостей, и предоставляет больше возможностей по настройке).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># opkg update  
+# opkg remove dnsmasq  
+# opkg install dnsmasq-full  
+# /etc/init.d/dnsmasq restart
+</code></pre></div></div>
+
+<p>Посмотрим на файл /tmp/etc/dnsmasq.conf. Нас будут интересовать следующие два параметра.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>addn-hosts=/tmp/hosts  
+conf-dir=/tmp/dnsmasq.d
+</code></pre></div></div>
+
+<p>Буквально это значит, что дополнительные файлы в формате /etc/hosts хранятся в /tmp/hosts, а дополнительные конфиги - в /tmp/dnsmasq.d.</p>
+
+<p>Теперь нам потребуется скрипт, который будет скачивать листы. Поместим его в /root/bin/adblock.sh</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh  </span>
+<span class="nb">echo</span> <span class="s2">"download adblock rules"</span>
+
+<span class="k">if</span> <span class="o">[!</span> <span class="nt">-d</span> /tmp/dnsmasq.d]<span class="p">;</span> <span class="k">then  
+ </span><span class="nb">mkdir</span> /tmp/dnsmasq.d  
+<span class="k">fi
+
+if</span> <span class="o">[!</span> <span class="nt">-d</span> /tmp/hosts]<span class="p">;</span> <span class="k">then  
+ </span><span class="nb">mkdir</span> /tmp/hosts  
+<span class="k">fi
+
+</span><span class="nb">touch</span> /tmp/dnsmasq.d/adblock.conf
+
+wget <span class="nt">-O</span> /tmp/dnsmasq.d/adblock.conf <span class="s2">"http://pgl.yoyo.org/adservers/serverlist.php?hostformat=dnsmasq&amp;amp;showintro=0&amp;amp;mimetype=plaintext"</span>
+
+<span class="nb">echo</span> <span class="s2">""</span> <span class="se">\&gt;</span> /tmp/hosts/adblock
+
+wget <span class="nt">-O</span> /tmp/adblock https://hosts-file.net/ad<span class="se">\_</span>servers.txt  
+<span class="nb">sed</span> <span class="s1">'s/^\(.\*\).$/\1/'</span> /tmp/adblock <span class="se">\&gt;\&gt;</span> /tmp/hosts/adblock  
+wget <span class="nt">-O</span> /tmp/adblock https://adaway.org/hosts.txt  
+<span class="nb">sed</span> <span class="s1">'s/^\(.\*\).$/\1/'</span> /tmp/adblock <span class="se">\&gt;\&gt;</span> /tmp/hosts/adblock  
+wget <span class="nt">-O</span> /tmp/adblock http://winhelp2002.mvps.org/hosts.txt  
+<span class="nb">sed</span> <span class="s1">'s/^\(.\*\).$/\1/'</span> /tmp/adblock <span class="se">\&gt;\&gt;</span> /tmp/hosts/adblock
+
+<span class="k">if</span> <span class="o">[</span><span class="nt">-f</span> /tmp/adblock]<span class="p">;</span> <span class="k">then  
+ </span><span class="nb">rm</span> /tmp/adblock  
+<span class="k">fi</span>
+
+/etc/init.d/dnsmasq enabled <span class="o">&amp;&amp;</span> /etc/init.d/dnsmasq restart
+</code></pre></div></div>
+
+<p>Первым мы скачиваем файл с блокировками в формате dnsmasq, а последующие запросы - это блокировки в формате hosts. Соответственно раскладываем их по разным папкам и рестартим сервис.</p>
+
+<p>Не забываем поставить +x на файл.</p>
+
+<p>Теперь нужно добавить этот скрипт в крон дабы он обновлялся.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> # crontab -e
+</code></pre></div></div>
+
+<p>и пишем туда что-то вроде</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh
+</code></pre></div></div>
+
+<p>Это означает, что раз в 12 часов списки будут обновляться.</p>
+
+<p>Естественно, что надо включить крон. По дефолту он выключен.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># /etc/init.d/cron enable  
+# /etc/init.d/cron enabled &amp;&amp; /etc/init.d/cron start
+</code></pre></div></div>
+
+<p>Теперь осталось сделать так, чтобы при поднятии сетевого интерфейса скрипт сразу же обновлял правила.</p>
+
+<p>А для этого нам потребуется создать файл /etc/hotplug.d/iface/50-adblock примерно следующего вида.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh  
+[ifup = "$ACTION" -a "$DEVICE" = eth1] &amp;&amp; {  
+ /bin/sh /root/bin/update\_adblock.sh  
+}
+</code></pre></div></div>
+
+<p>Где eth1 - это ваш wan-интерфейс.</p>
+
+<p>Все. Можно перезагрузить роутер для проверки что все настроено корректно.</p>
+
+<p>Рекламные домены вроде doubleclick.de должны резолвиться либо на 0.0.0.0, либо на 127.0.0.1.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ nslookup doubleclick.de  
+Server: 192.168.0.1  
+Address: 192.168.0.1#53
+
+Name: doubleclick.de  
+Address: 127.0.0.1
+</code></pre></div></div>
+
+<p>Чтобы точно убедиться, что все работает как надо - проверяйте что сразу после поднятия wan появились файлы /tmp/dnsmasq.d/adblock.conf и /tmp/hosts/adblock.</p>
+
+<p>Учтите, что в сумме размер списков блокировки составит более 100 тысяч записей. И если роутер слабоват, то придется какой-то из списков отключать.</p>
+
+<p>И да - это не панацея. Это просто хороший способ обезопасить электронные читалки, телефоны и разную мелкую технику, которая ходит в инет от баннеров и прочего добра.</p>
+
+<p>Источники:</p>
+
+<ul>
+  <li><a href="https://wiki.openwrt.org/doc/networking/routing">https://wiki.openwrt.org/doc/networking/routing</a></li>
+  <li><a href="https://forum.openwrt.org/viewtopic.php?id=50407">https://forum.openwrt.org/viewtopic.php?id=50407</a></li>
+  <li><a href="https://wiki.openwrt.org/doc/howto/cron">https://wiki.openwrt.org/doc/howto/cron</a></li>
+  <li><a href="https://wiki.openwrt.org/ru/doc/howto/dhcp.dnsmasq">https://wiki.openwrt.org/ru/doc/howto/dhcp.dnsmasq</a></li>
+  <li><a href="https://forum.openwrt.org/viewtopic.php?id=25304">https://forum.openwrt.org/viewtopic.php?id=25304</a></li>
+  <li><a href="https://wiki.openwrt.org/doc/techref/initscripts">https://wiki.openwrt.org/doc/techref/initscripts</a></li>
+  <li><a href="https://wiki.openwrt.org/doc/techref/initscripts">https://wiki.openwrt.org/doc/techref/initscripts</a></li>
+  <li><a href="https://wiki.openwrt.org/ru/doc/uci/dhcp">https://wiki.openwrt.org/ru/doc/uci/dhcp</a></li>
+</ul>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

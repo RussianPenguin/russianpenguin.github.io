@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Как организовать собственную доменную зону (windows) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Как организовать собственную доменную зону (windows)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Для организации собственных доменных зон первого уровня в windows стоит использовать deadwood+maradns. За ссылками в гугль. Первый - это кеширующий dns, который позволяет добавлять кастомные рут-сервера для определенных зон. А второй - нерекурсивный днс для организации сервера кастомной зоны." />
+<meta property="og:description" content="Для организации собственных доменных зон первого уровня в windows стоит использовать deadwood+maradns. За ссылками в гугль. Первый - это кеширующий dns, который позволяет добавлять кастомные рут-сервера для определенных зон. А второй - нерекурсивный днс для организации сервера кастомной зоны." />
+<link rel="canonical" href="http://localhost:4000/2013/11/15/%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B7%D0%BE%D0%BD%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2013/11/15/%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B7%D0%BE%D0%BD%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2013-11-15T20:09:41+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Как организовать собственную доменную зону (windows)" />
+<script type="application/ld+json">
+{"headline":"Как организовать собственную доменную зону (windows)","dateModified":"2013-11-15T20:09:41+04:00","datePublished":"2013-11-15T20:09:41+04:00","description":"Для организации собственных доменных зон первого уровня в windows стоит использовать deadwood+maradns. За ссылками в гугль. Первый - это кеширующий dns, который позволяет добавлять кастомные рут-сервера для определенных зон. А второй - нерекурсивный днс для организации сервера кастомной зоны.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2013/11/15/%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B7%D0%BE%D0%BD%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2013/11/15/%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_%D0%B7%D0%BE%D0%BD%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Как организовать собственную доменную зону (windows)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Как организовать собственную доменную зону (windows)</h1>
+<p>15 Nov 2013</p>
+
+<p>Для организации собственных доменных зон первого уровня в windows стоит использовать deadwood+maradns. За ссылками в гугль.<br />
+Первый - это кеширующий dns, который позволяет добавлять кастомные рут-сервера для определенных зон. А второй - нерекурсивный днс для организации сервера кастомной зоны.<br />
+<!--more--><br />
+Примеры конфигов:</p>
+
+<p><strong>deadwood</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Lines with a '#' at the beginning are comments ignored by Deadwood's # text file parser. # If you wish to use this program to cache from other recursive servers # instead of doing its own recursion, uncomment the following lines # # Please note that each upstream\_servers entry takes up space in Deadwood's # cache and that maximum\_cache\_elements will need to be increased to store # a large number of these entries. upstream\_servers = {} upstream\_servers["."]="172.16.0.1, 8.8.8.8, 8.8.4.4" # Servers we connect to # It is also possible to use other root servers or to blacklist # a phising website. However, to do this, root\_servers needs to be # defined. For example, to blacklist the domain "phish.example.com": #root\_servers = {} # ICANN DNS root servers (Deadwood default if both root\_servers and # upstream\_servers are not defined) #root\_servers["."]="198.41.0.4, 192.228.79.201, 192.33.4.12, 128.8.10.90, " #root\_servers["."]+="192.203.230.10, 192.5.5.241, 192.112.36.4, 128.63.2.53, " #root\_servers["."]+="192.36.148.17, 192.58.128.30, 193.0.14.129, 199.7.83.42, " #root\_servers["."]+="202.12.27.33" #root\_servers["phish.example.com."]="10.254.254.254" # Please note that each root\_servers entry takes up space in Deadwood's # cache and that maximum\_cache\_elements will need to be increased to store # a large number of these entries. # The IP this program has bind\_address="127.0.0.1" # The IPs allowed to connect and use the cache recursive\_acl = "127.0.0.1/16" # The file containing a hard-to-guess secret random\_seed\_file = "secret.txt" # This is the file Deadwood uses to read the cache to and from disk cache\_file = "dw\_cache\_bin" # This is a list of IPs that, if we get them in a DNS reply, we convert # the reply in to a "not there" answer. #ip\_blacklist = "10.222.33.44, 10.222.3.55" # By default, for security reasons, Deadwood does not allow IPs in the # 192.168.x.x, 172.[16-31].x.x, 10.x.x.x, 127.x.x.x, 169.254.x.x, # 224.x.x.x, or 0.0.x.x range. If using Deadwood to resolve names # on an internal network, uncomment the following line: filter\_rfc1918 = 0 root\_servers = {} # our custom zone .some - root server root\_servers["some."]="172.16.1.1" #root\_servers["example.com."]="172.16.1.1"
+</code></pre></div></div>
+
+<p><strong>MaraDNS</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ipv4\_bind\_addresses = "172.16.1.1" #ipv4\_bind\_addresses = "127.0.0.1" timestamp\_type = 2 random\_seed\_file = "secret.txt" hide\_disclaimer = "YES" chroot\_dir = "C:/soft/maradns" csv2 = {} # our custom zone .some csv2["some."] = "db.some" csv2["example.com."] = "db.example.com"
+</code></pre></div></div>
+
+<p><strong>db.some</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\*.% 172.16.1.1
+</code></pre></div></div>
+
+<p>Осталось только выбрать поднятый сервер в качестве основного днс в системе</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping www.some
+</code></pre></div></div>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

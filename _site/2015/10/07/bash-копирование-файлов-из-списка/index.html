@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Bash: копирование файлов из списка | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Bash: копирование файлов из списка" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Задача: у нас есть файл со списком стилей/скриптов/бинарников (нужное подчернуть) которые надо скопировать или переместить в другое место. Да. Такие задачи бывают. :) Допустим выглядит файл как-то так $ cat css.txt css/reset-ls.css css/b-browser.css css/reg-form.css css/old/pop-up.css Пути либо относительные, либо полные. Скопировать все в новый локейшн можно простым однострочником $ for i in $(cat css.txt); do cp $i /tmp/; done" />
+<meta property="og:description" content="Задача: у нас есть файл со списком стилей/скриптов/бинарников (нужное подчернуть) которые надо скопировать или переместить в другое место. Да. Такие задачи бывают. :) Допустим выглядит файл как-то так $ cat css.txt css/reset-ls.css css/b-browser.css css/reg-form.css css/old/pop-up.css Пути либо относительные, либо полные. Скопировать все в новый локейшн можно простым однострочником $ for i in $(cat css.txt); do cp $i /tmp/; done" />
+<link rel="canonical" href="http://localhost:4000/2015/10/07/bash-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2-%D0%B8%D0%B7-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2015/10/07/bash-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2-%D0%B8%D0%B7-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-10-07T18:12:49+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Bash: копирование файлов из списка" />
+<script type="application/ld+json">
+{"headline":"Bash: копирование файлов из списка","dateModified":"2015-10-07T18:12:49+03:00","datePublished":"2015-10-07T18:12:49+03:00","description":"Задача: у нас есть файл со списком стилей/скриптов/бинарников (нужное подчернуть) которые надо скопировать или переместить в другое место. Да. Такие задачи бывают. :) Допустим выглядит файл как-то так $ cat css.txt css/reset-ls.css css/b-browser.css css/reg-form.css css/old/pop-up.css Пути либо относительные, либо полные. Скопировать все в новый локейшн можно простым однострочником $ for i in $(cat css.txt); do cp $i /tmp/; done","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/10/07/bash-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2-%D0%B8%D0%B7-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/10/07/bash-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D0%BE%D0%B2-%D0%B8%D0%B7-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Bash: копирование файлов из списка</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Bash: копирование файлов из списка</h1>
+<p>07 Oct 2015</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_028.png"><img src="/assets/images/2015/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_028.png?w=150" alt="Copy files (screenshot)" /></a> Задача: у нас есть файл со списком стилей/скриптов/бинарников (нужное подчернуть) которые надо скопировать или переместить в другое место.<br />
+Да. Такие задачи бывают. :)</p>
+
+<p>Допустим выглядит файл как-то так</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat </span>css.txt  
+css/reset-ls.css  
+css/b-browser.css  
+css/reg-form.css  
+css/old/pop-up.css
+</code></pre></div></div>
+
+<p>Пути либо относительные, либо полные.</p>
+
+<p>Скопировать все в новый локейшн можно простым однострочником</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">cat </span>css.txt<span class="si">)</span><span class="p">;</span> <span class="k">do </span><span class="nb">cp</span> <span class="nv">$i</span> /tmp/<span class="p">;</span> <span class="k">done</span>
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

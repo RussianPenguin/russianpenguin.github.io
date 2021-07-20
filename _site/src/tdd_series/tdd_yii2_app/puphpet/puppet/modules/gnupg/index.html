@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/gnupg/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/gnupg/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/gnupg/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>#GnuPG puppet module</p>
+
+<p>####Table of Contents</p>
+
+<ol>
+  <li><a href="##overview">Overview</a></li>
+  <li><a href="##Installation">Installation</a></li>
+  <li><a href="@#usage">Usage - Configuration options and additional functionality</a></li>
+  <li><a href="##reference">Reference - An under-the-hood peek at what the module is doing and how</a></li>
+  <li><a href="##limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="##development">Development - Guide for contributing to the module</a></li>
+  <li><a href="##license">License</a></li>
+</ol>
+
+<p>##Overview</p>
+
+<p>Install GnuPG on Ubuntu/Debian/RedHat/CentOS/Amazon AMI and manage users public keys.</p>
+
+<p>Tested with Tavis CI</p>
+
+<p>NOTE: For puppet 2.7.x supported module please use version 0.X.X</p>
+
+<p><a href="https://travis-ci.org/n1tr0g/golja-gnupg"><img src="https://travis-ci.org/n1tr0g/golja-gnupg.png" alt="Build Status" /></a> <a href="https://forge.puppetlabs.com/golja/gnupg"><img src="http://img.shields.io/puppetforge/v/golja/gnupg.svg" alt="Puppet Forge" /></a></p>
+
+<p>##Installation</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> $ puppet module install golja/gnupg
+</code></pre></div></div>
+
+<p>##Usage</p>
+
+<p>####Install GnuPG package</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include '::gnupg'
+</code></pre></div></div>
+
+<p>####Add public key 20BC0A86 from PGP server from hkp://pgp.mit.edu/ to user root</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span> <span class="s1">'hkp_server_20BC0A86'</span><span class="p">:</span>
+  <span class="py">ensure</span>     <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">key_id</span>     <span class="p">=&gt;</span> <span class="s1">'20BC0A86'</span><span class="p">,</span>
+  <span class="py">user</span>       <span class="p">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+  <span class="py">key_server</span> <span class="p">=&gt;</span> <span class="s1">'hkp://pgp.mit.edu/'</span><span class="p">,</span>
+  <span class="py">key_type</span>   <span class="p">=&gt;</span> <span class="n">public</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>####Add public key D50582E6 from standard http URI to user foo</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span> <span class="s1">'jenkins_foo_key'</span><span class="p">:</span>
+  <span class="py">ensure</span>     <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">key_id</span>     <span class="p">=&gt;</span> <span class="s1">'D50582E6'</span><span class="p">,</span>
+  <span class="py">user</span>       <span class="p">=&gt;</span> <span class="s1">'foo'</span><span class="p">,</span>
+  <span class="py">key_source</span> <span class="p">=&gt;</span> <span class="s1">'http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key'</span><span class="p">,</span>
+  <span class="py">key_type</span>   <span class="p">=&gt;</span> <span class="n">public</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>####Add public key D50582E6 from puppet fileserver to user foo</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span> <span class="s1">'jenkins_foo_key'</span><span class="p">:</span>
+  <span class="py">ensure</span>     <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">key_id</span>     <span class="p">=&gt;</span> <span class="s1">'D50582E6'</span><span class="p">,</span>
+  <span class="py">user</span>       <span class="p">=&gt;</span> <span class="s1">'foo'</span><span class="p">,</span>
+  <span class="py">key_source</span> <span class="p">=&gt;</span> <span class="s1">'puppet:///modules/gnupg/D50582E6.key'</span><span class="p">,</span>
+  <span class="py">key_type</span>   <span class="p">=&gt;</span> <span class="n">public</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>####Add public key D50582E6 from puppet fileserver to user bar via a string value</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span> <span class="s1">'jenkins_foo_key'</span><span class="p">:</span>
+  <span class="py">ensure</span>      <span class="p">=&gt;</span> <span class="n">present</span><span class="p">,</span>
+  <span class="py">key_id</span>      <span class="p">=&gt;</span> <span class="s1">'D50582E6'</span><span class="p">,</span>
+  <span class="py">user</span>        <span class="p">=&gt;</span> <span class="s1">'bar'</span><span class="p">,</span>
+  <span class="py">key_content</span> <span class="p">=&gt;</span> <span class="s1">'-----BEGIN BROKEN PUBLIC KEY BLOCK-----...'</span><span class="p">,</span>
+  <span class="py">key_type</span>    <span class="p">=&gt;</span> <span class="n">public</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><em>Note</em>: You should use hiera lookup to get the key content</p>
+
+<p>####Remove public key 20BC0A86 from user root</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span><span class="s1">'root_remove'</span><span class="p">:</span>
+  <span class="py">ensure</span>   <span class="p">=&gt;</span> <span class="n">absent</span><span class="p">,</span>
+  <span class="py">key_id</span>   <span class="p">=&gt;</span> <span class="s1">'20BC0A86'</span><span class="p">,</span>
+  <span class="py">user</span>     <span class="p">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+  <span class="py">key_type</span> <span class="p">=&gt;</span> <span class="n">public</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>###Remove both private and public key 20BC0A66</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gnupg_key</span> <span class="p">{</span><span class="s1">'root_remove'</span><span class="p">:</span>
+  <span class="py">ensure</span>   <span class="p">=&gt;</span> <span class="n">absent</span><span class="p">,</span>
+  <span class="py">key_id</span>   <span class="p">=&gt;</span> <span class="s1">'20BC0A66'</span><span class="p">,</span>
+  <span class="py">user</span>     <span class="p">=&gt;</span> <span class="s1">'root'</span><span class="p">,</span>
+  <span class="py">key_type</span> <span class="p">=&gt;</span> <span class="n">both</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>##Reference</p>
+
+<p>###Classes</p>
+
+<p>####gnupg</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">package_ensure</code></p>
+
+<p>Valid value present/absent. In most cases you should never uninstall this package,
+because most of the modern Linux distros rely on gnupg for package verification, etc
+Default: present</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">package_name</code></p>
+
+<p>Name of the GnuPG package. Default value determined by $::osfamily/$::operatingsystem facts</p>
+
+<p>####gnupg_key</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">ensure</code></p>
+
+<p><strong>REQUIRED</strong> - Valid value present/absent</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p><strong>REQUIRED</strong> - System username for who to store the public key. Also define the location of the 
+pubring (default ${HOME}/.gnupg/)</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">key_id</code></p>
+
+<p><strong>REQUIRED</strong> - Key ID. Usually the traditional 8-character key ID. Also accepted the
+long more accurate (but  less  convenient) 16-character key ID. Accept only hexadecimal
+values.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">key_source</code></p>
+
+<p><strong>REQUIRED</strong> if <code class="language-plaintext highlighter-rouge">key_server</code> or <code class="language-plaintext highlighter-rouge">key_content</code> is not defined and <code class="language-plaintext highlighter-rouge">ensure</code> is present.
+A source file containing PGP key. Values can be URIs pointing to remote files,
+or fully qualified paths to files available on the local system.</p>
+
+<p>The available URI schemes are <em>puppet</em>, <em>https</em>, <em>http</em> and <em>file</em>. <em>Puppet</em>
+URIs will retrieve files from Puppet’s built-in file server, and are
+usually formatted as:</p>
+
+<p>puppet:///modules/name_of_module/filename</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">key_server</code></p>
+
+<p><strong>REQUIRED</strong> if <code class="language-plaintext highlighter-rouge">key_source</code> or <code class="language-plaintext highlighter-rouge">key_content</code> is not defined and <code class="language-plaintext highlighter-rouge">ensure</code> is present.</p>
+
+<p>PGP key server from where to retrieve the public key. Valid URI schemes are
+<em>http</em>, <em>https</em>, <em>ldap</em> and <em>hkp</em>.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">key_content</code></p>
+
+<p><strong>REQUIRED</strong> if <code class="language-plaintext highlighter-rouge">key_server</code> or <code class="language-plaintext highlighter-rouge">key_source</code> is not defined and <code class="language-plaintext highlighter-rouge">ensure</code> is present.</p>
+
+<p>Provide the content of the key as a string. This is useful when the key is stored as a
+hiera property and the consumer doesn’t want to have to write that content to a file
+before the gnupg_key resource executes.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">key_type</code></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>OPTIONAL</strong> - key type. Valid values (public</td>
+      <td>private</td>
+      <td>both). Default: public</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>PGP key server from where to retrieve the public key. Valid URI schemes are
+<em>http</em>, <em>https</em>, <em>ldap</em> and <em>hkp</em>.</p>
+
+<h3 id="tests">Tests</h3>
+
+<p>There are two types of tests distributed with the module. Unit tests with rspec-puppet and system tests using rspec-system or beaker.</p>
+
+<p>For unit testing, make sure you have:</p>
+
+<ul>
+  <li>rake</li>
+  <li>bundler</li>
+</ul>
+
+<p>Install the necessary gems:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle install --path=vendor
+</code></pre></div></div>
+
+<p>And then run the unit tests:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake spec
+</code></pre></div></div>
+
+<p>If you want to run the system tests, make sure you also have:</p>
+
+<ul>
+  <li>vagrant &gt; 1.3.x</li>
+  <li>Virtualbox &gt; 4.2.10</li>
+</ul>
+
+<p>Then run the tests using:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake spec:system
+</code></pre></div></div>
+
+<p>To run the tests on different operating systems, see the sets available in .nodeset.yml and run the specific set with the following syntax:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RSPEC_SET=debian-607-x64 bundle exec rake spec:system
+</code></pre></div></div>
+
+<p>Alernatively you can run beaker tests using:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake beaker
+</code></pre></div></div>
+
+<p>##Limitations</p>
+
+<p>This module has been tested on:</p>
+
+<ul>
+  <li>Debian 6/7</li>
+  <li>Ubuntu 12+</li>
+  <li>RedHat 5/6/7</li>
+  <li>CentOS 5/6/7</li>
+  <li>Amazon AMI</li>
+</ul>
+
+<p>##Development</p>
+
+<p>Please see CONTRIBUTING.md</p>
+
+<h2 id="license">License</h2>
+
+<p>See LICENSE file</p>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

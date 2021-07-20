@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>JavaScript: копируем img в canvas | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="JavaScript: копируем img в canvas" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте. Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src. var img = new Image(); var srcImg = document.getElementById(&#39;src-img&#39;); img.onload = function() { // создаем (или получаем) канву var backCanvas = document.getElementById(&#39;dest-canvas&#39;); backCanvas.width = this.width; backCanvas.height = this.height; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем backCtx.drawImage(this, 0,0); }; img.setAttribute(&#39;src&#39;, srcImg.src); Недостаток - еще один запрос в сеть. Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве? var backCanvas = document.getElementById(&#39;dest-canvas&#39;); var srcImg = document.getElementById(&#39;src-img&#39;); backCanvas.width = srcImg.naturalWidth; backCanvas.height = srcImg.naturalHeight; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем картинку backCtx.drawImage(srcImg, 0,0); И вот тут мы используем naturalWidth/naturalHeight. Зачем? Все очень просто. Если в первом случае width и height означали размеры картинки, то во втором - это будут физические размеры элемента img на странице. И если картинка внутри него будет отмасштабирована, то мы мы скопируем только часть картинки размером width на height. Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется). А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя." />
+<meta property="og:description" content="Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте. Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src. var img = new Image(); var srcImg = document.getElementById(&#39;src-img&#39;); img.onload = function() { // создаем (или получаем) канву var backCanvas = document.getElementById(&#39;dest-canvas&#39;); backCanvas.width = this.width; backCanvas.height = this.height; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем backCtx.drawImage(this, 0,0); }; img.setAttribute(&#39;src&#39;, srcImg.src); Недостаток - еще один запрос в сеть. Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве? var backCanvas = document.getElementById(&#39;dest-canvas&#39;); var srcImg = document.getElementById(&#39;src-img&#39;); backCanvas.width = srcImg.naturalWidth; backCanvas.height = srcImg.naturalHeight; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем картинку backCtx.drawImage(srcImg, 0,0); И вот тут мы используем naturalWidth/naturalHeight. Зачем? Все очень просто. Если в первом случае width и height означали размеры картинки, то во втором - это будут физические размеры элемента img на странице. И если картинка внутри него будет отмасштабирована, то мы мы скопируем только часть картинки размером width на height. Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется). А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя." />
+<link rel="canonical" href="http://localhost:4000/2016/08/23/javascript-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D1%83%D0%B5%D0%BC-img-%D0%B2-canvas/" />
+<meta property="og:url" content="http://localhost:4000/2016/08/23/javascript-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D1%83%D0%B5%D0%BC-img-%D0%B2-canvas/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-08-23T22:28:03+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="JavaScript: копируем img в canvas" />
+<script type="application/ld+json">
+{"headline":"JavaScript: копируем img в canvas","dateModified":"2016-08-23T22:28:03+03:00","datePublished":"2016-08-23T22:28:03+03:00","description":"Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте. Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src. var img = new Image(); var srcImg = document.getElementById(&#39;src-img&#39;); img.onload = function() { // создаем (или получаем) канву var backCanvas = document.getElementById(&#39;dest-canvas&#39;); backCanvas.width = this.width; backCanvas.height = this.height; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем backCtx.drawImage(this, 0,0); }; img.setAttribute(&#39;src&#39;, srcImg.src); Недостаток - еще один запрос в сеть. Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве? var backCanvas = document.getElementById(&#39;dest-canvas&#39;); var srcImg = document.getElementById(&#39;src-img&#39;); backCanvas.width = srcImg.naturalWidth; backCanvas.height = srcImg.naturalHeight; var backCtx = backCanvas.getContext(&#39;2d&#39;); // рисуем картинку backCtx.drawImage(srcImg, 0,0); И вот тут мы используем naturalWidth/naturalHeight. Зачем? Все очень просто. Если в первом случае width и height означали размеры картинки, то во втором - это будут физические размеры элемента img на странице. И если картинка внутри него будет отмасштабирована, то мы мы скопируем только часть картинки размером width на height. Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется). А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/08/23/javascript-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D1%83%D0%B5%D0%BC-img-%D0%B2-canvas/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/08/23/javascript-%D0%BA%D0%BE%D0%BF%D0%B8%D1%80%D1%83%D0%B5%D0%BC-img-%D0%B2-canvas/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">JavaScript: копируем img в canvas</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>JavaScript: копируем img в canvas</h1>
+<p>23 Aug 2016</p>
+
+<p>Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте.</p>
+
+<p>Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">();</span>  
+<span class="kd">var</span> <span class="nx">srcImg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">src-img</span><span class="dl">'</span><span class="p">);</span>  
+<span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="c1">// создаем (или получаем) канву  </span>
+ <span class="kd">var</span> <span class="nx">backCanvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">dest-canvas</span><span class="dl">'</span><span class="p">);</span>  
+ <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>  
+ <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>  
+ <span class="kd">var</span> <span class="nx">backCtx</span> <span class="o">=</span> <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// рисуем  </span>
+ <span class="nx">backCtx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>  
+<span class="p">};</span>  
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">,</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Недостаток - еще один запрос в сеть.</p>
+
+<p>Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве?</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">backCanvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">dest-canvas</span><span class="dl">'</span><span class="p">);</span>  
+<span class="kd">var</span> <span class="nx">srcImg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">src-img</span><span class="dl">'</span><span class="p">);</span>  
+<span class="nx">backCanvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">naturalWidth</span><span class="p">;</span>  
+<span class="nx">backCanvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">naturalHeight</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">backCtx</span> <span class="o">=</span> <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// рисуем картинку  </span>
+<span class="nx">backCtx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">srcImg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>И вот тут мы используем naturalWidth/naturalHeight. Зачем?</p>
+
+<p>Все очень просто. Если в первом случае width и height означали размеры картинки, то во втором - это будут физические размеры элемента img на странице. И если картинка внутри него будет отмасштабирована, то мы мы скопируем только часть картинки размером width на height.</p>
+
+<p>Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется).</p>
+
+<p><img src="/assets/images/2016/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_001.png" alt="Выделение_001" /></p>
+
+<p>А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

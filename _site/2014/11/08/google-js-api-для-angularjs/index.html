@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Google JS API для AngularJS | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Google JS API для AngularJS" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Написал небольшой враппер к гугловому апи для использования совместно с ангуляром. Взять можно на гитхабе. Или в bower $ bower install angularjs-gapi Поключение angular.module(&#39;app&#39;, [&#39;gapi&#39;]).config([&#39;gapiProvider&#39;, &#39;$routeProvider&#39;, function(gapiProvider, $routeProvider) { gapiProvider.apiKey(YOU\_API\_KEY) // апи-ключ можно создать в консоли разработчика .clientId(YOU\_APP\_CLIENT\_ID) // берем в консоли разработчика .apiScope(SCOPES\_FOR\_APP); // скоупы, которые нужны для работы приложения }]) Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY. Авторизация angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { gapi.login().then(function() { $scope.login = &#39;success&#39;; }, function() { $scope.login = &#39;fail&#39;; }); }]) Выполнение запросов не требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready if (gapi.isApiReady()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;search&quot;, &quot;list&quot;, { query: &quot;search term&quot; part: &quot;snippet&quot; type: &quot;video&quot; }).then(function(response) { // work with response }) } }]); Выполнение запросов требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready and user is not logged in if (gapi.isApiReady() &amp;&amp; gapi.isLoggedIn()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;playlists&quot;, &quot;list&quot;, { part: &quot;snippet&quot;, type: &quot;video&quot;; }).then(function(response) { // work with response }) } }]); Вроде все." />
+<meta property="og:description" content="Написал небольшой враппер к гугловому апи для использования совместно с ангуляром. Взять можно на гитхабе. Или в bower $ bower install angularjs-gapi Поключение angular.module(&#39;app&#39;, [&#39;gapi&#39;]).config([&#39;gapiProvider&#39;, &#39;$routeProvider&#39;, function(gapiProvider, $routeProvider) { gapiProvider.apiKey(YOU\_API\_KEY) // апи-ключ можно создать в консоли разработчика .clientId(YOU\_APP\_CLIENT\_ID) // берем в консоли разработчика .apiScope(SCOPES\_FOR\_APP); // скоупы, которые нужны для работы приложения }]) Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY. Авторизация angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { gapi.login().then(function() { $scope.login = &#39;success&#39;; }, function() { $scope.login = &#39;fail&#39;; }); }]) Выполнение запросов не требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready if (gapi.isApiReady()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;search&quot;, &quot;list&quot;, { query: &quot;search term&quot; part: &quot;snippet&quot; type: &quot;video&quot; }).then(function(response) { // work with response }) } }]); Выполнение запросов требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready and user is not logged in if (gapi.isApiReady() &amp;&amp; gapi.isLoggedIn()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;playlists&quot;, &quot;list&quot;, { part: &quot;snippet&quot;, type: &quot;video&quot;; }).then(function(response) { // work with response }) } }]); Вроде все." />
+<link rel="canonical" href="http://localhost:4000/2014/11/08/google-js-api-%D0%B4%D0%BB%D1%8F-angularjs/" />
+<meta property="og:url" content="http://localhost:4000/2014/11/08/google-js-api-%D0%B4%D0%BB%D1%8F-angularjs/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-11-08T17:00:46+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Google JS API для AngularJS" />
+<script type="application/ld+json">
+{"headline":"Google JS API для AngularJS","dateModified":"2014-11-08T17:00:46+03:00","datePublished":"2014-11-08T17:00:46+03:00","description":"Написал небольшой враппер к гугловому апи для использования совместно с ангуляром. Взять можно на гитхабе. Или в bower $ bower install angularjs-gapi Поключение angular.module(&#39;app&#39;, [&#39;gapi&#39;]).config([&#39;gapiProvider&#39;, &#39;$routeProvider&#39;, function(gapiProvider, $routeProvider) { gapiProvider.apiKey(YOU\\_API\\_KEY) // апи-ключ можно создать в консоли разработчика .clientId(YOU\\_APP\\_CLIENT\\_ID) // берем в консоли разработчика .apiScope(SCOPES\\_FOR\\_APP); // скоупы, которые нужны для работы приложения }]) Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY. Авторизация angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { gapi.login().then(function() { $scope.login = &#39;success&#39;; }, function() { $scope.login = &#39;fail&#39;; }); }]) Выполнение запросов не требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready if (gapi.isApiReady()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;search&quot;, &quot;list&quot;, { query: &quot;search term&quot; part: &quot;snippet&quot; type: &quot;video&quot; }).then(function(response) { // work with response }) } }]); Выполнение запросов требующих авторизации angular.module(&#39;app&#39;).controller(&#39;tstController&#39;, [&#39;$scope&#39;, &#39;gapi&#39;, function($scope, gapi) { // we can&#39;t make requests while api is not ready and user is not logged in if (gapi.isApiReady() &amp;&amp; gapi.isLoggedIn()) { gapi.call(&quot;youtube&quot;, &quot;v3&quot;, &quot;playlists&quot;, &quot;list&quot;, { part: &quot;snippet&quot;, type: &quot;video&quot;; }).then(function(response) { // work with response }) } }]); Вроде все.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/11/08/google-js-api-%D0%B4%D0%BB%D1%8F-angularjs/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/11/08/google-js-api-%D0%B4%D0%BB%D1%8F-angularjs/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Google JS API для AngularJS</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Google JS API для AngularJS</h1>
+<p>08 Nov 2014</p>
+
+<p>Написал небольшой враппер к гугловому апи для использования совместно с ангуляром. Взять можно на <a href="https://github.com/RussianPenguin/angularjs-gapi" title="angularjs-gapi">гитхабе</a>.</p>
+
+<p>Или в bower</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>bower <span class="nb">install </span>angularjs-gapi
+</code></pre></div></div>
+
+<h3 id="поключение">Поключение</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">]).</span><span class="nx">config</span><span class="p">([</span><span class="dl">'</span><span class="s1">gapiProvider</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">$routeProvider</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">gapiProvider</span><span class="p">,</span> <span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nx">gapiProvider</span><span class="p">.</span><span class="nx">apiKey</span><span class="p">(</span><span class="nx">YOU</span><span class="err">\</span><span class="nx">_API</span><span class="err">\</span><span class="nx">_KEY</span><span class="p">)</span> <span class="c1">// апи-ключ можно создать в консоли разработчика  </span>
+ <span class="p">.</span><span class="nx">clientId</span><span class="p">(</span><span class="nx">YOU</span><span class="err">\</span><span class="nx">_APP</span><span class="err">\</span><span class="nx">_CLIENT</span><span class="err">\</span><span class="nx">_ID</span><span class="p">)</span> <span class="c1">// берем в консоли разработчика  </span>
+ <span class="p">.</span><span class="nx">apiScope</span><span class="p">(</span><span class="nx">SCOPES</span><span class="err">\</span><span class="nx">_FOR</span><span class="err">\</span><span class="nx">_APP</span><span class="p">);</span> <span class="c1">// скоупы, которые нужны для работы приложения  </span>
+<span class="p">}])</span>
+</code></pre></div></div>
+
+<p>Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY.</p>
+
+<h3 id="авторизация">Авторизация</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">login</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">success</span><span class="dl">'</span><span class="p">;</span>  
+ <span class="p">},</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">fail</span><span class="dl">'</span><span class="p">;</span>  
+ <span class="p">});</span>  
+<span class="p">}])</span>
+</code></pre></div></div>
+
+<h3 id="выполнение-запросов-не-требующих-авторизации">Выполнение запросов не требующих авторизации</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// we can't make requests while api is not ready  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="nx">gapi</span><span class="p">.</span><span class="nx">isApiReady</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="dl">"</span><span class="s2">youtube</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">v3</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">search</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">list</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>  
+ <span class="na">query</span><span class="p">:</span> <span class="dl">"</span><span class="s2">search term</span><span class="dl">"</span>  
+ <span class="na">part</span><span class="p">:</span> <span class="dl">"</span><span class="s2">snippet</span><span class="dl">"</span>  
+ <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">video</span><span class="dl">"</span>  
+ <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// work with response  </span>
+ <span class="p">})</span>  
+ <span class="p">}</span>  
+<span class="p">}]);</span>
+</code></pre></div></div>
+
+<h3 id="выполнение-запросов-требующих-авторизации">Выполнение запросов требующих авторизации</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// we can't make requests while api is not ready and user is not logged in  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="nx">gapi</span><span class="p">.</span><span class="nx">isApiReady</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">gapi</span><span class="p">.</span><span class="nx">isLoggedIn</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="dl">"</span><span class="s2">youtube</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">v3</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">playlists</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">list</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>  
+ <span class="na">part</span><span class="p">:</span> <span class="dl">"</span><span class="s2">snippet</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">video</span><span class="dl">"</span><span class="p">;</span>  
+ <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// work with response  </span>
+ <span class="p">})</span>  
+ <span class="p">}</span>  
+<span class="p">}]);</span>
+</code></pre></div></div>
+
+<p>Вроде все.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

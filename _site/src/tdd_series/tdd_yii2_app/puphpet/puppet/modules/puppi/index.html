@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Puppi: Puppet Knowledge to the CLI | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Puppi: Puppet Knowledge to the CLI" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/puppi/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/puppi/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Puppi: Puppet Knowledge to the CLI" />
+<script type="application/ld+json">
+{"headline":"Puppi: Puppet Knowledge to the CLI","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/puppi/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Puppi: Puppet Knowledge to the CLI</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="puppi-puppet-knowledge-to-the-cli">Puppi: Puppet Knowledge to the CLI</h1>
+
+<p>Puppi One and Puppi module written by Alessandro Franceschi / al @ lab42.it</p>
+
+<p>Puppi Gem by Celso Fernandez / Zertico</p>
+
+<p>Source: http://www.example42.com</p>
+
+<p>Licence: Apache 2</p>
+
+<p>Puppi is a unique tool that serves both as a Puppet module and a CLI command tool.
+It’s data is entirely driven by Puppet code.
+Example use cases for Puppi may include:</p>
+<ul>
+  <li>creating a standardize method to automate the deployment of web applications</li>
+  <li>or to provide a set of standard commands to query and check system resources based on “user definded actions”.</li>
+</ul>
+
+<p>Its structure provides FULL flexibility on the type of “actions” that may be required for virtually any kind of application deployment and/or system information gathering.</p>
+
+<p>The module provides:</p>
+
+<ul>
+  <li>
+    <p>Old-Gen and Next-Gen Puppi implementation.</p>
+  </li>
+  <li>
+    <p>A set of scripts that can be chained togehter to automate any kind of deployment.</p>
+  </li>
+  <li>
+    <p>Puppet defines that make it easy to prepare a puppi set of commands for a project deployment.</p>
+  </li>
+  <li>
+    <p>Puppet defines to populate the output of the different actions.</p>
+  </li>
+</ul>
+
+<h2 id="how-to-install">HOW TO INSTALL</h2>
+
+<p>Download Puppi from GitHub and place it in your modules directory:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/example42/puppi.git /etc/puppet/modules/puppi
+</code></pre></div></div>
+
+<p>To use the Puppi “Original, old and widely tested” version, just declare or include the puppi class</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'puppi'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>To test the Next-Gen version you can perform the following command. Please note that this module is
+not stable yet:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'puppi'</span><span class="p">:</span>
+  <span class="n">version</span> <span class="o">=&gt;</span> <span class="s1">'2'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If you have resources conflicts, do not install automatically the Puppi dependencies (commands and packages)</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'puppi'</span><span class="p">:</span>
+  <span class="n">install_dependencies</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="how-to-use">HOW TO USE</h2>
+
+<p>Once Puppi is installed you can use it to:</p>
+
+<ul>
+  <li>
+    <p>Easily define in Puppet manifests Web Applications deploy procedures. For example:</p>
+
+    <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">puppi</span><span class="o">::</span><span class="n">project</span><span class="o">::</span><span class="n">war</span> <span class="p">{</span> <span class="s2">"myapp"</span><span class="p">:</span>
+  <span class="n">source</span>           <span class="o">=&gt;</span> <span class="s2">"http://repo.example42.com/deploy/prod/myapp.war"</span><span class="p">,</span>
+  <span class="n">deploy_root</span>      <span class="o">=&gt;</span> <span class="s2">"/opt/tomcat/myapp/webapps"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Integrate with your modules for puppi check, info and log</p>
+  </li>
+  <li>
+    <p>Enable Example42 modules integration</p>
+  </li>
+</ul>
+
+<h2 id="how-to-use-with-example42-modules">HOW TO USE WITH EXAMPLE42 MODULES</h2>
+
+<p>The Example42 modules provide (optional) Puppi integration.
+Once enabled for each module you have puppi check, info and log commands.</p>
+
+<p>To enable Puppi in OldGen Modules, set in the scope these variables:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$puppi = yes            # Enables puppi integration
+$monitor = yes          # Enables automatic monitoring
+$monitor_tool = "puppi" # Sets puppi as monitoring tool
+</code></pre></div></div>
+
+<p>For the NextGen modules set the same parameters via Hiera, at Top Scope or as class arguments:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'openssh'</span><span class="p">:</span>
+  <span class="n">puppi</span>        <span class="o">=&gt;</span> <span class="n">yes</span><span class="p">,</span>
+  <span class="n">monitor</span>      <span class="o">=&gt;</span> <span class="n">yes</span><span class="p">,</span>
+  <span class="n">monitor_tool</span> <span class="o">=&gt;</span> <span class="s1">'puppi'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="usage-of-the-puppi-command-old-gen">USAGE OF THE PUPPI COMMAND (OLD GEN)</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puppi &lt;action&gt; &lt;project_name&gt; <span class="o">[</span> <span class="nt">-options</span> <span class="o">]</span>
+</code></pre></div></div>
+
+<p>The puppi command has these possible actions:</p>
+
+<p>First time initialization of the defined project (if available)
+        puppi init <project></project></p>
+
+<p>Deploy the specified project
+        puppi deploy <project></project></p>
+
+<p>Rollback to a previous deploy state
+        puppi rollback <project></project></p>
+
+<p>Run local checks on system and applications
+        puppi check</p>
+
+<p>Tail system or application logs
+        puppi log</p>
+
+<p>Show system information (for all or only the specified topic)
+        puppi info [topic]</p>
+
+<p>Show things to do (or done) manually on the system (not done via Puppet)
+        puppi todo</p>
+
+<p>In the deploy/rollback/init actions, puppi runs the commands in /etc/puppi/projects/$project/$action, logs their status and then run the commands in /etc/puppi/projects/$project/report to provide reporting, in whatever, pluggable, way.</p>
+
+<p>You can also provide some options:</p>
+
+<ul>
+  <li>
+    <p>-f : Force puppi commands execution also on CRITICAL errors</p>
+  </li>
+  <li>
+    <p>-i : Interactively ask confirmation for every command</p>
+  </li>
+  <li>
+    <p>-t : Test mode. Just show the commands that should be executed without doing anything</p>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>-d &lt;yes</td>
+          <td>full&gt;: Debug mode. Show debugging info during execution</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>-o “parameter=value parameter2=value2” : Set manual options to override defaults. The options must be in parameter=value syntax, separated by spaces and inside double quotes.</li>
+</ul>
+
+<p>Some common puppi commnds when you log for an application deployment:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>puppi check
+puppi log &amp;    <span class="c"># (More readable if done on another window)</span>
+puppi deploy myapp
+puppi check
+puppi info myapp
+</code></pre></div></div>
+
+<h2 id="the-puppi-module">THE PUPPI MODULE</h2>
+
+<p>The set of commands needed for each of these actions are entirely managed with specific
+Puppet “basic defines”:</p>
+
+<p>Create the main project structure. One or more different deployment projects can exist on a node.
+        puppi::project</p>
+
+<p>Create a single command to be placed in the init sequence. It’s not required for every project.
+        puppi::initialize</p>
+
+<p>Create a single command to be placed in the deploy sequence. More than one is generally needed for each project.
+        puppi::deploy</p>
+
+<p>Create a single command to be placed in the rollback sequence. More than one is generally needed for each project.
+        puppi::rollback</p>
+
+<p>Create a single check (based on Nagios plugins) for a project or for the whole host (host wide checks are auto generated by Example42 monitor module)
+        puppi::check</p>
+
+<p>Create a reporting command to be placed in the report sequence.
+        puppi::report</p>
+
+<p>Create a log filename entry for a project or the whole hosts.
+        puppi::log</p>
+
+<p>Create an info entry with the commands used to provide info on a topic
+        puppi::info</p>
+
+<p>Read details in the relevant READMEs</p>
+
+<h2 id="file-paths-all-of-them-are-provided-and-can-be-configured-in-the-puppi-module">FILE PATHS (all of them are provided, and can be configured, in the puppi module):</h2>
+
+<p>A link to the actual version of puppi enabled
+        /usr/sbin/puppi</p>
+
+<p>The original puppi bash command.
+        /usr/sbin/puppi.one</p>
+
+<p>Puppi (one) main config file. Various puppi wide paths are defined here.
+        /etc/puppi/puppi.conf</p>
+
+<p>Directory where by default all the host wide checks can be placed. If you use the Example42 monitor module and have “puppi” as $monitor_tool, this directory is automatically filled with Nagios plugins based checks.
+        /etc/puppi/checks/ ($checksdir)</p>
+
+<p>Directory that containts projects subdirs, with the commands to be run for deploy, rollback and check actions. They are completely built (and purged) by the Puppet module.
+        /etc/puppi/projects/ ($projectsdir)</p>
+
+<p>The general-use scripts directory, these are used by the above commands and may require one or more arguments.
+        /etc/puppi/scripts/ ($scriptsdir)</p>
+
+<p>The general-use directory where files are placed which contain the log paths to be used by puppi log
+        /etc/puppi/logs/ ($logssdir)</p>
+
+<p>The general-use directory where files are placed which contain the log paths to be used by puppi log
+        /etc/puppi/info/ ($infodir)</p>
+
+<p>Where all data to rollback is placed.
+        /var/lib/puppi/archive/ ($archivedir)</p>
+
+<p>Where logs and reports of the different commands are placed.
+        /var/log/puppi/ ($logdir)</p>
+
+<p>Temporary, scratchable, directory where Puppi places temporary files.
+        /tmp/puppi/ ($workdir)</p>
+
+<p>A runtime configuration file, which is used by all all the the scripts invoked by puppi to read and write dynamic variables at runtime. This is necessary to mantain “state” information that changes on every puppi run (such as the deploy datetime, used for backups).
+        /tmp/puppi/$project/config</p>
+
+<h2 id="how-to-customize">HOW TO CUSTOMIZE</h2>
+<p>It should be clear that with puppi you have full flexibility in the definition of a deployment
+procedure, since the puppi command is basically a wrapper that executes arbitrary scripts with
+a given sequence, in pure KISS logic.</p>
+
+<p>The advantanges though, are various:</p>
+<ul>
+  <li>
+    <p>You have a common syntax to manage deploys and rollbacks on an host</p>
+  </li>
+  <li>
+    <p>In your Puppet manifests, you can set in simple, coherent and still flexible and customizable
+defines all the elements, you need for your application deployments.
+Think about it: with just a Puppet define you build the whole deploy logic</p>
+  </li>
+  <li>
+    <p>Reporting for each deploy/rollback is built-in and extensible</p>
+  </li>
+  <li>
+    <p>Automatic checks can be built in the deploy procedure</p>
+  </li>
+  <li>
+    <p>You have a common, growing, set of general-use scripts for typical actions</p>
+  </li>
+  <li>
+    <p>You have quick and useful command to see what’s happening on the system (puppi check, log, info)</p>
+  </li>
+</ul>
+
+<p>There are different parts where you can customize the behaviour of puppi:</p>
+
+<ul>
+  <li>
+    <p>The set of general-use scripts in /etc/puppi/scripts/ ( this directory is filled with the content
+of puppi/files/scripts/ ) can/should be enhanced. These can be arbitrary scripts in whatever
+language. If you want to follow puppi’s logic, though, consider that they should import the
+common and runtime configuration files and have an exit code logic similar to the one of
+Nagios plugins: 0 is OK, 1 is WARNING, 2 is CRITICAL. Note that by default a script that
+exits with WARNING doesn’t block the deploy procedure, on the other hand, if a script exits
+with CRITICAL (exit 2) by default it blocks the procedure.
+Take a second, also, to explore the runtime config file created by the puppi command that
+contains variables that can be set and used by the scripts invoked by puppi.</p>
+  </li>
+  <li>
+    <p>The custom project defines that describe deploy templates. These are placed in
+puppi/manifests/project/ and can request all the arguments you want to feed your scripts with.
+Generally is a good idea to design a standard enough template that can be used for all the
+cases where the deployment procedure involves similar steps. Consider also that you can handle
+exceptions with variables (see the $loadbalancer_ip usage in puppi/manifests/project/maven.pp)</p>
+  </li>
+</ul>
+
+<h2 id="no-dependencies-and-conflicts">(NO) DEPENDENCIES AND CONFLICTS</h2>
+<p>Puppi is self contained. It doesn’t require other modules.
+(And is required by all Example42 modules).</p>
+
+<p>For correct functionality by default some extra packages are installed.
+If you have conflicts with your existing modules, set the argument:
+  install_dependencies =&gt; false</p>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

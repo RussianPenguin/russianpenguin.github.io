@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В девятой части цикла “Тестирование ПО” мы рассмотрим развертывание фреймворка codeception и интеграцию его с Yii2." />
+<meta property="og:description" content="В девятой части цикла “Тестирование ПО” мы рассмотрим развертывание фреймворка codeception и интеграцию его с Yii2." />
+<link rel="canonical" href="http://localhost:4000/2017/06/26/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-9/" />
+<meta property="og:url" content="http://localhost:4000/2017/06/26/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-9/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-06-26T15:45:23+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО)" />
+<script type="application/ld+json">
+{"headline":"Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО)","dateModified":"2017-06-26T15:45:23+03:00","datePublished":"2017-06-26T15:45:23+03:00","description":"В девятой части цикла “Тестирование ПО” мы рассмотрим развертывание фреймворка codeception и интеграцию его с Yii2.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/06/26/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-9/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/06/26/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-9/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Часть 9: Codeception. Настройка. Unit-тесты (Тестирование ПО)</h1>
+<p>26 Jun 2017</p>
+
+<h2><img class=" size-full wp-image-2290 alignright" src="/assets/images/2017/06/codeception.png" alt="codeception" width="250" height="250" /><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+<p>Продолжаем цикл статей <a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Тестирование ПО</a>. В этой части рассмотрим установку и настройку фреймворка codeception. Попутно перенесем все ранее написанные тесты на новую платформу.</p>
+<p>Прежде, чем двигаться дальше нам необходимо познакомиться с таким фреймворком как codeception. На базе PHPUnit можно делать лишь блочные и модульные тесты. Его предназначение полностью расшифровывается в названии. Поскольку изначально он был заточен под применение исключительно для юнит-тестирования (и модульного конечно же).</p>
+<p>PHPUnit никуда не делся, но так как найти абсолютно все ошибки лишь модульными тестами нельзя, то со временем стали появляться различные инструменты для проведения функционального или приемочного тестирования - одни из них это selenium, который открывает браузер при проверяет соответствие сгенерированной страницы том, что ожидает пользователь и имеет возможность заполнять формы и отправлять запросы.</p>
+<p>Появилась потребность в инструментах более высокого уровня, которые могли бы позволить манипулировать всем этим разнообразием консольных команд, приложений и всем тем, что позволяет искать ошибки в приложениях. Одним из таких инструментов стал Codeception - надстройка над PHPUnit, которая помимо прочего умеет выполнять тесты в браузере, осуществлять сетевые запросы, заполнять формы и много чего еще.</p>
+<p><!--more--></p>
+<p>Ранее выделялось четыре стадии тестирования проекта:</p>
+<ul>
+<li>юнит-тестирование</li>
+<li>интеграционное - оно же блочное</li>
+<li>функциональное</li>
+<li>приемочное</li>
+</ul>
+<p>Было отмечено, что в рамках yii осуществлять чисто блочное тестирование не всегда возможно из-за его архитектурных особенностей.</p>
+<p>Codeception несколько упрощает жизнь разработчика. В рамках этого инструмента существует три уровня изоляции тестов.</p>
+<ul>
+<li>Юнит-тесты. Этот уровень изоляции сочетает в себе как стандартные юнит-тесты, так и блочные.</li>
+<li>Функциональные тесты - это по-прежнему отправка данных в формы, проверка ответа сервера, тестирование внешнего api.</li>
+<li>Приемочные тесты - запускается headless-браузер (окна не открывается, браузер работает в фоновом режиме) и фреймворк выполняет действия от лица пользователя: двигает мышкой, вводит текст в поля ввода, разгадывает капчу, переходит по пунктам меню. Эта часть тестов способна находить ошибки в коде браузерных приложений.</li>
+</ul>
+<h2>установка и инициализация</h2>
+<p>Нам потребуется пакет codeception/codeception - основная составляющая фреймворка.</p>
+<p>```shell
+composer require --dev &quot;codeception/codeception:^2.0.0&quot;
+```</p>
+<p>Конструкция означает, что мы ставим запрашиваем самую последнюю версию из ветки 2.x. Выполняем данную команду на виртуальной машине в папке <i>/var/www</i>.</p>
+<p>Дальше стоит поставить codeception/verify - достаточно удобный пакет, который позволяет писать предикаты, близкие к естественному языку. Это лишь синтаксический сахар. Сравните два теста, которые описаны ниже - первый с применением стандартных предикатов, а второй - с синтаксическим сахаром.</p>
+<p>```php
+$this-&gt;assertEquals($user-&gt;getName(), 'test');
+```</p>
+<p>```php
+verify($user-&gt;getName())-&gt;equals('test');
+```</p>
+<p>Ставится достаточно просто.</p>
+<p>```shell
+composer require --dev &quot;codeception/verify:^0.3.0&quot;
+```</p>
+<p>Последнее, что нам может потребоваться - это модуль codeception/specify. Еще одна порция синтаксического сахара. Чуть позже мы будем применять ее на практике.</p>
+<p>```shell
+composer require --dev &quot;codeception/specify:^0.4.0&quot;
+```</p>
+<p>Не забываем указывать опцию --dev - она говорит о том, что при развертывании нашего проекта в релизе пакеты для выполнения тестов или любой другой девелоперской рутины не будет установлены.</p>
+<p>Другой простой способ установить описанные выше компоненты - это добавить в секци require-dev несколько пакетов и выполнить провизию на машине.</p>
+<p>```javascript
+&quot;require-dev&quot;: {<br />
+  &quot;codeception/codeception&quot;: &quot;^2.0.0&quot;<br />
+  &quot;codeception/verify&quot;: &quot;^0.3.0&quot;,<br />
+  &quot;codeception/specify&quot;: &quot;^0.4.0&quot;<br />
+}
+```</p>
+<h2>Интеграция Codeception и Yii2</h2>
+<p>Прежде чем мы приступим к освоению нового инструмента переименуем папку tests - поскольку это название закреплено за тестами codeception, а наши более ранние эксперименты предназначались для того, чтобы понять, как работают тесты изнутри.</p>
+<p>Чтобы все прошло удачно необходимо, чтобы папка tests и файл codeception.yml в корне проекта отсутствовали. Иначе инициализация скажет, что инфраструктура уже развернута. Проверяем, что у нас нет ничего лишнего и запускаем из консоли команду на подготовку окружения.</p>
+<p>```
+vendor/bin/codecept bootstrap --ns common\\tests common
+```</p>
+<p>Каталог с тестами общими для всего проекта будет создан в папке common. Да, мы не будем дальше использовать вызовый через composer run из-за бага, который был описан ранее. Опция --ns для нас жизненно необходима для того, чтобы все генерируемые фреймворком в процессе работы файлы попадали в правильный неймспейс сразу (это файлы из каталога tests/_generated).</p>
+<p>Так же в каталоге common будет создан файл codeception.yml - это конфигурация для запуска.</p>
+<p>Изначально codeception не умеет дружить с yii2 полноценно. Поэтому нам требудется его этому научить. Один из параметров файла настроект указывает на _bootstrap.php - скрипт, который исполняется перед запуском тестов. Вот тут-то мы и выполним загрузку базовой части фреймворка в память.</p>
+<p>```or
+</p>
+<p>Теперь добавим нужные для дальнейшей работы параметры в codeception.yml.</p>
+<p>```
+actor: Tester<br />
+paths:<br />
+    tests: tests<br />
+    log: tests/_output<br />
+    data: tests/_data<br />
+    support: tests/_support<br />
+    envs: tests/_envs<br />
+settings:<br />
+    bootstrap: _bootstrap.php<br />
+    colors: true<br />
+    memory_limit: 1024M<br />
+extensions:<br />
+    enabled:<br />
+        - Codeception\Extension\RunFailed<br />
+modules:<br />
+    config:<br />
+        Yii2:<br />
+            configFile: 'config/test-local.php'
+```</p>
+<p>Здесь мы указываем, что модуль config будет использовать специфический настройки из yii2 для инициализации фреймворка.</p>
+<p>Переименуем файл acceptance.suite.yml в acceptance.suite.yml.example. Делаем мы это для того чтобы codeception не пытался запускать приемочные тесты раньше времени. Поскольку для низ нужна дополниельная конфигурация (мы помним из теоретичесеой части что приемочные тесты - это тесты выполняемые в браузере от лица пользователя или в нашем сылучае от лица автоматизированной системы запуска вроде selenium). К приемочным тестам мы еще вернемся в одной из следующих частей.</p>
+<p>Поправим настройки приемочныйх и функциональных тестов.</p>
+<p><strong>unit.suite.yml</strong></p>
+<p>```
+class_name: UnitTester<br />
+modules:<br />
+    enabled:<br />
+        - Asserts<br />
+        - Yii2:<br />
+            part: [orm]
+```</p>
+<p><strong>functional.suite.yml</strong></p>
+<p>```
+class_name: FunctionalTester<br />
+modules:<br />
+    enabled:<br />
+        - Yii2
+```</p>
+<p>Тем самым при инициализации тестового окружения будет инициализирован и сам фреймворк. А еще обязательно нужно заигнорить в гите папку common/tests/_support/_generated положив в каталог _support файл .gitignore со следующим содержимым:</p>
+<p>```
+_generated
+```</p>
+<h2>Перенос тестов на новую платформу</h2>
+<p>Теперь все готово к том, чтобы попробовать, как старые тесты работают на новой платформе. В случае UserTest нет ничего проще - просто копируем файл в новый каталог, изменяем порядок наследования. Теперь нужно наследовать классы тестов от Codeception\Test\Unit.</p>
+<p>Если мы оставим все как есть, то увидим много-много ошибок в консоли (для каждого теста). Попробуем это сделать.</p>
+<p>```shell
+$ cd common<br />
+$ ../vendor/bin/codecept run
+```</p>
+<p><img class="alignnone size-full wp-image-2274" src="/assets/images/2017/06/phpunit-yii-fail.png" alt="phpunit-yii-fail" width="751" height="498" /></p>
+<p>Почему так происходит? Ранее мы указыали путь к тестовой конфигурации проекта в файлах настройки окружения. Так вот. TestCase из PHPUnit ничего про это окружение не знает, а следовательно он ничего не знает про инициализацию yii. Из этого следует, что объект \Yii::$app нам недоступен и мы не можем извлекать из него зависимости.</p>
+<p>```
+---------
+  
+7) UserTest: Password validation  
+ Test tests/unit/model/UserTest.php:testPasswordValidation
+
+[PHPUnit\_Framework\_Exception] Trying to get property of non-object
+
+#1 /var/www/common/tests/unit/model/UserTest.php:77
+```
+
+Как быть? Отнаследоваться от \Codeception\Test\Unit. Этот класс уже знает, что нужно делать для запуска движка перед тестами. Если мы заглянем в исходники этого класса, то найдем там код, который и отвечает за инициализацию модулей (настройки берутся из массива part для каждого типа кейсов).
+
+```php
+namespace common\tests\unit\model;
+
+use Codeception\Test\Unit;  
+use common\models\User;
+
+class UserTest extends Unit  
+{  
+ //....  
+}
+```
+
+Повторный запуск и все тесты завершаются корректно.
+
+![usertest-success](/assets/images/2017/06/usertest-success.png)
+
+## Перенос тестов DBUnit
+
+У нас есть LoginFormTest, который спользует функционал DBUnit для добавления сущностей в базу данных. Как с ним быть? Все довольно просто - у yii есть механизм acrivefixture, который подмешивает в базу нужные данные и представляет из себя как раз таки иную реализацию того, что представляет из себя DBUnit.
+
+Наиболее распространенная задача расширения для работы с базой из состава PHPUnit - загрузить данные (не будем рассматривать задачу валидации схем - редко кто из пользователей готовых фреймворков ею пользуется). Чтобы это сделать нам потребуется несколько простых вещей:
+
+- Проинициализироать класс фикстуры для нужной модели. В данном случае это common\fixtures\User```php
+namespace common\fixtures;
+
+use yii\test\ActiveFixture;
+
+class User extends ActiveFixture  
+{  
+ public $modelClass = 'common\models\User';  
+}  
+
+```
+
+- Создать хранилище, в котором будут содержаться данные фейковых пользователей ( **common/tests/\_data/User.php** )```php
+return [  
+ [  
+ 'username' =\&gt; 'test',  
+ 'email' =\&gt; 'test@test.test',  
+ 'auth\_key' =\&gt; 'ssssssssssssssssssssssssssssssss',  
+ 'password\_hash' =\&gt; '$2y$13$PP1EDCr7ujdhTxZT2DV96uM8e2rcdXHY1xAQINCIiB0gOck/VBwN6',  
+ ],  
+ [  
+ 'username' =\&gt; 'test1',  
+ 'email' =\&gt; 'test1@test.test',  
+ 'auth\_key' =\&gt; 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',  
+ 'password\_hash' =\&gt; '$2y$13$PP1EDCr7ujdhTxZT2DV96uM8e2rcdXHY1xAQINCIiB0gOck/VBwN6',  
+ ]  
+];
+```
+- Изменить порядок наследования класса LoginFormTest и отнаследовать его от Codeception/Test/Unit
+- Убрать все методы, которые были реализгованы для DBUnit
+- Реализовать метод \_before, который содержит подгрузку фикстуры```php
+ /\*\*  
+ \* Use user fixtures for database testing  
+ \*/  
+ public function \_before()  
+ {  
+ $this-\&gt;tester-\&gt;haveFixtures([  
+ 'user' =\&gt; [  
+ 'class' =\&gt; UserFixture::className(),  
+ 'dataFile' =\&gt; codecept\_data\_dir() . 'user.php'  
+ ]  
+ ]);  
+ }
+```
+- Доавить поддержку fixtures в настройки unit.suite.yml```
+part: [orm, fixtures]
+```
+- Помните мы добавляли сохранение модулей фреймворка которые мы оборачивали в mock'и? Этот функционал нужно убрать - настройки codeception по умолчанию инициализируют окружение yii законово ля каждого теста.
+
+Все работает.
+
+```
+../vendor/bin/codecept run
+```
+
+![loginform-success](/assets/images/2017/06/loginform-success.png)
+
+## Разделения тестов на фронтенд, бекенд и core-составляющие
+
+Безусловно, можно сваливать все тесты в одну кучу (ядро, бек, фронт) и запускать их одной командой. Так, например сделано в yii2-standard-template. Но когда проект у нас сложный, то время выполнения тестов непрерывно растет и надо как-то разделять их на блоки, а для этого у нас есть прекрасная возможность - сама архитектура приложения этому способствует поскольку поделена на три части.
+
+Для того, чтобы было удобно работать с тестами существует возможность глобального конфигурирования codeception - тесты каждой составляющей в своей папке, а глобальная конфигурация уровнем выше.
+
+В нашем случае это файл codeception.yml в корне проекта.
+
+```
+# global codeception file to run tests from all apps  
+include:  
+ - common  
+ - frontend  
+ - backend  
+paths:  
+ log: console/runtime/logs  
+settings:  
+ colors: true
+```
+
+Разработчики шаблона о нас позаботились и заранее все сделали до нас. Мы лишь повторили их путь. И теперь можно запускать тесты уже и корня проекта. При таком способе будут выполнены все юнит и функиональные тесты для всех блоков системы.
+
+## Зачем все это?
+
+После выполнения всех действия возникает вопрос: разработчики yii2-advanced-template уже все сделали до нас (положили нужные файлы в ынужные места, настроили окружение), зачем нам повторять этот путь? Конечно для того, чтобы знать как устроены подобные вещи изнутри. В следующих частях мы уже перейдем непосредственно к самим тестам, а сейчас мы только учимся, осваиваем технологию.
+
+## Домашнее задание
+
+Самая главная проблема нашего кейса: мы тестировали функционал фронтенда внутри тестов, которые посвящены ядру системы (я про LoginForm). Целесообразно вынести эти тесты во frontend-составляющую, что вы и сделаете в качестве домашенй работы.
+
+Помимо всего авторы yii постарались и покрыли тестами весь фунционал шаблона проекта. Мы же в вами функциочнал исправляем под себя и при это не испчравляем уже имеющиеся тесты. И они, очевидно, падают. В качестве домашенего задания поправьте тесты фронт и бек-составляющих так, чтобы они отвечали текущей схеме базы.
+
+Одна из проблем с которой вы столкнетесь - это валидация password\_reset\_token. Суть в том, что срок жизни токена закодирован в самом токене. И на момент описания статьи этот токен уже истек. Подумайте как обойти эту проблему не использую рандомизированные данные. Если вы не сможете ничего придумать, то посмотрите в исходники к статье. Рекомендую посмотреть на метод User::isPasswordResetTokenValid().
+
+В этой части мы говорим исключительно о юнит тестах. Поэтому не стоит сразу браться за исправление функциональных тестов - о них дальше. Да, безусловно, на реальном проекте **оставлять поломанный код в системе контроля версий нельзя**. Помните об этом! **Мы это делаем только чтобы не сильно перегружать информацией каждую часть этого цикла!**
+
+## Исходные тексты
+
+- [Результат, который должен у вас получиться после выполнения всех действий в данной статье](https://github.com/RussianPenguin/TDD_yii2_app/releases/tag/v0.0.6)
+
+## Ссылки и документация
+
+- [Codeception for yiiframework](http://codeception.com/for/yii)
+- [YiiFramework: Модульное тестирование](http://www.yiiframework.com/doc/guide/1.1/ru/test.unit)
+- [Yii::$app null when trying to access ActiveRecord functionality from a Unit test](https://github.com/yiisoft/yii2/issues/7836)
+- [Unit testing error on database insert yii2 framework](https://stackoverflow.com/questions/37567212/unit-testing-error-on-database-insert-yii2-framework)
+- [Сервис на Yii2: Тестирование приложения с Codeception](http://www.elisdn.ru/blog/84/seo-service-on-yii2-application-testing)
+- [Yii::$app isn't being initialized during unit tests. Yii2, Codeception 2.2.4](https://github.com/Codeception/Codeception/issues/3442)
+- [Fixtures - Testing - The Definitive Guide to Yii 2.0 - Yii Framework](http://www.yiiframework.com/doc-2.0/guide-test-fixtures.html)
+</p>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

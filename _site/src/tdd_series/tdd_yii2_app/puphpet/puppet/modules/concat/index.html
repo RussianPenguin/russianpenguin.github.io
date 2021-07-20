@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/concat/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/concat/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/concat/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>#concat</p>
+
+<p>####Table of Contents</p>
+
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#module-description">Module Description - What the module does and why it is useful</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with concat</a>
+    <ul>
+      <li><a href="#what-concat-affects">What concat affects</a></li>
+      <li><a href="#beginning-with-concat">Beginning with concat</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a></li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a>
+    <ul>
+      <li><a href="#public-defines">Public Defines</a></li>
+      <li><a href="#parameters">Parameters</a></li>
+      <li><a href="#deprecations">Deprecations</a></li>
+    </ul>
+  </li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<p>##Overview</p>
+
+<p>The concat module lets you construct files from multiple ordered fragments of text.</p>
+
+<p>##Module Description</p>
+
+<p>The concat module lets you gather <code class="language-plaintext highlighter-rouge">concat::fragment</code> resources from your other modules and order them through a single <code class="language-plaintext highlighter-rouge">concat</code> resource into a coherent file. It does this through a Ruby script and a temporary holding space for the fragments.</p>
+
+<p>##Setup</p>
+
+<p>###What concat affects</p>
+
+<ul>
+  <li>Installs <code class="language-plaintext highlighter-rouge">concatfragments.rb</code>.</li>
+  <li>Adds a <code class="language-plaintext highlighter-rouge">concat/</code> directory into Puppet’s <code class="language-plaintext highlighter-rouge">vardir</code>.</li>
+</ul>
+
+<p>###Beginning with concat</p>
+
+<p>To start using concat you need to create:</p>
+
+<ul>
+  <li>A concat{} resource for the final file.</li>
+  <li>One or more concat::fragment{}s.</li>
+</ul>
+
+<p>A minimal example might be:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>concat { '/tmp/file':
+  ensure =&gt; present,
+}
+
+concat::fragment { 'tmpfile':
+  target  =&gt; '/tmp/file',
+  content =&gt; 'test contents',
+  order   =&gt; '01'
+}
+</code></pre></div></div>
+
+<p>##Usage</p>
+
+<p>###Maintain a list of the major modules on a node</p>
+
+<p>To maintain an motd file that lists the modules on one of your nodes, first create a class to frame up the file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class motd {
+  $motd = '/etc/motd'
+
+  concat { $motd:
+    owner =&gt; 'root',
+    group =&gt; 'root',
+    mode  =&gt; '0644'
+  }
+
+  concat::fragment{ 'motd_header':
+    target  =&gt; $motd,
+    content =&gt; "\nPuppet modules on this server:\n\n",
+    order   =&gt; '01'
+  }
+
+  # let local users add to the motd by creating a file called
+  # /etc/motd.local
+  concat::fragment{ 'motd_local':
+    target =&gt; $motd,
+    source =&gt; '/etc/motd.local',
+    order  =&gt; '15'
+  }
+}
+
+# let other modules register themselves in the motd
+define motd::register($content="", $order='10') {
+  if $content == "" {
+    $body = $name
+  } else {
+    $body = $content
+  }
+
+  concat::fragment{ "motd_fragment_$name":
+    target  =&gt; '/etc/motd',
+    order   =&gt; $order,
+    content =&gt; "    -- $body\n"
+  }
+}
+</code></pre></div></div>
+
+<p>Then, in the declarations for each module on the node, add <code class="language-plaintext highlighter-rouge">motd::register{ 'Apache': }</code> to register the module in the motd.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class apache {
+  include apache::install, apache::config, apache::service
+
+  motd::register{ 'Apache': }
+}
+</code></pre></div></div>
+
+<p>These two steps populate the /etc/motd file with a list of the installed and registered modules, which stays updated even if you just remove the registered modules’ <code class="language-plaintext highlighter-rouge">include</code> lines. System administrators can append text to the list by writing to /etc/motd.local.</p>
+
+<p>When you’re finished, the motd file will look something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Puppet modules on this server:
+
+    -- Apache
+    -- MySQL
+
+  &lt;contents of /etc/motd.local&gt;
+</code></pre></div></div>
+
+<p>##Reference</p>
+
+<p><strong>Note</strong>: Several of this module’s parameters and features have been deprecated. See the <a href="#deprecations">Deprecations</a> section below.</p>
+
+<p>###Public defines</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">concat</code>: Manages a file, compiled from one or more text fragments.</li>
+  <li><code class="language-plaintext highlighter-rouge">concat::fragment</code>: Manages a fragment of text to be compiled into a file.</li>
+</ul>
+
+<p>###Parameters</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">concat</code></p>
+
+<p>All the parameters listed below are optional.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">backup</code></p>
+
+<p>Specifies whether (and how) to back up the destination file before overwriting it. Your value gets passed on to Puppet’s <a href="https://docs.puppetlabs.com/references/latest/type.html#file-attribute-backup">native <code class="language-plaintext highlighter-rouge">file</code> resource</a> for execution. Valid options: ‘true’, ‘false’, or a string representing either a target filebucket or a filename extension beginning with “.”. Default value: ‘puppet’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">ensure</code></p>
+
+<p>Specifies whether the destination file should exist. Setting to ‘absent’ tells Puppet to delete the destination file if it exists, and negates the effect of any other parameters. Valid options: ‘present’ and ‘absent’. Default value: ‘present’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">ensure_newline</code></p>
+
+<p>Specifies whether to ensure there’s a new line at the end of each fragment. Valid options: ‘true’ and ‘false’. Default value: ‘false’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">force</code></p>
+
+<p>In case no fragments have been added, this parameter specifies whether to go ahead and create a potentially empty file. Valid options: ‘true’ and ‘false’. Default value: ‘false’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">group</code></p>
+
+<p>Specifies a permissions group for the destination file. Valid options: a string containing a group name. Default value: undefined.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">mode</code></p>
+
+<p>Specifies the permissions mode of the destination file. Valid options: a string containing a permission mode value in octal notation. Default value: ‘0644’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">order</code></p>
+
+<p>Specifies a method for sorting your fragments by name within the destination file. Valid options: ‘alpha’ (e.g., ‘1, 10, 2’) or ‘numeric’ (e.g., ‘1, 2, 10’). Default value: ‘alpha’.</p>
+
+<p>You can override this setting for individual fragments by adjusting the <code class="language-plaintext highlighter-rouge">order</code> parameter in their <code class="language-plaintext highlighter-rouge">concat::fragment</code> declarations.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">owner</code></p>
+
+<p>Specifies the owner of the destination file. Valid options: a string containing a username. Default value: undefined.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">path</code></p>
+
+<p>Specifies a destination file for the combined fragments. Valid options: a string containing an absolute path. Default value: the title of your declared resource.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">replace</code></p>
+
+<p>Specifies whether to overwrite the destination file if it already exists. Valid options: ‘true’ and ‘false’. Default value: ‘true’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">validate_cmd</code></p>
+
+<p>Specifies a validation command to apply to the destination file. Requires Puppet version 3.5 or newer. Valid options: a string to be passed to a file resource. Default value: undefined.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">warn</code></p>
+
+<p>Specifies whether to add a warning message at the top of the destination file so users know it was autogenerated by Puppet. Valid options: ‘true’, ‘false’, or a string to be delivered as a warning message. Default value: ‘false’.</p>
+
+<p>If you set this parameter to ‘true’, Puppet adds the following message:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># This file is managed by Puppet. DO NOT EDIT.
+</code></pre></div></div>
+
+<p>####<code class="language-plaintext highlighter-rouge">concat::fragment</code></p>
+
+<p>Except where noted, all the below parameters are optional.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">content</code></p>
+
+<p>Supplies the content of the fragment. <strong>Note</strong>: You must supply either a <code class="language-plaintext highlighter-rouge">content</code> parameter or a <code class="language-plaintext highlighter-rouge">source</code> parameter. Valid options: a string. Default value: undef.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">ensure</code></p>
+
+<p>Specifies whether the fragment should be included in the destination file or discarded. Valid options: ‘present’ and ‘absent’. Default value: ‘present’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">order</code></p>
+
+<p>Reorders your fragments within the destination file. Fragments that share the same order number are ordered by name. Valid options: a string (recommended) or an integer. Default value: ‘10’.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">source</code></p>
+
+<p>Specifies a file to read into the content of the fragment. <strong>Note</strong>: You must supply either a <code class="language-plaintext highlighter-rouge">content</code> parameter or a <code class="language-plaintext highlighter-rouge">source</code> parameter. Valid options: a string or an array, containing one or more Puppet URLs. Default value: undefined.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">target</code></p>
+
+<p><em>Required.</em> Specifies the destination file of the fragment. Valid options: a string containing the title of the parent <code class="language-plaintext highlighter-rouge">concat</code> resource.</p>
+
+<p>###Deprecations</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">concat</code> has the following deprecations</strong></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">gnu</code></p>
+
+<p>Generates a catalog compile time warning and has no effect. This parameter was silently ignored in version <code class="language-plaintext highlighter-rouge">1.0.0</code> and will be removed in a future release.</p>
+
+<p>#####stringified ‘true’/’false’ values deprecated in <code class="language-plaintext highlighter-rouge">warn</code></p>
+
+<p>Passing stringified boolean values (strings of ‘true’ and ‘false’) to the <code class="language-plaintext highlighter-rouge">warn</code> parameter of <code class="language-plaintext highlighter-rouge">concat</code> is deprecated. Generates a catalog compile time warning, and will be silently treated as the concatenated file header/warning message in a future release.</p>
+
+<p>Please migrate to using the Puppet DSL’s native <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_datatypes.html#booleans">Boolean data
+type</a>.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">concat::fragment</code> has the following deprecations</strong></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">backup</code></p>
+
+<p>Generates a catalog compile time warning and has no effect. In the <code class="language-plaintext highlighter-rouge">1.0.0</code> release this parameter controlled file bucketing of the file fragment. Bucketing the fragment(s) is redundant with bucketing the final concatenated file and this feature has been removed.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">group</code></p>
+
+<p>Generates a catalog compile time warning and has no effect. Had no user-visible effect in version <code class="language-plaintext highlighter-rouge">1.0.0</code> and will be removed in a future release.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">mode</code></p>
+
+<p>Generates a catalog compile time warning and has no effect. Had no user-visible effect in version <code class="language-plaintext highlighter-rouge">1.0.0</code> and will be removed in a future release.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">owner</code></p>
+
+<p>Generates a catalog compile time warning and has no effect. Had no user-visible effect in version <code class="language-plaintext highlighter-rouge">1.0.0</code> and will be removed in a future release.</p>
+
+<p>#####file paths are deprecated in <code class="language-plaintext highlighter-rouge">ensure</code></p>
+
+<p>Passing a value other than ‘present’ or ‘absent’ in the <code class="language-plaintext highlighter-rouge">ensure</code> parameter of <code class="language-plaintext highlighter-rouge">concat::fragment</code> is <strong>deprecated</strong>, and generates a catalog compile time warning. The warning will become a catalog compilation failure in a future release.</p>
+
+<p>If you want to use the content of a file as a fragment please use the <a href="#source"><code class="language-plaintext highlighter-rouge">source</code></a> parameter.</p>
+
+<p>####<code class="language-plaintext highlighter-rouge">concat::setup</code></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">concat::setup</code> class should no longer be directly included in the manifest. It will be removed in a future release.</p>
+
+<p>##Limitations</p>
+
+<p>This module has been tested on <a href="https://forge.puppetlabs.com/supported#compat-matrix">all PE-supported platforms</a>, and no issues have been identified.</p>
+
+<p>##Development</p>
+
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can’t access the huge number of platforms and myriad of hardware, software, and deployment configurations that Puppet is intended to serve.</p>
+
+<p>We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.</p>
+
+<p>For more information, see our <a href="https://docs.puppetlabs.com/forge/contributing.html">module contribution guide.</a></p>
+
+<p>###Contributors</p>
+
+<p>To see who’s already involved, see the <a href="https://github.com/puppetlabs/puppetlabs-concat/graphs/contributors">list of contributors.</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

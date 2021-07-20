@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>puppet-beanstalkd | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="puppet-beanstalkd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/beanstalkd/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/beanstalkd/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="puppet-beanstalkd" />
+<script type="application/ld+json">
+{"headline":"puppet-beanstalkd","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/beanstalkd/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">puppet-beanstalkd</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="puppet-beanstalkd">puppet-beanstalkd</h1>
+<p><a href="https://travis-ci.org/keen99/puppet-beanstalkd"><img src="https://travis-ci.org/keen99/puppet-beanstalkd.png?branch=master" alt="Build Status" /></a></p>
+
+<p>puppet module for managing beanstalkd, a simple and fast work queue - https://github.com/kr/beanstalkd</p>
+
+<h2 id="maintainer-status">Maintainer status</h2>
+
+<p>Currently looking for new maintainers (or someone to take this over entirely) - I hate abandonware, but I dont have the time to keep it up (since it’s stretching into years since I worked with puppet).</p>
+
+<h2 id="supported-oses">Supported OSes</h2>
+
+<p>redhat/centos and debian/ubuntu currently.  Please PR updates for others!</p>
+
+<p>Requires packages (rpm, etc) with traditional init scripts supported by service{} for your OS.</p>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<p>Drop the beanstalkd directory into your modules tree and realize the define:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>beanstalkd::config{"my beanstalk install": }
+</code></pre></div></div>
+
+<h2 id="optional-parameters">Optional parameters</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listenaddress =&gt; '0.0.0.0',
+listenport =&gt; '13000',
+maxjobsize =&gt; '65535',
+maxconnections =&gt; '1024',
+binlogdir =&gt; '/var/lib/beanstalkd/binlog',	# set empty ( '' ) to disable binlog
+binlogfsync =&gt; undef,							
+binlogsize =&gt; '10485760',
+ensure =&gt; 'running',		# running, stopped, absent
+packageversion =&gt; 'latest',	# latest, present, or specific version
+packagename =&gt; undef,		# override package name						
+servicename =&gt; undef		# override service name
+</code></pre></div></div>
+
+<h2 id="tests">Tests</h2>
+
+<p>To run unit tests, cd into beanstalkd and execute “run-tests.sh”</p>
+
+<p>Requires ruby and bundler, everything else should get installed by the test.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$$ puppet-beanstalkd/beanstalkd# ./run-tests.sh 
+Using rake (10.0.4) 
+Using diff-lcs (1.2.4) 
+Using facter (1.7.0) 
+Using json_pure (1.7.7) 
+Using hiera (1.2.1) 
+Using metaclass (0.0.1) 
+Using mocha (0.13.3) 
+Using puppet (3.1.1) 
+Using rspec-core (2.13.1) 
+Using rspec-expectations (2.13.0) 
+Using rspec-mocks (2.13.1) 
+Using rspec (2.13.0) 
+Using rspec-puppet (0.1.6) 
+Using puppetlabs_spec_helper (0.4.1) 
+Using bundler (1.1.4) 
+Your bundle is complete! Use `bundle show [gemname]` to see where a bundled gem is installed.
+/usr/bin/ruby1.9.1 -S rspec spec/defines/config_spec.rb
+...................
+
+Finished in 0.84772 seconds
+19 examples, 0 failures
+</code></pre></div></div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

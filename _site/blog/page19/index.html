@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 19 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page19/" />
+<meta property="og:url" content="http://localhost:4000/blog/page19/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page18/" />
+<link rel="next" href="http://localhost:4000/blog/page20/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page19/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2015/04/05/%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b0-%d0%bd%d0%b0-python-%d1%81-%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5%d0%bc-virtualenv/">Разработка на Python с использованием virtualenv</a></h1>
+  <p class="author">
+    <span class="date">2015-04-05 18:31:34 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://virtualenv.readthedocs.org/en/latest/" title="virtualenv">Virtual Environment</a> - полезный инструмент, который позволет держать различные конфигурации зависимостей проектов в разных директориях. Например он решает проблему когда одному приложению требуется версия 1.0 пакета X, а другому - 2.0.</p>
+
+<h2 id="vitrualenv">vitrualenv</h2>
+
+<p>Главным инструментов будет virtualenv.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>python-virtualenv
+</code></pre></div></div>
+
+<h3 id="использование">Использование</h3>
+
+<p>Создадим окружение</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>project<span class="se">\_</span><span class="nb">dir</span>  
+<span class="nv">$ </span>virtualenv proj<span class="se">\_</span><span class="nb">env</span>
+</code></pre></div></div>
+
+<p>Этими командами мы создадим папку proj_env, которая будет содержать наше новое окружение. В этой папке будет набор скриптов и копия интерпретатора python, который будет использоваться в окружении (окружение использует свой интерпретатор, а не общесистемный).</p>
+
+<p>При создании окружения можно указать, какая версия python нам нужна.</p>
+
+<p>Возможно, что в системе параллельно стоит как python2, так и python3. Выбирать версию при создании окружения мы можем ключем -p. Если ключ не указан, то будет выбрана версия /usr/bin/python.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>virtualenv <span class="nt">-p</span> /usr/bin/python3.4 proj<span class="se">\_</span><span class="nb">env</span>
+</code></pre></div></div>
+
+<p>Для того, чтобы попасть в наше новое окружение используем</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">source </span>proj<span class="se">\_</span><span class="nb">env</span>/bin/activate
+</code></pre></div></div>
+
+<p>Теперь мы внутри окружения.</p>
+
+<p>Определеить это можно по изменившемуся приглашению:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(proj\_env)тут\_старое\_приглашение\_из\_$PS1
+</code></pre></div></div>
+
+<p>Все. Мы внутри окружения. Можно ставить зависимости для нашего приложения.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pip <span class="nb">install </span>flask flask-bootsrap rq rq-scheduler pymysql
+</code></pre></div></div>
+
+<p>Выйти из окружения можно при помощи</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>deactivate
+</code></pre></div></div>
+
+<p>Теперь мы попали обратно в систему с дефолтными интерпретаторами.</p>
+
+<h3 id="сохранение-информации-о-зависимостях">Сохранение информации о зависимостях</h3>
+
+<p>Опция –no-site-packages отключает использование глобально-установленных пакетов, что может быть полезно (сейчас это дефолтное поведение virtualenv).</p>
+
+<p>Хорошей идей будет сохранить информацию об установленных в окружении пакетов.</p>
+
+<p>{code lang=”shell”]$ pip freeze &gt; requirements.txt</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+После развертывание окружения в новой системе можно поднять все пакеты сразу.
+
+```shell
+$ pip install -r requirements.txt
+</code></pre></div></div>
+
+<p>Не забываем добавить папку окружения в .gitignore.</p>
+
+<h2 id="virtualenverapper">virtualenverapper</h2>
+
+<p>Еще один полезный инструмент (скорее для разработчиков, а не для деплоя), который позволяет обращаться со со множеством окружений и переключаться между ними.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>python-virtualenvwrapper
+</code></pre></div></div>
+
+<h3 id="применение">Применение</h3>
+
+<p>Добавляем в .bashrc</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span>WORKON<span class="se">\_</span><span class="nv">HOME</span><span class="o">=</span>~/.envs  
+<span class="nb">source</span> /usr/bin/virtualenvwrapper.sh
+</code></pre></div></div>
+
+<p>Теперь можно создавать окружения.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mkvirtualenv proj<span class="se">\_</span><span class="nb">env</span>
+</code></pre></div></div>
+
+<p>Активировать окружения.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>workon proj<span class="se">\_</span><span class="nb">env</span>
+</code></pre></div></div>
+
+<p>Выходить из окружения можно так же как это делалось в кготом virtualenv.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>deactivate
+</code></pre></div></div>
+
+<p>Удалять окружения.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>rmvirtualenv proj<span class="se">\_</span><span class="nb">env</span>
+</code></pre></div></div>
+
+<p>При этом все папки окружений будет расположены в одном месте: папке, которая задана через $WORKON_HOME.</p>
+
+<h3 id="дополнительные-команды">Дополнительные команды</h3>
+
+<p>Есть несколько дополнительных команд</p>
+
+<ul>
+  <li>lsvirtualenv - покажет список созданных окружений</li>
+  <li>cdvirtualenv - перейдет непосрественно в папку окружения</li>
+  <li>cdsitepackages - переведет в site-packages выбранного окруженияч</li>
+  <li>lssitepackages - сделает ls для папки site-packages</li>
+</ul>
+
+<p><a href="http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html" title="Список команд virtualenvwrapper">Посмотреть полный список команд</a>.</p>
+
+<h2 id="autoenv">autoenv</h2>
+
+<p><a href="https://github.com/kennethreitz/autoenv" title="autoenv">Утилита</a> позволяет активировать окружение при входе в папку, и деактивировать при выходе.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv  
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'source ~/.autoenv/activate.sh'</span> <span class="se">\&gt;\&gt;</span> ~/.bashrc
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/04/02/tmux-%d0%bb%d1%83%d1%87%d1%88%d0%b0%d1%8f-%d0%b0%d0%bb%d1%8c%d1%82%d0%b5%d1%80%d0%bd%d0%b0%d1%82%d0%b8%d0%b2%d0%b0-screen/">Tmux - лучшая альтернатива screen</a></h1>
+  <p class="author">
+    <span class="date">2015-04-02 16:43:09 +0300</span>
+  </p>
+  <div class="content">
+   <p>Довольно долго пытался пересесть с GNU Screen на tmux, но вот только сдерживало несколько вещей в нем.<br />
+На <a href="http://tmux.sourceforge.net/" title="tmux is a terminal multiplexer">сайте</a> проекта можно найти описание всех фич, я же опишу лишь те, которые для меня оказались самыми полезными.</p>
+
+<ul>
+  <li><strong>Улучшенная модель отрисовки</strong> (да-да screen периодически подключивал)</li>
+  <li><strong>Содержимое терминала не теряется, когда мып ользуемся редакторами</strong> (открыли vim, закрыли, история осталась а месте и можно прокрутить до нее)</li>
+  <li><strong>Конфигурирование на лету</strong></li>
+</ul>
+
+<h3 id="c-b">C-b</h3>
+
+<p>Ага. Это сочетание клавишь из vim.</p>
+
+<p>Переключим tmux на работу с C-a</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set-option -g prefix C-a
+</code></pre></div></div>
+
+<h3 id="задержка-между-контрольными-клавишами-c-b-и-непосредственным-вводом-команды-например-n">Задержка между контрольными клавишами C-b и непосредственным вводом команды (например n).</h3>
+
+<p>Решается просто</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set -s escape-time 0
+</code></pre></div></div>
+
+<h3 id="сочетание-клавиш-для-управления-tmux-внутри-tmux">Сочетание клавиш для управления tmux внутри tmux</h3>
+
+<p>Бывает такое, что приходится внутри tmux запустить вложенную сессию tmux. Значит надо как-то пробросить этой вложенной сессии команды. Например <strong>C-a a <em>command</em></strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bind-key a send-prefix
+</code></pre></div></div>
+
+<h3 id="начинаме-считать-окна-с-1-а-не-0">Начинаме считать окна с 1, а не 0</h3>
+
+<p>Это удобно, так как 0 находится где-то на отшибе. И к нему надо тянуться.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set -g base-index 1
+</code></pre></div></div>
+
+<h3 id="агрессивный-ресайз-терминалов">Агрессивный ресайз терминалов</h3>
+
+<p>Дефолтно при подключении к сессии нескольких клиентов рамер окна выбирается по размеру самого маленького клиента. Это неинтересно. Поэтому позволим терминалу для каждого клиента иметь собственный размер.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setw -g aggressive-resize on
+</code></pre></div></div>
+
+<h3 id="после-завершения-команды-можно-ввести-другую-команду-не-нажимая-c-b">После завершения команды можно ввести другую команду не нажимая C-b</h3>
+
+<p>Для меня эта проблема была самой неприятно. Воспроизвести ее просто: нужно на готом tmux создать два региона.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C-b "
+</code></pre></div></div>
+
+<p>А затем переключаться между ними.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>C-b Up Down Up Down
+</code></pre></div></div>
+
+<p>Вы заметите, что нажав один раз C-b, а потом быстро нажимая вверх-вниз окна переключаются.</p>
+
+<p>Это неприятно когда пытаешься переключить вкладку и начать тут же вводить что-то.</p>
+
+<p>За такое поведение отвечает repeat-time</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>repeat-time time  
+ Allow multiple commands to be entered without pressing  
+ the prefix-key again in the specified time milliseconds  
+ (the default is 500). Whether a key repeats may be set  
+ when it is bound using the -r flag to bind-key. Repeat  
+ is enabled for the default keys bound to the resize-pane  
+ command.
+</code></pre></div></div>
+
+<p>Можно отключить repeat для команд переключения между панелями и окнами просто переобъявив команду без флага -r. Например так:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bind-key Up select-pane -U
+</code></pre></div></div>
+
+<p>Но я же предпочитаю эту фичу отключить вовсе.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set-option -g repeat-time 0
+</code></pre></div></div>
+
+<h3 id="базовый-tmuxconf">Базовый ~/.tmux.conf</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># C-b не подходит - так как используется в vim  
+set-option -g prefix C-a  
+bind-key C-a last-window
+
+# Начинам нумерацию окон с 1  
+set -g base-index 1
+
+# Добавляем отзывчивости в реакции на команды  
+set -s escape-time 0
+
+# Отключаем ожидание дополнительных команд  
+set-option -g repeat-time 0
+
+# Или можно забиндить команды отдельно отключая repeat только для нужных  
+#bind-key Up select-pane -U
+
+# Цветовая схема  
+set -g status-bg black  
+set -g status-fg white  
+set -g status-left ""  
+set -g status-right "#[fg=green]#H"
+
+# Ресайзим содержимое окна индивидуально для каждого клиента  
+setw -g aggressive-resize on
+
+# Позволим пробрасывать команды внутрь вложенной сессии tmux  
+# при помощи C-a a \&lt;command\&gt;  
+bind-key a send-prefix
+
+# Мониторинг активности  
+#setw -g monitor-activity on  
+#set -g visual-activity on
+
+# Пример использования команды оболочки в статусной строке  
+#set -g status-right "#[fg=yellow]#(uptime | cut -d ',' -f 2-)"
+
+# Подсвечиваем активное окно  
+set-window-option -g window-status-current-bg green
+</code></pre></div></div>
+
+<p>За кадром осталось использование <a href="https://github.com/tmuxinator/tmuxinator" title="Tmuxinator">tmuxinator</a> для запуска tmux c определенной заранее раскладкой окон.</p>
+
+<p>Ну и еще про настройку можно почитать в <a href="https://wiki.archlinux.org/index.php/Tmux" title="ArchWiki: Tmux">Arch-wiki</a>.</p>
+
+
+  </div>
+
+  <h1><a href="/2015/02/17/python-3-%d0%b8-%d0%be%d0%ba%d0%be%d0%bd%d1%87%d0%b0%d0%bd%d0%b8%d1%8f-%d1%81%d1%82%d1%80%d0%be%d0%ba-%d0%b2-%d1%84%d0%b0%d0%b9%d0%bb%d0%b0%d1%85/">Python 3+ и окончания строк в файлах</a></h1>
+  <p class="author">
+    <span class="date">2015-02-17 23:53:18 +0300</span>
+  </p>
+  <div class="content">
+   <p>Столкнулся одного теста, который был перенесен с python 2+ на python 3+.</p>
+
+<p>Тест делал следующее:</p>
+
+<p>скачивал файл через python.requests и сравнивал его с эталонным содержимым на диске (посимвольно).</p>
+
+<p>Выглядело приблизительно так</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>  
+<span class="kn">import</span> <span class="nn">sys</span>  
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  
+<span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>  
+ <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>  
+ <span class="k">from</span>\<span class="n">_storage</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>  
+ <span class="k">from</span>\<span class="n">_web</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>  
+ <span class="k">assert</span> <span class="k">from</span>\<span class="n">_web</span> <span class="o">==</span> <span class="k">from</span>\<span class="n">_storage</span>
+</code></pre></div></div>
+
+<p>Да. Все верно. Этот тест не проходил.</p>
+
+<p>И тут была замечена одна странность: файл на диске содержал последовательность crlf, а в coдержимом from_storage этой последовательности не оказало.</p>
+
+<p>А дело все в том, что в python 3+ было введено <a href="https://docs.python.org/release/3.2/library/functions.html#open" title="Python 3+ - open function">соглашение</a> на обработку символов перевода строки. И управление работой осуществляется манипулированием параметром newline.</p>
+
+<ul>
+  <li>On input, if newline is None, universal newlines mode is enabled. Lines in the input can end in ‘\n’, ‘\r’, or ‘\r\n’, and these are translated into ‘\n’ before being returned to the caller. If it is ‘’, universal newline mode is enabled, but line endings are returned to the caller untranslated. If it has any of the other legal values, input lines are only terminated by the given string, and the line ending is returned to the caller untranslated.</li>
+  <li>On output, if newline is None, any ‘\n’ characters written are translated to the system default line separator, os.linesep. If newline is ‘’, no translation takes place. If newline is any of the other legal values, any ‘\n’ characters written are translated to the given string.</li>
+</ul>
+
+<p>В итоге достаточно было указать newline=’’ как CRLF появились.</p>
+
+
+  </div>
+
+  <h1><a href="/2015/02/17/beautifulsoup-innerhtml/">BeautifulSoup innerHTML</a></h1>
+  <p class="author">
+    <span class="date">2015-02-17 21:54:08 +0300</span>
+  </p>
+  <div class="content">
+   <p>Функция в рамках браузеров по сей день остается недокументированной. А значит на стороне большинства парсеров она не реализована.</p>
+
+<p>Но как быть если хочется?</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">innerHTML</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>  
+ <span class="k">return</span> <span class="n">element</span><span class="p">.</span><span class="n">decode</span>\<span class="n">_contents</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="s">"html"</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/02/15/window-location-%d0%bd%d0%b5-%d0%b2%d1%81%d0%b5%d0%b3%d0%b4%d0%b0-%d0%be%d0%bd%d0%be-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d0%b5%d1%82-%d0%ba%d0%b0%d0%ba-%d0%bd%d0%b0%d0%b4%d0%be/">window.location - не всегда оно работает как надо</a></h1>
+  <p class="author">
+    <span class="date">2015-02-15 16:01:40 +0300</span>
+  </p>
+  <div class="content">
+   <p>Если раньше мы долго ругались на проблемы IE, то сейчас на FF и Chrome - ничего особо не поменялось.</p>
+
+<p>На этот раз отличились механизмы работы с хешом в window.location.</p>
+
+<p>Кейс: мы хотим перенаправить пользователя с помощью js на другую страницу.</p>
+
+<p>Что может пойти не так?</p>
+
+<p>Например у нас есть ссылка вида /foo. И логично предположить, что в современном мире мы хотим сохранить хеш (это нужно для angularjs например) чтобы на новой странице отработал нужный функционал.</p>
+
+<p>Что мы делаем</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/foo</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<p>Работает.</p>
+
+<p>Но стоит только в ссылку нечаянно попасть хешу #, как поведение браузеров сразу резко меняется.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="o">=</span><span class="dl">'</span><span class="s1">/foo#bar</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<p>Chrome среагирует правильно и отправит нас по ссылке /foo%23bar, а Firefox - нет. У него будет ссылка /foo#bar.</p>
+
+<p>Ниже иллюстрации.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png"><img src="/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png?w=300" alt="FF: window.location.pathname bug" /></a><a href="https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png"><img src="/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png?w=300" alt="Chrome: window.location.pathname" /></a>Как видим FF с задачей не справился. И не перекодировал # автоматом.</p>
+
+<p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=483304" title="FF: window.location.hash bug">Баг</a> этот давний - аж 2009го года.</p>
+
+<p>Поэтому внимательно следите за редиректами если у вас есть спецсимволы в урле.</p>
+
+<p>Проще говоря: pathname в FF вседет себя так же, как и href (за мелким исключением вроде сохранения хеша).</p>
+
+<p>Исходники на посмотреть <a href="https://github.com/RussianPenguin/blogSamples/blob/master/pathname.php" title="Исходники к статье">тут</a>.</p>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page18/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 19 из 35</span>
+  
+    <a href="/blog/page20/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

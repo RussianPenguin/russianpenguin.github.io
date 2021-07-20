@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 11 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page11/" />
+<meta property="og:url" content="http://localhost:4000/blog/page11/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page10/" />
+<link rel="next" href="http://localhost:4000/blog/page12/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page11/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2016/03/08/%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bd%d0%b5%d1%81%d0%ba%d0%be%d0%bb%d1%8c%d0%ba%d0%b8%d1%85-git-%d1%80%d0%b5%d0%bf%d0%be%d0%b7%d0%b8%d1%82%d0%b0%d1%80%d0%b8%d0%b5%d0%b2/">Обновление нескольких git-репозитариев в папке</a></h1>
+  <p class="author">
+    <span class="date">2016-03-08 23:17:00 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/03/2016-03-08-224831_580x134.png?w=150" alt="2016-03-08-22:48:31_580x134" /> Порой у нас в каталоге накапливается много-много git-репозитариев, которые хочется обновить в один заход. Для этого есть маленький скрипт, который обновляет все репозитарии, которые сможет найти в папке, переданной в качестве аргумента.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="k">if </span><span class="nb">test</span> <span class="s2">"$#"</span> <span class="nt">-ne</span> 1<span class="p">;</span> <span class="k">then  
+ </span><span class="nb">echo</span> <span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> </span><span class="se">\&lt;</span><span class="s2">dirname</span><span class="se">\&gt;</span><span class="s2">"</span>  
+ <span class="nb">echo</span> <span class="s2">"Find and update all git repos in specified folder"</span>  
+ <span class="nb">exit </span>1  
+<span class="k">fi
+
+if</span> <span class="o">[</span><span class="nt">-d</span> <span class="nv">$1</span><span class="o">]</span><span class="p">;</span> <span class="k">then  
+ </span>find <span class="nv">$1</span> <span class="nt">-type</span> d <span class="nt">-name</span> .git | xargs <span class="nt">-n</span> 1 <span class="nb">dirname</span> | <span class="nb">sort</span> | <span class="k">while </span><span class="nb">read </span>line<span class="p">;</span> <span class="k">do </span><span class="nb">echo</span> <span class="s2">"Update repo </span><span class="nv">$line</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">pushd</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> <span class="se">\&gt;</span> /dev/null <span class="o">&amp;&amp;</span> <span class="nb">cd</span> <span class="nv">$line</span> <span class="o">&amp;&amp;</span> git pull <span class="o">&amp;&amp;</span> <span class="nb">popd</span> <span class="se">\&gt;</span> /dev/null<span class="p">;</span> <span class="k">done  
+else  
+ </span><span class="nb">echo</span> <span class="s2">"</span><span class="se">\"</span><span class="nv">$1</span><span class="se">\"</span><span class="s2"> does not exists"</span>  
+<span class="k">fi</span>
+</code></pre></div></div>
+
+<p>Использование очень простое</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gitup ~/projects
+</code></pre></div></div>
+
+<p><a href="https://github.com/RussianPenguin/cliUtils">Репозитарий на github</a>.</p>
+
+
+  </div>
+
+  <h1><a href="/2016/02/29/phpstorm-pycharm-%d0%b8-%d0%b4%d1%80-%d0%b8-xmonad/">PHPStorm (PyCharm и др.) и XMonad</a></h1>
+  <p class="author">
+    <span class="date">2016-02-29 00:24:26 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/02/2016-02-28-234847_708x493.png?w=150" alt="2016-02-28-23:48:47_708x493" />После запуска PHPStorm вместо самое среды появляется лишь серое окно без ничего.<br />
+Работаю я в xmonad и произошло это после очередной правки конфига под себя.<br />
+В документации сказано, что для java-приложений нужен</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>startupHook = setWMName "LG3D"
+</code></pre></div></div>
+<p>Но этот хук перестал почему-то оказывать должный эффект (без него в ряде java-приложений тоже был пустой экран).<br />
+А все оказалось просто: я добавил хук ewmhDesktopsEventHook.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>handleEventHook = do  
+ ewmhDesktopsEventHook -- вот он  
+ docksEventHook  
+ fullscreenEventHook -- Full screen setup
+</code></pre></div></div>
+
+<p>Хук нужен для перехвата сообщений по активации окна, перемещению его на другой рабочий стол и переключении рабочих столов. Можно почитать <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-EwmhDesktops.html">документацию</a> и <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/src/XMonad-Hooks-EwmhDesktops.html">код</a>.</p>
+
+<p>Но беда в том, что этот хук трет имя wm, которое устанавливается в конфиге (ставит “xmonad”). <a href="http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Hooks-SetWMName.html">Этот</a> wmname (который lg3d) служит решением для <a href="http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6429775">бага</a> из awt.</p>
+
+<p>Чтобы использовать ewmhDesktopsEventHook нужно указать java окольными путями, что она работает в “non reparenting” (не подобрал я нормального перевода :)) окружении.</p>
+
+<p>Для этого служит переменная окружения _JAVA_AWT_WM_NONREPARENTING.</p>
+
+<p>Пишем в ~/.bashrc или ~/.profile</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export \_JAVA\_AWT\_WM\_NONREPARENTING=1
+</code></pre></div></div>
+
+<p>И теперь все хорошо.</p>
+
+<p><img src="/assets/images/2016/02/2016-02-28-235036_708x495.png?w=300" alt="2016-02-28-23:50:36_708x495" /></p>
+
+
+  </div>
+
+  <h1><a href="/2016/02/26/raspbian-%d1%8d%d1%82%d0%be-%d0%bd%d0%b5-debian/">Raspbian - это не Debian</a></h1>
+  <p class="author">
+    <span class="date">2016-02-26 22:45:34 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/02/img_raspbian_logo.png" alt="img_raspbian_logo" /> <a href="https://www.raspbian.org">Raspbian</a> - это не Debian. Хотя картинка нас убежлает в обратном.</p>
+
+<p>В чем проблема? Проблема в обозначении архитектуры.</p>
+
+<p>Давеча захотел я поставить на малинку пакет из репозитария собранного под Debian.</p>
+
+<p>Прописал как положено в /etc/apt/sources.list.d/&lt;repository&gt;.list</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb \&lt;repourl\&gt; wheezy main
+</code></pre></div></div>
+
+<p>Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает.</p>
+
+<p>А дело все в том, что разработчики raspbian перекомпилировали дебиановский armhf (ARMv7) для совместимости с ARMv6, но название архитектуры не поменяли. В итоге попытки установить какой-нибудь пакет *.armhf из дебиана может закончится сегментейшнфаултом.</p>
+
+<p>Для того, чтобы решить все проблемы с софтом из дебиановских репозитариев нужно использовать архитектуру armel, которой разработчики обозначают как раз v6. И явно ее указывать в настройках.</p>
+
+<p>В итоге конфигурация репозитариев deb будет выглядеть так:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb [arch=armel] \&lt;repourl\&gt; wheezy main
+</code></pre></div></div>
+
+<p>Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада.</p>
+
+<p><a href="https://www.raspbian.org/RaspbianFAQ#What_is_Raspbian.3F">Пруф</a></p>
+
+
+  </div>
+
+  <h1><a href="/2016/02/24/redis-%d0%ba%d0%b0%d0%ba-%d1%81%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d1%82%d1%8c-%d0%b1%d0%b0%d0%b7%d1%83-%d0%b1%d0%b5%d0%b7-%d0%bf%d1%80%d0%be%d1%81%d1%82%d0%be%d1%8f-%d0%bf%d1%80%d0%be/">Redis: как скопировать базу без простоя проекта</a></h1>
+  <p class="author">
+    <span class="date">2016-02-24 21:04:12 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/02/redis.png?w=150" alt="redis" />Ага. У нас проблемы: нам нужно переехать сервер редиса без даунтайма проекта. Но нам надо не только переехать, но еще и данные сохранить.</p>
+
+<p>Чаще всего предлагается решение в виде остановки проекта, копирования базы в новый инстанс, его запуск, переключение проекта и другие танцы.</p>
+
+<p>Существует даже команда <a href="http://redis.io/commands/MIGRATE">migrate</a>, которая гарантирует атомарное копирование ключей и данных.</p>
+
+<p>Но она работает в рамках одной бд (а по дефолту у редиса их целых 16), а так же обладает рядом негативных последствий ввиду своей атомарности. Поэтому подходит она совершенно для других целей.</p>
+
+<p>Сразу на ум приходят репликации :) А данное решение их умеет.</p>
+
+<p>Допустим у нас два сервера (у меня они на портах 6379 и 6479 соответственно). И нам нужно переключить проект с первого на второй сервер. Второй нулевой только что поднятый. А с первым ведется работа.</p>
+
+<p><img src="/assets/images/2016/02/2016-02-24-202827_805x48.png" alt="2016-02-24-20:28:27_805x48" /></p>
+
+<p>Посмотрим, что в каждой из баз покажет команда</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keys \*
+</code></pre></div></div>
+
+<p>Основной редис</p>
+
+<p><img src="/assets/images/2016/02/2016-02-24-202930_482x426.png" alt="2016-02-24-20:29:30_482x426" /></p>
+
+<p>Новый редис</p>
+
+<p><img src="/assets/images/2016/02/2016-02-24-202947_190x32.png" alt="2016-02-24-20:29:47_190x32" /></p>
+
+<p>Как видим пока базы не синхронизированы.</p>
+
+<p>Теперь нужно сделать новую базу репликой старой</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\&gt; slaveof 127.0.0.1 6379  
+OK  
+\&gt; info  
+...  
+role:slave  
+master\_host:127.0.0.1  
+master\_port:6379  
+master\_link\_status:up  
+master\_last\_io\_seconds\_ago:1  
+master\_sync\_in\_progress:0
+</code></pre></div></div>
+
+<p>Дополнительно может потребоваться авторизоваться на мастере чтобы началась репликация</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config set masterauth \&lt;password\&gt;
+</code></pre></div></div>
+
+<p>После этого можем опять посмотреть, что в базу скопировалось</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keys \*
+</code></pre></div></div>
+
+<p><img src="/assets/images/2016/02/2016-02-24-210018_441x414.png" alt="2016-02-24-21:00:18_441x414" /></p>
+
+<p>Как видим: все данные успешно засинхронизировались (вполне возможно это займет продолжительное время ввиду объема данных).</p>
+
+<p>После того, как репликация завершена нам нужно сделать две вещи:</p>
+
+<ul>
+  <li>превратить слейва в мастер</li>
+  <li>настроить приложение на работу с новым мастером</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>slaveof no one
+</code></pre></div></div>
+
+<p>Эта команда выключает копирование данных с мастера (но не удаляет их) и теперь уже дело за настройкой приложения.</p>
+
+<p>Да. Небольшой даунтайм все же был (секунд 10-15), но это гораздо лучше, чем предлагаемые решения.</p>
+
+<p>Однако, обратите внимание, что если вы активно пишете в редис, то при такой миграции баз часть данных можно и потерять.</p>
+
+<p><a href="http://redis.io/topics/replication">Почитать про репликации</a>.</p>
+
+
+  </div>
+
+  <h1><a href="/2016/02/06/mc-midnight-commander-%d0%b2%d1%8b-%d0%bd%d0%b5-%d1%83%d0%bc%d0%b5%d0%b5%d1%82%d0%b5-%d0%b5%d0%b3%d0%be-%d0%b3%d0%be%d1%82%d0%be%d0%b2%d0%b8%d1%82%d1%8c/">MC (midnight commander): вы не умеете его готовить.</a></h1>
+  <p class="author">
+    <span class="date">2016-02-06 16:01:47 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/02/2016-02-06-143803_337x97.png" alt="2016-02-06-14:38:03_337x97" />Да-да. Вы все делаете неверно. MC - хоть и не заменяет консоль, но часто бывает полезен и для некоторых даже незаменим. Пусть он и является лишь оболочкой для ползанья по файловой системе, но очень функциональной оболочкой.<br />
+Обычно ведь как: f5 (скопировать), f6 (переместить), f3 (посмотреть), f4 (отредактировать), f8 (удалить), f7 (создать катало) и f10 (выйти).<br />
+Это тот набор команд, которым чаще всего пользователь и ограничивается.<br />
+Ах да - еще TAB чтобы переключиться из одной панели в другую.</p>
+
+<h2 id="остаемся-в-текущей-папке-при-выходе-из-mc">Остаемся в текущей папке при выходе из mc.</h2>
+
+<p>Вы замечали, что при выходе из mc вы всегда возвращаетесь в ту папку, в которой были до его запуска. Одним это нравится, а другим нет.</p>
+
+<p>В любом случае такое поведение можно поменять. А служит для этого опция -P, которой передается имя файла, в котором сейчас находится mc.</p>
+
+<p>Зная имя файла по завершению процесса можно всегда вернуться в нужный катало. Для этого есть скрипт mc-wrapper.sh. Прописываем у себя в .bashrc.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alias mc='. /usr/libexec/mc/mc-wrapper.sh'
+</code></pre></div></div>
+
+<p>В вашей системе этот скрипт может лежать по другому адресу. После запуска шелла можно посмотреть на вывод команды alias и удостоверится, что нужный алиас прописан. Таким образом мы будем сохранять каталог после выхода из менеджера.</p>
+
+<h2 id="выбор-файлов">Выбор файлов</h2>
+
+<ul>
+  <li>[insert] (или [ctrl-t]) - выбор текущего файла или снятие выбора с текущего файла (так же позволяет выбирать несколько файлов/папок)</li>
+  <li>[+] - выбор файлов и папок имена которых попадают под введенный паттерн</li>
+  <li>[/] - убирает выбор с файлов и папок име</li>
+  <li>[*] - реверсивное выделение файлов. Инвертирует состояние выбран\не выбран для всех файлов в текущем окне (именно файлов. не папок)</li>
+</ul>
+
+<h2 id="доступ-в-шелл">Доступ в шелл</h2>
+
+<ul>
+  <li>вы можете вводить любую команду - просто начинаете печатать и она появляется внизу в маленьком приглашении ввода вашего шелла. Нажатие на [enter] запустит ее на исполнение.</li>
+  <li>не пытайтесь нажать [tab] в попытках вызвать автодополнение - вы просто смените текущую панель. Чтобы вызвать автодополнение надо нажать последовательность [esc tab]. Тут все как в обычном шелле - первый раз оно пытается дополнить максимально возможную часть команды, а повторное нажатие последовательности показывает ве возможные варианты (да еще и с выбором как в zsh). <img src="/assets/images/2016/02/2016-02-06-150022_395x202.png" alt="2016-02-06-15:00:22_395x202" /></li>
+  <li>а если надо показать большой терминал? На надо выходить из mc - нажимаете [ctrl-o] и панели файловый менеджер скрывается оставляя вас наедине с консолью. Чтобы его вернуть заново нажимает [ctrl-o].</li>
+  <li>[alt-enter] - копирует имя текущего выбранного файла в строку терминала (удобно для передачи имени каким-нибудь командам)</li>
+</ul>
+
+<h2 id="встроенный-просмотрщик-f3-и-редактор-f4">Встроенный просмотрщик [f3] и редактор [f4]</h2>
+
+<ul>
+  <li>Встроенный вьювер умеет показывать содержимое разных файлов не просто в сыром режиме (когда в pdf будут видны управляющие инструкции, а в гифке - байты), а в виде документа, который адаптирован для отображения в текстовом виде (конечно если у вас есть сопутствующий софт вроде pdf2text).</li>
+  <li>Чтобы увидеть сырые данные жмем [f8] в самом просмотрщике, либо [shift-f3] при открытии файла (а не [f3]).</li>
+  <li>Так же mc умеет использовать внешние редакторы и просмотрщики (задаются переменными <strong>PAGER</strong> и <strong>EDITOR</strong> в вашем .bashrc). Чтобы включить использование внешних редакторов выбираем соответствующую опцию в настройках <img src="/assets/images/2016/02/2016-02-06-151553_664x389.png" alt="2016-02-06-15:15:53_664x389" /></li>
+</ul>
+
+<h2 id="работа-с-панелями">Работа с панелями</h2>
+
+<ul>
+  <li>[alt-,] - переключить режим разбиения с вертикального на горизонтальный</li>
+  <li>[alt-t] - циклическая смена режима отображения панели</li>
+  <li>[alt-i] - синхронизирует вторую панель с текущей (полезно если вам надо быстро открыть одну и ту же папку в двух панелях)</li>
+  <li>[ctrl-u] - поменять панели местами</li>
+  <li>[alt-o] - если текущий элемент директория, то откроет ее во второй панели и сместит выделение на один элемент вперед. Если же текущий элемент файл - откроет содержимое родительской директории в соседней панели и сместит выделение.</li>
+  <li>[ctrl-pgup] - перейти к родительской директории (если включена навигация в стиле lynx, то просто стрелка влево)</li>
+  <li>[alt-shift-h] - показать историю перемещения по папкам</li>
+  <li>[alt-y] - перейти в предыдущую папку из истории</li>
+  <li>[alt-u] - перейти в следующую папку из истории</li>
+</ul>
+
+<h2 id="поиск">Поиск</h2>
+
+<ul>
+  <li>[alt-?] - открывает диалог поиска файлов</li>
+  <li>[alt-s] - быстрый поиск элемента в текущем каталоге по регулярному выражению</li>
+  <li>[ctrl-s] - бысрый поиск в текущем каталоге по совпадению</li>
+</ul>
+
+<h2 id="основные-сочетания">Основные сочетания</h2>
+
+<ul>
+  <li>[ctrl-space] - посчитать объем каталога под выделением</li>
+  <li>[ctrl-x s] - создать символическую ссылку</li>
+  <li>[ctrl-x h] - создать жесткую ссылку</li>
+  <li>[ctrl-x o] - открыть редактор сhown на элемент</li>
+  <li>[ctrl-x c] - открыть редактор chmod на элемент</li>
+  <li>[alt-.] - скрыть\отобразить dot-файлы</li>
+</ul>
+
+<h2 id="виртуальные-файловые-системы-vfs">Виртуальные файловые системы (vfs)</h2>
+
+<p>Эта концепция относительно mc позволяет нам путешествовать по архивам, sftp-серверам, rpm-файлам так, словно мы работаем с локальной файловой системой.</p>
+
+<p>Попробуйте в mc набрать команду</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ftp://mirror.yandex.ru/
+</code></pre></div></div>
+
+<p><img src="/assets/images/2016/02/2016-02-06-154203_506x328.png" alt="2016-02-06-15:42:03_506x328" /></p>
+
+<p>Вы не сможете отличить vfs от локальной системы только по скорости работы. Если у вас есть соответствующий доступ, то даже редактировать файлы на vfs возможно.</p>
+
+<p>Таким нехитрым образом можно попадать внутрь любых других источников, который поддерживаются mc.</p>
+
+<p>Введите cd без параметров и вы попадете в домашнюю директорию.</p>
+
+<h2 id="полезные-команды">Полезные команды</h2>
+
+<ul>
+  <li>[ctrl-x d] - сраврение директорий</li>
+  <li>[ctrl-] - переход в директорию быстрого доступа (и управление этим списком)</li>
+</ul>
+
+<h2 id="полезные-настройки">Полезные настройки</h2>
+
+<p><img src="/assets/images/2016/02/2016-02-06-155646_435x242.png" alt="2016-02-06-15:56:46_435x242" /></p>
+
+<ul>
+  <li>левая\правая панель - формат списка. позволяет задать пользовательский формат вывода информации (чтобы посмотреть доступные поля нажмите [f1]</li>
+</ul>
+
+<p><img src="/assets/images/2016/02/2016-02-06-154726_301x229.png" alt="2016-02-06-15:47:26_301x229" /></p>
+
+<ul>
+  <li>Конфигурация
+    <ul>
+      <li>детали операции/подсчитывать размер - в совокупности эти две опции дадут более информативное окно копирования файлов (а если убрать, то копирование будет работать гораздо быстрее)</li>
+      <li>Автоматически сохранять настройки - полезно чтобы постоянно не нажимать “сохранить настройки”</li>
+    </ul>
+  </li>
+  <li>Внешний вид
+    <ul>
+      <li>строка подсказки - дасть немного больше места на экране если убрать (скроется совет дня)</li>
+      <li>равный размер панелей - если мы включим разный режим отображения в каждой из панелей (древовидный и подробный), то получим проводник :)</li>
+    </ul>
+  </li>
+  <li>Настройка панелей
+    <ul>
+      <li>автосохранение настроек панелей - будут удобно чтобы каждый раз не выбирать режим отображения панели заново</li>
+      <li>навигация в тиле lynx - быстрая навигация стрелками</li>
+    </ul>
+  </li>
+</ul>
+
+<p> </p>
+
+<p> </p>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page10/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 11 из 35</span>
+  
+    <a href="/blog/page12/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

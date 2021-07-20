@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Supported Release 1.6.0 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Supported Release 1.6.0" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/inifile/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/inifile/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Supported Release 1.6.0" />
+<script type="application/ld+json">
+{"headline":"Supported Release 1.6.0","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/inifile/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Supported Release 1.6.0</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="supported-release-160">Supported Release 1.6.0</h2>
+<h3 id="summary">Summary</h3>
+<p>This release expands functionality around sub-settings and adds the <code class="language-plaintext highlighter-rouge">refreshonly</code> parameter so the user can specify whether a resource should or should not respond to a refresh event.</p>
+
+<h3 id="features">Features</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">refreshonly</code> decide whether or not a value should be updated as part of a refresh</li>
+  <li><code class="language-plaintext highlighter-rouge">insert_type</code> choose where the sub-setting is placed in the final string</li>
+  <li><code class="language-plaintext highlighter-rouge">subsetting_key_val_separator</code> specify a key/value separator for sub-settings</li>
+</ul>
+
+<h3 id="bugfixes">Bugfixes</h3>
+<ul>
+  <li>MODULES-3145 Cast values to strings before passing to provider</li>
+</ul>
+
+<h2 id="supported-release-150">Supported Release 1.5.0</h2>
+<h3 id="summary-1">Summary</h3>
+<p>This release adds the long-awaited <code class="language-plaintext highlighter-rouge">show_diff</code> parameter for diffing the complete file on changes (or can also just show the md5 sums).</p>
+
+<h3 id="features-1">Features</h3>
+<ul>
+  <li>Added <code class="language-plaintext highlighter-rouge">show_diff</code> parameter to show diffs on changes.</li>
+  <li>Remove empty ini sections when the last line in the section is removed.</li>
+</ul>
+
+<h3 id="bugfixes-1">Bugfixes</h3>
+<ul>
+  <li>Workaround <code class="language-plaintext highlighter-rouge">create_ini_settings()</code> duplicate resources puppet bug PUP-4709</li>
+</ul>
+
+<h2 id="supported-release-143">Supported Release 1.4.3</h2>
+<p>###Summary</p>
+
+<p>Small release for support of newer PE versions. This increments the version of PE in the metadata.json file.</p>
+
+<h2 id="2015-09-01---supported-release-142">2015-09-01 - Supported Release 1.4.2</h2>
+<h3 id="summary-2">Summary</h3>
+<p>This release adds some bugfixes.</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>MODULES-2212 Add use_exact_match parameter for subsettings</li>
+  <li>MODULES-1908 Munge the setting to ensure we always strip the whitespace</li>
+  <li>MODULES-2369 Support a space as a key_val_separator</li>
+</ul>
+
+<h2 id="2015-07-15---supported-release-141">2015-07-15 - Supported Release 1.4.1</h2>
+<h3 id="summary-3">Summary</h3>
+<p>This release bumps the metadata for PE up.</p>
+
+<p>##2015-07-07 - Supported Releases 1.4.0
+###Summary</p>
+
+<p>This is primarily a release which includes acceptance tests updates, but also includes some minor bug fixes and improvements</p>
+
+<p>####Features</p>
+<ul>
+  <li>Solaris 12 Support</li>
+  <li>Acceptance testing improvements</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>MODULES-1599 Match only on space and tab whitespace after k/v separator</li>
+</ul>
+
+<p>##2015-06-09 - Supported Releases 1.3.0
+###Summary</p>
+
+<p>This is primarily a feature release, but also includes test fixes, documentation updates and synchronization of files with modulesync.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Synchronized files using modulesync</li>
+  <li>Improved documentation</li>
+  <li>Allow changing key value separator beyond indentation</li>
+  <li>Adding the ability to change regex match for $section in inifile</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>pin beaker-rspec for windows testing</li>
+  <li>pin rspec gems for testing</li>
+  <li>Adds default values for section</li>
+  <li>Fixed names containing spaces</li>
+</ul>
+
+<p>##2014-11-11 - Supported Releases 1.2.0
+###Summary</p>
+
+<p>This is primarily a bugfix release, but also includes documentation updates and synchronization of files with modulesync.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Synchronized files using modulesync</li>
+  <li>Improved documentation with a warning about old, manually installed inifile with PE3.3+</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix issue where single character settings were not being saved</li>
+</ul>
+
+<p>##2014-09-30 - Supported Releases 1.1.4
+###Summary</p>
+
+<p>This release includes documentation and test updates.</p>
+
+<p>##2014-07-15 - Supported Release 1.1.3
+###Summary</p>
+
+<p>This release merely updates metadata.json so the module can be uninstalled and
+upgraded via the puppet module command.</p>
+
+<p>##2014-07-10 - Supported Release 1.1.2
+###Summary</p>
+
+<p>This is a re-packaging release.</p>
+
+<p>##2014-07-07 - Release 1.1.1
+###Summary</p>
+
+<p>This supported bugfix release corrects the inifile section header detection
+regex (so you can use more characters in your section titles).</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Correct section regex to allow anything other than ]</li>
+  <li>Correct <code class="language-plaintext highlighter-rouge">exists?</code> to return a boolean</li>
+  <li>Lots of test updates</li>
+  <li>Add missing CONTRIBUTING.md</li>
+</ul>
+
+<p>##2014-06-04 - Release 1.1.0
+###Summary</p>
+
+<p>This is a compatibility and feature release.  This release adds one new
+feature, the ability to control the quote character used.  This allows you to
+do things like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ini_subsetting { '-Xms':
+    ensure     =&gt; present,
+    path       =&gt; '/some/config/file',
+    section    =&gt; '',
+    setting    =&gt; 'JAVA_ARGS',
+    quote_char =&gt; '"',
+    subsetting =&gt; '-Xms'
+    value      =&gt; '256m',
+  }
+</code></pre></div></div>
+
+<p>Which builds:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>JAVA_ARGS="-Xmx256m -Xms256m"
+</code></pre></div></div>
+
+<p>####Features</p>
+<ul>
+  <li>Add quote_char parameter to the ini_subsetting resource type</li>
+</ul>
+
+<p>####Bugfixes</p>
+
+<p>####Known Bugs</p>
+<ul>
+  <li>No known bugs</li>
+</ul>
+
+<p>##2014-03-04 - Supported Release 1.0.3
+###Summary</p>
+
+<p>This is a supported release.  It has only test changes.</p>
+
+<p>####Features</p>
+
+<p>####Bugfixes</p>
+
+<p>####Known Bugs</p>
+<ul>
+  <li>No known bugs</li>
+</ul>
+
+<p>##2014-02-26 - Version 1.0.2
+###Summary
+This release adds supported platforms to metadata.json and contains spec fixes</p>
+
+<p>##2014-02-12 - Version 1.0.1
+###Summary
+This release is a bugfix for handling whitespace/[]’s better, and adding a
+bunch of tests.</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Handle whitespace in sections</li>
+  <li>Handle square brances in values</li>
+  <li>Add metadata.json</li>
+  <li>Update some travis testing</li>
+  <li>Tons of beaker-rspec tests</li>
+</ul>
+
+<p>##2013-07-16 - Version 1.0.0
+####Features</p>
+<ul>
+  <li>Handle empty values.</li>
+  <li>Handle whitespace in settings names (aka: server role = something)</li>
+  <li>Add mechanism for allowing ini_setting subclasses to override the
+formation of the namevar during .instances, to allow for ini_setting
+derived types that manage flat ini-file-like files and still purge
+them.</li>
+</ul>
+
+<hr />
+<p>##2013-05-28 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.10.3</p>
+<ul>
+  <li>Fix bug in subsetting handling for new settings (cbea5dc)</li>
+</ul>
+
+<p>##2013-05-22 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.10.2</p>
+<ul>
+  <li>Better handling of quotes for subsettings (1aa7e60)</li>
+</ul>
+
+<p>##2013-05-21 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.10.1</p>
+<ul>
+  <li>Change constants to class variables to avoid ruby warnings (6b19864)</li>
+</ul>
+
+<p>##2013-04-10 - Erik Dalén <a href="mailto:dalen@spotify.com">dalen@spotify.com</a> - 0.10.1</p>
+<ul>
+  <li>Style fixes (c4af8c3)</li>
+</ul>
+
+<p>##2013-04-02 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.10.1</p>
+<ul>
+  <li>Add travisfile and Gemfile (c2052b3)</li>
+</ul>
+
+<p>##2013-04-02 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.10.1</p>
+<ul>
+  <li>Update README.markdown (ad38a08)</li>
+</ul>
+
+<p>##2013-02-15 - Karel Brezina <a href="mailto:karel.brezina@gmail.com">karel.brezina@gmail.com</a> - 0.10.0</p>
+<ul>
+  <li>Added ‘ini_subsetting’ custom resource type (4351d8b)</li>
+</ul>
+
+<p>##2013-03-11 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.10.0</p>
+<ul>
+  <li>guard against nil indentation values (5f71d7f)</li>
+</ul>
+
+<p>##2013-01-07 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.10.0</p>
+<ul>
+  <li>Add purging support to ini file (2f22483)</li>
+</ul>
+
+<p>##2013-02-05 - James Sweeny <a href="mailto:james.sweeny@puppetlabs.com">james.sweeny@puppetlabs.com</a> - 0.10.0</p>
+<ul>
+  <li>Fix test to use correct key_val_parameter (b1aff63)</li>
+</ul>
+
+<p>##2012-11-06 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.10.0</p>
+<ul>
+  <li>Added license file w/Apache 2.0 license (5e1d203)</li>
+</ul>
+
+<p>##2012-11-02 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Version 0.9.0 released</li>
+</ul>
+
+<p>##2012-10-26 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Add detection for commented versions of settings (a45ab65)</li>
+</ul>
+
+<p>##2012-10-20 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Refactor to clarify implementation of <code class="language-plaintext highlighter-rouge">save</code> (f0d443f)</li>
+</ul>
+
+<p>##2012-10-20 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Add example for <code class="language-plaintext highlighter-rouge">ensure=absent</code> (e517148)</li>
+</ul>
+
+<p>##2012-10-20 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Better handling of whitespace lines at ends of sections (845fa70)</li>
+</ul>
+
+<p>##2012-10-20 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Respect indentation / spacing for existing sections and settings (c2c26de)</li>
+</ul>
+
+<p>##2012-10-17 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Minor tweaks to handling of removing settings (cda30a6)</li>
+</ul>
+
+<p>##2012-10-10 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Add support for removing lines (1106d70)</li>
+</ul>
+
+<p>##2012-10-02 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Make value a property (cbc90d3)</li>
+</ul>
+
+<p>##2012-10-02 - Dan Bode <a href="mailto:dan@puppetlabs.com">dan@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Make ruby provider a better parent. (1564c47)</li>
+</ul>
+
+<p>##2012-09-29 - Reid Vandewiele <a href="mailto:reid@puppetlabs.com">reid@puppetlabs.com</a> - 0.9.0</p>
+<ul>
+  <li>Allow values with spaces to be parsed and set (3829e20)</li>
+</ul>
+
+<p>##2012-09-24 - Chris Price <a href="mailto:chris@pupppetlabs.com">chris@pupppetlabs.com</a> - 0.0.3</p>
+<ul>
+  <li>Version 0.0.3 released</li>
+</ul>
+
+<p>##2012-09-20 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.0.3</p>
+<ul>
+  <li>Add validation for key_val_separator (e527908)</li>
+</ul>
+
+<p>##2012-09-19 - Chris Price <a href="mailto:chris@puppetlabs.com">chris@puppetlabs.com</a> - 0.0.3</p>
+<ul>
+  <li>Allow overriding separator string between key/val pairs (8d1fdc5)</li>
+</ul>
+
+<p>##2012-08-20 - Chris Price <a href="mailto:chris@pupppetlabs.com">chris@pupppetlabs.com</a> - 0.0.2</p>
+<ul>
+  <li>Version 0.0.2 released</li>
+</ul>
+
+<p>##2012-08-17 - Chris Price <a href="mailto:chris@pupppetlabs.com">chris@pupppetlabs.com</a> - 0.0.2</p>
+<ul>
+  <li>Add support for “global” section at beginning of file (c57dab4)</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

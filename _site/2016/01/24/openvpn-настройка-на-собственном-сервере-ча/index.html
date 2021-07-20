@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы. | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы." />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="  OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы. OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты. OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера. OpenVPN: Настройка на собственном сервере. Часть 3 — iptables OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.   В этих туториалах я опишу как поднять собственный openvpn на vds/vps. В качестве базовой системы рассматривается Fedora/RedHat/CentOS. Для других систем шаги будут несколько отличаться. Для начала нам нужно подготовить сервер: поставить необходимые пакеты. Управлять доступом мы будем через iptables, а не firewalld. Так же если ваш сервер не использует ipv6, то ip6tables вам не нужен. Важно: ни в коем случае не отключайтесь от сервера до оконччания настройки iptables. Иначе доступ к серверу будет потерян. $ sudo dnf install iptables-services openvpn easy-rsa $ sudo systemctl mask firewalld $ sudo systemctl enable iptables $ sudo systemctl enable ip6tables $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables После установки и запуска нужных сервисов необходимо разрешить доступ по ssh для новых подключений. Вообще правила iptables изначально поставляются с возможностью доступа по ssh. Для проверки можно заглянуть в /etc/sysconfig/iptables (и /etc/sysconfig/ip6tables для ipv6). Там будет строчка вроде -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT Если она там есть, то проверьте с другого терминала, что доступ к ssh возможен. Так же, если сервис висит на нестандартном порту, то стоит изменить номер порта в этих файлах. Если же доступа к ssh нет, то нужно добавить его вручную $ sudo iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT и сохранить правила. $ sudo /usr/libexec/iptables/iptables.init save Дальше перезагружаем таблицы еще раз $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables Проверяем с другого терминала тот факт, что доступ к ссх не пропал (или наоборот появился) и на этом предварительная настройка окончена." />
+<meta property="og:description" content="  OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы. OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты. OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера. OpenVPN: Настройка на собственном сервере. Часть 3 — iptables OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.   В этих туториалах я опишу как поднять собственный openvpn на vds/vps. В качестве базовой системы рассматривается Fedora/RedHat/CentOS. Для других систем шаги будут несколько отличаться. Для начала нам нужно подготовить сервер: поставить необходимые пакеты. Управлять доступом мы будем через iptables, а не firewalld. Так же если ваш сервер не использует ipv6, то ip6tables вам не нужен. Важно: ни в коем случае не отключайтесь от сервера до оконччания настройки iptables. Иначе доступ к серверу будет потерян. $ sudo dnf install iptables-services openvpn easy-rsa $ sudo systemctl mask firewalld $ sudo systemctl enable iptables $ sudo systemctl enable ip6tables $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables После установки и запуска нужных сервисов необходимо разрешить доступ по ssh для новых подключений. Вообще правила iptables изначально поставляются с возможностью доступа по ssh. Для проверки можно заглянуть в /etc/sysconfig/iptables (и /etc/sysconfig/ip6tables для ipv6). Там будет строчка вроде -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT Если она там есть, то проверьте с другого терминала, что доступ к ssh возможен. Так же, если сервис висит на нестандартном порту, то стоит изменить номер порта в этих файлах. Если же доступа к ssh нет, то нужно добавить его вручную $ sudo iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT и сохранить правила. $ sudo /usr/libexec/iptables/iptables.init save Дальше перезагружаем таблицы еще раз $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables Проверяем с другого терминала тот факт, что доступ к ссх не пропал (или наоборот появился) и на этом предварительная настройка окончена." />
+<link rel="canonical" href="http://localhost:4000/2016/01/24/openvpn-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%BC-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B5-%D1%87%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2016/01/24/openvpn-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%BC-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B5-%D1%87%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-01-24T20:39:36+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы." />
+<script type="application/ld+json">
+{"headline":"OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы.","dateModified":"2016-01-24T20:39:36+03:00","datePublished":"2016-01-24T20:39:36+03:00","description":"  OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы. OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты. OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера. OpenVPN: Настройка на собственном сервере. Часть 3 — iptables OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.   В этих туториалах я опишу как поднять собственный openvpn на vds/vps. В качестве базовой системы рассматривается Fedora/RedHat/CentOS. Для других систем шаги будут несколько отличаться. Для начала нам нужно подготовить сервер: поставить необходимые пакеты. Управлять доступом мы будем через iptables, а не firewalld. Так же если ваш сервер не использует ipv6, то ip6tables вам не нужен. Важно: ни в коем случае не отключайтесь от сервера до оконччания настройки iptables. Иначе доступ к серверу будет потерян. $ sudo dnf install iptables-services openvpn easy-rsa $ sudo systemctl mask firewalld $ sudo systemctl enable iptables $ sudo systemctl enable ip6tables $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables После установки и запуска нужных сервисов необходимо разрешить доступ по ssh для новых подключений. Вообще правила iptables изначально поставляются с возможностью доступа по ssh. Для проверки можно заглянуть в /etc/sysconfig/iptables (и /etc/sysconfig/ip6tables для ipv6). Там будет строчка вроде -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT Если она там есть, то проверьте с другого терминала, что доступ к ssh возможен. Так же, если сервис висит на нестандартном порту, то стоит изменить номер порта в этих файлах. Если же доступа к ssh нет, то нужно добавить его вручную $ sudo iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT и сохранить правила. $ sudo /usr/libexec/iptables/iptables.init save Дальше перезагружаем таблицы еще раз $ sudo systemctl restart iptables $ sudo systemctl restart ip6tables Проверяем с другого терминала тот факт, что доступ к ссх не пропал (или наоборот появился) и на этом предварительная настройка окончена.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/01/24/openvpn-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%BC-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B5-%D1%87%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/01/24/openvpn-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-%D0%BD%D0%B0-%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%BC-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B5-%D1%87%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы.</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>OpenVPN: Настройка на собственном сервере. Часть 0 - подготовка системы.</h1>
+<p>24 Jan 2016</p>
+
+<p> </p>
+
+<ul>
+  <li>OpenVPN: Настройка на собственном сервере. Часть 0 — подготовка системы.</li>
+  <li><a href="http://russianpenguin.ru/2016/01/25/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-2/">OpenVPN: Настройка на собственном сервере. Часть 1 — сертификаты.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/26/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-3/">OpenVPN: Настройка на собственном сервере. Часть 2 — конфигурация сервера.</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/27/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-4/">OpenVPN: Настройка на собственном сервере. Часть 3 — iptables</a></li>
+  <li><a href="http://russianpenguin.ru/2016/01/28/openvpn-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bd%d0%b0-%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%be%d0%bc-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b5-%d1%87%d0%b0-5/">OpenVPN: Настройка на собственном сервере. Часть 4 — конфигурация клиента.</a></li>
+</ul>
+
+<p> </p>
+
+<p>В этих туториалах я опишу как поднять собственный openvpn на vds/vps.</p>
+
+<p>В качестве базовой системы рассматривается Fedora/RedHat/CentOS. Для других систем шаги будут несколько отличаться.</p>
+
+<p>Для начала нам нужно подготовить сервер: поставить необходимые пакеты.</p>
+
+<p>Управлять доступом мы будем через iptables, а не firewalld. Так же если ваш сервер не использует ipv6, то ip6tables вам не нужен.</p>
+
+<p>Важно: ни в коем случае не отключайтесь от сервера до оконччания настройки iptables. Иначе доступ к серверу будет потерян.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo dnf install iptables-services openvpn easy-rsa  
+$ sudo systemctl mask firewalld  
+$ sudo systemctl enable iptables  
+$ sudo systemctl enable ip6tables  
+$ sudo systemctl restart iptables  
+$ sudo systemctl restart ip6tables
+</code></pre></div></div>
+
+<p>После установки и запуска нужных сервисов необходимо разрешить доступ по ssh для новых подключений.</p>
+
+<p>Вообще правила iptables изначально поставляются с возможностью доступа по ssh.</p>
+
+<p>Для проверки можно заглянуть в /etc/sysconfig/iptables (и /etc/sysconfig/ip6tables для ipv6). Там будет строчка вроде</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+</code></pre></div></div>
+
+<p>Если она там есть, то проверьте с другого терминала, что доступ к ssh возможен.</p>
+
+<p>Так же, если сервис висит на нестандартном порту, то стоит изменить номер порта в этих файлах.</p>
+
+<p>Если же доступа к ssh нет, то нужно добавить его вручную</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+</code></pre></div></div>
+
+<p>и сохранить правила.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo /usr/libexec/iptables/iptables.init save
+</code></pre></div></div>
+
+<p>Дальше перезагружаем таблицы еще раз</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo systemctl restart iptables  
+$ sudo systemctl restart ip6tables
+</code></pre></div></div>
+
+<p>Проверяем с другого терминала тот факт, что доступ к ссх не пропал (или наоборот появился) и на этом предварительная настройка окончена.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

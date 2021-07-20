@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64 | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="У последнего билда есть несколько бед: Но сначала надо поставить 32х битные версии нужных либ $ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686 Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)). Первая беда - это Not found: data/art/curses\_640x300.png Эта беда лечится запуском df в виде $ LD\_PRELOAD=/usr/lib/libz.so.1 ./df Вторая - это Dynamically loading the OpenAL library failed, disabling sound Лечим $ sudo ln -s /usr/lib/libopenal.so.1 /usr/lib/libopenal.so $ sudo ln -s /usr/lib/libsndfile.so.1 /usr/lib/libsndfile.so $ sudo ldconfig Рубимся :) Ссылки http://www.bay12games.com/dwarves/ http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273 http://www.bay12games.com/dwarves/mantisbt/view.php?id=2688" />
+<meta property="og:description" content="У последнего билда есть несколько бед: Но сначала надо поставить 32х битные версии нужных либ $ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686 Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)). Первая беда - это Not found: data/art/curses\_640x300.png Эта беда лечится запуском df в виде $ LD\_PRELOAD=/usr/lib/libz.so.1 ./df Вторая - это Dynamically loading the OpenAL library failed, disabling sound Лечим $ sudo ln -s /usr/lib/libopenal.so.1 /usr/lib/libopenal.so $ sudo ln -s /usr/lib/libsndfile.so.1 /usr/lib/libsndfile.so $ sudo ldconfig Рубимся :) Ссылки http://www.bay12games.com/dwarves/ http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273 http://www.bay12games.com/dwarves/mantisbt/view.php?id=2688" />
+<link rel="canonical" href="http://localhost:4000/2014/11/03/%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%D0%B0%D0%B5%D0%BC-dwarf-fortress-%D0%BD%D0%B0-fedora-ubuntu-%D0%B8-%D0%B4%D1%80-x64/" />
+<meta property="og:url" content="http://localhost:4000/2014/11/03/%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%D0%B0%D0%B5%D0%BC-dwarf-fortress-%D0%BD%D0%B0-fedora-ubuntu-%D0%B8-%D0%B4%D1%80-x64/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-11-03T16:42:31+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64" />
+<script type="application/ld+json">
+{"headline":"Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64","dateModified":"2014-11-03T16:42:31+03:00","datePublished":"2014-11-03T16:42:31+03:00","description":"У последнего билда есть несколько бед: Но сначала надо поставить 32х битные версии нужных либ $ sudo yum install SLD.i686 SDL\\_image.i686 openal-soft.i686 SDL\\_tff.i686 Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)). Первая беда - это Not found: data/art/curses\\_640x300.png Эта беда лечится запуском df в виде $ LD\\_PRELOAD=/usr/lib/libz.so.1 ./df Вторая - это Dynamically loading the OpenAL library failed, disabling sound Лечим $ sudo ln -s /usr/lib/libopenal.so.1 /usr/lib/libopenal.so $ sudo ln -s /usr/lib/libsndfile.so.1 /usr/lib/libsndfile.so $ sudo ldconfig Рубимся :) Ссылки http://www.bay12games.com/dwarves/ http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273 http://www.bay12games.com/dwarves/mantisbt/view.php?id=2688","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/11/03/%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%D0%B0%D0%B5%D0%BC-dwarf-fortress-%D0%BD%D0%B0-fedora-ubuntu-%D0%B8-%D0%B4%D1%80-x64/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/11/03/%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA%D0%B0%D0%B5%D0%BC-dwarf-fortress-%D0%BD%D0%B0-fedora-ubuntu-%D0%B8-%D0%B4%D1%80-x64/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64</h1>
+<p>03 Nov 2014</p>
+
+<p>У последнего билда есть несколько бед:</p>
+
+<p>Но сначала надо поставить 32х битные версии нужных либ</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>SLD.i686 SDL<span class="se">\_</span>image.i686 openal-soft.i686 SDL<span class="se">\_</span>tff.i686
+</code></pre></div></div>
+
+<p>Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)).</p>
+
+<p>Первая беда - это</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Not found: data/art/curses\_640x300.png
+</code></pre></div></div>
+
+<p>Эта беда лечится запуском df в виде</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>LD<span class="se">\_</span><span class="nv">PRELOAD</span><span class="o">=</span>/usr/lib/libz.so.1 ./df
+</code></pre></div></div>
+
+<p>Вторая - это</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dynamically loading the OpenAL library failed, disabling sound
+</code></pre></div></div>
+
+<p>Лечим</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-s</span> /usr/lib/libopenal.so.1 /usr/lib/libopenal.so  
+<span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-s</span> /usr/lib/libsndfile.so.1 /usr/lib/libsndfile.so  
+<span class="nv">$ </span><span class="nb">sudo </span>ldconfig
+</code></pre></div></div>
+
+<p>Рубимся :)</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png"><img src="/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png?w=300" alt="Dwart Fortress" /></a>Ссылки</p>
+
+<ul>
+  <li>http://www.bay12games.com/dwarves/</li>
+  <li>http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273</li>
+  <li>http://www.bay12games.com/dwarves/mantisbt/view.php?id=2688</li>
+</ul>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

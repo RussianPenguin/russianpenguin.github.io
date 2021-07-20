@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Часть 3: Разработка через тестирование, TDD (Тестирование ПО) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Часть 3: Разработка через тестирование, TDD (Тестирование ПО)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В этой части чикла статей “Тестирование ПО” рассматривается как разрабатывать системы с применением методологии TDD." />
+<meta property="og:description" content="В этой части чикла статей “Тестирование ПО” рассматривается как разрабатывать системы с применением методологии TDD." />
+<link rel="canonical" href="http://localhost:4000/2017/04/12/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-3/" />
+<meta property="og:url" content="http://localhost:4000/2017/04/12/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-3/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-04-12T16:09:35+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Часть 3: Разработка через тестирование, TDD (Тестирование ПО)" />
+<script type="application/ld+json">
+{"headline":"Часть 3: Разработка через тестирование, TDD (Тестирование ПО)","dateModified":"2017-04-12T16:09:35+03:00","datePublished":"2017-04-12T16:09:35+03:00","description":"В этой части чикла статей “Тестирование ПО” рассматривается как разрабатывать системы с применением методологии TDD.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/04/12/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-3/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/04/12/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-3/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Часть 3: Разработка через тестирование, TDD (Тестирование ПО)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Часть 3: Разработка через тестирование, TDD (Тестирование ПО)</h1>
+<p>12 Apr 2017</p>
+
+<h2 id="оглавление"><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+
+<p><img src="/assets/images/2017/04/image2.png" alt="" /><br />
+Блочное тестирование уже укоренилось в качестве полезной практики работы с кодом. Протестированный код дает разработчикам уверенность в том, что результат отвечает намерению. Методика разработки, управляемой тестами - это следующий шаг, заключающийся в том, что тесты пишутся раньше, чем код.</p>
+
+<p>Мизерные затраты на написание программ, тестирующих другие программы позволяют нам применять этот способ верификации на всех этапах тестирования: блочное, функциональное, комплексное и приемочное.</p>
+
+<!--more-->
+
+<p>У строгого применения TDD есть и другие достоинства - их так много, что обычно всех они расшифровывают акроним TDD как test-driven design (проектирование, управляемое тестами). TDD заставляет по-другому подходить к кодированию. Вместо того, чтобы писать массивный кусок кода, а потом тесты для него, TDD заставляет продумать весь процесс тестирования еще до написания первой строчки.</p>
+
+<h2 id="tdd-и-блочные-тесты">TDD и блочные тесты</h2>
+
+<p>Рассмотрим на примере те преимущества, которые приносит TDD. Для этого нам понадобится не тривиальная задача, чтобы не работать на корзину, но и не слишком сложная, чтобы не погрязнуть в деталях. Прекрасный вариант - поиск <em>совершенных чисел</em>. Совершенным называется натуральное число, равное сумме собственных делителей (то есть всех делителей, отличных от самого числа). Например 6 - совершенное число, так как сумма его собственных делителей (1, 2, 3) равна 6. Напишем на php небольшую программу, которая будет отыскивать совершенные числа.</p>
+
+<p>Следующий код был написан без применения TDD - полагаясь на простую логику и мелкие математические оптимизации.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span> <span class="n">isPerfect</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="c1">// Получить делители  </span>
+ <span class="nv">$factors</span> <span class="o">=</span> <span class="p">[];</span>  
+ <span class="nv">$factors</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+ <span class="nv">$factors</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nv">$i</span> <span class="err">\</span><span class="o">&lt;</span> <span class="nb">sqrt</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="c1">// примечание [1]  </span>
+ <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$number</span> <span class="o">%</span> <span class="nv">$i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$factors</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$i</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nb">intdiv</span><span class="p">(</span><span class="nv">$number</span><span class="p">,</span> <span class="nv">$i</span><span class="p">)</span> <span class="o">!=</span> <span class="nv">$i</span><span class="p">)</span> <span class="c1">// примечание [2}  </span>
+ <span class="p">{</span>  
+ <span class="nv">$factors</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$number</span> <span class="o">/</span> <span class="nv">$i</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>
+
+<span class="c1">// Вычислить сумму делителей  </span>
+ <span class="nv">$sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$factors</span> <span class="k">as</span> <span class="nv">$i</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$sum</span> <span class="o">+=</span> <span class="nv">$i</span><span class="p">;</span>  
+ <span class="p">}</span>
+
+<span class="c1">// Проверить, является ли число совершенным  </span>
+ <span class="k">return</span> <span class="nv">$sum</span> <span class="o">-</span> <span class="nv">$number</span> <span class="o">==</span> <span class="nv">$number</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="nv">$number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="nb">fscanf</span><span class="p">(</span><span class="no">STDIN</span><span class="p">,</span> <span class="s2">"%d</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="nv">$number</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nf">isPerfect</span><span class="p">(</span><span class="nv">$number</span><span class="p">))</span>  
+<span class="p">{</span>  
+ <span class="k">echo</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$number</span><span class="si">}</span><span class="s2"> is perfect number</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">}</span>  
+
+</code></pre></div></div>
+<p><strong>Примечания:</strong></p>
+
+<ul>
+  <li>Поскольку получать делители можно парами, нужно перебирать только числа, не превышающие квадратный корень из исходного числа.</li>
+</ul>
+
+<p>Например если для числа 28 найден делитель 2, то сразу можно получить и симметричный делитель 14.</p>
+
+<ul>
+  <li>Проверка <em>intdiv($number, $i) != $i</em> включена для того, чтобы не учитывать одно и то же число дважды.</li>
+</ul>
+
+<p>Мы получаем делители парами, но что случится, если число - полный квадрат? Например для числа 16 делитель 4 следует включить в список только один раз.</p>
+
+<p>Весь код - это один единственный метод, который возвращает <em>true</em> или <em>false</em> в зависимости от того, является ли переданное число совершенным. На первом шаге мы находим все делители. Поскольку 1 и само число являются делителями всегда, то добавляем их в список. Затем в цикле мы доходим до квадратного корня из числа. Эта мелкая оптимизация сделана потому что мы получаем делители парами, поэтому достаточно проверить числа не превышающие квадратный корень.</p>
+
+<p>Возможно ли протестировать этот код? В данной реализации его можно протестировать лишь на каком-то заведомо известном наборе чисел. Сказать, что конкретно этот алгоритм выполняется корректно мы можем лишь благодаря возможности доказать его правильность математически, но не практически.</p>
+
+<p>Так как же может (но не обязательно должен!) выглядеть код, который можно протестировать?</p>
+
+<p>Чтобы ответить на этот вопрос мы применим методологию TDD и будем создавать дизайн проекта основываясь на тестах. В данном примере будет использоваться инструментарий PHPUnit, который создан для того, чтобы брать на себя все необходимые манипуляции по управлению и запуску тестовых сценариев, оставляя на совести разработчика лишь создание самих кейсов. Чуть позже мы подробно с ним познакомимся, а сейчас же нам потребуется от него лишь базовый функционал.</p>
+
+<h3 id="создаем-инфраструктуру"><strong>Создаем инфраструктуру</strong></h3>
+
+<p>Перед тем, как приступить к написанию кода нам потребуется подготовить инфраструктуру для работы. Крайне рекомендуется делать все руками из консоли или файлового менеджера. Так вы сможете лучше понять, как устроена система изнутри.</p>
+
+<ol>
+  <li>Создаем в папке проекта два каталога: tests и src.</li>
+  <li>Создаем файл composer.json следующего содержания</li>
+</ol>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">geekbrains/phptesting</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">description</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">PHPUnit, TDD and other</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">minimum-stability</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">dev</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">license</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">proprietary</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">authors</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  
+ <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">GeekBrains Student</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">email</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">email@example.com</span><span class="dl">"</span>  
+ <span class="p">}</span>  
+ <span class="p">],</span>  
+ <span class="dl">"</span><span class="s2">autoload</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">psr-4</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">PerfectNumberTDD</span><span class="se">\\</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">src/</span><span class="dl">"</span><span class="p">]</span>  
+ <span class="p">}</span>  
+ <span class="p">},</span>  
+ <span class="dl">"</span><span class="s2">require-dev</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">phpunit/phpunit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">5.7.4</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">squizlabs/php</span><span class="se">\</span><span class="s2">_codesniffer</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">3.0.x-dev</span><span class="dl">"</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Устанавливаем composer.phar возпользовавший инструкцией по адресу <a href="https://getcomposer.org/download/">https://getcomposer.org/download/</a> (в вашей системе уже должен быть установлен и настроен интерпретатор php). В каталоге проекта должен появиться файл <em>composer.phar</em>.</li>
+  <li>Запускаем из командного интерпретатора инструкцию <em>php composer.phar install.</em> Установка займет некоторое время. По окончанию в каталоге проекта появится папка vendor c необходимыми для работы компонентами.</li>
+  <li>Создадим файл phpunit.xml следующего содержания</li>
+</ol>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\<span class="c">&lt;!-- Обратите внимание, что схема должна соответствовать той версии phpunit, которую вы используете. Схема - это значение атрибута xsi:noNamespaceSchemaLocation --\&gt;  
+\&lt;phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.7/phpunit.xsd" bootstrap="vendor/autoload.php"\&gt;  
+ \&lt;!-- Указываем где размещаются тесты. Секций testsuites может быть более одной. Нужно это для того, чтобы иметь возможность тестировать различные аспекты системы. --\&gt;  
+ \&lt;testsuites\&gt;  
+ \&lt;testsuite name="Core functionality"\&gt;  
+ \&lt;directory\&gt;tests\&lt;/directory\&gt;  
+ \&lt;/testsuite\&gt;  
+ \&lt;/testsuites\&gt;  
+ \&lt;!-- whitelist для указания того, какие файлы будут проверяться на покрытие тестами --\&gt;  
+ \&lt;filter\&gt;  
+ \&lt;whitelist processUncoveredFilesFromWhitelist="true"\&gt;  
+ \&lt;directory suffix=".php"\&gt;src\&lt;/directory\&gt;  
+ \&lt;/whitelist\&gt;  
+ \&lt;/filter\&gt;  
+\&lt;/phpunit\&gt;
+</span></code></pre></div></div>
+
+<ol>
+  <li>В каталоге tests создадим файл <em>PerfectNumberTest.php</em> и напишем в нем несколько строк кода</li>
+</ol>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">PerfectNumberTDD</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="n">PHPUnit\_Framework\_TestCase</span><span class="p">;</span>
+
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Набор</span> <span class="n">тестовых</span> <span class="n">случаев</span> <span class="n">для</span> <span class="n">проверки</span> <span class="n">класса</span> <span class="nc">PerfectNumber</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="kd">class</span> <span class="nc">PerfectNumberTest</span> <span class="kd">extends</span> <span class="nc">PHPUnit\_Framework\_TestCase</span>  
+<span class="p">{</span>  
+ <span class="o">/</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">В</span> <span class="n">этом</span> <span class="n">классе</span> <span class="n">мы</span> <span class="n">будем</span> <span class="n">писать</span> <span class="n">тесты</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Для проверки того, что все правильно сделано следует выполнить в консоли (находясь в каталоге проекта команду <em>php vendor/bin/phpunit -c phpunit.xml</em>.</li>
+</ol>
+
+<p>Мы увидим сообщение о том, что тесты не найдены. Все верно. Ведь мы не написали еще ни одного теста.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PHPUnit 5.7.4 by Sebastian Bergmann and contributors.
+
+W 1 / 1 <span class="o">(</span>100%<span class="o">)</span>
+
+Time: 23 ms, Memory: 4.00MB
+
+There was 1 warning:
+
+1<span class="o">)</span> Warning  
+No tests found <span class="k">in </span>class <span class="s2">"PerfectNumberTDD</span><span class="se">\P</span><span class="s2">erfectNumberTest"</span><span class="nb">.</span>
+
+WARNINGS!  
+Tests: 1, Assertions: 0, Warnings: 1.
+</code></pre></div></div>
+
+<ol>
+  <li>Теперь вся инфраструктура для создания проекта готова и можно приступать.</li>
+</ol>
+
+<h3 id="разработка-посредством-tdd">Разработка посредством TDD</h3>
+
+<p>Вначале нам стоит задуматься о том, какими свойствами должен обладать еще не написанный код. Во-первых это должен быть объект. Этот факт исходит из того, что наш код должен обладать некоторым набором методов. Такими как проверка является ли число делителем, добавления новых делителей в список. Во-вторых этот тип данных должен быть иммутабельным (immutable) или другими словами неизменяемым. Этот факт следует из того, что нельзя изменить список делителей числа - он всегда один и то же, а так же нельзя изменить для числа свойство, которое указывает совершенное оно или нет. Так же, как мы увидим дальше, свойство неизменяемости делает код более лаконичным.</p>
+
+<p>Напишем первый тест, который покажет, что создался нужный экземпляр объекта (все тесты следует размещать в классе <em>PerfectNumberTest</em>).</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Проверим</span><span class="p">,</span> <span class="n">что</span> <span class="n">создался</span> <span class="n">нужный</span> <span class="n">экземпляр</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="k">public</span> <span class="k">function</span> <span class="n">testPerfectNumberCreation</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertInstanceOf</span><span class="p">(</span><span class="s1">'\PerfectNumberTDD\PerfectNumber'</span><span class="p">,</span> <span class="nv">$p</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Этот тест не делает ничего, кроме проверки на корректность создания объекта. И такие тесты на самом деле пишутся крайне редко.</p>
+
+<p>Методы, которые начинаются со слова assert обозначают какую-либо проверку. В данном случае мы проверяем, что экземпляр класса $p действительно имеет тип базовый тип <em>\PerfectNumberTDD\PerfectNumber</em> (класс с именем <em>PerfectNumber</em>, который расположен в пространстве имен <em>PerfectNumberTDD).</em></p>
+
+<p>Попытаемся запустить данный тест. В консоли перейдем в папку с проектом и запустим команду</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php vendor/bin/phpunit -c phpunit.xml
+</code></pre></div></div>
+<p>Мы увидим ошибку о том, что класс не найден (и это вполне ожидаемо, так как мы написали тест, но не класс).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PHPUnit 5.7.4 by Sebastian Bergmann and contributors.
+
+E 1 / 1 (100%)
+
+Time: 20 ms, Memory: 4.00MB
+
+There was 1 error:
+
+1) PerfectNumberTDD\PerfectNumberTest::testPerfectNumberCreation  
+Error: Class 'PerfectNumberTDD\PerfectNumber' not found
+
+/tmp/prj/tests/PerfectNumberTest.php:17
+
+ERRORS!  
+Tests: 1, Assertions: 0, Errors: 1.
+</code></pre></div></div>
+<p>И это одна из особенностей разработки с применением методологии TDD - разработчик сначала создает тесты (которые конечно же не проходят) и лишь затем создает код, который реализует проверяемую функциональность, а тесты начинают выполняться корректно.</p>
+
+<p>Далее мы не будем подробно останавливаться на запуске тестов, а будем лишь обсуждать результат и писать код.</p>
+
+<p>Очевидно, что нам требуется написать какой-то код, который реализует проверяемый кейс. Создадим в каталоге src файл PerfectNumber.php со следующим содержимым.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">PerfectNumberTDD</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">PerfectNumber</span>  
+<span class="p">{</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>И далее запустите тесты на исполнение. Как вы можете видеть, все тесты прошли успешно. А это значит, что первый из проверяемых аспектов успешно реализован.</p>
+
+<p>Следующим тестом станет проверка, что единица всегда является делителем числа.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Проверяем</span><span class="p">,</span> <span class="n">что</span> <span class="n">делителями</span> <span class="n">числа</span> <span class="mi">1</span> <span class="n">является</span> <span class="n">только</span> <span class="n">единица</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="k">public</span> <span class="k">function</span> <span class="n">testFactorsFor1</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$expected</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">];</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="nv">$expected</span><span class="p">,</span> <span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getFactors</span><span class="p">(),</span> <span class="s2">""</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Здесь появляются новые методы и функциональность - это метод, который вернет список делителей числа. Не стоит пока заострять внимание на огромном количестве аргументов у assertEquals - он лишь позволяет сравнивать массивы <em>$expected</em> и тот, что вернул <em>getFactors()</em> без учета порядка аргументов.</p>
+
+<p>Иными словами, два массива [1, 2] и [2, 1] будут считаться одинаковыми, так как содержат одинаковый набор элементов.</p>
+
+<p>Почему этот и предыдущий тест считаются полезными, ведь он совсем простой? Чаще всего эти тесты пишутся не для тестирования программы, а для тестирования инфраструктуры. Они позволяют выявить что-то пошло не так еще до начала тестирования сложных элементов кода.</p>
+
+<p>Ведь нам требуется правильно настроить переменные окружения, поставить дополнительное по, настроить composer.</p>
+
+<p>Некоторые разработчики называют подобные тесты <em>тестами канарейки</em>. Как и канарейка, которую берут в шахты, эти тесты погибают при первых признаках некорректного окружения.</p>
+
+<p>Напишем код, который реализует проверяемый аспект.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">PerfectNumberTDD</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">PerfectNumber</span>  
+<span class="p">{</span>  
+ <span class="k">private</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="k">private</span> <span class="nv">$factors</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+ <span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">getFactors</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Вспомним наш предыдущий вариант: делителем числа кроме единицы так же является и само число. Напишем тест, который заведомо не пройдет.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testFactorsContainNumber</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertContains</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getFactors</span><span class="p">());</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertContains</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getFactors</span><span class="p">());</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Убедившись, что тест все же не прошел, расширим функционал класса, изменив конструктор.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>И как мы видим, тест <em>testFactorsFor1</em> сломался. И немудрено: ведь массив factors не должен содержать дубликатов числа. Поправим это недоразумение.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">[]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">in\_array</span><span class="p">(</span><span class="nv">$number</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$number</span> <span class="err">\</span><span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>А теперь подумаем: при проверке всех делителей числа нам потребуется их добавлять в список делителей. Делать это постоянно обращаясь к массиву <em>$this-&gt;factor</em> неправильно. И нам потребуется метод добавления в список. Почему метод? Вспомним, что в php нет множеств, а список делителей числа должен быть множеством потому что каждое значение в нем должно повторяться ровно один раз. Также нам нельзя добавлять в список делителей ноль и отрицательные числа. А для этого нам потребуется придумать некоторый способ проверять на делимость. Напишем несколько тестов.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testZeroIsNotFactor</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="c1">// Не имеет значения, какое число мы будем использовать  </span>
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isFactor</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>  
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">testIsFactor</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$p1</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isFactor</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+
+<span class="nv">$p2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$p2</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isFactor</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+
+<span class="nv">$p3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">25</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$p3</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isFactor</span><span class="p">(</span><span class="mi">6</span><span class="p">));</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>И реализуем соответствующий функционал.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">isFactor</span><span class="p">(</span><span class="nv">$factor</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$factor</span> <span class="err">\</span><span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">%</span> <span class="nv">$factor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Видим, что все хорошо. Теперь можно перейти непосредственно к разработке самого метода, который и будет добавлять числа в список делителей. Вспомним, что объект должен быть иммутабельным, а следовательно метод добавления в список должен быть помечен либо как private, либо как protected. Это автоматически накладывает некоторые ограничения на тестирование таких методов. Но благодаря механизму рефлексии в php мы все же сможем их протестировать. Нам для этого потребуется дополнительный код, который мы разместим в классе <em>PerfectNumberTest</em>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">invokeMethod</span><span class="p">(</span><span class="o">&amp;</span><span class="nv">$object</span><span class="p">,</span> <span class="nv">$methodName</span><span class="p">,</span> <span class="k">array</span> <span class="nv">$parameters</span> <span class="o">=</span> <span class="k">array</span><span class="p">())</span>  
+<span class="p">{</span>  
+ <span class="nv">$reflection</span> <span class="o">=</span> <span class="k">new</span> <span class="err">\</span><span class="nf">ReflectionClass</span><span class="p">(</span><span class="nf">get\_class</span><span class="p">(</span><span class="nv">$object</span><span class="p">));</span>  
+ <span class="nv">$method</span> <span class="o">=</span> <span class="nv">$reflection</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getMethod</span><span class="p">(</span><span class="nv">$methodName</span><span class="p">);</span>  
+ <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="k">return</span> <span class="nv">$method</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeArgs</span><span class="p">(</span><span class="nv">$object</span><span class="p">,</span> <span class="nv">$parameters</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Теперь мы сможем написать кейс, тестирующий добавление чисел в список делителей.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testAddFactors</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">]);</span>
+
+<span class="nv">$expected</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">];</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="nv">$expected</span><span class="p">,</span> <span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getFactors</span><span class="p">(),</span> <span class="s2">""</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Тест провалился, а мы приступаем к написанию кода, который сделает его работающим. Заодно мы исправим конструктор таким образом, чтобы использовался новый метод <em>addFactor()</em>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addFactor</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addFactor</span><span class="p">(</span><span class="nv">$number</span><span class="p">);</span>  
+<span class="p">}</span>
+
+<span class="k">protected</span> <span class="k">function</span> <span class="n">addFactor</span><span class="p">(</span><span class="nv">$factor</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isFactor</span><span class="p">(</span><span class="nv">$factor</span><span class="p">))</span> <span class="p">{</span>  
+ <span class="c1">// Это не самая удачная строка кода.  </span>
+ <span class="c1">// Она призвана оставить в массиве $this-\&gt;factors только уникальные,  </span>
+ <span class="c1">// отличные от нуля значения.  </span>
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="nf">array\_unique</span><span class="p">(</span> <span class="c1">// оставляем только уникальные значения  </span>
+ <span class="nf">array\_merge</span><span class="p">(</span> <span class="c1">// Объединение двух массивов  </span>
+ <span class="c1">// отфильтрованняй массив делителей  </span>
+ <span class="nf">array\_filter</span><span class="p">([</span><span class="nv">$factor</span><span class="p">,</span> <span class="nb">intdiv</span><span class="p">(</span><span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span><span class="p">,</span> <span class="nv">$factor</span><span class="p">)]),</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="c1">// предыдущее содержимое массива делителей  </span>
+ <span class="p">)</span>  
+ <span class="p">);</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Мы уже научили код добавлять делители в список делителей. Так почему бы нам не протестировать таким образом метод isPerfect, который скажет о том, является ли число совершенным?</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testIsPerfectCreatedByHands</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">]);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">invokeMethod</span><span class="p">(</span><span class="nv">$p</span><span class="p">,</span> <span class="s1">'addFactor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isPerfect</span><span class="p">());</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>И сам метод.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">isPerfect</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">sumOfFactors</span><span class="p">()</span> <span class="o">-</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">==</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="k">protected</span> <span class="k">function</span> <span class="n">sumOfFactors</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="nf">array\_reduce</span><span class="p">(</span><span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$carry</span><span class="p">,</span> <span class="nv">$item</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$carry</span> <span class="o">+</span> <span class="nv">$item</span><span class="p">;</span>  
+ <span class="p">},</span> <span class="mi">0</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>У нас появился метод sumOfFactors, но он достаточно тривиален. Поэтому не будем покрывать его тестами.</p>
+
+<p>Теперь нужно протестировать лишь два аспекта: генерацию списка делителей и проверку на корректность на нескольких совершенных числах.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testFactorsFor6</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$expected</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">];</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertEquals</span><span class="p">(</span><span class="nv">$expected</span><span class="p">,</span> <span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getFactors</span><span class="p">(),</span> <span class="s2">""</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Реализуем аспект генерации списка делителей.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nv">$number</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="o">=</span> <span class="nv">$number</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">factors</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addFactor</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addFactor</span><span class="p">(</span><span class="nv">$number</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">calculateFactors</span><span class="p">();</span>  
+<span class="p">}</span>
+
+<span class="k">protected</span> <span class="k">function</span> <span class="n">calculateFactors</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="nv">$i</span> <span class="err">\</span><span class="o">&lt;</span> <span class="nb">sqrt</span><span class="p">(</span><span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">addFactor</span><span class="p">(</span><span class="nv">$i</span><span class="p">);</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Почему мы генерируем список делителей в конструкторе? Потому что это одно из следствий требования иммутабельности.</p>
+
+<p>Самый последний тест должен работать без каких-либо правок кода. Он покажет нам, что все работает корректно.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">testIsPerfect</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertTrue</span><span class="p">(</span><span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isPerfect</span><span class="p">());</span>
+
+<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PerfectNumber</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">assertFalse</span><span class="p">(</span><span class="nv">$p</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">isPerfect</span><span class="p">());</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Полный код проекта вы найдете в каталоге <em>lesson_01/perfect_number_tdd</em>.</p>
+
+<h2 id="выводы">Выводы</h2>
+
+<p>Сравнивая два варианта кода, легко заметить, что TDD-версия длиннее, но при этом разбита на множество мелких методов. Глядя на эти методы вы ясно представляете, что делается и какой ожидаемый результат.</p>
+
+<p>По прошествию какого-то времени, когда потребуется внести изменения в код, вы сможете вносить изменения с уверенностью в том, что ничего не поломается. Если что-то и случится, то среди коротких методов всегда легко отыскать причину, а тесты всегда вам подскажут, где и что сломалось (вспомните момент, когда вы добавляли в список делителей само число). Если же ваш код - это множество длинных методов, то изолировать ошибку очень и очень сложно (вам придется долгими бессонными ночами сидеть с отладчиком, либо ставить var_dump в коде в разных местах). Запомните: если в код метода надо вставлять комментарии - значит это плохой метод и его можно сделать лучше, а стороннему разработчику потребуется очень много времени на то, чтобы вникнуть в суть работы этого кода.</p>
+
+<h3 id="дизайн-системы"><strong>Дизайн системы</strong></h3>
+
+<p>Положительное влияние на общее качество дизайна системы - это еще одна неоспоримая особенность TDD. Предположим, что новым требованием руководства стало нахождение не только совершенных, но и чисел, у которых сумма делителей меньше или больше самого числа. В случае одной монолитной функции придется внести в код побочные эффекты, что крайне негативно сказывается на его качестве, либо разбивать один метод на множество мелких, которые будет чем-то напоминать tdd-версию.</p>
+
+<p>А так достаточно будет просто добавить два метода.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="n">isDeficient</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">sumOfFactors</span><span class="p">()</span> <span class="o">-</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="err">\</span><span class="o">&gt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span><span class="p">;</span>  
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">isAbundand</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">return</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">sumOfFactors</span><span class="p">()</span> <span class="o">-</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span> <span class="err">\</span><span class="o">&lt;</span> <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">number</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Все есть. TDD-код часто состоит из таких элементов, использовать которые повторно очень и очень просто.</p>
+
+<p>Подводя итоги. Преимущества TDD перед стандартным способом написания кода:</p>
+
+<ul>
+  <li>Код создается с учетом потребителей, так как первым потребителем является ваш тест.</li>
+  <li>Тесты для тривиальных случаев позволяют вовремя выяснить, что нарушена какая-либо критическая зависимость или инфраструктурный компонент.</li>
+  <li>Важно тестировать граничные условия и особые случаи. Если какой-либо аспект сложно протестировать, то следует его привести к более простому виду (сложность уже говорит о неправильном проектировании). Если не удается упростить, то тесты должны быть как можно более тщательными. Сложный элемент нужно тестировать более тщательно.</li>
+  <li>Тесты нужно всегда использовать как часть инфраструктуры сборки проекта. Так как самые болезненные и трудно уловимые ошибки чаще всего возникают при внесении изменений в совершенно другие участки кода. Прогон всех блочных тестов нужно осуществлять перед каждой сборкой проекта.</li>
+  <li>Наличие блочных тестов позволяет проводить более агрессивное изменение кода. А также делает его более открытым для экспериментов вида “а что если”. Ведь любое объемное изменение всегда будет проверено.</li>
+</ul>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="http://www.ozon.ru/context/detail/id/136427568/?partner=russianpenguin&amp;from=bar">“Искусство тестирования программ” Гленфорд Майерс, Том Баджетт, Кори Сандлер, ISBN: 978-5-8459-1974-8</a></li>
+  <li><a href="http://www.ozon.ru/context/detail/id/4434288/?partner=russianpenguin&amp;from=bar">“Продуктивный программист. Как сделать сложное простым, а невозможное - возможным” Нил Форд, ISBN: 978-5-93286-156-1</a></li>
+</ul>
+
+<h2 id="исходный-код">Исходный код</h2>
+
+<ul>
+  <li><a href="https://github.com/RussianPenguin/TDD/tree/master/03">GitHub</a></li>
+</ul>
+
+<h2 id="оглавление-1"><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

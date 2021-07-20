@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 10 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page10/" />
+<meta property="og:url" content="http://localhost:4000/blog/page10/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page9/" />
+<link rel="next" href="http://localhost:4000/blog/page11/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page10/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2016/08/23/javascript-%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d1%83%d0%b5%d0%bc-img-%d0%b2-canvas/">JavaScript: копируем img в canvas</a></h1>
+  <p class="author">
+    <span class="date">2016-08-23 22:28:03 +0300</span>
+  </p>
+  <div class="content">
+   <p>Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте.</p>
+
+<p>Первый и самый очевидный (а еще универсальный) - загрузить изображение при помощи объекта Image. Он работает только в случае, когда у img есть атрибут src.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">();</span>  
+<span class="kd">var</span> <span class="nx">srcImg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">src-img</span><span class="dl">'</span><span class="p">);</span>  
+<span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="c1">// создаем (или получаем) канву  </span>
+ <span class="kd">var</span> <span class="nx">backCanvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">dest-canvas</span><span class="dl">'</span><span class="p">);</span>  
+ <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>  
+ <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>  
+ <span class="kd">var</span> <span class="nx">backCtx</span> <span class="o">=</span> <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// рисуем  </span>
+ <span class="nx">backCtx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>  
+<span class="p">};</span>  
+<span class="nx">img</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">src</span><span class="dl">'</span><span class="p">,</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Недостаток - еще один запрос в сеть.</p>
+
+<p>Второй способ - менее универсален. Картинка у нас уже есть - почему ее нельзя нарисовать на канве?</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">backCanvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">dest-canvas</span><span class="dl">'</span><span class="p">);</span>  
+<span class="kd">var</span> <span class="nx">srcImg</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">src-img</span><span class="dl">'</span><span class="p">);</span>  
+<span class="nx">backCanvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">naturalWidth</span><span class="p">;</span>  
+<span class="nx">backCanvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">srcImg</span><span class="p">.</span><span class="nx">naturalHeight</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">backCtx</span> <span class="o">=</span> <span class="nx">backCanvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// рисуем картинку  </span>
+<span class="nx">backCtx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">srcImg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>И вот тут мы используем naturalWidth/naturalHeight. Зачем?</p>
+
+<p>Все очень просто. Если в первом случае width и height означали размеры картинки, то во втором - это будут физические размеры элемента img на странице. И если картинка внутри него будет отмасштабирована, то мы мы скопируем только часть картинки размером width на height.</p>
+
+<p>Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется).</p>
+
+<p><img src="/assets/images/2016/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_001.png" alt="Выделение_001" /></p>
+
+<p>А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя.</p>
+
+
+  </div>
+
+  <h1><a href="/2016/06/22/xmonad-%d1%84%d0%b8%d0%ba%d1%81%d0%b8%d0%bc-%d0%bc%d0%b5%d0%bd%d1%8e%d1%88%d0%ba%d0%b8-%d1%83-saleae-logic/">Xmonad: Фиксим менюшки у saleae logic</a></h1>
+  <p class="author">
+    <span class="date">2016-06-22 23:00:40 +0300</span>
+  </p>
+  <div class="content">
+   <p><img src="/assets/images/2016/06/2016-06-22-224947_409x324.png?w=300" alt="2016-06-22-22:49:47_409x324" /> Есть довольно хороший бюджетный логический <a href="https://www.saleae.com/">анализатор</a> от saleae (и масса совместимых китайских клонов).</p>
+
+<p>Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же).</p>
+
+<p>Софт написан на qt. И выглядит как бы совсем нестандартно.</p>
+
+<p>В обычных DE с ним все нормально, но во всяких WM наступают грабли из-за нестандартной реализации менюшек. В частности очень сильно страдает xmonad. В нем при попытке открыть менюшки появляется цветная рамка и меню пропадает.</p>
+
+<p>Фикс проблемы <a href="http://support.saleae.com/hc/communities/public/questions/204345355-menus-aren-t-working-under-xmonad">есть</a> у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>className =? "Logic" --\&gt; doIgnore
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2016/06/09/php-array_map-%d0%b8-%d0%ba%d0%bb%d1%8e%d1%87%d0%b8-%d0%bc%d0%b0%d1%81%d1%81%d0%b8%d0%b2%d0%b0/">PHP: array_map и ключи массива</a></h1>
+  <p class="author">
+    <span class="date">2016-06-09 21:29:30 +0300</span>
+  </p>
+  <div class="content">
+   <p>Интересно, почему такой вопрос часто всплывает на форумах или где-то еще?</p>
+
+<p>Сначала постараюсь ответить на вопрос “нафига?”, а потом на вопрос “как?”.</p>
+
+<p>Мы привыкли, что в в питоне, js и множестве других языков и фреймворков есть функция map, которая применяет некоторую функцию-обработчик к каждому элементу в списке данных и возвращающую результат в том же порядке. <a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)">Пруф</a>.</p>
+
+<p>Но никто не ждал, что хеш-таблица и массив в контексте одного из языков будет означать одно и то же. Опять же <a href="https://secure.php.net/manual/ru/language.types.array.php">пруф</a>.</p>
+
+<p>Этот постыдный момент из жизни структуры привел к тому, что одним из самых частых применений массивов (в пхп конечно же) стало создание отображений категория=&gt;какое-то значение.</p>
+
+<p>А после того как у вас появилось отображение вы, вероятно, захотите это где-нибудь на сгенерированной странице отобразить.</p>
+
+<p>Т.е. показать пользователю сам параметр, а скобках его категорию.</p>
+
+<p>Как мы делаем это в языках (фреймворках), которые разделяют понятие массива и хеш-таблицы? Перебираем объект, который содержит категории и формируем по нему массив выводимых данных. Наверное так.</p>
+
+<p>И тут мы открываем руководство по php и видим, что она применяет некий колбек ко всем элементам массива и после этого возвращает новый массив.</p>
+
+<p>Удобно же! Применили колбек к массиву и получили обработанный.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
+ <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+<span class="p">];</span>
+
+<span class="nf">var\_dump</span><span class="p">(</span><span class="nf">array\_map</span><span class="p">(</span><span class="k">function</span><span class="p">(...</span><span class="mf">.</span>
+</code></pre></div></div>
+
+<p>И что-то не заладилось. :) Ключи в колбек не попадают. Можно сделать все через foreach, но тогда нам потребуется еще одна переменная. А тут все было просто и наглядно.</p>
+
+<p>И мы идем в гугель: “php array_map with keys”.</p>
+
+<p>А зачем гуглить-то?</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
+ <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+<span class="p">];</span>
+
+<span class="nf">var\_dump</span><span class="p">(</span><span class="nf">array\_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">},</span> <span class="nf">array\_keys</span><span class="p">(</span><span class="nv">$array</span><span class="p">),</span> <span class="nv">$array</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>И все отлично работает. И притом правильно. Относительно конечно же. И никаких вам лишних переменных.</p>
+
+<p>А тем временем в коде вновь и вновь появляются конструкции вида</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
+ <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+<span class="p">];</span>
+
+<span class="nv">$description</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Или еще хуже.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
+ <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+<span class="p">];</span>
+
+<span class="nv">$description</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nf">array\_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Проблема кейса из статьи может быть и раздута, но при вчитывании в сотни строк кода более-менее понятными сходу являются только первые два варианта.</p>
+
+<p>Вариант же с array_walk на понятность никак не претендует (как и решение подобной задачи при помощи .each в jquery).</p>
+
+
+  </div>
+
+  <h1><a href="/2016/05/04/git-%d0%be%d1%82%d0%ba%d0%b0%d1%82-%d0%bc%d0%b5%d1%80%d0%b6%d0%b0-%d0%ba%d0%be%d1%82%d0%be%d1%80%d1%8b%d0%b9-%d0%bd%d0%b5-%d0%b1%d1%8b%d0%bb-%d0%b7%d0%b0%d0%bf%d1%83%d1%88%d0%b5%d0%bd/">Git: откат мержа, который не был запушен</a></h1>
+  <p class="author">
+    <span class="date">2016-05-04 14:16:55 +0300</span>
+  </p>
+  <div class="content">
+   <p>Иногда мы делаем мерж некоторой ветки в master и случается такое, что нам нужно по какой либо причине откатить ветку (мы не делали push еще в удаленный репозитарий), либо просто пытаемся сделать git pull забыв, что есть непрокоммиченые изменения.</p>
+
+<p>При git pull мы увидим следующую картину</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Git Pull Failed  
+You have not concluded your merge (MERGE\_HEAD exists). Please, commit your changes before you can merge.
+</code></pre></div></div>
+
+<p>И чтобы откатить наш неудачный мерж не нужно делать никаких reset –hard HEAD=1.</p>
+
+<p>Достаточно сделать</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reset --hard ORIG\_HEAD
+</code></pre></div></div>
+
+<p>Тем самым мы приводим локальную ветку мастера к виду, в котором она был до неудачного мержа.</p>
+
+
+  </div>
+
+  <h1><a href="/2016/04/08/%d0%ba%d0%b0%d0%ba-%d0%b6%d0%b8%d1%82%d1%8c-%d0%b2-%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%b9-%d1%81%d0%b5%d1%82%d0%b8-%d0%b1%d0%b5%d0%b7-dns/">Как жить в локальной сети без dns для локальных ресурсов</a></h1>
+  <p class="author">
+    <span class="date">2016-04-08 00:24:37 +0300</span>
+  </p>
+  <div class="content">
+   <p><img class="alignleft size-thumbnail wp-image-1354" src="/assets/images/2016/04/extra-bonjour.png?w=150" alt="Extra-Bonjour" width="150" height="150" />Или сказ о том, как перестать бояться и начать раздавать динамические адреса в локальной сети.</p>
+<p>Задача:</p>
+<ul>
+<li>необходимо автоматизировать распределение имен различным устройствам в сети.</li>
+</ul>
+<p>Проблемы</p>
+<ul>
+<li>доисторический (ископаемый) роутер, который не умеет dd-wrt/openwrt и иже. А вместе с этим он не умеет статические адреса или локальный dns.</li>
+<li>много iot-желаза в локальной сети к которому хочется получать доступ по имени (доменному конечно же).</li>
+<li>Очень много железа, которое появляется в сети лишь на короткое время, а доступ к нему по сети нужен (ну не прописывать же ему постоянно статику?)</li>
+<li>большое количество скриптов автоматизации, которым надо откуда-то брать именя устройств.</li>
+</ul>
+<p>Проблему можно решить несколькими путями:</p>
+<ul>
+<li>Поставить слабую железку, поставить на нее bind, поднять локальную доменную зону и убрать с роутера роль dhcp и dns-сервера. Минус в том, что слабой железки может и не быть.</li>
+<li>Поменять роутер на менее доисторический. Минус в том, что роутера может не быть под рукой.</li>
+<li>Воспользоваться протоколом <a href="https://en.wikipedia.org/wiki/Zero-configuration_networking">zeroconf</a>. Минусы тоже есть - возможный конфликт имен устройств.</li>
+</ul>
+<p>Если с первыми двума вариантами все более-менее понятно, то на третьем стоит остановиться подробно. Так как он решает проблему наименее затратным способом.</p>
+<p>Протокол описывает:</p>
+<ul>
+<li>назначение адресов устройствам в сети (диапазон 169.254.*)</li>
+<li>разрешение имен</li>
+<li>обнаружение сервисов</li>
+</ul>
+<p>Поскольку адреса у устройств уже есть (dhcp же), то нас будет интересовать только та часть протокола, где рассказывается про обнаружение сервисов и разрешение имен. Это mDNS+DNSSD.</p>
+<p>В nix\bsd за эту часть протокола отвечает сервис avahi</p>
+<p>В ряде дистрибутивов он включен и нормально настроен сразу.</p>
+<p>На примере федоры посмотрим как его поставить и настроить.</p>
+<p>```shell
+$ sudo dnf install avahi-daemon avahi-utils<br />
+$ sudo systemctl enable avahi-daemon<br />
+$ sudo systemctl start avahi-daemon
+```</p>
+<p>Если у вас в сети уже есть устройства, где активирован avahi, то можно посмотреть на то, найдет ли оно какие-либо устройства</p>
+<p>```shell
+$ avahi-browse -alr<br />
++   eth0 IPv4 workstation                                   Remote Disk Management local<br />
+=   eth0 IPv4 workstation                                   Remote Disk Management local<br />
+   hostname = [workstation.local]<br />
+   address = [192.168.1.10]<br />
+   port = [22]<br />
+   txt = []
+```</p>
+<p>Как видим что-то нашло.</p>
+<p>Мы можем попробовать его попинговать.</p>
+<p>```shell
+$ ping workstation.local<br />
+ping: unknown host workstation.local
+```</p>
+<p>Если вы увидели такую картину, то это означает лишь одно - mdns для получения имен доменов у вас не подключен.</p>
+<p>Чтобы его включить требуется отредактировать /etc/nsswitch.conf.</p>
+<p>В строчку hosts нужно добавить mdns_minimal [NOTFOUND=return] перед dns.</p>
+<p>```
+hosts: files mdns_minimal [NOTFOUND=return] dns myhostname mymachines
+```</p>
+<p>После перезагрузки или перезапуска соотвествующего сервиса пингуем снова.</p>
+<p>```shell
+$ ping -c 4 workstation.local<br />
+PING workstation.local (192.168.1.10) 56(84) bytes of data.<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=1 ttl=64 time=0.449 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=2 ttl=64 time=0.469 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=3 ttl=64 time=0.467 ms<br />
+64 bytes from workstation.local (192.168.1.10): icmp_req=4 ttl=64 time=0.393 ms</p>
+<p>--- workstation.local ping statistics ---
+  
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms  
+rtt min/avg/max/mdev = 0.393/0.444/0.469/0.037 ms
+```
+
+Если у вас очень медленно резолвятся локальные домены, то стоит попробовать использовать модуль mdns4\_minimal.
+
+Задача раздачи локальных имен полностью решена. В данном случае я не затрагиваю dnssd поскольку цель была лишь обеспечить доступность хостов по имени.
+
+При желании поднять zeroconf можно как на ардуине, так и на модулях esp8266.
+
+Вы можете столнуться с проблемами из-за того, что некоторые продукты используют зону local для своих целей.
+
+Например торренты часто используют [retracker.local](https://ru.wikipedia.org/wiki/%D0%A0%D0%B5%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80) для обозначения внутрисетевого трекера.
+
+</p>
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page9/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 10 из 35</span>
+  
+    <a href="/blog/page11/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Symfony2: страница 404 и авторизация | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Symfony2: страница 404 и авторизация" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Все знают, что в symfony2 404я страница не попадает под действие фаерволов. А это значит, что даже пытаясь кастомизировать 404ую страницу мы не сможем получить имя пользователя и его роль в системе. Так как механизм авторизации попросту не загружается. Однако, существует решение, которое позволяет кастомизировать страницу 404 с учетом пользовательских данных. Для этого нам надо завести роут подпадающий под действия фаерволлов и при этом откликающийся на любой (!) введенный адрес перехода. Экшн будет отдавать эксепшн NotFoundHttpException. Таким образом мы получим ситуацию, когда при переходе на 404ую все фаерволы запущены и данные пользователя загружены. namespace ProjectBundle\Controller; use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; use Symfony\Bundle\FrameworkBundle\Controller\Controller; use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; class DefaultController extends Controller { //... /\*\* \* Данный роут перехватывает все переходы в системе, которые не охвачены другими роутами. \* @Route(&quot;/{path}&quot;, name=&quot;\_inner404Redirect&quot;) \*/ public function inner404Redirect() { throw new NotFoundHttpException(); } } Источник" />
+<meta property="og:description" content="Все знают, что в symfony2 404я страница не попадает под действие фаерволов. А это значит, что даже пытаясь кастомизировать 404ую страницу мы не сможем получить имя пользователя и его роль в системе. Так как механизм авторизации попросту не загружается. Однако, существует решение, которое позволяет кастомизировать страницу 404 с учетом пользовательских данных. Для этого нам надо завести роут подпадающий под действия фаерволлов и при этом откликающийся на любой (!) введенный адрес перехода. Экшн будет отдавать эксепшн NotFoundHttpException. Таким образом мы получим ситуацию, когда при переходе на 404ую все фаерволы запущены и данные пользователя загружены. namespace ProjectBundle\Controller; use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; use Symfony\Bundle\FrameworkBundle\Controller\Controller; use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; class DefaultController extends Controller { //... /\*\* \* Данный роут перехватывает все переходы в системе, которые не охвачены другими роутами. \* @Route(&quot;/{path}&quot;, name=&quot;\_inner404Redirect&quot;) \*/ public function inner404Redirect() { throw new NotFoundHttpException(); } } Источник" />
+<link rel="canonical" href="http://localhost:4000/2015/09/03/symfony2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0-404-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/" />
+<meta property="og:url" content="http://localhost:4000/2015/09/03/symfony2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0-404-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-09-03T17:04:52+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Symfony2: страница 404 и авторизация" />
+<script type="application/ld+json">
+{"headline":"Symfony2: страница 404 и авторизация","dateModified":"2015-09-03T17:04:52+03:00","datePublished":"2015-09-03T17:04:52+03:00","description":"Все знают, что в symfony2 404я страница не попадает под действие фаерволов. А это значит, что даже пытаясь кастомизировать 404ую страницу мы не сможем получить имя пользователя и его роль в системе. Так как механизм авторизации попросту не загружается. Однако, существует решение, которое позволяет кастомизировать страницу 404 с учетом пользовательских данных. Для этого нам надо завести роут подпадающий под действия фаерволлов и при этом откликающийся на любой (!) введенный адрес перехода. Экшн будет отдавать эксепшн NotFoundHttpException. Таким образом мы получим ситуацию, когда при переходе на 404ую все фаерволы запущены и данные пользователя загружены. namespace ProjectBundle\\Controller; use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Route; use Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller; use Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException; class DefaultController extends Controller { //... /\\*\\* \\* Данный роут перехватывает все переходы в системе, которые не охвачены другими роутами. \\* @Route(&quot;/{path}&quot;, name=&quot;\\_inner404Redirect&quot;) \\*/ public function inner404Redirect() { throw new NotFoundHttpException(); } } Источник","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/09/03/symfony2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0-404-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/09/03/symfony2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0-404-%D0%B8-%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Symfony2: страница 404 и авторизация</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Symfony2: страница 404 и авторизация</h1>
+<p>03 Sep 2015</p>
+
+<p>Все знают, что в symfony2 404я страница не попадает под действие фаерволов. А это значит, что даже пытаясь кастомизировать 404ую страницу мы не сможем получить имя пользователя и его роль в системе. Так как механизм авторизации попросту не загружается.</p>
+
+<p>Однако, существует решение, которое позволяет кастомизировать страницу 404 с учетом пользовательских данных.</p>
+
+<p>Для этого нам надо завести роут подпадающий под действия фаерволлов и при этом откликающийся на любой (!) введенный адрес перехода.</p>
+
+<p>Экшн будет отдавать эксепшн NotFoundHttpException. Таким образом мы получим ситуацию, когда при переходе на 404ую все фаерволы запущены и данные пользователя загружены.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">ProjectBundle\Controller</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nc">Sensio\Bundle\FrameworkExtraBundle\Configuration\Route</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Bundle\FrameworkBundle\Controller\Controller</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\NotFoundHttpException</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">DefaultController</span> <span class="kd">extends</span> <span class="nc">Controller</span>  
+<span class="p">{</span>  
+ <span class="c1">//...</span>
+
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Данный</span> <span class="n">роут</span> <span class="n">перехватывает</span> <span class="n">все</span> <span class="n">переходы</span> <span class="n">в</span> <span class="n">системе</span><span class="p">,</span> <span class="n">которые</span> <span class="n">не</span> <span class="n">охвачены</span> <span class="n">другими</span> <span class="n">роутами</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="nf">Route</span><span class="p">(</span><span class="s2">"/</span><span class="si">{</span><span class="nv">path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"\_inner404Redirect"</span><span class="p">)</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+ <span class="k">public</span> <span class="k">function</span> <span class="n">inner404Redirect</span><span class="p">()</span>  
+ <span class="p">{</span>  
+ <span class="k">throw</span> <span class="k">new</span> <span class="nc">NotFoundHttpException</span><span class="p">();</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://github.com/symfony/symfony/issues/8414">Источник</a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

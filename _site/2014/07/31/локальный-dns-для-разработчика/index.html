@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Локальный DNS для разработчика | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Локальный DNS для разработчика" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Итак. У нас море проектов, море виртуалок. И мы хотим как-то удобно с этим всем работать. Мне по нраву выделять отдельную доменную зону для всех своих виртуалок и подключать к ней нужные адреса. Предположим, что все проекты у нас будут собраны в доменной зоне *.dev (удобно же). И каждый из них будет резолвиться по разным адресам. Составим для себя список хотелок: машины поднимаются вагрантом или еще какой системой (это не так уж и важно) после появления машины в сети ее ip связывается с доменом проекта, который на ней крутится после завершения привязка уделяется Начинаем хотелки реализовывать. Ставим named $ sudo yum install named Заставляем его слушать только локалхост (он же девелоперский). Для этого редактируем named.conf и добавляем в раздел options &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on port 53 { 127.0.0.1; }; &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on-v6 port 53 { ::1; }; Теперь нам надо подключить нашу новую зону. Добавляем подключение описания в named.conf zone &quot;dev&quot; IN { &amp;nbsp;&amp;nbsp;&amp;nbsp; type master; &amp;nbsp;&amp;nbsp;&amp;nbsp; file &quot;named.dev&quot;; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-query {any;}; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-update { &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 127.0.0.1; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ::1; &amp;nbsp;&amp;nbsp;&amp;nbsp; }; }; В этом описании мы сразу же видим раздел allow-update, который позволяет удаленно изменять зону при помощи команды nsupdate. Разрешаем правку только с локалхоста. Теперь непосредственно сам файл зоны прямого преобразования - /var/named/named.dev $ORIGIN dev. $TTL 86400&amp;nbsp;&amp;nbsp; &amp;nbsp;; 1 day @&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN SOA&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. rname.invalid. ( &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; serial &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;86400&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; refresh (1 day) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;3600&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; retry (1 hour) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;604800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; expire (1 week) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;10800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; minimum (3 hours) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;NS&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;AAAA&amp;nbsp;&amp;nbsp; &amp;nbsp;::1 \*&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост. Все. Нам осталось перезапустить. $ sudo service named restart Проверяем $ nslookup test.dev 127.0.0.1 Server:&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Address:&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1#53 Name:&amp;nbsp;&amp;nbsp; &amp;nbsp;test.dev Address: 127.0.0.1     Кдасс. А как нам связывать домен с адресом? Для этого нам нужен скрипт. #!/bin/bash TTL=86400 RECORD=$1 IP=$2 ( &amp;nbsp;echo &quot;server dev.&quot; &amp;nbsp;echo &quot;zone dev&quot; &amp;nbsp;echo &quot;update delete ${RECORD} A&quot; &amp;nbsp;echo &quot;update add ${RECORD} ${TTL} A ${IP}&quot; &amp;nbsp;echo &quot;send&quot; ) | /usr/bin/nsupdate   Пробуем $ ./named.sh test.dev 1.1.1.1 ``````shell $ nslookup test.dev 127.0.0.1 Server: 127.0.0.1 Address: 127.0.0.1#53 Name: test.dev Address: 1.1.1.1 Возможные проблемы: неправильно установлены права на папку /var/named неправильно указан адрес с которого можно обновлять зону запрет в selinux - решается выполнением shell $ sudo setsebool -P named\_write\_master\_zones 1 Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме." />
+<meta property="og:description" content="Итак. У нас море проектов, море виртуалок. И мы хотим как-то удобно с этим всем работать. Мне по нраву выделять отдельную доменную зону для всех своих виртуалок и подключать к ней нужные адреса. Предположим, что все проекты у нас будут собраны в доменной зоне *.dev (удобно же). И каждый из них будет резолвиться по разным адресам. Составим для себя список хотелок: машины поднимаются вагрантом или еще какой системой (это не так уж и важно) после появления машины в сети ее ip связывается с доменом проекта, который на ней крутится после завершения привязка уделяется Начинаем хотелки реализовывать. Ставим named $ sudo yum install named Заставляем его слушать только локалхост (он же девелоперский). Для этого редактируем named.conf и добавляем в раздел options &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on port 53 { 127.0.0.1; }; &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on-v6 port 53 { ::1; }; Теперь нам надо подключить нашу новую зону. Добавляем подключение описания в named.conf zone &quot;dev&quot; IN { &amp;nbsp;&amp;nbsp;&amp;nbsp; type master; &amp;nbsp;&amp;nbsp;&amp;nbsp; file &quot;named.dev&quot;; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-query {any;}; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-update { &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 127.0.0.1; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ::1; &amp;nbsp;&amp;nbsp;&amp;nbsp; }; }; В этом описании мы сразу же видим раздел allow-update, который позволяет удаленно изменять зону при помощи команды nsupdate. Разрешаем правку только с локалхоста. Теперь непосредственно сам файл зоны прямого преобразования - /var/named/named.dev $ORIGIN dev. $TTL 86400&amp;nbsp;&amp;nbsp; &amp;nbsp;; 1 day @&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN SOA&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. rname.invalid. ( &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; serial &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;86400&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; refresh (1 day) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;3600&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; retry (1 hour) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;604800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; expire (1 week) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;10800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; minimum (3 hours) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;NS&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;AAAA&amp;nbsp;&amp;nbsp; &amp;nbsp;::1 \*&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост. Все. Нам осталось перезапустить. $ sudo service named restart Проверяем $ nslookup test.dev 127.0.0.1 Server:&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Address:&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1#53 Name:&amp;nbsp;&amp;nbsp; &amp;nbsp;test.dev Address: 127.0.0.1     Кдасс. А как нам связывать домен с адресом? Для этого нам нужен скрипт. #!/bin/bash TTL=86400 RECORD=$1 IP=$2 ( &amp;nbsp;echo &quot;server dev.&quot; &amp;nbsp;echo &quot;zone dev&quot; &amp;nbsp;echo &quot;update delete ${RECORD} A&quot; &amp;nbsp;echo &quot;update add ${RECORD} ${TTL} A ${IP}&quot; &amp;nbsp;echo &quot;send&quot; ) | /usr/bin/nsupdate   Пробуем $ ./named.sh test.dev 1.1.1.1 ``````shell $ nslookup test.dev 127.0.0.1 Server: 127.0.0.1 Address: 127.0.0.1#53 Name: test.dev Address: 1.1.1.1 Возможные проблемы: неправильно установлены права на папку /var/named неправильно указан адрес с которого можно обновлять зону запрет в selinux - решается выполнением shell $ sudo setsebool -P named\_write\_master\_zones 1 Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме." />
+<link rel="canonical" href="http://localhost:4000/2014/07/31/%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-dns-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2014/07/31/%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-dns-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-07-31T23:23:01+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Локальный DNS для разработчика" />
+<script type="application/ld+json">
+{"headline":"Локальный DNS для разработчика","dateModified":"2014-07-31T23:23:01+04:00","datePublished":"2014-07-31T23:23:01+04:00","description":"Итак. У нас море проектов, море виртуалок. И мы хотим как-то удобно с этим всем работать. Мне по нраву выделять отдельную доменную зону для всех своих виртуалок и подключать к ней нужные адреса. Предположим, что все проекты у нас будут собраны в доменной зоне *.dev (удобно же). И каждый из них будет резолвиться по разным адресам. Составим для себя список хотелок: машины поднимаются вагрантом или еще какой системой (это не так уж и важно) после появления машины в сети ее ip связывается с доменом проекта, который на ней крутится после завершения привязка уделяется Начинаем хотелки реализовывать. Ставим named $ sudo yum install named Заставляем его слушать только локалхост (он же девелоперский). Для этого редактируем named.conf и добавляем в раздел options &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on port 53 { 127.0.0.1; }; &amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on-v6 port 53 { ::1; }; Теперь нам надо подключить нашу новую зону. Добавляем подключение описания в named.conf zone &quot;dev&quot; IN { &amp;nbsp;&amp;nbsp;&amp;nbsp; type master; &amp;nbsp;&amp;nbsp;&amp;nbsp; file &quot;named.dev&quot;; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-query {any;}; &amp;nbsp;&amp;nbsp;&amp;nbsp; allow-update { &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 127.0.0.1; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ::1; &amp;nbsp;&amp;nbsp;&amp;nbsp; }; }; В этом описании мы сразу же видим раздел allow-update, который позволяет удаленно изменять зону при помощи команды nsupdate. Разрешаем правку только с локалхоста. Теперь непосредственно сам файл зоны прямого преобразования - /var/named/named.dev $ORIGIN dev. $TTL 86400&amp;nbsp;&amp;nbsp; &amp;nbsp;; 1 day @&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN SOA&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. rname.invalid. ( &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; serial &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;86400&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; refresh (1 day) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;3600&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; retry (1 hour) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;604800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; expire (1 week) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;10800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; minimum (3 hours) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;) &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;NS&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 &amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;AAAA&amp;nbsp;&amp;nbsp; &amp;nbsp;::1 \\*&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост. Все. Нам осталось перезапустить. $ sudo service named restart Проверяем $ nslookup test.dev 127.0.0.1 Server:&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1 Address:&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1#53 Name:&amp;nbsp;&amp;nbsp; &amp;nbsp;test.dev Address: 127.0.0.1     Кдасс. А как нам связывать домен с адресом? Для этого нам нужен скрипт. #!/bin/bash TTL=86400 RECORD=$1 IP=$2 ( &amp;nbsp;echo &quot;server dev.&quot; &amp;nbsp;echo &quot;zone dev&quot; &amp;nbsp;echo &quot;update delete ${RECORD} A&quot; &amp;nbsp;echo &quot;update add ${RECORD} ${TTL} A ${IP}&quot; &amp;nbsp;echo &quot;send&quot; ) | /usr/bin/nsupdate   Пробуем $ ./named.sh test.dev 1.1.1.1 ``````shell $ nslookup test.dev 127.0.0.1 Server: 127.0.0.1 Address: 127.0.0.1#53 Name: test.dev Address: 1.1.1.1 Возможные проблемы: неправильно установлены права на папку /var/named неправильно указан адрес с которого можно обновлять зону запрет в selinux - решается выполнением shell $ sudo setsebool -P named\\_write\\_master\\_zones 1 Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/07/31/%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-dns-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/07/31/%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-dns-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%87%D0%B8%D0%BA%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Локальный DNS для разработчика</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Локальный DNS для разработчика</h1>
+<p>31 Jul 2014</p>
+
+<p>Итак. У нас море проектов, море виртуалок. И мы хотим как-то удобно с этим всем работать.</p>
+
+<p>Мне по нраву выделять отдельную доменную зону для всех своих виртуалок и подключать к ней нужные адреса.</p>
+
+<p>Предположим, что все проекты у нас будут собраны в доменной зоне *.dev (удобно же).</p>
+
+<p>И каждый из них будет резолвиться по разным адресам.</p>
+
+<p>Составим для себя список хотелок:</p>
+
+<ul>
+  <li>машины поднимаются вагрантом или еще какой системой (это не так уж и важно)</li>
+  <li>после появления машины в сети ее ip связывается с доменом проекта, который на ней крутится</li>
+  <li>после завершения привязка уделяется</li>
+</ul>
+
+<p>Начинаем хотелки реализовывать.</p>
+
+<p>Ставим named</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>named
+</code></pre></div></div>
+
+<p>Заставляем его слушать только локалхост (он же девелоперский).</p>
+
+<p>Для этого редактируем named.conf и добавляем в раздел options</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on port 53 { 127.0.0.1; };  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; listen-on-v6 port 53 { ::1; };
+</code></pre></div></div>
+
+<p>Теперь нам надо подключить нашу новую зону.</p>
+
+<p>Добавляем подключение описания в named.conf</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zone "dev" IN {  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; type master;  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; file "named.dev";  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; allow-query {any;};  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; allow-update {  
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 127.0.0.1;  
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ::1;  
+&amp;nbsp;&amp;nbsp;&amp;nbsp; };  
+};
+</code></pre></div></div>
+
+<p>В этом описании мы сразу же видим раздел allow-update, который позволяет удаленно изменять зону при помощи команды nsupdate. Разрешаем правку только с локалхоста.</p>
+
+<p>Теперь непосредственно сам файл зоны прямого преобразования - /var/named/named.dev</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ORIGIN dev.  
+$TTL 86400&amp;nbsp;&amp;nbsp; &amp;nbsp;; 1 day  
+@&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN SOA&amp;nbsp;&amp;nbsp; &amp;nbsp;dev. rname.invalid. (  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;4&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; serial  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;86400&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; refresh (1 day)  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;3600&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; retry (1 hour)  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;604800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; expire (1 week)  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;10800&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; ; minimum (3 hours)  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;)  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;NS&amp;nbsp;&amp;nbsp; &amp;nbsp;dev.  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1  
+&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;AAAA&amp;nbsp;&amp;nbsp; &amp;nbsp;::1  
+\*&amp;nbsp;&amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp;IN&amp;nbsp;&amp;nbsp; &amp;nbsp;A&amp;nbsp;&amp;nbsp; &amp;nbsp;127.0.0.1
+</code></pre></div></div>
+
+<p>Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост.</p>
+
+<p>Все. Нам осталось перезапустить.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>service named restart
+</code></pre></div></div>
+
+<p>Проверяем</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nslookup test.dev 127.0.0.1  
+Server:&amp;nbsp<span class="p">;</span>&amp;nbsp<span class="p">;</span> &amp;nbsp<span class="p">;</span>&amp;nbsp<span class="p">;</span>&amp;nbsp<span class="p">;</span> &amp;nbsp<span class="p">;</span>127.0.0.1  
+Address:&amp;nbsp<span class="p">;</span>&amp;nbsp<span class="p">;</span> &amp;nbsp<span class="p">;</span>127.0.0.1#53
+
+Name:&amp;nbsp<span class="p">;</span>&amp;nbsp<span class="p">;</span> &amp;nbsp<span class="p">;</span>test.dev  
+Address: 127.0.0.1
+</code></pre></div></div>
+
+<p> </p>
+
+<p> </p>
+
+<p>Кдасс. А как нам связывать домен с адресом?</p>
+
+<p>Для этого нам нужен скрипт.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash  </span>
+<span class="nv">TTL</span><span class="o">=</span>86400  
+<span class="nv">RECORD</span><span class="o">=</span><span class="nv">$1</span>  
+<span class="nv">IP</span><span class="o">=</span><span class="nv">$2</span>  
+<span class="o">(</span>  
+&amp;nbsp<span class="p">;</span><span class="nb">echo</span> <span class="s2">"server dev."</span>  
+&amp;nbsp<span class="p">;</span><span class="nb">echo</span> <span class="s2">"zone dev"</span>
+
+&amp;nbsp<span class="p">;</span><span class="nb">echo</span> <span class="s2">"update delete </span><span class="k">${</span><span class="nv">RECORD</span><span class="k">}</span><span class="s2"> A"</span>  
+&amp;nbsp<span class="p">;</span><span class="nb">echo</span> <span class="s2">"update add </span><span class="k">${</span><span class="nv">RECORD</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TTL</span><span class="k">}</span><span class="s2"> A </span><span class="k">${</span><span class="nv">IP</span><span class="k">}</span><span class="s2">"</span>  
+&amp;nbsp<span class="p">;</span><span class="nb">echo</span> <span class="s2">"send"</span>  
+<span class="o">)</span> | /usr/bin/nsupdate
+</code></pre></div></div>
+
+<p> </p>
+
+<p>Пробуем</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./named.sh test.dev 1.1.1.1
+<span class="sb">``````</span>shell
+<span class="nv">$ </span>nslookup test.dev 127.0.0.1  
+Server: 127.0.0.1  
+Address: 127.0.0.1#53
+
+Name: test.dev  
+Address: 1.1.1.1
+</code></pre></div></div>
+
+<p>Возможные проблемы:</p>
+
+<ul>
+  <li>неправильно установлены права на папку /var/named</li>
+  <li>неправильно указан адрес с которого можно обновлять зону</li>
+  <li>запрет в selinux - решается выполнением <code class="language-plaintext highlighter-rouge">shell
+$ sudo setsebool -P named\_write\_master\_zones 1
+</code></li>
+</ul>
+
+<p>Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

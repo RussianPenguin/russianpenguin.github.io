@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Часть 2: Тестирование простого приложения (Тестирование ПО) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Часть 2: Тестирование простого приложения (Тестирование ПО)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="В этой части мы познакомимся с примитивным подходом к тестированию приложений." />
+<meta property="og:description" content="В этой части мы познакомимся с примитивным подходом к тестированию приложений." />
+<link rel="canonical" href="http://localhost:4000/2017/04/09/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-2/" />
+<meta property="og:url" content="http://localhost:4000/2017/04/09/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-2/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-04-09T14:06:16+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Часть 2: Тестирование простого приложения (Тестирование ПО)" />
+<script type="application/ld+json">
+{"headline":"Часть 2: Тестирование простого приложения (Тестирование ПО)","dateModified":"2017-04-09T14:06:16+03:00","datePublished":"2017-04-09T14:06:16+03:00","description":"В этой части мы познакомимся с примитивным подходом к тестированию приложений.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/04/09/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-2/"},"@type":"BlogPosting","url":"http://localhost:4000/2017/04/09/%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D0%BE-%D1%87%D0%B0%D1%81%D1%82%D1%8C-2/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Часть 2: Тестирование простого приложения (Тестирование ПО)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Часть 2: Тестирование простого приложения (Тестирование ПО)</h1>
+<p>09 Apr 2017</p>
+
+<h2 id="оглавление"><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+
+<h2 id="первое-приложение">Первое приложение</h2>
+
+<p>Программа считывает три целочисленных значения из консоли. Эти значения интерпретируются как длины сторон треугольника. Программа выводит сообщение о том, каким является данный треугольник - разносторонним, равнобедренным или равносторонним.</p>
+
+<p>Напишем, функцию, которая принимает на вход три стороны треугольника, которые заданы целыми числами и возвращает тип треугольника. Сохраним написанный код в файле <a href="https://github.com/RussianPenguin/TDD/blob/master/02/triangle.php">triangle.php</a>.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Не</span> <span class="n">треугольник</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TRIANGLE\_BAD'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Равносторонний</span> <span class="n">треугольник</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TRIANGLE\_EQUILATERAL'</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Прямоугольный</span> <span class="n">треугольник</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TRIANGLE\_RIGHT'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>  
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Равнобедренный</span> <span class="n">треугольник</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TRIANGLE\_ISOSCELES'</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>  
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Разносторонний</span> <span class="n">треугольник</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'TRIANGLE\_SIDED'</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="o">/</span><span class="err">\</span><span class="o">*</span><span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">По</span> <span class="n">длинам</span> <span class="n">сторон</span> <span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span> <span class="n">и</span> <span class="nv">$c</span> <span class="n">возвращает</span> <span class="n">тип</span> <span class="n">треугольника</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="nc">Если</span> <span class="n">стороны</span> <span class="n">не</span> <span class="n">являются</span> <span class="n">целочисленными</span><span class="p">,</span> <span class="n">то</span> <span class="n">выбрасывает</span> <span class="n">исключение</span><span class="mf">.</span>  
+ <span class="err">\</span><span class="o">*</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="n">param</span> <span class="nv">$a</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="n">param</span> <span class="nv">$b</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="n">param</span> <span class="nv">$c</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="k">return</span> <span class="n">int</span>  
+ <span class="err">\</span><span class="o">*</span> <span class="o">@</span><span class="n">throws</span> <span class="nc">Exception</span>  
+ <span class="err">\</span><span class="o">*/</span>  
+<span class="k">function</span> <span class="n">triangle</span><span class="err">\</span><span class="nf">_type</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">,</span> <span class="nv">$c</span><span class="p">)</span>  
+<span class="p">{</span>  
+ <span class="c1">// Вполне ожидаемо,  </span>
+ <span class="c1">// что нецелочисленные значения должны приводить к исключительной ситуации.  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nf">is\_int</span><span class="p">(</span><span class="nv">$a</span><span class="p">)</span> <span class="k">or</span> <span class="o">!</span><span class="nf">is\_int</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="k">or</span> <span class="o">!</span><span class="nf">is\_int</span><span class="p">(</span><span class="nv">$c</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="k">throw</span> <span class="k">new</span> <span class="err">\</span><span class="nf">Exception</span><span class="p">(</span><span class="s1">'Invalid triangle definition'</span><span class="p">);</span>  
+ <span class="p">}</span>
+
+<span class="nv">$max</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  
+ <span class="nv">$min1</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>  
+ <span class="nv">$min2</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">((</span><span class="nv">$a</span><span class="o">+</span><span class="nv">$b</span><span class="p">)</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$c</span> <span class="k">and</span> <span class="p">(</span><span class="nv">$a</span><span class="o">+</span><span class="nv">$c</span><span class="p">)</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$b</span> <span class="k">and</span> <span class="p">(</span><span class="nv">$b</span><span class="o">+</span><span class="nv">$c</span><span class="p">)</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$a</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">((</span><span class="nv">$a</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$b</span><span class="p">)</span> <span class="k">and</span> <span class="p">(</span><span class="nv">$a</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$c</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="nv">$max</span> <span class="o">=</span> <span class="nv">$a</span><span class="p">;</span>  
+ <span class="nv">$min1</span> <span class="o">=</span> <span class="nv">$b</span><span class="p">;</span>  
+ <span class="nv">$min2</span> <span class="o">=</span> <span class="nv">$c</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="nv">$b</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$c</span><span class="p">)</span> <span class="k">and</span> <span class="p">(</span><span class="nv">$b</span><span class="err">\</span><span class="o">&gt;</span><span class="nv">$a</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="nv">$max</span> <span class="o">=</span> <span class="nv">$b</span><span class="p">;</span>  
+ <span class="nv">$min1</span> <span class="o">=</span> <span class="nv">$a</span><span class="p">;</span>  
+ <span class="nv">$min2</span> <span class="o">=</span> <span class="nv">$c</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span>  
+ <span class="p">{</span>  
+ <span class="nv">$max</span> <span class="o">=</span> <span class="nv">$c</span><span class="p">;</span>  
+ <span class="nv">$min1</span> <span class="o">=</span> <span class="nv">$a</span><span class="p">;</span>  
+ <span class="nv">$min2</span> <span class="o">=</span> <span class="nv">$b</span><span class="p">;</span>  
+ <span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="nv">$max</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="nb">pow</span><span class="p">(</span><span class="nv">$min1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="nb">pow</span><span class="p">(</span><span class="nv">$min2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="n">TRIANGLE\_RIGHT</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="nv">$max</span><span class="o">==</span><span class="nv">$min1</span><span class="p">)</span> <span class="k">and</span> <span class="p">(</span><span class="nv">$max</span><span class="o">==</span><span class="nv">$min2</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="n">TRIANGLE\_EQUILATERAL</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="nv">$max</span><span class="o">==</span><span class="nv">$min1</span><span class="p">)</span> <span class="k">or</span> <span class="p">(</span><span class="nv">$max</span><span class="o">==</span><span class="nv">$min2</span><span class="p">)</span> <span class="k">or</span> <span class="p">(</span><span class="nv">$min1</span><span class="o">==</span><span class="nv">$min2</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="n">TRIANGLE\_ISOSCELES</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="n">TRIANGLE\_SIDED</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+ <span class="k">else</span>  
+ <span class="p">{</span>  
+ <span class="k">return</span> <span class="n">TRIANGLE\_BAD</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Функция достаточно тривиальна, поэтому мы не будем останавливаться на ее реализации. Нас будет интересовать, как найти в ней ошибки.</p>
+
+<p>Для начала потребуется реализовать механизм, который позволит вводить данные с консоли и получать результат. Сохраним следующий код в файле <a href="https://github.com/RussianPenguin/TDD/blob/master/02/main.php">main.php</a>. Чуть позже вы поймете, почему мы используем разные файлы для самой функции и для кода, который обрабатывает пользовательский ввод.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// здесь мы подключим ранее написанную функцию для определения типа треугольника  </span>
+<span class="k">require</span> <span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="n">DIRECTORY\_SEPARATOR</span> <span class="mf">.</span> <span class="s1">'triangle.php'</span><span class="p">;</span>
+
+<span class="k">function</span> <span class="n">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="c1">// проинициализируем переменные  </span>
+ <span class="nv">$a</span> <span class="o">=</span> <span class="nv">$b</span> <span class="o">=</span> <span class="nv">$c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// получим длины сторон со стандартного ввода  </span>
+ <span class="nv">$num</span> <span class="o">=</span> <span class="nb">fscanf</span><span class="p">(</span><span class="no">STDIN</span><span class="p">,</span> <span class="s2">"%d %d %d</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">,</span> <span class="nv">$c</span><span class="p">);</span>  
+ <span class="c1">// если мы смогли считать длины трех сторон,  </span>
+ <span class="c1">// то вызовем нашу функцию и покажем результат  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$num</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="k">switch</span> <span class="p">(</span><span class="nf">triangle\_type</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">,</span> <span class="nv">$c</span><span class="p">))</span>  
+ <span class="p">{</span>  
+ <span class="k">case</span> <span class="n">TRIANGLE\_BAD</span><span class="o">:</span>  
+ <span class="k">echo</span> <span class="s2">"Это не треугольник</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="k">break</span><span class="p">;</span>  
+ <span class="k">case</span> <span class="n">TRIANGLE\_EQUILATERAL</span><span class="o">:</span>  
+ <span class="k">echo</span> <span class="s2">"Это равносторонний треугольник</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="k">break</span><span class="p">;</span>  
+ <span class="k">case</span> <span class="n">TRIANGLE\_ISOSCELES</span><span class="o">:</span>  
+ <span class="k">echo</span> <span class="s2">"Это равнобедренный треугольник</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="k">break</span><span class="p">;</span>  
+ <span class="k">case</span> <span class="n">TRIANGLE\_RIGHT</span><span class="o">:</span>  
+ <span class="k">echo</span> <span class="s2">"Это прямоугольный треугольник</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="k">break</span><span class="p">;</span>  
+ <span class="k">case</span> <span class="n">TRIANGLE\_SIDED</span><span class="o">:</span>  
+ <span class="k">echo</span> <span class="s2">"Это разносторонний треугольник</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="k">break</span><span class="p">;</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="nb">main</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Код также достаточно тривиален. Теперь мы можем запустить полученное приложение (да, это именно приложение - последовательность инструкций, определяющих процедуру решения конкретной задачи компьютером).</p>
+
+<p>Откроем терминал, перейдем в каталог, с проектом и выполним следующую команду (для того, чтобы все сработало у вас должен быть установлен интерпретатор php в системе).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ php main.php
+</code></pre></div></div>
+
+<p>Программа будет ожидать ввод трех чисел, разделенных пробелами.</p>
+
+<p>И вот что мы можем увидеть на экране.</p>
+
+<p><img src="/assets/images/2017/04/image.png" alt="null" title="null" /></p>
+
+<p>Поэкспериментируйте немного с программой вводя разные наборы чисел.</p>
+
+<p>А теперь рассмотрим эту программу с точки зрения разработчика, которому досталось ее тестировать. Какие наборы тестов он должен разработать, чтобы отыскать все возможные баги? Прежде чем читать дальше подумайте и попробуйте посчитать то количество, которое придумали вы.</p>
+
+<p>Итак. Ниже приведен набор тестовых сценариев, которые должны быть написаны для нашей функции.</p>
+
+<ol>
+  <li>тест для проверки действительно неравностороннего треугольника (наборы [1, 2, 3], [2, 5, 10] треугольниками не являются).</li>
+  <li>проверка на действительно равносторонний треугольник</li>
+  <li>проверка на равнобедренный треугольник (наборы вида [2, 2, 4] треугольником не являются)</li>
+  <li>как минимум три теста для проверки равнобедренного треугольника, которые представляют собой перестановки одного и того же набора чисел ([3, 3, 4], [3, 4, 3], [4, 3, 3])</li>
+  <li>тест на нулевую длину одной из сторон</li>
+  <li>тест на сторону, имеющую длину меньше нуля</li>
+  <li>проверка набора чисел, в котором сумма длин двух сторон равна третьей</li>
+  <li>тест перестановок для троек чисел из теста 7</li>
+  <li>проверка набора чисел, в котором сумма длин двух сторон меньше третьей ([12, 15, 30])</li>
+  <li>тест перестановок для троек чисел из теста 9</li>
+  <li>проверка на нулевую длину всех трех сторон</li>
+  <li>проверка на передачу нецелочисленных значений</li>
+  <li>проверка на передачу неполного набора значений</li>
+  <li>проверка не только входных данных, но и ожидаемого выходного значения в каждом из тестов 1-13</li>
+</ol>
+
+<p>Если вы не смогли назвать все кейсы, то не пугайтесь. Среднее число тестов, которые называли в разное время опытные разработчики составило 7,8.</p>
+
+<p>Конечно нет никаких гарантий того, что набор тестов, удовлетворяющих перечисленным условиям, обнаружит все возможные ошибки. Но поскольку случаи 1-13 представляют ошибки, реально встречающиеся в различных версиях данной программы, адекватное тестирование должно обнаружить хотя бы их.</p>
+
+<p>Это упражнение должно было продемонстрировать вам, что тестирование простых программ наподобие вышеприведенной является отнюдь не тривиальной задачей. А теперь попытайтесь представить себе, насколько трудоемким окажется тестирование, скажем, бухгалтерской программы крупного предприятия, компилятора или же системы управления воздушным движением, объем кода которых может достигать сотен тысяч строк. Еще большие трудности возникают с приложениями, которые написаны с использованием объектно-ориентированных языков (куда входит и php) и подходов. В частности, тесты для подобных приложений должны выявлять ошибки с созданием экземпляров объектов и взаимодействия между ними.</p>
+
+<p>Однако, какой бы устрашающей ни казалась задача, адекватное (достаточно полное) тестирование программ является ключевой и, как вы убедитесь далее, вполне реализуемой частью процесса разработки программного обеспечения.</p>
+
+<h2 id="тестируем">Тестируем</h2>
+
+<p>Конечно же самым простым решением будет просто закодировать все тестовые случаи для нашего проекта и написать нечто вроде следующего кода (файл <a href="https://github.com/RussianPenguin/TDD/blob/master/02/triangle_test_simple.php">triangle_test_simple.php</a>).</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">require</span> <span class="err">\</span><span class="n">_\_DIR\_\_</span> <span class="mf">.</span> <span class="n">DIRECTORY\_SEPARATOR</span> <span class="mf">.</span> <span class="s1">'triangle.php'</span><span class="p">;</span>
+
+<span class="k">function</span> <span class="n">testForIsoscelesTriangle</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="k">echo</span> <span class="s2">"Test for [3, 4, 4]: "</span><span class="p">;</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nf">triangle\_type</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="n">TRIANGLE\_ISOSCELES</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s2">"ok</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+ <span class="k">echo</span> <span class="s2">"fail</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+ <span class="nf">testForIsoscelesTriangle</span><span class="p">();</span>  
+<span class="p">}</span>
+
+<span class="nb">main</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>И такое часто практикуется. Особенно в среде разработчиков на C\C++. На каждый логически связанный набор тестовых случаев создается свой файл. Который содержит множество функций обрабатывающих по одному сценарию каждая.</p>
+
+<p>В этом нет ничего плохого. Единственный минус такого подхода - отсутствие готового инструментария, который реализует все необходимые операции по обслуживанию и запуску тестов. Весь инструментарий приходится для каждого проекта реализовывать заново. Либо изготавливать свою собственную обвязку, которая будет кочевать из проекта в проект.</p>
+
+<p>Один из вариантов создания инструмента для работы с подобными тестами вы можете увидеть в файле <a href="https://github.com/RussianPenguin/TDD/blob/master/02/triangle_test.php">triangle_test.php</a>. Запустите его и увидите на экране подробный лог тестирования проекта.</p>
+
+<p><img src="/assets/images/2017/04/image1.png" alt="null" title="null" /></p>
+
+<h2 id="литература">Литература</h2>
+
+<ul>
+  <li><a href="http://www.ozon.ru/context/detail/id/136427568/?partner=russianpenguin&amp;from=bar">“Искусство тестирования программ” Гленфорд Майерс, Том Баджетт, Кори Сандлер, ISBN: 978-5-8459-1974-8</a></li>
+  <li><a href="http://www.ozon.ru/context/detail/id/137538198/?partner=russianpenguin&amp;from=bar">“PHP 7” Дмитрий Котеров, Игорь Симдянов, ISBN 978-5-9775-3725-4</a></li>
+</ul>
+
+<h2 id="исходные-тексты-программ">Исходные тексты программ</h2>
+
+<ul>
+  <li><a href="https://github.com/RussianPenguin/TDD/tree/master/02">github</a></li>
+</ul>
+
+<h2 id="оглавление-1"><a href="http://russianpenguin.ru/%d1%82%d0%b5%d1%81%d1%82%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bf%d0%be/">Оглавление</a></h2>
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

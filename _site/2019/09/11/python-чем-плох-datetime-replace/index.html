@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Python: Чем плох datetime.replace? | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Python: Чем плох datetime.replace?" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Поговорим сегодня про даты и часовые пояса. А именно о том, почему не стоит использовать datetime.replace совместно с таймзонами из pytz если вы не уверены (вообще не стоит)." />
+<meta property="og:description" content="Поговорим сегодня про даты и часовые пояса. А именно о том, почему не стоит использовать datetime.replace совместно с таймзонами из pytz если вы не уверены (вообще не стоит)." />
+<link rel="canonical" href="http://localhost:4000/2019/09/11/python-%D1%87%D0%B5%D0%BC-%D0%BF%D0%BB%D0%BE%D1%85-datetime-replace/" />
+<meta property="og:url" content="http://localhost:4000/2019/09/11/python-%D1%87%D0%B5%D0%BC-%D0%BF%D0%BB%D0%BE%D1%85-datetime-replace/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-09-11T22:46:08+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Python: Чем плох datetime.replace?" />
+<script type="application/ld+json">
+{"headline":"Python: Чем плох datetime.replace?","dateModified":"2019-09-11T22:46:08+03:00","datePublished":"2019-09-11T22:46:08+03:00","description":"Поговорим сегодня про даты и часовые пояса. А именно о том, почему не стоит использовать datetime.replace совместно с таймзонами из pytz если вы не уверены (вообще не стоит).","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/09/11/python-%D1%87%D0%B5%D0%BC-%D0%BF%D0%BB%D0%BE%D1%85-datetime-replace/"},"@type":"BlogPosting","url":"http://localhost:4000/2019/09/11/python-%D1%87%D0%B5%D0%BC-%D0%BF%D0%BB%D0%BE%D1%85-datetime-replace/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Python: Чем плох datetime.replace?</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Python: Чем плох datetime.replace?</h1>
+<p>11 Sep 2019</p>
+
+<p><img src="/assets/images/2019/09/d187d0b0d181d18b.jpeg?w=150" alt="часы" />Поговорим сегодня про даты и часовые пояса. А именно о том, почему не стоит использовать datetime.replace совместно с таймзонами из pytz если вы не уверены (вообще не стоит).</p>
+
+<p>Конечно все с оговорками. Иногда так надо. Но все равно не стоит так делать.</p>
+
+<!--more-->
+
+<p>Вводные:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="kn">import</span> <span class="nn">pytz</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">strptime</span><span class="p">(</span><span class="s">'2019-09-01 12:00:00'</span><span class="p">,</span> <span class="s">'%Y-%m-%d %H:%M:%S'</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">tzdata</span> <span class="o">=</span> <span class="n">pytz</span><span class="p">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">'Europe/Moscow'</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withreplace</span> <span class="o">=</span> <span class="n">dt</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">tzdata</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withlocalize</span> <span class="o">=</span> <span class="n">tzdata</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>  
+
+</code></pre></div></div>
+
+<p>Переводем обе даты в UTC.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withlocalize</span><span class="p">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="p">.</span><span class="n">utc</span><span class="p">)</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span>\<span class="o">&lt;</span><span class="n">UTC</span>\<span class="o">&gt;</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withreplace</span><span class="p">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="p">.</span><span class="n">utc</span><span class="p">)</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span>\<span class="o">&lt;</span><span class="n">UTC</span>\<span class="o">&gt;</span><span class="p">)</span>  
+
+</code></pre></div></div>
+
+<p>Спорим, что вы ожидали вовсе не этого? Откуда взялось отставание в 30 минут при использовании replace?</p>
+
+<p>Рассмотрим содержимое двух дат с таймзонами.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withreplace</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span>\<span class="o">&lt;</span><span class="n">DstTzInfo</span> <span class="s">'Europe/Moscow'</span> <span class="n">LMT</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span> <span class="n">STD</span>\<span class="o">&gt;</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">dt</span>\<span class="n">_withlocalize</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span>\<span class="o">&lt;</span><span class="n">DstTzInfo</span> <span class="s">'Europe/Moscow'</span> <span class="n">MSK</span><span class="o">+</span><span class="mi">3</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="n">STD</span>\<span class="o">&gt;</span><span class="p">)</span>  
+
+</code></pre></div></div>
+
+<p>Ок. MSK - это хорошо, но что такое LMT?</p>
+
+<p>LMT (local mean time) - местное среднее время. Если простыми словами, то это время формировалось для некоторого мередиана на основании солнечного времени и солнечных часов.</p>
+
+<p>Если заглянуть в <a href="https://en.wikipedia.org/wiki/Local_mean_time">вики</a>, то можно прочесть, что этот тип учета времени использовался до введения часовых поясов. Так почему современный питон применил его к дате?</p>
+
+<p>Нам потребуется заглянуть внутрь функции localize и replace.</p>
+
+<p>Начнем с replace, проберемся через дебри к <a href="https://github.com/python/cpython/blob/ee536b2020b1f0baad1286dbd4345e13870324af/Lib/datetime.py#L1501-L1516">коду</a>, который выполняет замену.</p>
+
+<p>Ничего подозрительного мы видим, что создается новый объект с новым tzinfo.</p>
+
+<p>Вот только есть одно но. Новый tzinfo - имеет класс <a href="https://github.com/stub42/pytz/blob/62f872054dde69e5c510094093cd6e221d96d5db/src/pytz/tzinfo.py#L156">DstTzInfo</a>.</p>
+
+<p>Он имплементирует методы объекта <a href="https://github.com/python/cpython/blob/ee536b2020b1f0baad1286dbd4345e13870324af/Lib/datetime.py#L1141">datetime.tzinfo</a>. И если мы чуть-чуть прогуляемся по коду, то увидим, что вызывается <a href="https://github.com/python/cpython/blob/ee536b2020b1f0baad1286dbd4345e13870324af/Lib/datetime.py#L1866-L1869">utcoffset</a>.</p>
+
+<p>Посмотрим, что он нам вернет в tzdata.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">tzdata</span><span class="p">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">10800</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">tzdata</span><span class="p">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">dt</span>\<span class="n">_withreplace</span><span class="p">)</span>  
+<span class="n">datetime</span><span class="p">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">9000</span><span class="p">)</span>  
+\<span class="o">&gt;</span>\<span class="o">&gt;</span>\<span class="o">&gt;</span> <span class="n">tzdata</span><span class="p">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">dt</span>\<span class="n">_withlocalize</span><span class="p">)</span>  
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>  
+ <span class="n">File</span> <span class="s">""</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span>  
+ <span class="n">File</span> <span class="s">"/usr/lib/python3.7/site-packages/pytz/tzinfo.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">422</span><span class="p">,</span> <span class="ow">in</span> <span class="n">utcoffset</span>  
+ <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="ow">is</span>\<span class="n">_dst</span><span class="p">)</span>  
+ <span class="n">File</span> <span class="s">"/usr/lib/python3.7/site-packages/pytz/tzinfo.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">318</span><span class="p">,</span> <span class="ow">in</span> <span class="n">localize</span>  
+ <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">'Not naive datetime (tzinfo is already set)'</span><span class="p">)</span>  
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">Not</span> <span class="n">naive</span> <span class="n">datetime</span> <span class="p">(</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="n">already</span> <span class="nb">set</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Если мы еще чуть больше покопаемся в коде <a href="https://github.com/stub42/pytz/blob/62f872054dde69e5c510094093cd6e221d96d5db/src/pytz/tzinfo.py#L156">pytz.DstTzInfo</a>, то увидим, что он является прокси, который реализует все методы оригинального datetime.tzinfo, но при этом содержит в себе определения таймзон за разные периоды времени.</p>
+
+<p>Когда мы пытаемся использовать его через подстановку в конструктор datetime, то ничего хорошего не будет. Он просто начнет возвращаеть первое определение часового пояса в своем внутреннем списке (_utc_transition_times, _tzinfos, _transition_info). На нашу беду первым в списке стоит LMT.</p>
+
+<p>Чтобы такого казуса не произошло следует использовать метод <a href="https://github.com/stub42/pytz/blob/62f872054dde69e5c510094093cd6e221d96d5db/src/pytz/tzinfo.py#L258-L394">pytz.DstTzInfo.localize</a>. Именно в нем происходит вся магия выбора пояса в зависимости от даты.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

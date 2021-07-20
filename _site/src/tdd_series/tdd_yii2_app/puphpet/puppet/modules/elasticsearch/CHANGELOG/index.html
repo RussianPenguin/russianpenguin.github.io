@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>0.13.2 (August 29, 2016) | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="0.13.2 (August 29, 2016)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/CHANGELOG/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/CHANGELOG/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="0.13.2 (August 29, 2016)" />
+<script type="application/ld+json">
+{"headline":"0.13.2 (August 29, 2016)","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/elasticsearch/CHANGELOG/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">0.13.2 (August 29, 2016)</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h2 id="0132-august-29-2016">0.13.2 (August 29, 2016)</h2>
+
+<h3 id="summary">Summary</h3>
+<p>Primarily a bugfix release to resolve HTTPS use in elasticsearch::template resources, 5.x plugin operations, and plugin file permission enforcement.</p>
+
+<h4 id="features">Features</h4>
+<ul>
+  <li>Plugin installation for the 5.x series of Elasticsearch is now properly supported.</li>
+</ul>
+
+<h4 id="bugfixes">Bugfixes</h4>
+<ul>
+  <li>Recursively enforce correct plugin directory mode to avoid Elasticsearch startup permissions errors.</li>
+  <li>Fixed an edge case where dependency cycles could arise when managing absent resources.</li>
+  <li>Elasticsearch templates now properly use HTTPS when instructed to do so.</li>
+</ul>
+
+<h4 id="changes">Changes</h4>
+<ul>
+  <li>Updated the elasticsearch_template type to return more helpful error output.</li>
+  <li>Updated the es_instance_conn_validator type to silence deprecation warnings in Puppet &gt;= 4.</li>
+</ul>
+
+<h4 id="testing-changes">Testing changes</h4>
+
+<h2 id="0131-august-8-2016">0.13.1 (August 8, 2016)</h2>
+
+<h3 id="summary-1">Summary</h3>
+<p>Lingering bugfixes from elasticsearch::template changes.
+More robust systemd mask handling.
+Updated some upstream module parameters for deprecation warnings.
+Support for the Shield <code class="language-plaintext highlighter-rouge">system_key</code> file.</p>
+
+<h4 id="features-1">Features</h4>
+<ul>
+  <li>Added <code class="language-plaintext highlighter-rouge">system_key</code> parameter to the <code class="language-plaintext highlighter-rouge">elasticsearch</code> class and <code class="language-plaintext highlighter-rouge">elasticsearch::instance</code> type for placing Shield system keys.</li>
+</ul>
+
+<h4 id="bugfixes-1">Bugfixes</h4>
+<ul>
+  <li>Fixed systemd elasticsearch.service unit masking to use systemctl rather than raw symlinking to avoid puppet file backup errors.</li>
+  <li>Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch_template types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)</li>
+  <li>Fixed issues that caused templates to be incorrectly detected as out-of-sync and thus always changed on each puppet run.</li>
+  <li>Resources are now explicitly ordered to ensure behavior such as plugins being installed before instance start, users managed before templates changed, etc.</li>
+</ul>
+
+<h4 id="changes-1">Changes</h4>
+<ul>
+  <li>Updated repository gpg fingerprint key to long form to silence module warnings.</li>
+</ul>
+
+<h4 id="testing-changes-1">Testing changes</h4>
+
+<h2 id="0130-august-1-2016">0.13.0 (August 1, 2016)</h2>
+
+<h3 id="summary-2">Summary</h3>
+<p>Rewritten elasticsearch::template using native type and provider.
+Fixed and added additional proxy parameters to elasticsearch::plugin instances.
+Exposed repo priority parameters for apt and yum repos.</p>
+
+<h4 id="features-2">Features</h4>
+<ul>
+  <li>In addition to better consistency, the <code class="language-plaintext highlighter-rouge">elasticsearch::template</code> type now also accepts various <code class="language-plaintext highlighter-rouge">api_*</code> parameters to control how access to the Elasticsearch API is configured (there are top-level parameters that are inherited and can be overwritten in <code class="language-plaintext highlighter-rouge">elasticsearch::api_*</code>).</li>
+  <li>The <code class="language-plaintext highlighter-rouge">elasticsearch::config</code> parameter now supports deep hiera merging.</li>
+  <li>Added the <code class="language-plaintext highlighter-rouge">elasticsearch::repo_priority</code> parameter to support apt and yum repository priority configuration.</li>
+  <li>Added <code class="language-plaintext highlighter-rouge">proxy_username</code> and <code class="language-plaintext highlighter-rouge">proxy_password</code> parameters to <code class="language-plaintext highlighter-rouge">elasticsearch::plugin</code>.</li>
+</ul>
+
+<h4 id="bugfixes-2">Bugfixes</h4>
+<ul>
+  <li>Content of templates should now properly trigger new API PUT requests when the index template stored in Elasticsearch differs from the template defined in puppet.</li>
+  <li>Installing plugins with proxy parameters now works correctly due to changed Java property flags.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">elasticsearch::plugin::module_dir</code> parameter has been re-implemented to aid in working around plugins with non-standard plugin directories.</li>
+</ul>
+
+<h4 id="changes-2">Changes</h4>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">file</code> parameter on the <code class="language-plaintext highlighter-rouge">elasticsearch::template</code> defined type has been deprecated to be consistent with usage of the <code class="language-plaintext highlighter-rouge">source</code> parameter for other types.</li>
+</ul>
+
+<h4 id="testing-changes-2">Testing changes</h4>
+
+<h2 id="0120-july-20-2016">0.12.0 (July 20, 2016)</h2>
+
+<p>IMPORTANT! A bug was fixed that mistakenly added /var/lib to the list of DATA_DIR paths on Debian-based systems.  This release removes that environment variable, which could potentially change path.data directories for instances of Elasticsearch.  Take proper precautions when upgrading to avoid unexpected downtime or data loss (test module upgrades, et cetera).</p>
+
+<h3 id="summary-3">Summary</h3>
+<p>Rewritten yaml generator, code cleanup, and various bugfixes. Configuration file yaml no longer nested. Service no longer restarts by default, and exposes more granular restart options.</p>
+
+<h4 id="features-3">Features</h4>
+<ul>
+  <li>The additional parameters restart_config_change, restart_package_change, and restart_plugin_change have been added for more granular control over service restarts.</li>
+</ul>
+
+<h4 id="bugfixes-3">Bugfixes</h4>
+<ul>
+  <li>Special yaml cases such as arrays of hashes and strings like “::” are properly supported.</li>
+  <li>Previous Debian SysV init scripts mistakenly set the <code class="language-plaintext highlighter-rouge">DATA_DIR</code> environment variable to a non-default value.</li>
+  <li>Some plugins failed installation due to capitalization munging, the elasticsearch_plugin provider no longer forces downcasing.</li>
+</ul>
+
+<h4 id="changes-3">Changes</h4>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">install_options</code> parameter on the <code class="language-plaintext highlighter-rouge">elasticsearch::plugin</code> type has been removed. This was an undocumented parameter that often caused problems for users.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">elasticsearch.service</code> systemd unit is no longer removed but masked by default, effectively hiding it from systemd but retaining the upstream vendor unit on disk for package management consistency.</li>
+  <li><code class="language-plaintext highlighter-rouge">restart_on_change</code> now defaults to false to reduce unexpected cluster downtime (can be set to true if desired).</li>
+  <li>Package pinning is now contained within a separate class, so users can opt to manage package repositories manually and still use this module’s pinning feature.</li>
+  <li>All configuration hashes are now flattened into dot-notated yaml in the elasticsearch configuration file. This should be fairly transparent in terms of behavior, though the config file formatting will change.</li>
+</ul>
+
+<h4 id="testing-changes-3">Testing changes</h4>
+<ul>
+  <li>The acceptance test suite has been dramatically slimmed to cut down on testing time and reduce false positives.</li>
+</ul>
+
+<h2 id="0110--may-23-2016-">0.11.0 ( May 23, 2016 )</h2>
+
+<h3 id="summary-4">Summary</h3>
+<p>Shield support, SLES support, and overhauled testing setup.</p>
+
+<h4 id="features-4">Features</h4>
+<ul>
+  <li>Support for shield
+    <ul>
+      <li>TLS Certificate management</li>
+      <li>Users (role and password management for file-based realms)</li>
+      <li>Roles (file-based with mapping support)</li>
+    </ul>
+  </li>
+  <li>Support (repository proxies)[https://github.com/elastic/puppet-elasticsearch/pull/615]</li>
+  <li>Support for (SSL auth on API calls)[https://github.com/elastic/puppet-elasticsearch/pull/577]</li>
+</ul>
+
+<h4 id="bugfixes-4">Bugfixes</h4>
+<ul>
+  <li>(Fix Facter calls)[https://github.com/elastic/puppet-elasticsearch/pull/590] in custom providers</li>
+</ul>
+
+<h4 id="changes-4">Changes</h4>
+
+<h4 id="testing-changes-4">Testing changes</h4>
+<ul>
+  <li>Overhaul testing methodology, see CONTRIBUTING for updates</li>
+  <li>Add SLES 12, Oracle 6, and PE 2016.1.1 to testing matrix</li>
+  <li>Enforce strict variable checking</li>
+</ul>
+
+<h4 id="known-bugs">Known bugs</h4>
+<ul>
+  <li>This is the first release with Shield support, some untested edge cases may exist</li>
+</ul>
+
+<p>##0.10.3 ( Feb 08, 2016 )</p>
+
+<p>###Summary
+Adding support for OpenBSD and minor fixes</p>
+
+<p>####Features</p>
+<ul>
+  <li>Add required changes to work with ES 2.2.x plugins</li>
+  <li>Support for custom log directory</li>
+  <li>Support for OpenBSD</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Add correct relation to file resource and plugin installation</li>
+  <li>Notify service when upgrading the package</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Remove plugin dir when upgrading Elasticsearch</li>
+</ul>
+
+<p>####Testing changes</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.10.2 ( Jan 19, 2016 )</p>
+
+<p>###Summary
+Bugfix release and adding Gentoo support</p>
+
+<p>####Features</p>
+<ul>
+  <li>Added Gentoo support</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Create init script when set to unmanaged</li>
+  <li>init_template variable was not passed on correctly to other classes / defines</li>
+  <li>Fix issue with plugin type that caused run to stall</li>
+  <li>Export ES_GC_LOG_FILE in init scripts</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Improve documentation about init_defaults</li>
+  <li>Update common files</li>
+  <li>Removed recurse option on data directory management</li>
+  <li>Add retry functionality to plugin type</li>
+</ul>
+
+<p>####Testing changes</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.10.1 ( Dec 17, 2015 )</p>
+
+<p>###Summary
+Bugfix release for proxy functionality in plugin installation</p>
+
+<p>####Features</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Proxy settings were not passed on correctly</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Cleanup .pmtignore to exclude more files</li>
+</ul>
+
+<p>####Testing changes</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.10.0 ( Dec 14, 2015 )</p>
+
+<p>###Summary
+Module now works with ES 2.x completely</p>
+
+<p>####Features</p>
+<ul>
+  <li>Work with ES 2.x new plugin system and remain to work with 1.x</li>
+  <li>Implemented datacat module from Richard Clamp so other modules can hook into it for adding configuration options</li>
+  <li>Fixed init and systemd files to work with 1.x and 2.x</li>
+  <li>Made the module work with newer pl-apt module versions</li>
+  <li>Export es_include so it is passed on to ES</li>
+  <li>Ability to supply long gpg key for apt repo</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Documentation and typographical fixes</li>
+  <li>Do not force puppet:/// schema resource</li>
+  <li>Use package resource defaults rather than setting provider and source</li>
+</ul>
+
+<p>####Changes</p>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Improve unit testing and shorten the runtime</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.9 ( Sep 01, 2015 )</p>
+
+<p>###Summary
+Bugfix release and extra features</p>
+
+<p>####Features</p>
+<ul>
+  <li>Work with ES 2.x</li>
+  <li>Add Java 8 detection in debian init script</li>
+  <li>Improve offline plugin installation</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix a bug with new ruby versions but older puppet versions causing type error</li>
+  <li>Fix config tempate to use correct ruby scoping</li>
+  <li>Fix regex retrieving proxy port while downloading plugin</li>
+  <li>Fix systemd template for better variable handling</li>
+  <li>Template define was using wrong pathing for removal</li>
+</ul>
+
+<p>####Changes</p>
+
+<p>####Testing changes</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.8 ( Jul 07, 2015 )</p>
+
+<p>###Summary</p>
+
+<p>####Features</p>
+<ul>
+  <li>Work with ES 2.x</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix plugin to maintain backwards compatibility</li>
+</ul>
+
+<p>####Changes</p>
+
+<p>####Testing changes</p>
+<ul>
+  <li>ensure testing works with Puppet 4.x ( Rspec and Acceptance )</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.7 ( Jun 24, 2015 )</p>
+
+<p>###Summary
+This releases adds several important features and fixes an important plugin installation issue with ES 1.6 and higher.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Automate plugin dir extraction</li>
+  <li>use init service provider for Amazon Linux</li>
+  <li>Add Puppetlabs/apt and ceritsc/yum as required modules</li>
+  <li>Added Timeout to fetching facts in case ES does not respond</li>
+  <li>Add proxy settings for package download</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fixed systemd template to fix issue with LimitMEMLOCK setting</li>
+  <li>Improve package version handling when specifying a version</li>
+  <li>Add tmpfiles.d file to manage sub dir in /var/run path</li>
+  <li>Fix plugin installations for ES 1.6 and higher</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Removed Modulefile, only maintaining metadata.json file</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Added unit testing for package pinning feature</li>
+  <li>Added integration testing with Elasticsearch to find issues earlier</li>
+  <li>Fix OpenSuse 13 testing</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.6 ( May 28, 2015 )</p>
+
+<p>###Summary
+Bugfix release 0.9.6</p>
+
+<p>####Features</p>
+<ul>
+  <li>Implemented package version pinning to avoid accidental upgrading</li>
+  <li>Added support for Debian 8</li>
+  <li>Added support for upgrading plugins</li>
+  <li>Managing LimitNOFILE and LimitMEMLOCK settings in systemd</li>
+</ul>
+
+<p>####Bugfixes</p>
+
+<p>####Changes</p>
+<ul>
+  <li>Dropped official support for PE 3.1.x and 3.2.x</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Several testing changes implemented to increase coverage</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.5( Apr 16, 2015 )</p>
+
+<p>###Summary
+Bugfix release 0.9.5</p>
+
+<p>We reverted the change that implemented the full 40 character for the apt repo key.
+This caused issues with some older versions of the puppetlabs-apt module</p>
+
+<p>####Features</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Revert using the full 40 character for the apt repo key.</li>
+</ul>
+
+<p>####Changes</p>
+
+<p>####Testing changes</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.4( Apr 14, 2015 )</p>
+
+<p>###Summary
+Bugfix release 0.9.4</p>
+
+<p>####Features</p>
+<ul>
+  <li>Add the ability to create and populate scripts</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>add support for init_defaults_file to elasticsearch::instance</li>
+  <li>Update apt key to full 40characters</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Fix readme regarding module_dir with plugins</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Adding staged removal test</li>
+  <li>Convert git urls to https</li>
+  <li>Add centos7 node config</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.3( Mar 24, 2015 )</p>
+
+<p>###Summary
+Bugfix release 0.9.3</p>
+
+<p>####Features</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Not setting repo_version did not give the correct error</li>
+  <li>Systemd file did not contain User/Group values</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Brand rename from Elasticsearch to Elastic</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Moved from multiple Gemfiles to single Gemfile</li>
+</ul>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.2( Mar 06, 2015 )</p>
+
+<p>###Summary
+Bugfix release 0.9.2</p>
+
+<p>####Features</p>
+<ul>
+  <li>Introducing es_instance_conn_validator resource to verify instance availability</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix missing data path when using the path config setting but not setting the data path</li>
+</ul>
+
+<p>####Changes
+None</p>
+
+<p>####Testing changes
+None</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.1 ( Feb 23, 2015 )</p>
+
+<p>###Summary
+This is the first bug fix release for 0.9 version.
+A bug was reported with the recursive file management.</p>
+
+<p>####Features
+None</p>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Fix recursive file management</li>
+  <li>Set undefined variables to work with strict_variables</li>
+</ul>
+
+<p>####Changes
+None</p>
+
+<p>####Testing changes
+None</p>
+
+<p>####Known bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.9.0 ( Feb 02, 2015 )</p>
+
+<p>###Summary
+This release is the first one towards 1.0 release.
+Our planning is to provide LTS releases with the puppet module</p>
+
+<p>####Features</p>
+<ul>
+  <li>Support for using hiera to define instances and plugins.</li>
+  <li>Support for OpenSuSE 13.x</li>
+  <li>Custom facts about the installed Elasticsearch instance(s)</li>
+  <li>Proxy host/port support for the plugin installation</li>
+  <li>Ability to supply a custom logging.yml template</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>Ensure file owners are correct accross all related files</li>
+  <li>Fix of possible service name conflict</li>
+  <li>Empty main config would fail with instances</li>
+  <li>Removal of standard files from packages we dont use</li>
+  <li>Ensuring correct sequence of plugin and template defines</li>
+  <li>Added ES_CLASSPATH export to init scripts</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Java installation to use puppetlabs-java module</li>
+  <li>Added Support and testing for Puppet 3.7 and PE 3.7</li>
+  <li>Improve metadata.json based on scoring from Forge</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Added testing against Puppet 3.7 and PE 3.7</li>
+  <li>Using rspec3</li>
+  <li>Using rspec-puppet-facts gem simplifies rspec testing</li>
+</ul>
+
+<p>####Known Bugs</p>
+<ul>
+  <li>Possible package conflicts when using ruby/python defines with main package name</li>
+</ul>
+
+<p>##0.4.0 ( Jun 18, 2014 ) - Backwards compatible breaking release</p>
+
+<p>###Summary
+This release introduces instances to facilitate the option to have more then a single instance running on the host system.</p>
+
+<p>####Features</p>
+<ul>
+  <li>Rewrite module to incorperate multi instance support</li>
+  <li>New readme layout</li>
+</ul>
+
+<p>####Bugfixes</p>
+<ul>
+  <li>None</li>
+</ul>
+
+<p>####Changes</p>
+<ul>
+  <li>Adding ec2-linux osfamily for repo management</li>
+  <li>Retry behaviour for plugin installation</li>
+</ul>
+
+<p>####Testing changes</p>
+<ul>
+  <li>Adding Puppet 3.6.x testing</li>
+  <li>Ubuntu 14.04 testing</li>
+  <li>Using new docker images</li>
+  <li>Pin rspec to 2.14.x</li>
+</ul>
+
+<p>####Known Bugs</p>
+<ul>
+  <li>No known bugs</li>
+</ul>
+
+<p>##0.3.2 ( May 15, 2014 )</p>
+<ul>
+  <li>Add support for SLC/Scientific Linux CERN ( PR #121 )</li>
+  <li>Add support for custom package names ( PR #122 )</li>
+  <li>Fix python and ruby client defines to avoid name clashes.</li>
+  <li>Add ability to use stage instead of anchor for repo class</li>
+  <li>Minor fixes to system tests</li>
+</ul>
+
+<p>##0.3.1 ( April 22, 2014 )</p>
+<ul>
+  <li>Ensure we create the plugin directory before installing plugins</li>
+  <li>Added Puppet 3.5.x to rspec and system tests</li>
+</ul>
+
+<p>##0.3.0 ( April 2, 2014 )</p>
+<ul>
+  <li>Fix minor issue with yumrepo in repo class ( PR #92 )</li>
+  <li>Implement OpenSuse support</li>
+  <li>Implement Junit reporting for tests</li>
+  <li>Adding more system tests and convert to Docker images</li>
+  <li>Use Augeas for managing the defaults file</li>
+  <li>Add retry to package download exec</li>
+  <li>Add management to manage the logging.yml file</li>
+  <li>Improve inline documentation</li>
+  <li>Improve support for Debian 6</li>
+  <li>Improve augeas for values with spaces</li>
+  <li>Run plugin install as ES user ( PR #108 )</li>
+  <li>Fix rights for the plugin directory</li>
+  <li>Pin Rake for Ruby 1.8.7</li>
+  <li>Adding new metadata for Forge.</li>
+  <li>Increase time for retry to insert the template</li>
+</ul>
+
+<p>##0.2.4 ( Feb 21, 2014 )</p>
+<ul>
+  <li>Set puppetlabs-stdlib dependency version from 3.0.0 to 3.2.0 to be inline with other modules</li>
+  <li>Let puppet run fail when template insert fails</li>
+  <li>Documentation improvements ( PR #77, #78, #83 )</li>
+  <li>Added beaker system tests</li>
+  <li>Fixed template define after failing system tests</li>
+  <li>Some fixes so variables are more inline with intended structure</li>
+</ul>
+
+<p>##0.2.3 ( Feb 06, 2014 )</p>
+<ul>
+  <li>Add repository management feature</li>
+  <li>Improve testing coverage and implement basic resource coverage reporting</li>
+  <li>Add puppet 3.4.x testing</li>
+  <li>Fix dependency in template define ( PR #72 )</li>
+  <li>For apt repo change from key server to key file</li>
+</ul>
+
+<p>##0.2.2 ( Jan 23, 2014 )</p>
+<ul>
+  <li>Ensure exec names are unique. This caused issues when using our logstash module</li>
+  <li>Add spec tests for plugin define</li>
+</ul>
+
+<p>##0.2.1 ( Jan 22, 2014 )</p>
+<ul>
+  <li>Simplify the management of the defaults file ( PR #64 )</li>
+  <li>Doc improvements for the plugin define ( PR #66 )</li>
+  <li>Allow creation of data directory ( PR #68 )</li>
+  <li>Fail early when package version and package_url are defined</li>
+</ul>
+
+<p>##0.2.0 ( Nov 19, 2013 )</p>
+<ul>
+  <li>Large rewrite of the entire module described below</li>
+  <li>Make the core more dynamic for different service providers and multi instance capable</li>
+  <li>Add better testing and devided into different files</li>
+  <li>Fix template function. Replace of template is now only done when the file is changed</li>
+  <li>Add different ways to install the package except from the repository ( puppet/http/https/ftp/file )</li>
+  <li>Update java class to install openjdk 1.7</li>
+  <li>Add tests for python function</li>
+  <li>Update config file template to fix scoping issue ( from PR #57 )</li>
+  <li>Add validation of templates</li>
+  <li>Small changes for preperation for system tests</li>
+  <li>Update readme for new functionality</li>
+  <li>Added more test scenario’s</li>
+  <li>Added puppet parser validate task for added checking</li>
+  <li>Ensure we don’t add stuff when removing the module</li>
+  <li>Update python client define</li>
+  <li>Add ruby client define</li>
+  <li>Add tests for ruby clients and update python client tests</li>
+</ul>
+
+<p>##0.1.3 ( Sep 06, 2013 )</p>
+<ul>
+  <li>Exec path settings has been updated to fix warnings ( PR #37, #47 )</li>
+  <li>Adding define to install python bindings ( PR #43 )</li>
+  <li>Scope deprecation fixes ( PR #41 )</li>
+  <li>feature to install plugins ( PR #40 )</li>
+</ul>
+
+<p>##0.1.2 ( Jun 21, 2013 )</p>
+<ul>
+  <li>Update rake file to ignore the param inherit</li>
+  <li>Added missing documentation to the template define</li>
+  <li>Fix for template define to allow multiple templates ( PR #36 by Bruce Morrison )</li>
+</ul>
+
+<p>##0.1.1 ( Jun 14, 2013 )</p>
+<ul>
+  <li>Add Oracle Linux to the OS list ( PR #25 by Stas Alekseev )</li>
+  <li>Respect the restart_on_change on the defaults ( PR #29 by Simon Effenberg )</li>
+  <li>Make sure the config can be empty as advertised in the readme</li>
+  <li>Remove dependency cycle when the defaults file is updated ( PR #31 by Bruce Morrison )</li>
+  <li>Enable retry on the template insert in case ES isn’t started yet ( PR #32 by Bruce Morrison )</li>
+  <li>Update templates to avoid deprecation notice with Puppet 3.2.x</li>
+  <li>Update template define to avoid auto insert issue with ES</li>
+  <li>Update spec tests to reflect changes to template define</li>
+</ul>
+
+<p>##0.1.0 ( May 09, 2013 )</p>
+<ul>
+  <li>Populate .gitignore ( PR #19 by Igor Galić )</li>
+  <li>Add ability to install initfile ( PR #20 by Justin Lambert )</li>
+  <li>Add ability to manage default file service parameters ( PR #21 by Mathieu Bornoz )</li>
+  <li>Providing complete containment of the module ( PR #24 by Brian Lalor )</li>
+  <li>Add ability to specify package version ( PR #25 by Justin Lambert )</li>
+  <li>Adding license file</li>
+</ul>
+
+<p>##0.0.7 ( Mar 23, 2013 )</p>
+<ul>
+  <li>Ensure config directory is created and managed ( PR #13 by Martin Seener )</li>
+  <li>Dont backup package if it changes</li>
+  <li>Create explicit dependency on template directory ( PR #16 by Igor Galić )</li>
+  <li>Make the config directory variable ( PR #17 by Igor Galić and PR #18 by Vincent Janelle )</li>
+  <li>Fixing template define</li>
+</ul>
+
+<p>##0.0.6 ( Mar 05, 2013 )</p>
+<ul>
+  <li>Fixing issue with configuration not printing out arrays</li>
+  <li>New feature to write the config hash shorter</li>
+  <li>Updated readme to reflect the new feature</li>
+  <li>Adding spec tests for config file generation</li>
+</ul>
+
+<p>##0.0.5 ( Mar 03, 2013 )</p>
+<ul>
+  <li>Option to disable restart on config file change ( PR #10 by Chris Boulton )</li>
+</ul>
+
+<p>##0.0.4 ( Mar 02, 2013 )</p>
+<ul>
+  <li>Fixed a major issue with the config template ( Issue #9 )</li>
+</ul>
+
+<p>##0.0.3 ( Mar 02, 2013 )</p>
+<ul>
+  <li>Adding spec tests</li>
+  <li>Fixed init issue on Ubuntu ( Issue #6 by Marcus Furlong )</li>
+  <li>Fixed config template problem ( Issue #8 by surfchris )</li>
+  <li>New feature to manage templates</li>
+</ul>
+
+<p>##0.0.2 ( Feb 16, 2013 )</p>
+<ul>
+  <li>Feature to supply a package instead of being dependent on the repository</li>
+  <li>Feature to install java in case one doesn’t manage it externally</li>
+  <li>Adding RedHat and Amazon as Operating systems</li>
+  <li>fixed a typo - its a shard not a shared :) ( PR #5 by Martin Seener )</li>
+</ul>
+
+<p>##0.0.1 ( Jan 13, 2013 )</p>
+<ul>
+  <li>Initial release of the module</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

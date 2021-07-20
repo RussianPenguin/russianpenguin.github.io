@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux: Раскладка переключается не с первого раза | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux: Раскладка переключается не с первого раза" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Не всегда в проблемах виновата аппаратная часть. Рассмотрим случай, когда клавиатурная раскладка не переключается с первого раза. И как диагностировать, что железо не виновато." />
+<meta property="og:description" content="Не всегда в проблемах виновата аппаратная часть. Рассмотрим случай, когда клавиатурная раскладка не переключается с первого раза. И как диагностировать, что железо не виновато." />
+<link rel="canonical" href="http://localhost:4000/2018/08/18/linux-%D1%80%D0%B0%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BB%D1%8E%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F-%D0%BD%D0%B5-%D1%81%D1%80%D0%B0%D0%B7%D1%83/" />
+<meta property="og:url" content="http://localhost:4000/2018/08/18/linux-%D1%80%D0%B0%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BB%D1%8E%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F-%D0%BD%D0%B5-%D1%81%D1%80%D0%B0%D0%B7%D1%83/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-08-18T14:51:26+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux: Раскладка переключается не с первого раза" />
+<script type="application/ld+json">
+{"headline":"Linux: Раскладка переключается не с первого раза","dateModified":"2018-08-18T14:51:26+03:00","datePublished":"2018-08-18T14:51:26+03:00","description":"Не всегда в проблемах виновата аппаратная часть. Рассмотрим случай, когда клавиатурная раскладка не переключается с первого раза. И как диагностировать, что железо не виновато.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/08/18/linux-%D1%80%D0%B0%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BB%D1%8E%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F-%D0%BD%D0%B5-%D1%81%D1%80%D0%B0%D0%B7%D1%83/"},"@type":"BlogPosting","url":"http://localhost:4000/2018/08/18/linux-%D1%80%D0%B0%D1%81%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BA%D0%BB%D1%8E%D1%87%D0%B0%D0%B5%D1%82%D1%81%D1%8F-%D0%BD%D0%B5-%D1%81%D1%80%D0%B0%D0%B7%D1%83/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux: Раскладка переключается не с первого раза</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux: Раскладка переключается не с первого раза</h1>
+<p>18 Aug 2018</p>
+
+<p>[caption id=”attachment_2466” align=”alignleft” width=”150”] <img src="/assets/images/2018/08/caps_lock.jpg?w=150" alt="Caps_lock" /> <a href="https://commons.wikimedia.org/wiki/File:Caps_lock.jpg">Картинка из википедии</a>[/caption]</p>
+
+<p>Не всегда виновато железо.</p>
+
+<p>Возникла странная проблема: нажатие капслока не приводило к переключению раскладки сразу.</p>
+
+<p>Клавиатура мембранная и достаточно старая, а значит вполне вероятно, что капсу плохо. Но увы, с новой клавиатурой все то же самое.</p>
+
+<p>Только повторное нажатие переводило раскладку в английскую.</p>
+
+<!--more-->
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /etc/X11/xorg.conf.d/00-keyboard.conf
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Read and parsed by systemd-localed. It's probably wise not to edit this file  
+# manually too freely.  
+Section "InputClass"  
+ Identifier "system-keyboard"  
+ MatchIsKeyboard "on"  
+ Option "XkbLayout" "us,ru"  
+ Option "XkbVariant" ","  
+ Option "XkbOptions" "grp:caps\_toggle,grp\_led:scroll,compose:ralt"  
+EndSection
+</code></pre></div></div>
+
+<p>При этом последовательно нажимая буквенную кнопку, а следом за ней переключение раскладки я получал такую строку как ниже.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Фaффaффaффaффa
+</code></pre></div></div>
+
+<p>Что-то тут не так. Почему переключалка не сразу меняла раскладку?</p>
+
+<p>Давайте посмотрим на вывод информации о текущей раскладке?</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>setxkbmap <span class="nt">-query</span> | <span class="nb">grep </span>layout
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>layout: us,ru,ru
+</code></pre></div></div>
+
+<p>Стоп. Почему так (и да - это причина бед)?</p>
+
+<p>Менеджер у нас xfce. Поэтому смотрим в настройки клавиатуры.</p>
+
+<p><img src="/assets/images/2018/08/d0bfd180d0bed0b1d0bbd0b5d0bcd18b-d181-d180d0b0d181d0bad0bbd0b0d0b4d0bad0bed0b9.png" alt="Проблемы с раскладкой" /></p>
+
+<p>Откуда он берет информацию о второй ru-раскладке? Ось у нас кентось, поэтому проверяем дополнительно localectl.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>localectl
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+ System Locale: LANG=ru\_RU.UTF-8  
+ VC Keymap: us  
+ X11 Layout: us,ru  
+ X11 Variant: ,  
+ X11 Options: grp:caps\_toggle,grp\_led:scroll,compose:ralt
+</code></pre></div></div>
+
+<p>Тоже все верно.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>tree /etc/dconf/db/
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  
+/etc/dconf/db/  
+├── distro  
+├── distro.d  
+│&amp;nbsp;&amp;nbsp; └── locks  
+├── gdm  
+├── gdm.d  
+│&amp;nbsp;&amp;nbsp; └── locks  
+├── local  
+├── local.d  
+│&amp;nbsp;&amp;nbsp; └── locks  
+├── site  
+└── site.d  
+└── locks
+</code></pre></div></div>
+
+<p>И тут ничего нет, что могло бы ломать ввод.</p>
+
+<p>После множества экспериментов с раскладкой было выяснено, что источником проблем является gdm. Именно он выставлял дополнительный лайоут в момент старта на основании информации о текущей локали.</p>
+
+<p>В качестве решения проблемы был выполнен переход на lightdm.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

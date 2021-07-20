@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>AngularJS: забавная особенность bindonce | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="AngularJS: забавная особенность bindonce" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Для AngularJS существует модуль bindonce, который позволяет сократить количество вотчеров и тем самым ускорить страинцу. У этого модуля есть директива bo-attr, которая позволяет использовать в качестве атрибута элемента любое нужное нам значение. В качестве значения выступает выражение, которое будет проинтерпретировано и добавлено в dom. Однако, у этой директивы есть забавное поведение, которое связано с особенностями интерпретации. $scope.title = &#39;some text with $peci@l chars&#39; $scope.title\_ref = &#39;title&#39; $scope.title\_title\_ref = &#39;title\_ref&#39; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;title&quot;\&gt;anchor1\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\&gt;anchor2\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&#39;&#39;&quot;\&gt;anchor3\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\&gt;anchor4\&lt;/a\&gt; Как думаете, что выведется в каждом случае? :) Фидл с примером." />
+<meta property="og:description" content="Для AngularJS существует модуль bindonce, который позволяет сократить количество вотчеров и тем самым ускорить страинцу. У этого модуля есть директива bo-attr, которая позволяет использовать в качестве атрибута элемента любое нужное нам значение. В качестве значения выступает выражение, которое будет проинтерпретировано и добавлено в dom. Однако, у этой директивы есть забавное поведение, которое связано с особенностями интерпретации. $scope.title = &#39;some text with $peci@l chars&#39; $scope.title\_ref = &#39;title&#39; $scope.title\_title\_ref = &#39;title\_ref&#39; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;title&quot;\&gt;anchor1\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\&gt;anchor2\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&#39;&#39;&quot;\&gt;anchor3\&lt;/a\&gt; \&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\&gt;anchor4\&lt;/a\&gt; Как думаете, что выведется в каждом случае? :) Фидл с примером." />
+<link rel="canonical" href="http://localhost:4000/2014/06/05/angularjs-%D0%B7%D0%B0%D0%B1%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C-bindonce/" />
+<meta property="og:url" content="http://localhost:4000/2014/06/05/angularjs-%D0%B7%D0%B0%D0%B1%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C-bindonce/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-06-05T15:53:01+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="AngularJS: забавная особенность bindonce" />
+<script type="application/ld+json">
+{"headline":"AngularJS: забавная особенность bindonce","dateModified":"2014-06-05T15:53:01+04:00","datePublished":"2014-06-05T15:53:01+04:00","description":"Для AngularJS существует модуль bindonce, который позволяет сократить количество вотчеров и тем самым ускорить страинцу. У этого модуля есть директива bo-attr, которая позволяет использовать в качестве атрибута элемента любое нужное нам значение. В качестве значения выступает выражение, которое будет проинтерпретировано и добавлено в dom. Однако, у этой директивы есть забавное поведение, которое связано с особенностями интерпретации. $scope.title = &#39;some text with $peci@l chars&#39; $scope.title\\_ref = &#39;title&#39; $scope.title\\_title\\_ref = &#39;title\\_ref&#39; \\&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;title&quot;\\&gt;anchor1\\&lt;/a\\&gt; \\&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\\&gt;anchor2\\&lt;/a\\&gt; \\&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&#39;&#39;&quot;\\&gt;anchor3\\&lt;/a\\&gt; \\&lt;a bo-attr=&quot;&quot; bo-attr-title=&quot;&quot;\\&gt;anchor4\\&lt;/a\\&gt; Как думаете, что выведется в каждом случае? :) Фидл с примером.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/06/05/angularjs-%D0%B7%D0%B0%D0%B1%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C-bindonce/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/06/05/angularjs-%D0%B7%D0%B0%D0%B1%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C-bindonce/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">AngularJS: забавная особенность bindonce</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>AngularJS: забавная особенность bindonce</h1>
+<p>05 Jun 2014</p>
+
+<p>Для AngularJS существует модуль <a href="https://github.com/Pasvaz/bindonce" title="Pasvaz/bindonce">bindonce</a>, который позволяет сократить количество вотчеров и тем самым ускорить страинцу.</p>
+
+<p>У этого модуля есть директива bo-attr, которая позволяет использовать в качестве атрибута элемента любое нужное нам значение. В качестве значения выступает выражение, которое будет проинтерпретировано и добавлено в dom.</p>
+
+<p>Однако, у этой директивы есть забавное поведение, которое связано с особенностями интерпретации.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$scope</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">some text with $peci@l chars</span><span class="dl">'</span>  
+<span class="nx">$scope</span><span class="p">.</span><span class="nx">title</span><span class="err">\</span><span class="nx">_ref</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">title</span><span class="dl">'</span>  
+<span class="nx">$scope</span><span class="p">.</span><span class="nx">title</span><span class="err">\</span><span class="nx">_title</span><span class="err">\</span><span class="nx">_ref</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">title</span><span class="se">\</span><span class="s1">_ref</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>\<span class="nt">&lt;a</span> <span class="na">bo-attr=</span><span class="s">""</span> <span class="na">bo-attr-title=</span><span class="s">"title"</span><span class="err">\</span><span class="nt">&gt;</span>anchor1\<span class="nt">&lt;/a</span><span class="err">\</span><span class="nt">&gt;</span>  
+\<span class="nt">&lt;a</span> <span class="na">bo-attr=</span><span class="s">""</span> <span class="na">bo-attr-title=</span><span class="s">""</span><span class="err">\</span><span class="nt">&gt;</span>anchor2\<span class="nt">&lt;/a</span><span class="err">\</span><span class="nt">&gt;</span>  
+\<span class="nt">&lt;a</span> <span class="na">bo-attr=</span><span class="s">""</span> <span class="na">bo-attr-title=</span><span class="s">"''"</span><span class="err">\</span><span class="nt">&gt;</span>anchor3\<span class="nt">&lt;/a</span><span class="err">\</span><span class="nt">&gt;</span>  
+\<span class="nt">&lt;a</span> <span class="na">bo-attr=</span><span class="s">""</span> <span class="na">bo-attr-title=</span><span class="s">""</span><span class="err">\</span><span class="nt">&gt;</span>anchor4\<span class="nt">&lt;/a</span><span class="err">\</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>Как думаете, что выведется в каждом случае? :)</p>
+
+<p><a href="http://jsfiddle.net/russianpenguin/53MeW/" title="Интересное поведение директивы bo-attr">Фидл с примером</a>.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

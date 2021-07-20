@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 16 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page16/" />
+<meta property="og:url" content="http://localhost:4000/blog/page16/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page15/" />
+<link rel="next" href="http://localhost:4000/blog/page17/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page16/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2015/08/19/symfony2-%d0%be%d0%b1%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b0-%d0%b8%d1%81%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%bd%d0%b8%d1%8f-404/">Symfony2: обработка исключения 404</a></h1>
+  <p class="author">
+    <span class="date">2015-08-19 12:11:31 +0300</span>
+  </p>
+  <div class="content">
+   <p>Допустим, что нам нужно обработать исключение 404 и вместо стандартного ответа сервера (или шаблона ошибки ответить специфической страницей.</p>
+
+<p>Как кастомизировать страницы подробно описано в <a href="http://symfony.com/doc/current/cookbook/controller/error_pages.html">официальной документации</a>.</p>
+
+<p>Нас будет интересовать пункт работы с эвентом kernel.exception.</p>
+
+<p>Можно посмотреть один из <a href="http://symfonybricks.com/en/brick/custom-exception-page-404-not-found-and-other-exceptions">примеров</a> его использования.</p>
+
+<p>Наш кейс: если symfony не смог обработать роут, то управление передается своему обработчику.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">AppBundle\Listener</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\HttpExceptionInterface</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Bundle\FrameworkBundle\Templating\EngineInterface</span><span class="p">;</span>  
+<span class="kn">use</span> <span class="nc">Symfony\Component\HttpKernel\Exception\NotFoundHttpException</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">ExceptionListener</span>  
+<span class="p">{</span>  
+ <span class="k">protected</span> <span class="nv">$templating</span><span class="p">;</span>  
+ <span class="k">protected</span> <span class="nv">$kernel</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="err">\</span><span class="nf">_\_construct</span><span class="p">(</span><span class="nc">EngineInterface</span> <span class="nv">$templating</span><span class="p">,</span> <span class="nv">$kernel</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">templating</span> <span class="o">=</span> <span class="nv">$templating</span><span class="p">;</span>  
+ <span class="nv">$this</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">kernel</span> <span class="o">=</span> <span class="nv">$kernel</span><span class="p">;</span>  
+ <span class="p">}</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="n">onKernelException</span><span class="p">(</span><span class="kt">GetResponseForExceptionEvent</span> <span class="nv">$event</span><span class="p">)</span>  
+ <span class="p">{</span>  
+ <span class="k">if</span> <span class="p">(</span><span class="nv">$event</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">getException</span><span class="p">()</span> <span class="k">instanceof</span> <span class="nc">NotFoundHttpException</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Response</span><span class="p">();</span>  
+ <span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setContent</span><span class="p">(</span><span class="s2">"Какие-то данные"</span><span class="p">);</span>  
+ <span class="c1">//$response-\&gt;setStatusCode(200) работать не будет  </span>
+ <span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">headers</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">set</span><span class="p">(</span><span class="s1">'X-Status-Code'</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>  
+ <span class="nv">$event</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setResponse</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>В config.yml прописывем что-то вроде</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>services:  
+ kernel.listener.app\_exception\_listener:  
+ class: AppBundle\Listener\ExceptionListener  
+ arguments: [@templating, @kernel]  
+ tags:  
+ - { name: kernel.event\_listener, event: kernel.exception, method: onKernelException }
+</code></pre></div></div>
+
+<p>И обратите внимание, что переопределение статуса ответа в виде</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">setStatusCode</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>работать не будет. Мы не сможем переопределить статус отвта на 2хх с помощью этого метода (на любой другой можно).</p>
+
+<p>Для того, чтобы мы могли переопределить ответ 404 нужно использовать метод</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$response</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="n">headers</span><span class="o">-</span><span class="err">\</span><span class="o">&gt;</span><span class="nf">set</span><span class="p">(</span><span class="s1">'X-Status-Code'</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/08/16/kde-%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bc%d0%b5%d0%bd%d1%8e-%d0%bf%d0%be%d1%81%d0%bb%d0%b5-%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b8-%d0%bf%d0%b0%d0%ba/">KDE: обновление меню после установки пакетов</a></h1>
+  <p class="author">
+    <span class="date">2015-08-16 19:33:47 +0300</span>
+  </p>
+  <div class="content">
+   <p>KDE &gt;= 4 страдает одной проблемой: поставите вы пакет, который добавляет иконку в меню, а иконки там нет. И чтобы она появилась надо сделать релогин.<br />
+Решается как всегда просто. Проблема из-за того, что в одном из файлов созданного меню появляется ошибка синтаксиса. И kbuildsycoca4 не может нормально отработать.</p>
+
+<p>Выглядит примерно так:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ kbuildsycoca4  
+kbuildsycoca4 running...  
+kbuildsycoca4(3701) VFolderMenu::loadDoc: Parse error in "/home/penguin/.config/menus/applications-merged/xdg-desktop-menu-dummy.menu" , line 1 , col 1 : "unexpected end of file"  
+
+</code></pre></div></div>
+
+<p>Вот надо файл в котором у него парс эррор удалить. Некоторое время иконки будут появляться в меню сразу. А потом опять та же история (удалить файл). В трекере обещали, что багу пофиксят, Но это еще нескоро.</p>
+
+<p>Так же можно запускать kbuildsycoca4 руками для ребилда меню (вдруг вы кастомную иконку добавили в ~/.local/share/application.</p>
+
+
+  </div>
+
+  <h1><a href="/2015/08/02/%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d1%82%d0%be%d1%80%d1%80%d0%b5%d0%bd%d1%82-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82%d0%b0-deluge-%d0%bd%d0%b0-%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd/">Настройка торрент-клиента deluge на удаленном сервере</a></h1>
+  <p class="author">
+    <span class="date">2015-08-02 20:13:12 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2015/08/deluge-bittorrent-client.jpg"><img src="/assets/images/2015/08/deluge-bittorrent-client.jpg?w=150" alt="" /></a>Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.</p>
+
+<h2 id="установка">Установка</h2>
+
+<p>Установка - это самое простое, что может быть.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>deluge-daemon deluge-console
+</code></pre></div></div>
+<p>Ставим консольный клиент, а так же cli для него.</p>
+
+<p>Пока все. Клиент готов к работе. Его уже можно включить и пользоваться.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>deluge-daemon  
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl start deluge-daemon
+</code></pre></div></div>
+
+<p>Но в такой конфигурации есть много проблем:</p>
+
+<ul>
+  <li>отсутствие логов</li>
+  <li>неправильное распределение по портам сервера</li>
+</ul>
+
+<p>Вам это надо? :)</p>
+
+<h2 id="логи">Логи</h2>
+
+<p>Сразу после установки демон готов к запуску. Но та конфигурация, которую предлагают поставщики дистрибутива - она не совсем удачна. В ней отсутсвует логирование происходящего.</p>
+
+<p>Для этого нам надо поставить logrotate.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo dnf install logrotate
+</code></pre></div></div>
+
+<p>Сконфигурировать его для поддержки новых правил ротации. Для этого создадим файл <strong>/etc/logrotate.d/deluge</strong> примерно следующего содержания</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/deluge/\*.log {  
+ rotate 4  
+ weekly  
+ missingok  
+ notifempty  
+ compress  
+ delaycompress  
+ sharedscripts  
+ postrotate  
+ initctl restart deluged \&gt;/dev/null 2\&gt;&amp;1 || true  
+ initctl restart deluge-web \&gt;/dev/null 2\&gt;&amp;1 || true  
+ endscript  
+}
+</code></pre></div></div>
+
+<p>А так же папку для хранения логов. И дадим ей нужные права.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo mkdir /var/log/deluge/  
+$ sudo chown deluge:deluge /var/log/deluge
+</code></pre></div></div>
+
+<p>Теперь осталось включить поддержку логов для демона.</p>
+
+<p>Создаем новое описание демона для systemd в /etc/systemd/system/deluged.service</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Unit]  
+Description=Deluge Bittorrent Client Daemon  
+After=network.target
+
+[Service]  
+Type=simple  
+User=deluge  
+Group=deluge  
+UMask=007
+
+ExecStart=/usr/bin/deluged -d -l /var/log/deluge/daemon.log -L warning
+
+Restart=always  
+TimeoutStopSec=300
+
+[Install]  
+WantedBy=multi-user.target
+</code></pre></div></div>
+
+<p>Отлично. Осталось настроить iptables и сам deluge.</p>
+
+<h2 id="настройка-iptables">Настройка iptables</h2>
+
+<p>В ряде случаем достаточно просто открыть нужные порты</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo iptables -A INPUT -p tcp --dport 56881:56889 -j ACCEPT  
+$ sudo iptables -A INPUT -p udp --dport 56881:56889 -j ACCEPT
+</code></pre></div></div>
+
+<p>Но в некоторых конфигурациях могут <a href="http://www.linuxquestions.org/questions/showthread.php?p=5145026">наблюдаться</a> проблемы с механизмом conntrack, который помечает ряд пакетов как invalid (особенно это касается dht трафика).</p>
+
+<p>Поэтому стоит отключить conntrack для всех соединения deluge.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo iptables -t raw -I PREROUTING -p udp --dport 56881:57200 -j NOTRACK  
+$ sudo iptables -t raw -I OUTPUT -p udp --sport 56881:57200 -j NOTRACK  
+$ sudo iptables -t raw -I PREROUTING -p tcp --dport 56881:57200 -j NOTRACK  
+$ sudo iptables -t raw -I OUTPUT -p tcp --sport 56881:57200 -j NOTRACK  
+$ sudo iptables -I INPUT -p icmp --icmp-type 3 -j ACCEPT  
+$ sudo iptables -I INPUT -p icmp --icmp-type 4 -j ACCEPT  
+$ sudo iptables -I INPUT -p icmp --icmp-type 11 -j ACCEPT  
+$ sudo iptables -I INPUT -p icmp --icmp-type 12 -j ACCEPT
+</code></pre></div></div>
+
+<p>В любом случае тепень надо сохранить конфигарцию iptables.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo /usr/libexec/iptables/iptables.init save
+</code></pre></div></div>
+
+<h2 id="локальная-авторизация">Локальная авторизация</h2>
+
+<p>Чтобы мы могли успешно пользоваться deluge-console локальная авторизация должна быть включена для нашего пользователя.</p>
+
+<p>Т.е. должен быть файл ~/.config/deluge/auth содержащий строку логина-пароля</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>localclient:тут\_длинный\_хеш:10
+</code></pre></div></div>
+
+<p>Скопировать этот файл можно из каталога /var/lib/deluge/.config/deluge</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo cat /var/lib/deluge/.config/deluge/auth \&gt;\&gt; ~/.config/deluge/auth
+</code></pre></div></div>
+
+<h2 id="запуск-и-гонфигурирование-демона">Запуск и гонфигурирование демона</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo systemctl enable deluged  
+$ sudo systemctl start deluged
+</code></pre></div></div>
+
+<p>Тем самым мы запустили демона, конфиг которого был описан ранее.</p>
+
+<p>Осталось его настроить.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ deluge-console
+</code></pre></div></div>
+
+<p>Вбиваем следующий набор команд</p>
+
+<p>Заставляем deluge слушать только определенный диапазон портов (который был открыт ранее)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config -s listen\_ports (56881, 56891)
+</code></pre></div></div>
+<p>Принудительно заставляем демон выходить только через определенный набор портов</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config -s outgoing\_ports (56890, 57200)
+</code></pre></div></div>
+
+<h2 id="все">Все</h2>
+
+<p>Теперь все. Каталог, в который будут сохраняться торренты - /var/lib/deluge/Downloads</p>
+
+<p>Дополнительные ссылки:<br />
+<a href="https://wiki.archlinux.org/index.php/Deluge">https://wiki.archlinux.org/index.php/Deluge</a></p>
+
+
+  </div>
+
+  <h1><a href="/2015/08/01/fedora-server-%d0%bf%d0%be%d1%81%d0%bb%d0%b5%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%88%d0%b0%d0%b3%d0%b8/">Fedora Server:  послеустановочные шаги.</a></h1>
+  <p class="author">
+    <span class="date">2015-08-01 20:16:05 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg"><img src="/assets/images/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg?w=150" alt="" /></a>Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки.</p>
+
+<h2 id="0---вам-нужно-сгенерировать-ssh-ключ-для-работы-с-удаленной-системой-без-ввода-пароля">0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>man ssh-keygen
+</code></pre></div></div>
+
+<h2 id="1---создаем-пользователя">1 - создаем пользователя</h2>
+
+<p>Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh root@server<span class="se">\_</span>ip  
+<span class="c"># adduser penguin  </span>
+<span class="c"># passwd penguin  </span>
+<span class="c"># usermod -a -G wheel penguin</span>
+</code></pre></div></div>
+
+<p>Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh-copy-id penguin@server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<p>Можно войти.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh penguin@server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<h2 id="2---настраиваем-sshd-запрещаем-удаленный-логин-root-и-авторизацию-по-паролям-только-ключи-а-так-же-меняем-стандартный-порт">2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт.</h2>
+
+<p>Правим конфиг <strong>/etc/ssh/sshd_config</strong></p>
+
+<p>Выставляем следующие опции:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Port 54862 # переселяем ssh на новый порт  
+PermitRootLogin no # запретим вход под root  
+PasswordAuthentication no # запрещаем парольную идентификацию
+</code></pre></div></div>
+
+<p>Теперь можно перезагрузить демон.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl reload sshd
+</code></pre></div></div>
+
+<p>Стоит заметить, что ssh теперь живет на очень нестандартном порту. Поэтому можно прописать у себя в локальном конфиге что-то вроде</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> .ssh/config  
+Host server<span class="se">\_</span>ip  
+ User penguin  
+ Port 54862
+</code></pre></div></div>
+
+<p>Тогда авторизоваться на сервере можно будет совсем просто</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh server<span class="se">\_</span>ip
+</code></pre></div></div>
+
+<h2 id="3---конфигурируем-тайм-зону">3 - конфигурируем тайм-зону</h2>
+
+<p>Дефолтно все часы на серверах поставлены в UTC, что может нам немного мешать.</p>
+
+<p>Проверим тут ls /usr/share/zoneinfo/, что в системе есть нужная локаль.</p>
+
+<p>Например локаль Europe/Moscow в моей системе присутствует.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ls</span> /usr/share/zoneinfo/Europe/Moscow  
+/usr/share/zoneinfo/Europe/Moscow
+</code></pre></div></div>
+
+<p>Теперь нужно указать системе использовать выбранную локаль</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+</code></pre></div></div>
+
+<p>И проверить, что date возвращает время в правильной локали</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">date  
+</span>Сб авг 1 19:52:50 MSK 2015
+</code></pre></div></div>
+
+<p>Как видно, локаль MSK была настроена верно.</p>
+
+<h2 id="4---включаем-и-настраиваем-firewall">4 - включаем и настраиваем firewall</h2>
+
+<p><strong>Важно! Не отключайтесь от сервера до окончания настройки firewall!</strong></p>
+
+<p>Ставим и запускаем iptables</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install</span> <span class="nt">-y</span> iptables-services  
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>iptables  
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl start iptables  
+<span class="nv">$ </span><span class="nb">sudo </span>iptables <span class="nt">-L</span>
+</code></pre></div></div>
+
+<p>Последней командой мы посмотрим список текущих правил. Он выглядит приблизительно так, как ниже.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Chain INPUT (policy ACCEPT)  
+target prot opt source destination  
+ACCEPT all -- anywhere anywhere state RELATED,ESTABLISHED  
+ACCEPT icmp -- anywhere anywhere  
+ACCEPT all -- anywhere anywhere  
+ACCEPT tcp -- anywhere anywhere state NEW tcp dpt:ssh  
+REJECT all -- anywhere anywhere reject-with icmp-host-prohibited
+
+Chain FORWARD (policy ACCEPT)  
+target prot opt source destination  
+REJECT all -- anywhere anywhere reject-with icmp-host-prohibited
+
+Chain OUTPUT (policy ACCEPT)  
+target prot opt source destination
+</code></pre></div></div>
+
+<p>Если мы отселяли sshd на другой порт, то такой список правил нас не устраивает. Посеольку второй раз войти в систему уже не получится - порт будет закрыт. Но об этом мы позаботимся позже.</p>
+
+<p>Сохраняем список правил. Дабы при каждом запуске он загружался.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo</span> /usr/libexec/iptables/iptables.init save
+</code></pre></div></div>
+
+<p>Если мы переселяли sshd на новый порт, что нужно изменить строку файла /etc/sysconfig/iptables, которая разрещает доступ по ssh</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+</code></pre></div></div>
+
+<p>заменим на</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT
+</code></pre></div></div>
+
+<p>Теперь все.</p>
+
+<p>Можно перезагрузить firewall и попробовать зайти на сервер с другого терминала.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl restart iptables
+</code></pre></div></div>
+
+<h2 id="5---разрешаем-http-и-https">5 - разрешаем http и https</h2>
+
+<p>Отредактируем /etc/sysconfig/iptables и добавим строчки, которые позволяет подключаться по выбранным протоколам.</p>
+
+<p>Где-нибудь после разрешения доступа по ssh добавим две нужные строки.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-A INPUT -p tcp -m state --state NEW -m tcp --dport 54862 -j ACCEPT  
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT  
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
+</code></pre></div></div>
+
+<p>Перезагружаем таблицы - все должно работать.</p>
+
+<h2 id="6---mlocale">6 - mlocale</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>mlocale  
+<span class="nv">$ </span><span class="nb">sudo </span>updatedb
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2015/07/14/psql-%d0%bf%d0%b5%d1%80%d0%b5%d0%bd%d0%b0%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d1%8f%d0%b5%d0%bc-%d0%b2%d1%8b%d0%b2%d0%be%d0%b4-%d0%b2-%d1%84%d0%b0%d0%b9%d0%bb/">psql: перенаправляем вывод в файл</a></h1>
+  <p class="author">
+    <span class="date">2015-07-14 15:22:14 +0300</span>
+  </p>
+  <div class="content">
+   <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="k">copy</span> <span class="p">(</span><span class="k">select</span> <span class="mi">42</span><span class="p">)</span> <span class="k">to</span> <span class="s1">'/tmp/answer'</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Первая разновидность команды копирования выполняет перенаправление вывода в указанный файл на <strong>удаленной</strong> машине. Ждя ее исполнения пользователь должен обладать правами рута.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="o">/</span><span class="k">copy</span> <span class="p">(</span><span class="k">select</span> <span class="mi">42</span><span class="p">)</span> <span class="k">to</span> <span class="s1">'/tmp/answer'</span>
+</code></pre></div></div>
+
+<p>Вторая разновидность - это метакоманда клиента psql которой не требуются права суперпользователя и запись выполняется в файл на локальной машине.</p>
+
+<p>Стоит обратить внимание, что первый вариант - это команда sql (поэтому за ней и идет точка с запятой), а вторая - это именно метакоманда. окончание - всегда символ новой строки.</p>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page15/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 16 из 35</span>
+  
+    <a href="/blog/page17/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

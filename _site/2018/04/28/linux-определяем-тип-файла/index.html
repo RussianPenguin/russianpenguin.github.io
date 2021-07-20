@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Linux: определяем тип файла | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Linux: определяем тип файла" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Иногда к нам приходят файлы о которых мы ничего не знаем. Как определить тип файла в linux?" />
+<meta property="og:description" content="Иногда к нам приходят файлы о которых мы ничего не знаем. Как определить тип файла в linux?" />
+<link rel="canonical" href="http://localhost:4000/2018/04/28/linux-%D0%BE%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D1%82%D0%B8%D0%BF-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0/" />
+<meta property="og:url" content="http://localhost:4000/2018/04/28/linux-%D0%BE%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D1%82%D0%B8%D0%BF-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-04-28T23:07:53+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Linux: определяем тип файла" />
+<script type="application/ld+json">
+{"headline":"Linux: определяем тип файла","dateModified":"2018-04-28T23:07:53+03:00","datePublished":"2018-04-28T23:07:53+03:00","description":"Иногда к нам приходят файлы о которых мы ничего не знаем. Как определить тип файла в linux?","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/04/28/linux-%D0%BE%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D1%82%D0%B8%D0%BF-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0/"},"@type":"BlogPosting","url":"http://localhost:4000/2018/04/28/linux-%D0%BE%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8F%D0%B5%D0%BC-%D1%82%D0%B8%D0%BF-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Linux: определяем тип файла</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Linux: определяем тип файла</h1>
+<p>28 Apr 2018</p>
+
+<p><img src="/assets/images/2018/04/2018-04-28-223739_718x635.png?w=150" alt="2018-04-28-22:37:39_718x635" />В попытках открыть csv-файл от одной организации я увидел картину из скриншота. В файле должны были быть табличные данные, а оказалась какая-то белиберда с отсылкой к VBA. Очевидно, что там что-то из msоffice, но как узнать это точно?</p>
+
+<p>Для определения типа файла по его сигнатуре в unix-подобных операционных системах существует утилита <a href="ftp://ftp.astron.com/pub/file">file</a> (man 1 file).</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>file test.csv  
+test.csv: Composite Document File V2 Document, Little Endian, Os: Windows, Version 5.2, Code page: 1251, Author: , Last Saved By: , Name of Creating Application: Microsoft Excel, Create Time/Date: Sat Apr 28 10:33:01 2018, Last Saved Time/Date: Sat Apr 28 10:45:37 2018, Security: 0
+</code></pre></div></div>
+
+<p>Видно, что тип файла Composite Document File V2 Document. Но какой именно это формат? У экселя их очень много. Есть отличная утилита <a href="https://debianworld.ru/articles/unoconv-konvertaciya-word-pdf-swf-html-ppt-dokumentov-v-debian-ubuntu/">unoconv</a> из поставки openoffice/libreoffice.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>unoconv
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">mv </span>test.csv <span class="nb">test</span>  
+<span class="nv">$ </span>unoconv <span class="nt">--format</span><span class="o">=</span>ods <span class="nb">test</span>
+</code></pre></div></div>
+
+<p>Сразу возникает вопрос: зачем мы убрали у файла расширение? Это особенность утилиты: она использует расширение файла для определения типа, а если расширения нет, то опирается на метаинформацию. Поэтому нам потребовалось убрать расширение.</p>
+
+<p>Теперь все хорошо и нормально открывается.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

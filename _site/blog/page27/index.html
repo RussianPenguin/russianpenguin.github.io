@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 27 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page27/" />
+<meta property="og:url" content="http://localhost:4000/blog/page27/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page26/" />
+<link rel="next" href="http://localhost:4000/blog/page28/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page27/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2014/05/09/unicode-characters-to-html-entities/">Unicode characters to html entities</a></h1>
+  <p class="author">
+    <span class="date">2014-05-09 19:27:25 +0400</span>
+  </p>
+  <div class="content">
+   <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">unicode</span><span class="err">\</span><span class="nx">_escape</span><span class="err">\</span><span class="nx">_sequences</span><span class="p">(</span><span class="nx">$str</span><span class="p">){</span>  
+ <span class="nx">$working</span> <span class="o">=</span> <span class="nx">json</span><span class="err">\</span><span class="nx">_encode</span><span class="p">(</span><span class="nx">$str</span><span class="p">);</span>  
+ <span class="nx">$working</span> <span class="o">=</span> <span class="nx">preg</span><span class="err">\</span><span class="nx">_replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">/</span><span class="se">\</span><span class="s1">u([0-9a-z]{4})/</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">&amp;#x$1;</span><span class="dl">'</span><span class="p">,</span> <span class="nx">$working</span><span class="p">);</span>  
+ <span class="k">return</span> <span class="nx">json</span><span class="err">\</span><span class="nx">_decode</span><span class="p">(</span><span class="nx">$working</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+  </div>
+
+  <h1><a href="/2014/05/09/php-%d0%b4%d0%b8%d0%b7%d0%b0%d1%81%d1%81%d0%b5%d0%bc%d0%b1%d0%bb%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5/">PHP: дизассемблирование</a></h1>
+  <p class="author">
+    <span class="date">2014-05-09 18:28:32 +0400</span>
+  </p>
+  <div class="content">
+   <p>Иногда очень интересно посмотреть в недра того, что нагенерировал интерпретатор php. Проще говоря - дизассемблировать :)</p>
+
+<p>Ставим расширение <a href="http://pecl.php.net/package/vld" title="The Vulcan Logic Disassembler">vld</a> из pecl.</p>
+
+<p>А потом можем легко смотреть кишки (опкоды) любого скрипта.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$php -d vld.active=1 -d vld.execute=0 -f yourscript.php
+</code></pre></div></div>
+
+<p>Можно заглянуть в <a href="http://blog.golemon.com/2008/01/understanding-opcodes.html" title="Понимаем опкоды">статью</a>, которая как раз посвящена разбору опкодов. И в официальный <a href="http://php.net/manual/en/internals2.opcodes.list.php" title="php opcode list">мануал</a>.</p>
+
+
+  </div>
+
+  <h1><a href="/2014/05/09/%d0%bf%d0%b5%d1%80%d0%b5%d0%b2%d0%be%d0%b4-%d1%81%d0%be%d0%b3%d0%bb%d0%b0%d1%88%d0%b5%d0%bd%d0%b8%d0%b9-%d1%81%d0%b5%d1%80%d0%b2%d0%b8%d1%81%d0%be%d0%b2/">Перевод соглашений сервисов</a></h1>
+  <p class="author">
+    <span class="date">2014-05-09 18:05:05 +0400</span>
+  </p>
+  <div class="content">
+   <p><a href="http://tosdr.org/" title="“I have read and agree to the Terms” is the biggest lie on the web. We aim to fix that.">Перевод с юридического на человеческий соглашений различных сервисов</a></p>
+
+
+  </div>
+
+  <h1><a href="/2014/05/09/%d0%bd%d0%b0%d0%b1%d0%be%d1%80-%d0%b2%d0%b8%d1%80%d1%82%d1%83%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d1%85-%d0%bc%d0%b0%d1%88%d0%b8%d0%bd-%d1%81-%d1%80%d0%b0%d0%b7%d0%bd%d1%8b%d0%bc%d0%b8-ie/">Набор виртуальных машин с разными IE</a></h1>
+  <p class="author">
+    <span class="date">2014-05-09 16:45:28 +0400</span>
+  </p>
+  <div class="content">
+   <p><a href="http://www.modern.ie/en-us/virtualization-tools#downloads" title="Download test VMs of IE for OSX, Linux or Windows">Набор виртуальных машин с разными версиями IE</a></p>
+
+
+  </div>
+
+  <h1><a href="/2014/05/09/wine-%d1%81%d0%be%d0%b7%d0%b4%d0%b0%d0%bd%d0%b8%d0%b5-32%d1%85-%d0%b1%d0%b8%d1%82%d0%bd%d0%be%d0%b3%d0%be-%d0%bf%d1%80%d0%b5%d1%84%d0%b8%d0%ba%d1%81%d0%b0/">WINE: создание 32х битного префикса</a></h1>
+  <p class="author">
+    <span class="date">2014-05-09 16:41:28 +0400</span>
+  </p>
+  <div class="content">
+   <p>Некоторым приложениям, которые запускаются в wine нужно создание 32х битного префикса вместо 64х битного (это если у вас 64х битное окружение).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WINEPREFIX='/home/username/prefix32' WINEARCH='win32' wine 'wineboot'
+</code></pre></div></div>
+
+<p>Директории /home/username/prefix32 не должно существовать. Иначе wine ляжет с ошибкой.</p>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page26/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 27 из 35</span>
+  
+    <a href="/blog/page28/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

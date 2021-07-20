@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Raspbian - это не Debian | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Raspbian - это не Debian" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Raspbian - это не Debian. Хотя картинка нас убежлает в обратном. В чем проблема? Проблема в обозначении архитектуры. Давеча захотел я поставить на малинку пакет из репозитария собранного под Debian. Прописал как положено в /etc/apt/sources.list.d/&lt;repository&gt;.list deb \&lt;repourl\&gt; wheezy main Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает. А дело все в том, что разработчики raspbian перекомпилировали дебиановский armhf (ARMv7) для совместимости с ARMv6, но название архитектуры не поменяли. В итоге попытки установить какой-нибудь пакет *.armhf из дебиана может закончится сегментейшнфаултом. Для того, чтобы решить все проблемы с софтом из дебиановских репозитариев нужно использовать архитектуру armel, которой разработчики обозначают как раз v6. И явно ее указывать в настройках. В итоге конфигурация репозитариев deb будет выглядеть так: deb [arch=armel] \&lt;repourl\&gt; wheezy main Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада. Пруф" />
+<meta property="og:description" content="Raspbian - это не Debian. Хотя картинка нас убежлает в обратном. В чем проблема? Проблема в обозначении архитектуры. Давеча захотел я поставить на малинку пакет из репозитария собранного под Debian. Прописал как положено в /etc/apt/sources.list.d/&lt;repository&gt;.list deb \&lt;repourl\&gt; wheezy main Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает. А дело все в том, что разработчики raspbian перекомпилировали дебиановский armhf (ARMv7) для совместимости с ARMv6, но название архитектуры не поменяли. В итоге попытки установить какой-нибудь пакет *.armhf из дебиана может закончится сегментейшнфаултом. Для того, чтобы решить все проблемы с софтом из дебиановских репозитариев нужно использовать архитектуру armel, которой разработчики обозначают как раз v6. И явно ее указывать в настройках. В итоге конфигурация репозитариев deb будет выглядеть так: deb [arch=armel] \&lt;repourl\&gt; wheezy main Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада. Пруф" />
+<link rel="canonical" href="http://localhost:4000/2016/02/26/raspbian-%D1%8D%D1%82%D0%BE-%D0%BD%D0%B5-debian/" />
+<meta property="og:url" content="http://localhost:4000/2016/02/26/raspbian-%D1%8D%D1%82%D0%BE-%D0%BD%D0%B5-debian/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-02-26T22:45:34+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Raspbian - это не Debian" />
+<script type="application/ld+json">
+{"headline":"Raspbian - это не Debian","dateModified":"2016-02-26T22:45:34+03:00","datePublished":"2016-02-26T22:45:34+03:00","description":"Raspbian - это не Debian. Хотя картинка нас убежлает в обратном. В чем проблема? Проблема в обозначении архитектуры. Давеча захотел я поставить на малинку пакет из репозитария собранного под Debian. Прописал как положено в /etc/apt/sources.list.d/&lt;repository&gt;.list deb \\&lt;repourl\\&gt; wheezy main Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает. А дело все в том, что разработчики raspbian перекомпилировали дебиановский armhf (ARMv7) для совместимости с ARMv6, но название архитектуры не поменяли. В итоге попытки установить какой-нибудь пакет *.armhf из дебиана может закончится сегментейшнфаултом. Для того, чтобы решить все проблемы с софтом из дебиановских репозитариев нужно использовать архитектуру armel, которой разработчики обозначают как раз v6. И явно ее указывать в настройках. В итоге конфигурация репозитариев deb будет выглядеть так: deb [arch=armel] \\&lt;repourl\\&gt; wheezy main Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада. Пруф","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2016/02/26/raspbian-%D1%8D%D1%82%D0%BE-%D0%BD%D0%B5-debian/"},"@type":"BlogPosting","url":"http://localhost:4000/2016/02/26/raspbian-%D1%8D%D1%82%D0%BE-%D0%BD%D0%B5-debian/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Raspbian - это не Debian</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Raspbian - это не Debian</h1>
+<p>26 Feb 2016</p>
+
+<p><img src="/assets/images/2016/02/img_raspbian_logo.png" alt="img_raspbian_logo" /> <a href="https://www.raspbian.org">Raspbian</a> - это не Debian. Хотя картинка нас убежлает в обратном.</p>
+
+<p>В чем проблема? Проблема в обозначении архитектуры.</p>
+
+<p>Давеча захотел я поставить на малинку пакет из репозитария собранного под Debian.</p>
+
+<p>Прописал как положено в /etc/apt/sources.list.d/&lt;repository&gt;.list</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb \&lt;repourl\&gt; wheezy main
+</code></pre></div></div>
+
+<p>Установил и получил segmentation fault. Казалось бы - архитектура armhf (как на малинке), но почему-то не работает.</p>
+
+<p>А дело все в том, что разработчики raspbian перекомпилировали дебиановский armhf (ARMv7) для совместимости с ARMv6, но название архитектуры не поменяли. В итоге попытки установить какой-нибудь пакет *.armhf из дебиана может закончится сегментейшнфаултом.</p>
+
+<p>Для того, чтобы решить все проблемы с софтом из дебиановских репозитариев нужно использовать архитектуру armel, которой разработчики обозначают как раз v6. И явно ее указывать в настройках.</p>
+
+<p>В итоге конфигурация репозитариев deb будет выглядеть так:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deb [arch=armel] \&lt;repourl\&gt; wheezy main
+</code></pre></div></div>
+
+<p>Ключевое здесь - добавить спецификацию архитектуры как [arch=armel] и таким образом можно успешно подключать даже репозитарии с какого-нибудь ланчпада.</p>
+
+<p><a href="https://www.raspbian.org/RaspbianFAQ#What_is_Raspbian.3F">Пруф</a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

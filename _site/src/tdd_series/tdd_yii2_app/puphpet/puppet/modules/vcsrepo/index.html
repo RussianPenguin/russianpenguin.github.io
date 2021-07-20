@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/vcsrepo/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/vcsrepo/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/vcsrepo/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p>#vcsrepo</p>
+
+<p>####Table of Contents</p>
+
+<ol>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#module-description">Module Description - What the module does and why it is useful</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with vcsrepo</a>
+    <ul>
+      <li><a href="#setup-requirements">Setup requirements</a></li>
+      <li><a href="#beginning-with-vcsrepo">Beginning with vcsrepo</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a>
+    <ul>
+      <li><a href="#git">Git</a></li>
+      <li><a href="#bazaar">Bazaar</a></li>
+      <li><a href="#cvs">CVS</a></li>
+      <li><a href="#mercurial">Mercurial</a></li>
+      <li><a href="#perforce">Perforce</a></li>
+      <li><a href="#subversion">Subversion</a></li>
+    </ul>
+  </li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a>
+    <ul>
+      <li><a href="#type-vcsrepo">Type: vcsrepo</a>
+        <ul>
+          <li><a href="#providers">Providers</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#parameters">Parameters</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<p>##Overview</p>
+
+<p>The vcsrepo module lets you use Puppet to easily deploy content from your version control system (VCS).</p>
+
+<p>##Module Description</p>
+
+<p>The vcsrepo module provides a single type with providers to support the following version control systems:</p>
+
+<ul>
+  <li><a href="#git">Git</a></li>
+  <li><a href="#bazaar">Bazaar</a></li>
+  <li><a href="#cvs">CVS</a></li>
+  <li><a href="#mercurial">Mercurial</a></li>
+  <li><a href="#perforce">Perforce</a></li>
+  <li><a href="#subversion">Subversion</a></li>
+</ul>
+
+<p><strong>Note:</strong> <code class="language-plaintext highlighter-rouge">git</code> is the only vcs provider officially <a href="https://forge.puppetlabs.com/supported">supported by Puppet Labs</a>.</p>
+
+<p>##Setup</p>
+
+<p>###Setup Requirements</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">vcsrepo</code> module does not install any VCS software for you. You must install a VCS before you can use this module.</p>
+
+<p>Like Puppet in general, the <code class="language-plaintext highlighter-rouge">vcsrepo</code> module does not automatically create parent directories for the files it manages. Make sure to set up any needed directory structures before you get started.</p>
+
+<p>###Beginning with vcsrepo</p>
+
+<p>To create and manage a blank repository, define the type <code class="language-plaintext highlighter-rouge">vcsrepo</code> with a path to your repository and supply the <code class="language-plaintext highlighter-rouge">provider</code> parameter based on the <a href="#usage">VCS you’re using</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+}
+</code></pre></div></div>
+
+<p>##Usage</p>
+
+<p><strong>Note:</strong> <code class="language-plaintext highlighter-rouge">git</code> is the only vcsrepo provider officially <a href="https://forge.puppetlabs.com/supported">supported by Puppet Labs</a>.</p>
+
+<p>###Git</p>
+
+<p>####Create a blank repository</p>
+
+<p>To create a blank repository, suitable for use as a central repository, define <code class="language-plaintext highlighter-rouge">vcsrepo</code> without <code class="language-plaintext highlighter-rouge">source</code> or <code class="language-plaintext highlighter-rouge">revision</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+}
+</code></pre></div></div>
+
+<p>If you’re managing a central or official repository, you might want to make it a bare repository. To do this, set <code class="language-plaintext highlighter-rouge">ensure</code> to ‘bare’:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; bare,
+  provider =&gt; git,
+}
+</code></pre></div></div>
+
+<p>####Clone/pull a repository</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+}
+</code></pre></div></div>
+
+<p>If you want to clone your repository as bare or mirror, you can set <code class="language-plaintext highlighter-rouge">ensure</code> to ‘bare’ or ‘mirror’:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; mirror,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+}
+</code></pre></div></div>
+
+<p>By default, <code class="language-plaintext highlighter-rouge">vcsrepo</code> will use the HEAD of the source repository’s master branch. To use another branch or a specific commit, set <code class="language-plaintext highlighter-rouge">revision</code> to either a branch name or a commit SHA or tag.</p>
+
+<p>Branch name:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+  revision =&gt; 'development',
+}
+</code></pre></div></div>
+
+<p>SHA:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+  revision =&gt; '0c466b8a5a45f6cd7de82c08df2fb4ce1e920a31',
+}
+</code></pre></div></div>
+
+<p>Tag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+  revision =&gt; '1.1.2rc1',
+}
+</code></pre></div></div>
+
+<p>To check out a branch as a specific user, supply the <code class="language-plaintext highlighter-rouge">user</code> parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+  revision =&gt; '0c466b8a5a45f6cd7de82c08df2fb4ce1e920a31',
+  user     =&gt; 'someUser',
+}
+</code></pre></div></div>
+
+<p>To keep the repository at the latest revision, set <code class="language-plaintext highlighter-rouge">ensure</code> to ‘latest’.</p>
+
+<p><strong>WARNING:</strong> this overwrites any local changes to the repository:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; latest,
+  provider =&gt; git,
+  source   =&gt; 'git://example.com/repo.git',
+  revision =&gt; 'master',
+}
+</code></pre></div></div>
+
+<p>To clone the repository but skip initializing submodules, set <code class="language-plaintext highlighter-rouge">submodules</code> to ‘false’:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; git,
+  source     =&gt; 'git://example.com/repo.git',
+  submodules =&gt; false,
+}
+</code></pre></div></div>
+
+<p>####Use multiple remotes with a repository
+In place of a single string, you can set <code class="language-plaintext highlighter-rouge">source</code> to a hash of one or more name =&gt; URL pairs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; git,
+  remote   =&gt; 'origin'
+  source   =&gt; {
+    'origin'       =&gt; 'https://github.com/puppetlabs/puppetlabs-vcsrepo.git', 
+    'other_remote' =&gt; 'https://github.com/other_user/puppetlabs-vcsrepo.git'
+  },
+}
+</code></pre></div></div>
+
+<p><strong>Note:</strong> if you set <code class="language-plaintext highlighter-rouge">source</code> to a hash, one of the names you specify must match the value of the <code class="language-plaintext highlighter-rouge">remote</code> parameter. That remote serves as the upstream of your managed repository.</p>
+
+<p>####Connect via SSH</p>
+
+<p>To connect to your source repository via SSH (e.g., ‘username@server:…’), we recommend managing your SSH keys with Puppet and using the <a href="http://docs.puppetlabs.com/references/stable/metaparameter.html#require"><code class="language-plaintext highlighter-rouge">require</code></a> metaparameter to make sure they are present before the <code class="language-plaintext highlighter-rouge">vcsrepo</code> resource is applied.</p>
+
+<p>To use SSH keys associated with a user, specify the username in the <code class="language-plaintext highlighter-rouge">user</code> parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; git,
+  source     =&gt; 'git://username@example.com/repo.git',
+  user       =&gt; 'toto', #uses toto's $HOME/.ssh setup
+  require    =&gt; File['/home/toto/.ssh/id_rsa'],
+}
+</code></pre></div></div>
+
+<p>###Bazaar</p>
+
+<p>####Create a blank repository</p>
+
+<p>To create a blank repository, suitable for use as a central repository, define <code class="language-plaintext highlighter-rouge">vcsrepo</code> without <code class="language-plaintext highlighter-rouge">source</code> or <code class="language-plaintext highlighter-rouge">revision</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; bzr,
+}
+</code></pre></div></div>
+
+<p>####Branch from an existing repository</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; bzr,
+  source   =&gt; '/some/path',
+}
+</code></pre></div></div>
+
+<p>To branch from a specific revision, set <code class="language-plaintext highlighter-rouge">revision</code> to a valid <a href="http://wiki.bazaar.canonical.com/BzrRevisionSpec">Bazaar revision spec</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; bzr,
+  source   =&gt; '/some/path',
+  revision =&gt; 'menesis@pov.lt-20100309191856-4wmfqzc803fj300x',
+}
+</code></pre></div></div>
+
+<p>####Connect via SSH</p>
+
+<p>To connect to your source repository via SSH (e.g., <code class="language-plaintext highlighter-rouge">'bzr+ssh://...'</code> or <code class="language-plaintext highlighter-rouge">'sftp://...,'</code>), we recommend using the <a href="http://docs.puppetlabs.com/references/stable/metaparameter.html#require"><code class="language-plaintext highlighter-rouge">require</code></a> metaparameter to make sure your SSH keys are present before the <code class="language-plaintext highlighter-rouge">vcsrepo</code> resource is applied:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; bzr,
+  source     =&gt; 'bzr+ssh://bzr.example.com/some/path',
+  user       =&gt; 'toto', #uses toto's $HOME/.ssh setup
+  require    =&gt; File['/home/toto/.ssh/id_rsa'],
+}
+</code></pre></div></div>
+
+<p>###CVS</p>
+
+<p>####Create a blank repository</p>
+
+<p>To create a blank repository, suitable for use as a central repository, define <code class="language-plaintext highlighter-rouge">vcsrepo</code> without <code class="language-plaintext highlighter-rouge">source</code> or <code class="language-plaintext highlighter-rouge">revision</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; cvs,
+}
+</code></pre></div></div>
+
+<p>####Checkout/update from a repository</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/workspace':
+  ensure   =&gt; present,
+  provider =&gt; cvs,
+  source   =&gt; ':pserver:anonymous@example.com:/sources/myproj',
+}
+</code></pre></div></div>
+
+<p>To get a specific module on the current mainline, supply the <code class="language-plaintext highlighter-rouge">module</code> parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo {'/vagrant/lockss-daemon-source':
+  ensure   =&gt; present,
+  provider =&gt; cvs,
+  source   =&gt; ':pserver:anonymous@lockss.cvs.sourceforge.net:/cvsroot/lockss',
+  module   =&gt; 'lockss-daemon',
+}
+</code></pre></div></div>
+
+<p>To set the GZIP compression levels for your repository history, use the <code class="language-plaintext highlighter-rouge">compression</code> parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/workspace':
+  ensure      =&gt; present,
+  provider    =&gt; cvs,
+  compression =&gt; 3,
+  source      =&gt; ':pserver:anonymous@example.com:/sources/myproj',
+}
+</code></pre></div></div>
+
+<p>To get a specific revision, set <code class="language-plaintext highlighter-rouge">revision</code> to the revision number.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/workspace':
+  ensure      =&gt; present,
+  provider    =&gt; cvs,
+  compression =&gt; 3,
+  source      =&gt; ':pserver:anonymous@example.com:/sources/myproj',
+  revision    =&gt; '1.2',
+}
+</code></pre></div></div>
+
+<p>You can also set <code class="language-plaintext highlighter-rouge">revision</code> to a tag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/workspace':
+  ensure      =&gt; present,
+  provider    =&gt; cvs,
+  compression =&gt; 3,
+  source      =&gt; ':pserver:anonymous@example.com:/sources/myproj',
+  revision    =&gt; 'SOMETAG',
+}
+</code></pre></div></div>
+
+<p>####Connect via SSH</p>
+
+<p>To connect to your source repository via SSH, we recommend using the <a href="http://docs.puppetlabs.com/references/stable/metaparameter.html#require"><code class="language-plaintext highlighter-rouge">require</code></a> metaparameter to make sure your SSH keys are present before the <code class="language-plaintext highlighter-rouge">vcsrepo</code> resource is applied:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; cvs,
+  source     =&gt; ':pserver:anonymous@example.com:/sources/myproj',
+  user       =&gt; 'toto', #uses toto's $HOME/.ssh setup
+  require    =&gt; File['/home/toto/.ssh/id_rsa'],
+}
+</code></pre></div></div>
+
+<p>###Mercurial</p>
+
+<p>####Create a blank repository</p>
+
+<p>To create a blank repository, suitable for use as a central repository, define <code class="language-plaintext highlighter-rouge">vcsrepo</code> without <code class="language-plaintext highlighter-rouge">source</code> or <code class="language-plaintext highlighter-rouge">revision</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+}
+</code></pre></div></div>
+
+<p>####Clone/pull &amp; update a repository</p>
+
+<p>To get the default branch tip:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+  source   =&gt; 'http://hg.example.com/myrepo',
+}
+</code></pre></div></div>
+
+<p>For a specific changeset, use <code class="language-plaintext highlighter-rouge">revision</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+  source   =&gt; 'http://hg.example.com/myrepo',
+  revision =&gt; '21ea4598c962',
+}
+</code></pre></div></div>
+
+<p>You can also set <code class="language-plaintext highlighter-rouge">revision</code> to a tag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+  source   =&gt; 'http://hg.example.com/myrepo',
+  revision =&gt; '1.1.2',
+}
+</code></pre></div></div>
+
+<p>To check out as a specific user:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+  source   =&gt; 'http://hg.example.com/myrepo',
+  user     =&gt; 'user',
+}
+</code></pre></div></div>
+
+<p>To specify an SSH identity key:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; hg,
+  source   =&gt; 'ssh://hg@hg.example.com/myrepo',
+  identity =&gt; '/home/user/.ssh/id_dsa1,
+}
+</code></pre></div></div>
+
+<p>To specify a username and password for HTTP Basic authentication:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; latest,
+  provider =&gt; hg,
+  source   =&gt; 'http://hg.example.com/myrepo',
+  basic_auth_username =&gt; 'hgusername',
+  basic_auth_password =&gt; 'hgpassword',
+}
+</code></pre></div></div>
+
+<p>####Connect via SSH</p>
+
+<p>To connect to your source repository via SSH (e.g., <code class="language-plaintext highlighter-rouge">'ssh://...'</code>), we recommend using the <a href="http://docs.puppetlabs.com/references/stable/metaparameter.html#require"><code class="language-plaintext highlighter-rouge">require</code> metaparameter</a> to make sure your SSH keys are present before the <code class="language-plaintext highlighter-rouge">vcsrepo</code> resource is applied:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; hg,
+  source     =&gt; 'ssh://hg.example.com//path/to/myrepo',
+  user       =&gt; 'toto', #uses toto's $HOME/.ssh setup
+  require    =&gt; File['/home/toto/.ssh/id_rsa'],
+}
+</code></pre></div></div>
+
+<p>###Perforce</p>
+
+<p>####Create an empty workspace</p>
+
+<p>To set up the connection to your Perforce service, set <code class="language-plaintext highlighter-rouge">p4config</code> to the location of a valid Perforce <a href="http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles">config file</a> stored on the node:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; present,
+  provider   =&gt; p4,
+  p4config   =&gt; '/root/.p4config'
+}
+</code></pre></div></div>
+
+<p><strong>Note:</strong> If you don’t include the <code class="language-plaintext highlighter-rouge">P4CLIENT</code> setting in your config file, the provider generates a workspace name based on the digest of <code class="language-plaintext highlighter-rouge">path</code> and the node’s hostname (e.g., <code class="language-plaintext highlighter-rouge">puppet-91bc00640c4e5a17787286acbe2c021c</code>):</p>
+
+<p>####Create/update and sync a Perforce workspace</p>
+
+<p>To sync a depot path to head, set <code class="language-plaintext highlighter-rouge">ensure</code> to ‘latest’:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; latest,
+  provider =&gt; p4,
+  source   =&gt; '//depot/branch/...'
+}
+</code></pre></div></div>
+
+<p>To sync to a specific changelist, specify its revision number with the <code class="language-plaintext highlighter-rouge">revision</code> parameter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; p4,
+  source   =&gt; '//depot/branch/...',
+  revision =&gt; '2341'
+}
+</code></pre></div></div>
+
+<p>You can also set <code class="language-plaintext highlighter-rouge">revision</code> to a label:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; p4,
+  source   =&gt; '//depot/branch/...',
+  revision =&gt; 'my_label'
+}
+</code></pre></div></div>
+
+<p>###Subversion</p>
+
+<p>####Create a blank repository</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; svn,
+}
+</code></pre></div></div>
+
+<p>####Check out from an existing repository</p>
+
+<p>Provide a <code class="language-plaintext highlighter-rouge">source</code> pointing to the branch or tag you want to check out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; svn,
+  source   =&gt; 'svn://svnrepo/hello/branches/foo',
+}
+</code></pre></div></div>
+
+<p>You can also designate a specific revision:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure   =&gt; present,
+  provider =&gt; svn,
+  source   =&gt; 'svn://svnrepo/hello/branches/foo',
+  revision =&gt; '1234',
+}
+</code></pre></div></div>
+
+<p>####Use a specific Subversion configuration directory</p>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">configuration</code> parameter to designate the directory that contains your Subversion configuration files (typically, ‘/path/to/.subversion’):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure        =&gt; present,
+  provider      =&gt; svn,
+  source        =&gt; 'svn://svnrepo/hello/branches/foo',
+  configuration =&gt; '/path/to/.subversion',
+}
+</code></pre></div></div>
+
+<p>####Connect via SSH</p>
+
+<p>To connect to your source repository via SSH (e.g., <code class="language-plaintext highlighter-rouge">'svn+ssh://...'</code>), we recommend using the <a href="http://docs.puppetlabs.com/references/stable/metaparameter.html#require"><code class="language-plaintext highlighter-rouge">require</code> metaparameter</a> to make sure your SSH keys are present before the <code class="language-plaintext highlighter-rouge">vcsrepo</code> resource is applied:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vcsrepo { '/path/to/repo':
+  ensure     =&gt; latest,
+  provider   =&gt; svn,
+  source     =&gt; 'svn+ssh://svnrepo/hello/branches/foo',
+  user       =&gt; 'toto', #uses toto's $HOME/.ssh setup
+  require    =&gt; File['/home/toto/.ssh/id_rsa'],
+}
+</code></pre></div></div>
+
+<p>##Reference</p>
+
+<p>###Type: vcsrepo</p>
+
+<p>The vcsrepo module adds only one type with several providers. Each provider abstracts a different VCS, and each provider includes a set of features according to its needs.</p>
+
+<p>####Providers</p>
+
+<p><strong>Note:</strong> Not all features are available with all providers.</p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">git</code> - Supports the Git VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">bare_repositories</code>, <code class="language-plaintext highlighter-rouge">depth</code>, <code class="language-plaintext highlighter-rouge">multiple_remotes</code>, <code class="language-plaintext highlighter-rouge">reference_tracking</code>, <code class="language-plaintext highlighter-rouge">ssh_identity</code>, <code class="language-plaintext highlighter-rouge">submodules</code>, <code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">depth</code>, <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">identity</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code>, <code class="language-plaintext highlighter-rouge">remote</code>, <code class="language-plaintext highlighter-rouge">revision</code>, <code class="language-plaintext highlighter-rouge">source</code>, <code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">bzr</code> - Supports the Bazaar VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">reference_tracking</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code>, <code class="language-plaintext highlighter-rouge">revision</code>, <code class="language-plaintext highlighter-rouge">source</code></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">cvs</code> - Supports the CVS VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">cvs_rsh</code>, <code class="language-plaintext highlighter-rouge">gzip_compression</code>, <code class="language-plaintext highlighter-rouge">modules</code>, <code class="language-plaintext highlighter-rouge">reference_tracking</code>, <code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">compression</code>, <code class="language-plaintext highlighter-rouge">cvs_rsh</code>, <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">module</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">hg</code> - Supports the Mercurial VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">reference_tracking</code>, <code class="language-plaintext highlighter-rouge">ssh_identity</code>, <code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">identity</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code>, <code class="language-plaintext highlighter-rouge">revision</code>, <code class="language-plaintext highlighter-rouge">source</code>, <code class="language-plaintext highlighter-rouge">user</code></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">p4</code> - Supports the Perforce VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">p4config</code>, <code class="language-plaintext highlighter-rouge">reference_tracking</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">p4config</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code>, <code class="language-plaintext highlighter-rouge">revision</code>, <code class="language-plaintext highlighter-rouge">source</code></p>
+
+<p>#####<code class="language-plaintext highlighter-rouge">svn</code> - Supports the Subversion VCS.</p>
+
+<p>Features: <code class="language-plaintext highlighter-rouge">basic_auth</code>, <code class="language-plaintext highlighter-rouge">configuration</code>, <code class="language-plaintext highlighter-rouge">conflict</code>, <code class="language-plaintext highlighter-rouge">depth</code>, <code class="language-plaintext highlighter-rouge">filesystem_types</code>, <code class="language-plaintext highlighter-rouge">reference_tracking</code></p>
+
+<p>Parameters: <code class="language-plaintext highlighter-rouge">basic_auth_password</code>, <code class="language-plaintext highlighter-rouge">basic_auth_username</code>, <code class="language-plaintext highlighter-rouge">configuration</code>, <code class="language-plaintext highlighter-rouge">conflict</code>, <code class="language-plaintext highlighter-rouge">ensure</code>, <code class="language-plaintext highlighter-rouge">excludes</code>, <code class="language-plaintext highlighter-rouge">force</code>, <code class="language-plaintext highlighter-rouge">fstype</code>, <code class="language-plaintext highlighter-rouge">group</code>, <code class="language-plaintext highlighter-rouge">owner</code>, <code class="language-plaintext highlighter-rouge">path</code>, <code class="language-plaintext highlighter-rouge">provider</code>, <code class="language-plaintext highlighter-rouge">revision</code>, <code class="language-plaintext highlighter-rouge">source</code>, <code class="language-plaintext highlighter-rouge">trust_server_cert</code></p>
+
+<p>####Features</p>
+
+<p><strong>Note:</strong> Not all features are available with all providers.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">bare_repositories</code> - Differentiates between bare repositories and those with working copies. (Available with <code class="language-plaintext highlighter-rouge">git</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">basic_auth</code> -  Supports HTTP Basic authentication. (Available with <code class="language-plaintext highlighter-rouge">svn</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">conflict</code> - Lets you decide how to resolve any conflicts between the source repository and your working copy. (Available with <code class="language-plaintext highlighter-rouge">svn</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">configuration</code> - Lets you specify the location of your configuration files. (Available with <code class="language-plaintext highlighter-rouge">svn</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">cvs_rsh</code> - Understands the <code class="language-plaintext highlighter-rouge">CVS_RSH</code> environment variable. (Available with <code class="language-plaintext highlighter-rouge">cvs</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">depth</code> - Supports shallow clones in <code class="language-plaintext highlighter-rouge">git</code> or sets scope limit in <code class="language-plaintext highlighter-rouge">svn</code>. (Available with <code class="language-plaintext highlighter-rouge">git</code> and <code class="language-plaintext highlighter-rouge">svn</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">filesystem_types</code> - Supports multiple types of filesystem. (Available with <code class="language-plaintext highlighter-rouge">svn</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">gzip_compression</code> - Supports explicit GZip compression levels. (Available with <code class="language-plaintext highlighter-rouge">cvs</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">modules</code> - Lets you choose a specific repository module. (Available with <code class="language-plaintext highlighter-rouge">cvs</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">multiple_remotes</code> - Tracks multiple remote repositories. (Available with <code class="language-plaintext highlighter-rouge">git</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">reference_tracking</code> - Lets you track revision references that can change over time (e.g., some VCS tags and branch names). (Available with all providers)</li>
+  <li><code class="language-plaintext highlighter-rouge">ssh_identity</code> - Lets you specify an SSH identity file. (Available with <code class="language-plaintext highlighter-rouge">git</code> and <code class="language-plaintext highlighter-rouge">hg</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">user</code> - Can run as a different user. (Available with <code class="language-plaintext highlighter-rouge">git</code>, <code class="language-plaintext highlighter-rouge">hg</code> and <code class="language-plaintext highlighter-rouge">cvs</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">p4config</code> - Supports setting the <code class="language-plaintext highlighter-rouge">P4CONFIG</code> environment. (Available with <code class="language-plaintext highlighter-rouge">p4</code>.)</li>
+  <li><code class="language-plaintext highlighter-rouge">submodules</code> - Supports repository submodules which can be optionally initialized. (Available with <code class="language-plaintext highlighter-rouge">git</code>.)</li>
+</ul>
+
+<p>####Parameters</p>
+
+<p>All parameters are optional, except where specified otherwise.</p>
+
+<h5 id="basic_auth_password"><code class="language-plaintext highlighter-rouge">basic_auth_password</code></h5>
+
+<p>Specifies the password for HTTP Basic authentication. (Requires the <code class="language-plaintext highlighter-rouge">basic_auth</code> feature.) Valid options: a string. Default: none.</p>
+
+<h5 id="basic_auth_username"><code class="language-plaintext highlighter-rouge">basic_auth_username</code></h5>
+
+<p>Specifies the username for HTTP Basic authentication. (Requires the <code class="language-plaintext highlighter-rouge">basic_auth</code> feature.) Valid options: a string. Default: none.</p>
+
+<h5 id="compression"><code class="language-plaintext highlighter-rouge">compression</code></h5>
+
+<p>Sets the GZIP compression level for the repository history. (Requires the <code class="language-plaintext highlighter-rouge">gzip_compression</code> feature.) Valid options: an integer between 0 and 6. Default: none.</p>
+
+<h5 id="configuration"><code class="language-plaintext highlighter-rouge">configuration</code></h5>
+
+<p>Sets the configuration directory to use. (Requires the <code class="language-plaintext highlighter-rouge">configuration</code> feature.) Valid options: a string containing an absolute path. Default: none.</p>
+
+<h5 id="conflict"><code class="language-plaintext highlighter-rouge">conflict</code></h5>
+
+<p>Tells Subversion how to resolve any conflicts between the source repository and your working copy. (Requires the <code class="language-plaintext highlighter-rouge">conflict</code> feature.) Valid options: ‘base’, ‘mine-full’, ‘theirs-full’, and ‘working’. Default: none.</p>
+
+<h5 id="cvs_rsh"><code class="language-plaintext highlighter-rouge">cvs_rsh</code></h5>
+
+<p>Provides a value for the <code class="language-plaintext highlighter-rouge">CVS_RSH</code> environment variable. (Requires the <code class="language-plaintext highlighter-rouge">cvs_rsh</code> feature.) Valid options: a string. Default: none.</p>
+
+<h5 id="depth"><code class="language-plaintext highlighter-rouge">depth</code></h5>
+
+<p>In <code class="language-plaintext highlighter-rouge">git</code> sets the number of commits to include when creating a shallow clone. (Requires the <code class="language-plaintext highlighter-rouge">depth</code> feature.) Valid options: an integer. Default: none.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">svn</code> instructs Subversion to limit the scope of an operation to a particular tree depth. (Requires the <code class="language-plaintext highlighter-rouge">depth</code> feature.) Valid options: ‘empty’, ‘files’, ‘immediates’, ‘infinity’. Default: none.</p>
+
+<h5 id="ensure"><code class="language-plaintext highlighter-rouge">ensure</code></h5>
+
+<p>Specifies whether the repository should exist. Valid options: ‘present’, ‘bare’, ‘absent’, and ‘latest’. Default: ‘present’.</p>
+
+<h5 id="excludes"><code class="language-plaintext highlighter-rouge">excludes</code></h5>
+
+<p>Lists any files the repository shouldn’t track (similar to .gitignore). Valid options: a string (separate multiple values with the newline character). Default: none.</p>
+
+<h5 id="force"><code class="language-plaintext highlighter-rouge">force</code></h5>
+
+<p>Specifies whether to delete any existing files in the repository path if creating a new repository. <strong>Use with care.</strong> Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+
+<h5 id="fstype"><code class="language-plaintext highlighter-rouge">fstype</code></h5>
+
+<p>Sets the filesystem type. (Requires the <code class="language-plaintext highlighter-rouge">filesystem_types</code> feature.) Valid options: ‘fsfs’ or ‘bdb’. Default: none.</p>
+
+<h5 id="group"><code class="language-plaintext highlighter-rouge">group</code></h5>
+
+<p>Specifies a group to own the repository files. Valid options: a string containing a group name or GID. Default: none.</p>
+
+<h5 id="identity"><code class="language-plaintext highlighter-rouge">identity</code></h5>
+
+<p>Specifies an identity file to use for SSH authentication. (Requires the <code class="language-plaintext highlighter-rouge">ssh_identity</code> feature.) Valid options: a string containing an absolute path. Default: none.</p>
+
+<h5 id="module"><code class="language-plaintext highlighter-rouge">module</code></h5>
+
+<p>Specifies the repository module to manage. (Requires the <code class="language-plaintext highlighter-rouge">modules</code> feature.) Valid options: a string containing the name of a CVS module. Default: none.</p>
+
+<h5 id="owner"><code class="language-plaintext highlighter-rouge">owner</code></h5>
+
+<p>Specifies a user to own the repository files. Valid options: a string containing a username or UID. Default: none.</p>
+
+<h5 id="p4config"><code class="language-plaintext highlighter-rouge">p4config</code></h5>
+
+<p>Specifies a config file that contains settings for connecting to the Perforce service. (Requires the <code class="language-plaintext highlighter-rouge">p4config</code> feature.) Valid options: a string containing the absolute path to a valid <a href="http://www.perforce.com/perforce/doc.current/manuals/p4guide/chapter.configuration.html#configuration.settings.configfiles">Perforce config file</a>. Default: none.</p>
+
+<h5 id="path"><code class="language-plaintext highlighter-rouge">path</code></h5>
+
+<p>Specifies a location for the managed repository. Valid options: a string containing an absolute path. Default: the title of your declared resource.</p>
+
+<h5 id="provider"><code class="language-plaintext highlighter-rouge">provider</code></h5>
+
+<p><em>Required.</em> Specifies the backend to use for this vcsrepo resource. Valid options: ‘bzr’, ‘cvs’, ‘git’, ‘hg’, ‘p4’, and ‘svn’.</p>
+
+<h5 id="remote"><code class="language-plaintext highlighter-rouge">remote</code></h5>
+
+<p>Specifies the remote repository to track. (Requires the <code class="language-plaintext highlighter-rouge">multiple_remotes</code> feature.) Valid options: a string containing one of the remote names specified in <code class="language-plaintext highlighter-rouge">source</code>. Default: ‘origin’.</p>
+
+<h5 id="revision"><code class="language-plaintext highlighter-rouge">revision</code></h5>
+
+<p>Sets the revision of the repository. Valid options vary by provider:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">git</code> - a string containing a Git branch name, or a commit SHA or tag</li>
+  <li><code class="language-plaintext highlighter-rouge">bzr</code> - a string containing a Bazaar <a href="http://wiki.bazaar.canonical.com/BzrRevisionSpec">revision spec</a></li>
+  <li><code class="language-plaintext highlighter-rouge">cvs</code> - a string containing a CVS <a href="http://www.thathost.com/wincvs-howto/cvsdoc/cvs_4.html">tag or revision number</a></li>
+  <li><code class="language-plaintext highlighter-rouge">hg</code> - a string containing a Mercurial <a href="http://mercurial.selenic.com/wiki/ChangeSetID">changeset ID</a> or <a href="http://mercurial.selenic.com/wiki/Tag">tag</a></li>
+  <li><code class="language-plaintext highlighter-rouge">p4</code> - a string containing a Perforce <a href="http://www.perforce.com/perforce/r12.1/manuals/cmdref/o.fspecs.html">change number, label name, client name, or date spec</a></li>
+  <li><code class="language-plaintext highlighter-rouge">svn</code> - a string containing a Subversion <a href="http://svnbook.red-bean.com/en/1.7/svn.basic.in-action.html#svn.basic.in-action.revs">revision number</a>, <a href="http://svnbook.red-bean.com/en/1.7/svn.tour.revs.specifiers.html">revision keyword, or revision date</a></li>
+</ul>
+
+<p>Default: none.</p>
+
+<h5 id="source"><code class="language-plaintext highlighter-rouge">source</code></h5>
+
+<p>Specifies a source repository to serve as the upstream for your managed repository. Default: none. Valid options vary by provider:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">git</code> - a string containing a <a href="https://www.kernel.org/pub/software/scm/git/docs/git-clone.html#_git_urls_a_id_urls_a">Git repository URL</a> or a hash of name =&gt; URL mappings. See also <a href="#remote"><code class="language-plaintext highlighter-rouge">remote</code></a>.</li>
+  <li><code class="language-plaintext highlighter-rouge">bzr</code> - a string containing a Bazaar branch location</li>
+  <li><code class="language-plaintext highlighter-rouge">cvs</code> - a string containing a CVS root</li>
+  <li><code class="language-plaintext highlighter-rouge">hg</code> - a string containing the local path or URL of a Mercurial repository</li>
+  <li><code class="language-plaintext highlighter-rouge">p4</code> - a string containing a Perforce depot path</li>
+  <li><code class="language-plaintext highlighter-rouge">svn</code> - a string containing a Subversion repository URL</li>
+</ul>
+
+<p>Default: none.</p>
+
+<h5 id="submodules"><code class="language-plaintext highlighter-rouge">submodules</code></h5>
+
+<p>Specifies whether to initialize and update each submodule in the repository. (Requires the <code class="language-plaintext highlighter-rouge">submodules</code> feature.) Valid options: ‘true’ and ‘false’. Default: ‘true’.</p>
+
+<h5 id="trust_server_cert"><code class="language-plaintext highlighter-rouge">trust_server_cert</code></h5>
+
+<p>Instructs Subversion to accept SSL server certificates issued by unknown certificate authorities. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+
+<h5 id="user"><code class="language-plaintext highlighter-rouge">user</code></h5>
+
+<p>Specifies the user to run as for repository operations. (Requires the <code class="language-plaintext highlighter-rouge">user</code> feature.) Valid options: a string containing a username or UID. Default: none.</p>
+
+<p>##Limitations</p>
+
+<p>Git is the only VCS provider officially <a href="https://forge.puppetlabs.com/supported">supported</a> by Puppet Labs.</p>
+
+<p>This module has been tested with Puppet 2.7 and higher.</p>
+
+<p>The module has been tested on:</p>
+
+<ul>
+  <li>CentOS 5/6/7</li>
+  <li>Debian 6/7</li>
+  <li>Oracle 5/6/7</li>
+  <li>Red Hat Enterprise Linux 5/6/7</li>
+  <li>Scientific Linux 5/6/7</li>
+  <li>SLES 10/11/12</li>
+  <li>Ubuntu 10.04/12.04/14.04</li>
+</ul>
+
+<p>Testing on other platforms has been light and cannot be guaranteed.</p>
+
+<p>##Development</p>
+
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can’t access the huge number of platforms and myriad of hardware, software, and deployment configurations that Puppet is intended to serve.</p>
+
+<p>We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.</p>
+
+<p>You can read the complete module contribution guide <a href="http://projects.puppetlabs.com/projects/module-site/wiki/Module_contributing">on the Puppet Labs wiki.</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

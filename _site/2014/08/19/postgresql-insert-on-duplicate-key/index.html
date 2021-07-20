@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PostgreSQL: insert on duplicate key | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="PostgreSQL: insert on duplicate key" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Да-да. Постгрес не умеет делать insert \* on duplicate key ... Но это легко эмулируется последовательностью запросов. UPDATE table SET field=&#39;C&#39;, field2=&#39;Z&#39; WHERE id=3; INSERT INTO table (id, field, field2) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SELECT 3, &#39;C&#39;, &#39;Z&#39; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);" />
+<meta property="og:description" content="Да-да. Постгрес не умеет делать insert \* on duplicate key ... Но это легко эмулируется последовательностью запросов. UPDATE table SET field=&#39;C&#39;, field2=&#39;Z&#39; WHERE id=3; INSERT INTO table (id, field, field2) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SELECT 3, &#39;C&#39;, &#39;Z&#39; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);" />
+<link rel="canonical" href="http://localhost:4000/2014/08/19/postgresql-insert-on-duplicate-key/" />
+<meta property="og:url" content="http://localhost:4000/2014/08/19/postgresql-insert-on-duplicate-key/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2014-08-19T15:24:36+04:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PostgreSQL: insert on duplicate key" />
+<script type="application/ld+json">
+{"headline":"PostgreSQL: insert on duplicate key","dateModified":"2014-08-19T15:24:36+04:00","datePublished":"2014-08-19T15:24:36+04:00","description":"Да-да. Постгрес не умеет делать insert \\* on duplicate key ... Но это легко эмулируется последовательностью запросов. UPDATE table SET field=&#39;C&#39;, field2=&#39;Z&#39; WHERE id=3; INSERT INTO table (id, field, field2) &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; SELECT 3, &#39;C&#39;, &#39;Z&#39; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2014/08/19/postgresql-insert-on-duplicate-key/"},"@type":"BlogPosting","url":"http://localhost:4000/2014/08/19/postgresql-insert-on-duplicate-key/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">PostgreSQL: insert on duplicate key</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>PostgreSQL: insert on duplicate key</h1>
+<p>19 Aug 2014</p>
+
+<p>Да-да. Постгрес не умеет делать</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">insert</span> <span class="err">\</span><span class="o">*</span> <span class="k">on</span> <span class="n">duplicate</span> <span class="k">key</span> <span class="p">...</span>
+</code></pre></div></div>
+
+<p>Но это легко <a href="http://stackoverflow.com/a/6527838/1216190">эмулируется</a> последовательностью запросов.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="k">table</span> <span class="k">SET</span> <span class="n">field</span><span class="o">=</span><span class="s1">'C'</span><span class="p">,</span> <span class="n">field2</span><span class="o">=</span><span class="s1">'Z'</span> <span class="k">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>  
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="k">table</span> <span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">field2</span><span class="p">)</span>  
+<span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span> <span class="k">SELECT</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">,</span> <span class="s1">'Z'</span>  
+<span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">nbsp</span><span class="p">;</span> <span class="k">WHERE</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="p">(</span><span class="k">SELECT</span> <span class="mi">1</span> <span class="k">FROM</span> <span class="k">table</span> <span class="k">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
+</code></pre></div></div>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

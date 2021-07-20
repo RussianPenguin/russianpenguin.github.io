@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Fedora: сброс политик SELinux в дефолт | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Fedora: сброс политик SELinux в дефолт" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="SELinux штука очень мощная и полезная. Но вот незадача: иногда ее настроить бывает слишком тяжело. И можно просто довести систему до состояния, когда она не загружается (особенно если играться с политикой доступа к каталогам :)). Для таких случаев нужно уметь сбрасывать политики в дефолтное состояние. Сначала загружаем систему в failback-режиме (там selinux отключен). Теперь setenforce 0 # dnf erase selinux-policy selinux-policy-targeted # dnf mv /etc/selinux/targeted{,.backup} # reboot После перезагрузки системы selinux будет отключен. Нужно поставить пакеты, которые мы удаляли. # dnf install selinux-policy selinux-policy-targeted И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим SELINUX=disabled на SELINUX=enforcing После очередной перезагрузки мы увидим, что с SELinux все хорошо. Если же вам повезло и вы можете загрузить систему в нормальном режиме, то шаги выше можно делать без перезагрузок. Документация." />
+<meta property="og:description" content="SELinux штука очень мощная и полезная. Но вот незадача: иногда ее настроить бывает слишком тяжело. И можно просто довести систему до состояния, когда она не загружается (особенно если играться с политикой доступа к каталогам :)). Для таких случаев нужно уметь сбрасывать политики в дефолтное состояние. Сначала загружаем систему в failback-режиме (там selinux отключен). Теперь setenforce 0 # dnf erase selinux-policy selinux-policy-targeted # dnf mv /etc/selinux/targeted{,.backup} # reboot После перезагрузки системы selinux будет отключен. Нужно поставить пакеты, которые мы удаляли. # dnf install selinux-policy selinux-policy-targeted И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим SELINUX=disabled на SELINUX=enforcing После очередной перезагрузки мы увидим, что с SELinux все хорошо. Если же вам повезло и вы можете загрузить систему в нормальном режиме, то шаги выше можно делать без перезагрузок. Документация." />
+<link rel="canonical" href="http://localhost:4000/2015/09/30/fedora-%D1%81%D0%B1%D1%80%D0%BE%D1%81-%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA-selinux-%D0%B2-%D0%B4%D0%B5%D1%84%D0%BE%D0%BB%D1%82/" />
+<meta property="og:url" content="http://localhost:4000/2015/09/30/fedora-%D1%81%D0%B1%D1%80%D0%BE%D1%81-%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA-selinux-%D0%B2-%D0%B4%D0%B5%D1%84%D0%BE%D0%BB%D1%82/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-09-30T21:11:06+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fedora: сброс политик SELinux в дефолт" />
+<script type="application/ld+json">
+{"headline":"Fedora: сброс политик SELinux в дефолт","dateModified":"2015-09-30T21:11:06+03:00","datePublished":"2015-09-30T21:11:06+03:00","description":"SELinux штука очень мощная и полезная. Но вот незадача: иногда ее настроить бывает слишком тяжело. И можно просто довести систему до состояния, когда она не загружается (особенно если играться с политикой доступа к каталогам :)). Для таких случаев нужно уметь сбрасывать политики в дефолтное состояние. Сначала загружаем систему в failback-режиме (там selinux отключен). Теперь setenforce 0 # dnf erase selinux-policy selinux-policy-targeted # dnf mv /etc/selinux/targeted{,.backup} # reboot После перезагрузки системы selinux будет отключен. Нужно поставить пакеты, которые мы удаляли. # dnf install selinux-policy selinux-policy-targeted И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим SELINUX=disabled на SELINUX=enforcing После очередной перезагрузки мы увидим, что с SELinux все хорошо. Если же вам повезло и вы можете загрузить систему в нормальном режиме, то шаги выше можно делать без перезагрузок. Документация.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/09/30/fedora-%D1%81%D0%B1%D1%80%D0%BE%D1%81-%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA-selinux-%D0%B2-%D0%B4%D0%B5%D1%84%D0%BE%D0%BB%D1%82/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/09/30/fedora-%D1%81%D0%B1%D1%80%D0%BE%D1%81-%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA-selinux-%D0%B2-%D0%B4%D0%B5%D1%84%D0%BE%D0%BB%D1%82/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Fedora: сброс политик SELinux в дефолт</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Fedora: сброс политик SELinux в дефолт</h1>
+<p>30 Sep 2015</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2015/09/getenforce.png"><img src="/assets/images/2015/09/getenforce.png?w=150" alt="getenforce" /></a>SELinux штука очень мощная и полезная. Но вот незадача: иногда ее настроить бывает слишком тяжело. И можно просто довести систему до состояния, когда она не загружается (особенно если играться с политикой доступа к каталогам :)).<br />
+Для таких случаев нужно уметь сбрасывать политики в дефолтное состояние.<br />
+Сначала загружаем систему в failback-режиме (там selinux отключен).</p>
+
+<p>Теперь</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenforce 0  
+# dnf erase selinux-policy selinux-policy-targeted  
+# dnf mv /etc/selinux/targeted{,.backup}  
+# reboot
+</code></pre></div></div>
+
+<p>После перезагрузки системы selinux будет отключен.</p>
+
+<p>Нужно поставить пакеты, которые мы удаляли.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># dnf install selinux-policy selinux-policy-targeted
+</code></pre></div></div>
+
+<p>И теперь включить сам механизм. Для этого отредактируем файл /etc/selinux/config и заменим</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELINUX=disabled
+</code></pre></div></div>
+<p>на</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELINUX=enforcing
+</code></pre></div></div>
+
+<p>После очередной перезагрузки мы увидим, что с SELinux все хорошо.</p>
+
+<p>Если же вам повезло и вы можете загрузить систему в нормальном режиме, то шаги выше можно делать без перезагрузок.</p>
+
+<p><a href="https://docs.fedoraproject.org/en-US/Fedora/21/html/SELinux_Users_and_Administrators_Guide/index.html">Документация</a>.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

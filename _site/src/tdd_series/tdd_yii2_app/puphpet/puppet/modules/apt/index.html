@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>apt | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="apt" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apt/" />
+<meta property="og:url" content="http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apt/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="apt" />
+<script type="application/ld+json">
+{"headline":"apt","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/src/tdd_series/tdd_yii2_app/puphpet/puppet/modules/apt/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">apt</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="apt">apt</h1>
+
+<h4 id="table-of-contents">Table of Contents</h4>
+
+<ol>
+  <li><a href="#module-description">Module Description - What the module does and why it is useful</a></li>
+  <li><a href="#setup">Setup - The basics of getting started with apt</a>
+    <ul>
+      <li><a href="#what-apt-affects">What apt affects</a></li>
+      <li><a href="#beginning-with-apt">Beginning with apt</a></li>
+    </ul>
+  </li>
+  <li><a href="#usage">Usage - Configuration options and additional functionality</a>
+    <ul>
+      <li><a href="#add-gpg-keys">Add GPG keys</a></li>
+      <li><a href="#prioritize-backports">Prioritize backports</a></li>
+      <li><a href="#update-the-list-of-packages">Update the list of packages</a></li>
+      <li><a href="#pin-a-specific-release">Pin a specific release</a></li>
+      <li><a href="#add-a-personal-package-archive-repository">Add a Personal Package Archive repository</a></li>
+      <li><a href="#configure-apt-from-hiera">Configure Apt from Hiera</a></li>
+      <li><a href="#replace-the-default-sourceslist-file">Replace the default sources.list file</a></li>
+    </ul>
+  </li>
+  <li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a>
+    <ul>
+      <li><a href="#classes">Classes</a></li>
+      <li><a href="#defined-types">Defined Types</a></li>
+      <li><a href="#types">Types</a></li>
+      <li><a href="#facts">Facts</a></li>
+    </ul>
+  </li>
+  <li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+  <li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<h2 id="module-description">Module Description</h2>
+
+<p>The apt module lets you use Puppet to manage Apt sources, keys, and other configuration options.</p>
+
+<p>Apt (Advanced Package Tool) is a package manager available on Debian, Ubuntu, and several other operating systems. The apt module provides a series of classes, defines, types, and facts to help you automate Apt package management.</p>
+
+<p><strong>Note</strong>: For this module to correctly autodetect which version of Debian/Ubuntu (or derivative) you’re running, you need to make sure the ‘lsb-release’ package is installed. We highly recommend you either make this part of your provisioning layer, if you run many Debian or derivative systems, or ensure that you have Facter 2.2.0 or later installed, which will pull this dependency in for you.</p>
+
+<h2 id="setup">Setup</h2>
+
+<h3 id="what-apt-affects">What apt affects</h3>
+
+<ul>
+  <li>Your system’s <code class="language-plaintext highlighter-rouge">preferences</code> file and <code class="language-plaintext highlighter-rouge">preferences.d</code> directory</li>
+  <li>Your system’s <code class="language-plaintext highlighter-rouge">sources.list</code> file and <code class="language-plaintext highlighter-rouge">sources.list.d</code> directory</li>
+  <li>System repositories</li>
+  <li>Authentication keys</li>
+</ul>
+
+<p><strong>Note:</strong> This module offers <code class="language-plaintext highlighter-rouge">purge</code> parameters which, if set to ‘true’, <strong>destroy</strong> any configuration on the node’s <code class="language-plaintext highlighter-rouge">sources.list(.d)</code> and <code class="language-plaintext highlighter-rouge">preferences(.d)</code> that you haven’t declared through Puppet. The default for these parameters is ‘false’.</p>
+
+<h3 id="beginning-with-apt">Beginning with apt</h3>
+
+<p>To use the apt module with default parameters, declare the <code class="language-plaintext highlighter-rouge">apt</code> class.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">include</span> <span class="nc">apt</span>
+</code></pre></div></div>
+
+<p><strong>Note:</strong> The main <code class="language-plaintext highlighter-rouge">apt</code> class is required by all other classes, types, and defined types in this module. You must declare it whenever you use the module.</p>
+
+<h2 id="usage">Usage</h2>
+
+<h3 id="add-gpg-keys">Add GPG keys</h3>
+
+<p><strong>Warning:</strong> Using short key IDs presents a serious security issue, potentially leaving you open to collision attacks. We recommend you always use full fingerprints to identify your GPG keys. This module allows short keys, but issues a security warning if you use them.</p>
+
+<p>Declare the <code class="language-plaintext highlighter-rouge">apt::key</code> class:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::key</span> <span class="p">{</span> <span class="s1">'puppetlabs'</span><span class="p">:</span>
+  <span class="py">id</span>      <span class="p">=&gt;</span> <span class="s1">'47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30'</span><span class="p">,</span>
+  <span class="py">server</span>  <span class="p">=&gt;</span> <span class="s1">'pgp.mit.edu'</span><span class="p">,</span>
+  <span class="py">options</span> <span class="p">=&gt;</span> <span class="s1">'http-proxy="http://proxyuser:proxypass@example.org:3128"'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="prioritize-backports">Prioritize backports</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'apt::backports'</span><span class="p">:</span>
+  <span class="py">pin</span> <span class="p">=&gt;</span> <span class="m">500</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>By default, the <code class="language-plaintext highlighter-rouge">apt::backports</code> class drops a pin file for backports, pinning it to a priority of 200. This is lower than the normal default of 500, so packages with <code class="language-plaintext highlighter-rouge">ensure =&gt; latest</code> don’t get upgraded from backports without your explicit permission.</p>
+
+<p>If you raise the priority through the <code class="language-plaintext highlighter-rouge">pin</code> parameter to 500, normal policy goes into effect and Apt installs or upgrades to the newest version. This means that if a package is available from backports, it and its dependencies are pulled in from backports unless you explicitly set the <code class="language-plaintext highlighter-rouge">ensure</code> attribute of the <code class="language-plaintext highlighter-rouge">package</code> resource to <code class="language-plaintext highlighter-rouge">installed</code>/<code class="language-plaintext highlighter-rouge">present</code> or a specific version.</p>
+
+<h3 id="update-the-list-of-packages">Update the list of packages</h3>
+
+<p>By default, Puppet runs <code class="language-plaintext highlighter-rouge">apt-get update</code> on the first Puppet run after you include the <code class="language-plaintext highlighter-rouge">apt</code> class, and anytime <code class="language-plaintext highlighter-rouge">notify  =&gt; Exec['apt_update']</code> occurs; i.e., whenever config files get updated or other relevant changes occur. If you set <code class="language-plaintext highlighter-rouge">update['frequency']</code> to ‘always’, the update runs on every Puppet run. You can also set <code class="language-plaintext highlighter-rouge">update['frequency']</code> to ‘daily’ or ‘weekly’:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="p">{</span> <span class="s1">'apt'</span><span class="p">:</span>
+  <span class="py">update</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="py">frequency</span> <span class="p">=&gt;</span> <span class="s1">'daily'</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="pin-a-specific-release">Pin a specific release</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::pin</span> <span class="p">{</span> <span class="s1">'karmic'</span><span class="p">:</span> <span class="py">priority</span> <span class="p">=&gt;</span> <span class="m">700</span> <span class="p">}</span>
+<span class="n">apt::pin</span> <span class="p">{</span> <span class="s1">'karmic-updates'</span><span class="p">:</span> <span class="py">priority</span> <span class="p">=&gt;</span> <span class="m">700</span> <span class="p">}</span>
+<span class="n">apt::pin</span> <span class="p">{</span> <span class="s1">'karmic-security'</span><span class="p">:</span> <span class="py">priority</span> <span class="p">=&gt;</span> <span class="m">700</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can also specify more complex pins using distribution properties:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::pin</span> <span class="p">{</span> <span class="s1">'stable'</span><span class="p">:</span>
+  <span class="py">priority</span>        <span class="p">=&gt;</span> <span class="o">-</span><span class="m">10</span><span class="p">,</span>
+  <span class="py">originator</span>      <span class="p">=&gt;</span> <span class="s1">'Debian'</span><span class="p">,</span>
+  <span class="py">release_version</span> <span class="p">=&gt;</span> <span class="s1">'3.0'</span><span class="p">,</span>
+  <span class="py">component</span>       <span class="p">=&gt;</span> <span class="s1">'main'</span><span class="p">,</span>
+  <span class="py">label</span>           <span class="p">=&gt;</span> <span class="s1">'Debian'</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To pin multiple packages, pass them to the <code class="language-plaintext highlighter-rouge">packages</code> parameter as an array or a space-delimited string.</p>
+
+<h3 id="add-a-personal-package-archive-repository">Add a Personal Package Archive repository</h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::ppa</span> <span class="p">{</span> <span class="s1">'ppa:drizzle-developers/ppa'</span><span class="p">:</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="add-an-apt-source-to-etcaptsourceslistd">Add an Apt source to <code class="language-plaintext highlighter-rouge">/etc/apt/sources.list.d/</code></h3>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::source</span> <span class="p">{</span> <span class="s1">'debian_unstable'</span><span class="p">:</span>
+  <span class="py">comment</span>  <span class="p">=&gt;</span> <span class="s1">'This is the iWeb Debian unstable mirror'</span><span class="p">,</span>
+  <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://debian.mirror.iweb.ca/debian/'</span><span class="p">,</span>
+  <span class="py">release</span>  <span class="p">=&gt;</span> <span class="s1">'unstable'</span><span class="p">,</span>
+  <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main contrib non-free'</span><span class="p">,</span>
+  <span class="py">pin</span>      <span class="p">=&gt;</span> <span class="s1">'-10'</span><span class="p">,</span>
+  <span class="py">key</span>      <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'id'</span>     <span class="p">=&gt;</span> <span class="s1">'A1BD8E9D78F7FE5C3E65D8AF8B48AD6246925553'</span><span class="p">,</span>
+    <span class="s1">'server'</span> <span class="p">=&gt;</span> <span class="s1">'subkeys.pgp.net'</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="py">include</span>  <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'src'</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'deb'</span> <span class="p">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To use the Puppet Labs Apt repository as a source:</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::source</span> <span class="p">{</span> <span class="s1">'puppetlabs'</span><span class="p">:</span>
+  <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://apt.puppetlabs.com'</span><span class="p">,</span>
+  <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main'</span><span class="p">,</span>
+  <span class="py">key</span>      <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'id'</span>     <span class="p">=&gt;</span> <span class="s1">'47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30'</span><span class="p">,</span>
+    <span class="s1">'server'</span> <span class="p">=&gt;</span> <span class="s1">'pgp.mit.edu'</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">},</span>
+</code></pre></div></div>
+
+<h3 id="configure-apt-from-hiera">Configure Apt from Hiera</h3>
+
+<p>Instead of specifying your sources directly as resources, you can instead just
+include the <code class="language-plaintext highlighter-rouge">apt</code> class, which will pick up the values automatically from
+hiera.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">apt::sources:</span>
+  <span class="s">'debian_unstable'</span><span class="pi">:</span>
+    <span class="na">comment</span><span class="pi">:</span> <span class="s1">'</span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">iWeb</span><span class="nv"> </span><span class="s">Debian</span><span class="nv"> </span><span class="s">unstable</span><span class="nv"> </span><span class="s">mirror'</span>
+    <span class="na">location</span><span class="pi">:</span> <span class="s1">'</span><span class="s">http://debian.mirror.iweb.ca/debian/'</span>
+    <span class="na">release</span><span class="pi">:</span> <span class="s1">'</span><span class="s">unstable'</span>
+    <span class="na">repos</span><span class="pi">:</span> <span class="s1">'</span><span class="s">main</span><span class="nv"> </span><span class="s">contrib</span><span class="nv"> </span><span class="s">non-free'</span>
+    <span class="na">pin</span><span class="pi">:</span> <span class="s1">'</span><span class="s">-10'</span>
+    <span class="na">key</span><span class="pi">:</span>
+      <span class="na">id</span><span class="pi">:</span> <span class="s1">'</span><span class="s">A1BD8E9D78F7FE5C3E65D8AF8B48AD6246925553'</span>
+      <span class="na">server</span><span class="pi">:</span> <span class="s1">'</span><span class="s">subkeys.pgp.net'</span>
+    <span class="na">include</span><span class="pi">:</span>
+      <span class="na">src</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">deb</span><span class="pi">:</span> <span class="no">true</span>
+
+  <span class="s1">'</span><span class="s">puppetlabs'</span><span class="pi">:</span>
+    <span class="na">location</span><span class="pi">:</span> <span class="s1">'</span><span class="s">http://apt.puppetlabs.com'</span>
+    <span class="na">repos</span><span class="pi">:</span> <span class="s1">'</span><span class="s">main'</span>
+    <span class="na">key</span><span class="pi">:</span>
+      <span class="na">id</span><span class="pi">:</span> <span class="s1">'</span><span class="s">47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30'</span>
+      <span class="na">server</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pgp.mit.edu'</span>
+</code></pre></div></div>
+
+<h3 id="replace-the-default-sourceslist-file">Replace the default sources.list file</h3>
+
+<p>The following example replaces the default <code class="language-plaintext highlighter-rouge">/etc/apt/sources.list</code>. Along with this code, be sure to use the <code class="language-plaintext highlighter-rouge">purge</code> parameter, or you might get duplicate source warnings when running Apt.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apt::source</span> <span class="p">{</span> <span class="s2">"archive.ubuntu.com-</span><span class="nv">${lsbdistcodename}</span><span class="s2">"</span><span class="p">:</span>
+  <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://archive.ubuntu.com/ubuntu'</span><span class="p">,</span>
+  <span class="py">key</span>      <span class="p">=&gt;</span> <span class="s1">'630239CC130E1A7FD81A27B140976EAF437D05B5'</span><span class="p">,</span>
+  <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main universe multiverse restricted'</span><span class="p">,</span>
+<span class="p">}</span>
+ 
+<span class="n">apt::source</span> <span class="p">{</span> <span class="s2">"archive.ubuntu.com-</span><span class="nv">${lsbdistcodename}</span><span class="s2">-security"</span><span class="p">:</span>
+  <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://archive.ubuntu.com/ubuntu'</span><span class="p">,</span>
+  <span class="py">key</span>      <span class="p">=&gt;</span> <span class="s1">'630239CC130E1A7FD81A27B140976EAF437D05B5'</span><span class="p">,</span>
+  <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main universe multiverse restricted'</span><span class="p">,</span>
+  <span class="py">release</span>  <span class="p">=&gt;</span> <span class="s2">"</span><span class="nv">${lsbdistcodename}</span><span class="s2">-security"</span>
+<span class="p">}</span>
+ 
+<span class="n">apt::source</span> <span class="p">{</span> <span class="s2">"archive.ubuntu.com-</span><span class="nv">${lsbdistcodename}</span><span class="s2">-updates"</span><span class="p">:</span>
+  <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://archive.ubuntu.com/ubuntu'</span><span class="p">,</span>
+  <span class="py">key</span>      <span class="p">=&gt;</span> <span class="s1">'630239CC130E1A7FD81A27B140976EAF437D05B5'</span><span class="p">,</span>
+  <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main universe multiverse restricted'</span><span class="p">,</span>
+  <span class="py">release</span>  <span class="p">=&gt;</span> <span class="s2">"</span><span class="nv">${lsbdistcodename}</span><span class="s2">-updates"</span>
+<span class="p">}</span>
+ 
+<span class="n">apt::source</span> <span class="p">{</span> <span class="s2">"archive.ubuntu.com-</span><span class="nv">${lsbdistcodename}</span><span class="s2">-backports"</span><span class="p">:</span>
+ <span class="py">location</span> <span class="p">=&gt;</span> <span class="s1">'http://archive.ubuntu.com/ubuntu'</span><span class="p">,</span>
+ <span class="py">key</span>      <span class="p">=&gt;</span> <span class="s1">'630239CC130E1A7FD81A27B140976EAF437D05B5'</span><span class="p">,</span>
+ <span class="py">repos</span>    <span class="p">=&gt;</span> <span class="s1">'main universe multiverse restricted'</span><span class="p">,</span>
+ <span class="py">release</span>  <span class="p">=&gt;</span> <span class="s2">"</span><span class="nv">${lsbdistcodename}</span><span class="s2">-backports"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+
+<h3 id="classes">Classes</h3>
+
+<h4 id="public-classes">Public Classes</h4>
+
+<ul>
+  <li><a href="#class-apt"><code class="language-plaintext highlighter-rouge">apt</code></a></li>
+  <li><a href="#class-aptbackports"><code class="language-plaintext highlighter-rouge">apt::backports</code></a></li>
+</ul>
+
+<h4 id="private-classes">Private Classes</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">apt::params</code>: Provides defaults for the apt module parameters.</li>
+  <li><code class="language-plaintext highlighter-rouge">apt::update</code>: Updates the list of available packages using <code class="language-plaintext highlighter-rouge">apt-get update</code>.</li>
+</ul>
+
+<h3 id="defined-types">Defined Types</h3>
+
+<ul>
+  <li><a href="#defined-type-aptconf"><code class="language-plaintext highlighter-rouge">apt::conf</code></a></li>
+  <li><a href="#defined-type-aptkey"><code class="language-plaintext highlighter-rouge">apt::key</code></a></li>
+  <li><a href="#defined-type-aptpin"><code class="language-plaintext highlighter-rouge">apt::pin</code></a></li>
+  <li><a href="#defined-type-aptppa"><code class="language-plaintext highlighter-rouge">apt::ppa</code></a></li>
+  <li><a href="#defined-type-aptsetting"><code class="language-plaintext highlighter-rouge">apt::setting</code></a></li>
+  <li><a href="#defined-type-aptsource"><code class="language-plaintext highlighter-rouge">apt::source</code></a></li>
+</ul>
+
+<h3 id="types">Types</h3>
+
+<ul>
+  <li><a href="#type-apt_key"><code class="language-plaintext highlighter-rouge">apt_key</code></a></li>
+</ul>
+
+<h3 id="facts">Facts</h3>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">apt_updates</code>: The number of installed packages with available updates.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">apt_security_updates</code>: The number of installed packages with available security updates.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">apt_package_updates</code>: The names of all installed packages with available updates. In Facter 2.0 and later this data is formatted as an array; in earlier versions it is a comma-delimited string.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">apt_update_last_success</code>: The date, in epochtime, of the most recent successful <code class="language-plaintext highlighter-rouge">apt-get update</code> run (based on the mtime of  /var/lib/apt/periodic/update-success-stamp).</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">apt_reboot_required</code>: Determines if a reboot is necessary after updates have been installed.</p>
+  </li>
+</ul>
+
+<h4 id="class-apt">Class: <code class="language-plaintext highlighter-rouge">apt</code></h4>
+
+<p>Main class, includes all other classes.</p>
+
+<h5 id="parameters-all-optional">Parameters (all optional)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">confs</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::conf</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">keys</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::key</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ppas</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::ppa</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">proxy</code>: Configures Apt to connect to a proxy server. Valid options: a hash made up from the following keys:</p>
+
+    <ul>
+      <li>
+        <p>‘host’: Specifies a proxy host to be stored in <code class="language-plaintext highlighter-rouge">/etc/apt/apt.conf.d/01proxy</code>. Valid options: a string containing a hostname. Default: undef.</p>
+      </li>
+      <li>
+        <p>‘port’: Specifies a proxy port to be stored in <code class="language-plaintext highlighter-rouge">/etc/apt/apt.conf.d/01proxy</code>. Valid options: a string containing a port number. Default: ‘8080’.</p>
+      </li>
+      <li>
+        <p>‘https’: Specifies whether to enable https proxies. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+      <li>
+        <p>‘ensure’: Optional parameter. Valid options: ‘file’, ‘present’, and ‘absent’. Default: ‘undef’. Prefer ‘file’ over ‘present’.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">purge</code>: Specifies whether to purge any existing settings that aren’t managed by Puppet. Valid options: a hash made up from the following keys:</p>
+
+    <ul>
+      <li>
+        <p>‘sources.list’: Specifies whether to purge any unmanaged entries from <code class="language-plaintext highlighter-rouge">sources.list</code>. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+      <li>
+        <p>‘sources.list.d’: Specifies whether to purge any unmanaged entries from <code class="language-plaintext highlighter-rouge">sources.list.d</code>. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+      <li>
+        <p>‘preferences’: Specifies whether to purge any unmanaged entries from <code class="language-plaintext highlighter-rouge">preferences</code>. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+      <li>
+        <p>‘preferences.d’: Specifies whether to purge any unmanaged entries from <code class="language-plaintext highlighter-rouge">preferences.d</code>. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">settings</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::setting</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">sources</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::source</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">pins</code>: Creates new <code class="language-plaintext highlighter-rouge">apt::pin</code> resources. Valid options: a hash to be passed to the <a href="https://docs.puppetlabs.com/references/latest/function.html#createresources"><code class="language-plaintext highlighter-rouge">create_resources</code> function</a>. Default: {}.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">update</code>: Configures various update settings. Valid options: a hash made up from the following keys:</p>
+
+    <ul>
+      <li>
+        <p>‘frequency’: Specifies how often to run <code class="language-plaintext highlighter-rouge">apt-get update</code>. If the exec resource <code class="language-plaintext highlighter-rouge">apt_update</code> is notified, <code class="language-plaintext highlighter-rouge">apt-get update</code> runs regardless of this value. Valid options: ‘always’ (at every Puppet run); ‘daily’ (if the value of <code class="language-plaintext highlighter-rouge">apt_update_last_success</code> is less than current epoch time minus 86400); ‘weekly’ (if the value of <code class="language-plaintext highlighter-rouge">apt_update_last_success</code> is less than current epoch time minus 604800); and ‘reluctantly’ (only if the exec resource <code class="language-plaintext highlighter-rouge">apt_update</code> is notified). Default: ‘reluctantly’.</p>
+      </li>
+      <li>
+        <p>‘timeout’: Specifies how long to wait for the update to complete before canceling it. Valid options: an integer, in seconds. Default: 300.</p>
+      </li>
+      <li>
+        <p>‘tries’: Specifies how many times to retry the update after receiving a DNS or HTTP error. Valid options: an integer. Default: 1.</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="class-aptbackports">Class: <code class="language-plaintext highlighter-rouge">apt::backports</code></h4>
+
+<p>Manages backports.</p>
+
+<h5 id="parameters-all-optional-on-debian-and-ubuntu-all-required-on-other-operating-systems-except-where-specified">Parameters (all optional on Debian and Ubuntu; all required on other operating systems, except where specified)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key</code>: Specifies a key to authenticate the backports. Valid options: a string to be passed to the <code class="language-plaintext highlighter-rouge">id</code> parameter of the <code class="language-plaintext highlighter-rouge">apt::key</code> defined type, or a hash of <code class="language-plaintext highlighter-rouge">parameter =&gt; value</code> pairs to be passed to <code class="language-plaintext highlighter-rouge">apt::key</code>’s <code class="language-plaintext highlighter-rouge">id</code>, <code class="language-plaintext highlighter-rouge">server</code>, <code class="language-plaintext highlighter-rouge">content</code>, <code class="language-plaintext highlighter-rouge">source</code>, and/or <code class="language-plaintext highlighter-rouge">options</code> parameters. Defaults:</p>
+
+    <ul>
+      <li>Debian: ‘A1BD8E9D78F7FE5C3E65D8AF8B48AD6246925553’</li>
+      <li>Ubuntu: ‘630239CC130E1A7FD81A27B140976EAF437D05B5’</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">location</code>: Specifies an Apt repository containing the backports to manage. Valid options: a string containing a URL. Defaults:</p>
+
+    <ul>
+      <li>Debian (squeeze): ‘http://httpredir.debian.org/debian-backports’</li>
+      <li>Debian (other): ‘http://httpredir.debian.org/debian’</li>
+      <li>Ubuntu: ‘http://archive.ubuntu.com/ubuntu’</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">pin</code>: <em>Optional.</em> Specifies a pin priority for the backports. Valid options: a number or string to be passed to the <code class="language-plaintext highlighter-rouge">id</code> parameter of the <code class="language-plaintext highlighter-rouge">apt::pin</code> defined type, or a hash of <code class="language-plaintext highlighter-rouge">parameter =&gt; value</code> pairs to be passed to <code class="language-plaintext highlighter-rouge">apt::pin</code>’s corresponding parameters. Default: ‘200’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">release</code>: Specifies a distribution of the Apt repository containing the backports to manage. Valid options: a string containing the release, used in populating the <code class="language-plaintext highlighter-rouge">source.list</code> configuration file. Default: on Debian and Ubuntu, ‘${lsbdistcodename}-backports’. We recommend keeping this default, except on other operating systems.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">repos</code>: Specifies a component of the Apt repository containing the backports to manage. Valid options: A string containing the repos to include, used in populating the <code class="language-plaintext highlighter-rouge">source.list</code> configuration file. Defaults:</p>
+
+    <ul>
+      <li>Debian: ‘main contrib non-free’</li>
+      <li>Ubuntu: ‘main universe multiverse restricted’</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptconf">Defined Type: <code class="language-plaintext highlighter-rouge">apt::conf</code></h4>
+
+<p>Specifies a custom Apt configuration file.</p>
+
+<h5 id="parameters">Parameters</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">content</code>: <em>Required, unless <code class="language-plaintext highlighter-rouge">ensure</code> is set to ‘absent’.</em> Directly supplies content for the configuration file. Valid options: a string. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the configuration file should exist. Valid options: ‘present’ and ‘absent’. Default: ‘present’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">priority</code>: <em>Optional.</em> Determines the order in which Apt processes the configuration file. Files with lower priority numbers are loaded first. Valid options: a string containing an integer. Default: ‘50’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">notify_update</code>: <em>Optional.</em> Specifies whether to trigger an <code class="language-plaintext highlighter-rouge">apt-get update</code> run. Valid options: ‘true’ and ‘false’. Default: ‘true’.</p>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptkey">Defined Type: <code class="language-plaintext highlighter-rouge">apt::key</code></h4>
+
+<p>Manages the GPG keys that Apt uses to authenticate packages.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">apt::key</code> defined type makes use of the <code class="language-plaintext highlighter-rouge">apt_key</code> type, but includes extra functionality to help prevent duplicate keys.</p>
+
+<h5 id="parameters-all-optional-1">Parameters (all optional)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">content</code>: Supplies the entire GPG key. Useful in case the key can’t be fetched from a remote location and using a file resource is inconvenient. Valid options: a string. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the key should exist. Valid options: ‘present’ and ‘absent’. Default: ‘present’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">id</code>: Specifies a GPG key to authenticate Apt package signatures. Valid options: a string containing a key ID (8 or 16 hexadecimal characters, optionally prefixed with “0x”) or a full key fingerprint (40 hexadecimal characters). Default: $title.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">options</code>: Passes additional options to <code class="language-plaintext highlighter-rouge">apt-key adv --keyserver-options</code>. Valid options: a string. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">source</code>: Specifies the location of an existing GPG key file to copy. Valid options: a string containing a URL (ftp://, http://, or https://) or an absolute path. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">server</code>: Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://, or hkp://). Default: ‘keyserver.ubuntu.com’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key</code>: Specifies a GPG key to authenticate Apt package signatures. Valid options: a string containing a key ID (8 or 16 hexadecimal characters, optionally prefixed with “0x”) or a full key fingerprint (40 hexadecimal characters). Default: undef. <strong>Note</strong> This parameter is deprecated and will be removed in a future release.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_content</code>: Supplies the entire GPG key. Useful in case the key can’t be fetched from a remote location and using a file resource is inconvenient. Valid options: a string. Default: undef. <strong>Note</strong> This parameter is deprecated and will be removed in a future release.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_source</code>: Specifies the location of an existing GPG key file to copy. Valid options: a string containing a URL (ftp://, http://, or https://) or an absolute path. Default: undef. <strong>Note</strong> This parameter is deprecated and will be removed in a future release.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_server</code>: Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://, or hkp://). Default: ‘keyserver.ubuntu.com’. <strong>Note</strong> This parameter is deprecated and will be removed in a future release.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_options</code>: Passes additional options to <code class="language-plaintext highlighter-rouge">apt-key adv --keyserver-options</code>. Valid options: a string. Default: undef. <strong>Note</strong> This parameter is deprecated and will be removed in a future release.</p>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptpin">Defined Type: <code class="language-plaintext highlighter-rouge">apt::pin</code></h4>
+
+<p>Manages Apt pins. Does not trigger an <code class="language-plaintext highlighter-rouge">apt-get update</code> run.</p>
+
+<p><strong>Note:</strong> For context on these parameters, we recommend reading the man page <a href="http://linux.die.net/man/5/apt_preferences">‘apt_preferences(5)’</a></p>
+
+<h5 id="parameters-all-optional-2">Parameters (all optional)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">codename</code>: Specifies the distribution (lsbdistcodename) of the Apt repository. Valid options: a string. Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">component</code>: Names the licensing component associated with the packages in the directory tree of the Release file. Valid options: a string. Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the pin should exist. Valid options: ‘file’, ‘present’, and ‘absent’. Default: ‘present’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">explanation</code>: Supplies a comment to explain the pin. Valid options: a string. Default: “${caller_module_name}: ${name}”.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">label</code>: Names the label of the packages in the directory tree of the Release file. Valid options: a string (most commonly, ‘debian’). Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">order</code>: Determines the order in which Apt processes the pin file. Files with lower order numbers are loaded first. Valid options: an integer. Default: 50.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">origin</code>: Tells Apt to prefer packages from the specified server. Valid options: a string containing a hostname. Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">originator</code>: Names the originator of the packages in the directory tree of the Release file. Valid options: a string (most commonly, ‘debian’). Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">packages</code>: Specifies which package(s) to pin. Valid options: a string or an array. Default: ‘*’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">priority</code>: Sets the priority of the package. If multiple versions of a given package are available, <code class="language-plaintext highlighter-rouge">apt-get</code> installs the one with the highest priority number (subject to dependency constraints). Valid options: an integer. Default: 0.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">release</code>: Tells Apt to prefer packages that support the specified release. Typical values include ‘stable’, ‘testing’, and ‘unstable’ Valid options: a string. Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">release_version</code>: Tells Apt to prefer packages that support the specified operating system release version (e.g., Debian release version 7). Valid options: a string. Default: ‘’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">version</code>: Tells Apt to prefer a specified package version or version range. Valid options: a string. Default: ‘’.</p>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptppa">Defined Type: <code class="language-plaintext highlighter-rouge">apt::ppa</code></h4>
+
+<p>Manages PPA repositories using <code class="language-plaintext highlighter-rouge">add-apt-repository</code>. Not supported on Debian.</p>
+
+<h5 id="parameters-all-optional-except-where-specified">Parameters (all optional, except where specified)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the PPA should exist. Valid options: ‘present’ and ‘absent’. Default: ‘present’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">options</code>: Supplies options to be passed to the <code class="language-plaintext highlighter-rouge">add-apt-repository</code> command. Valid options: a string. Defaults:</p>
+
+    <ul>
+      <li>Lucid: undef</li>
+      <li>All others: ‘-y’</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">package_manage</code>: Specifies whether Puppet should manage the package that provides <code class="language-plaintext highlighter-rouge">apt-add-repository</code>. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">package_name</code>: Names the package that provides the <code class="language-plaintext highlighter-rouge">apt-add-repository</code> command. Valid options: a string. Defaults:</p>
+
+    <ul>
+      <li>Lucid and Precise: ‘python-software-properties’</li>
+      <li>Trusty and newer: ‘software-properties-common’</li>
+      <li>All others: ‘python-software-properties’</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">release</code>: <em>Optional if lsb-release is installed (unless you’re using a different release than indicated by lsb-release, e.g., Linux Mint).</em> Specifies the operating system of your node. Valid options: a string containing a valid LSB distribution codename. Default: “$lsbdistcodename”.</p>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptsetting">Defined Type: <code class="language-plaintext highlighter-rouge">apt::setting</code></h4>
+
+<p>Manages Apt configuration files.</p>
+
+<h5 id="parameters-1">Parameters</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">content</code>: <em>Required, unless <code class="language-plaintext highlighter-rouge">source</code> is set.</em> Directly supplies content for the configuration file. Cannot be used in combination with <code class="language-plaintext highlighter-rouge">source</code>. Valid options: see the <code class="language-plaintext highlighter-rouge">content</code> attribute of <a href="https://docs.puppetlabs.com/references/latest/type.html#file-attribute-content">Puppet’s native <code class="language-plaintext highlighter-rouge">file</code> type</a>. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the file should exist. Valid options: ‘present’, ‘absent’, and ‘file’. Default: ‘file’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">notify_update</code>: <em>Optional.</em> Specifies whether to trigger an <code class="language-plaintext highlighter-rouge">apt-get update</code> run. Valid options: ‘true’ and ‘false’. Default: ‘true’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">priority</code>: <em>Optional.</em> Determines the order in which Apt processes the configuration file. Files with higher priority numbers are loaded first. Valid options: an integer or zero-padded integer. Default: 50.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">source</code>: <em>Required, unless <code class="language-plaintext highlighter-rouge">content</code> is set.</em> Specifies a source file to supply the content of the configuration file. Cannot be used in combination with <code class="language-plaintext highlighter-rouge">content</code>. Valid options: see the <code class="language-plaintext highlighter-rouge">source</code> attribute of <a href="https://docs.puppetlabs.com/references/latest/type.html#file-attribute-source">Puppet’s native <code class="language-plaintext highlighter-rouge">file</code> type</a>. Default: undef.</p>
+  </li>
+</ul>
+
+<h4 id="defined-type-aptsource">Defined Type: <code class="language-plaintext highlighter-rouge">apt::source</code></h4>
+
+<p>Manages the Apt sources in <code class="language-plaintext highlighter-rouge">/etc/apt/sources.list.d/</code>.</p>
+
+<h5 id="parameters-all-optional-except-where-specified-1">Parameters (all optional, except where specified)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">allow_unsigned</code>: Specifies whether to authenticate packages from this release, even if the Release file is not signed or the signature can’t be checked. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">architecture</code>: Tells Apt to only download information for specified architectures. Valid options: a string containing one or more architecture names, separated by commas (e.g., ‘i386’ or ‘i386,alpha,powerpc’). Default: undef (if unspecified, Apt downloads information for all architectures defined in the Apt::Architectures option).</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">comment</code>: Supplies a comment for adding to the Apt source file. Valid options: a string. Default: $name.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">ensure</code>: Specifies whether the Apt source file should exist. Valid options: ‘present’ and ‘absent’. Default: ‘present’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key</code>: Creates a declaration of the apt::key defined type. Valid options: a string to be passed to the <code class="language-plaintext highlighter-rouge">id</code> parameter of the <code class="language-plaintext highlighter-rouge">apt::key</code> defined type, or a hash of <code class="language-plaintext highlighter-rouge">parameter =&gt; value</code> pairs to be passed to <code class="language-plaintext highlighter-rouge">apt::key</code>’s <code class="language-plaintext highlighter-rouge">id</code>, <code class="language-plaintext highlighter-rouge">server</code>, <code class="language-plaintext highlighter-rouge">content</code>, <code class="language-plaintext highlighter-rouge">source</code>, and/or <code class="language-plaintext highlighter-rouge">options</code> parameters. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">include</code>: Configures include options. Valid options: a hash of available keys. Default: {}. Available keys are:</p>
+
+    <ul>
+      <li>
+        <p>‘deb’ - Specifies whether to request the distribution’s compiled binaries. Valid options: ‘true’ and ‘false’. Default: ‘true’.</p>
+      </li>
+      <li>
+        <p>‘src’ - Specifies whether to request the distribution’s uncompiled source code. Valid options: ‘true’ and ‘false’. Default: ‘false’.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">location</code>: <em>Required, unless <code class="language-plaintext highlighter-rouge">ensure</code> is set to ‘absent’.</em> Specifies an Apt repository. Valid options: a string containing a repository URL. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">pin</code>: Creates a declaration of the apt::pin defined type. Valid options: a number or string to be passed to the <code class="language-plaintext highlighter-rouge">id</code> parameter of the <code class="language-plaintext highlighter-rouge">apt::pin</code> defined type, or a hash of <code class="language-plaintext highlighter-rouge">parameter =&gt; value</code> pairs to be passed to <code class="language-plaintext highlighter-rouge">apt::pin</code>’s corresponding parameters. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">release</code>: Specifies a distribution of the Apt repository. Valid options: a string. Default: “$lsbdistcodename”.</p>
+
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">repos</code>: Specifies a component of the Apt repository. Valid options: a string. Default: ‘main’.</li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">include_deb</code>: Specify whether to request the distrubution’s compiled binaries. Valid options: ‘true’ and ‘false’. Default: undef. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">include_src</code>: Specifies whether to request the distribution’s uncompiled source code. Valid options: ‘true’ and ‘false’. Default: undef. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">required_packages</code>: Installs packages required for this Apt source via an exec. Default: ‘false’. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_content</code>: Specifies the content to be passed to <code class="language-plaintext highlighter-rouge">apt::key</code>. Default: undef. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_server</code>: Specifies the server to be passed to <code class="language-plaintext highlighter-rouge">apt::key</code>. Default: undef. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">key_source</code>: Specifies the source to be passed to <code class="language-plaintext highlighter-rouge">apt::key</code>. Default: undef. <strong>Note</strong>: This parameter is deprecated and will be removed in future versions of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">trusted_source</code>: Specifies whether to authenticate packages from this release, even if the Release file is not signed or the signature can’t be checked. Valid options: ‘true’ and ‘false’. Default: undef. This parameter is <strong>deprecated</strong> and will be removed in a future version of the module.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">notify_update</code>: <em>Optional.</em> Specifies whether to trigger an <code class="language-plaintext highlighter-rouge">apt-get update</code> run. Valid options: ‘true’ and ‘false’. Default: ‘true’.</p>
+  </li>
+</ul>
+
+<h4 id="type-apt_key">Type: <code class="language-plaintext highlighter-rouge">apt_key</code></h4>
+
+<p>Manages the GPG keys that Apt uses to authenticate packages.</p>
+
+<p><strong>Note:</strong> In most cases, we recommend using the <code class="language-plaintext highlighter-rouge">apt::key</code> defined type. It makes use of the <code class="language-plaintext highlighter-rouge">apt_key</code> type, but includes extra functionality to help prevent duplicate keys.</p>
+
+<h5 id="parameters-all-optional-3">Parameters (all optional)</h5>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">content</code>: Supplies the entire GPG key. Useful in case the key can’t be fetched from a remote location and using a file resource is inconvenient. Cannot be used in combination with <code class="language-plaintext highlighter-rouge">source</code>. Valid options: a string. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">options</code>: Passes additional options to <code class="language-plaintext highlighter-rouge">apt-key adv --keyserver-options</code>. Valid options: a string. Default: undef.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">server</code>: Specifies a keyserver to provide Puppet’s GPG key. Valid options: a string containing a domain name or a full URL. Default: ‘keyserver.ubuntu.com’.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">source</code>: Specifies the location of an existing GPG key file to copy. Cannot be used in combination with <code class="language-plaintext highlighter-rouge">content</code>. Valid options: a string containing a URL (ftp://, http://, or https://) or an absolute path. Default: undef.</p>
+  </li>
+</ul>
+
+<h2 id="limitations">Limitations</h2>
+
+<p>This module is tested and officially supported on Debian 6 and 7 and Ubuntu 10.04, 12.04, and 14.04. Testing on other platforms has been light and cannot be guaranteed.</p>
+
+<p>This module is not designed to be split across <a href="https://docs.puppetlabs.com/puppet/latest/reference/lang_run_stages.html">run stages</a>.</p>
+
+<h3 id="adding-new-sources-or-ppas">Adding new sources or PPAs</h3>
+
+<p>If you are adding a new source or PPA and trying to install packages from the new source or PPA on the same Puppet run, your <code class="language-plaintext highlighter-rouge">package</code> resource should depend on <code class="language-plaintext highlighter-rouge">Class['apt::update']</code>, in addition to depending on the <code class="language-plaintext highlighter-rouge">Apt::Source</code> or the <code class="language-plaintext highlighter-rouge">Apt::Ppa</code>. You can also add <a href="https://docs.puppetlabs.com/puppet/latest/reference/lang_collectors.html">collectors</a> to ensure that all packages happen after <code class="language-plaintext highlighter-rouge">apt::update</code>, but this can lead to dependency cycles and has implications for <a href="https://docs.puppetlabs.com/puppet/latest/reference/lang_collectors.html#behavior">virtual resources</a>.</p>
+
+<div class="language-puppet highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="p">[</span><span class="s1">'apt::update'</span><span class="p">]</span> <span class="p">-&gt;</span> <span class="nc">Package</span> <span class="p">&lt;|</span> <span class="n">provider</span> <span class="o">==</span> <span class="s1">'apt'</span> <span class="p">|&gt;</span>
+</code></pre></div></div>
+
+<h2 id="development">Development</h2>
+<p>Puppet Labs modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. We can’t access the huge number of platforms and myriad hardware, software, and deployment configurations that Puppet is intended to serve. We want to keep it as easy as possible to contribute changes so that our modules work in your environment. There are a few guidelines that we need contributors to follow so that we can have a chance of keeping on top of things.</p>
+
+<p>For more information, see our <a href="https://docs.puppetlabs.com/forge/contributing.html">module contribution guide.</a></p>
+
+<p>To see who’s already involved, see the <a href="https://github.com/puppetlabs/puppetlabs-apt/graphs/contributors">list of contributors.</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

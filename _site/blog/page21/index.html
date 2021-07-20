@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Page 21 of 35 for Чтобы не забыть | Записная книжка рассеянного [в пространстве и времени] программиста</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Чтобы не забыть" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<meta property="og:description" content="Записная книжка рассеянного [в пространстве и времени] программиста" />
+<link rel="canonical" href="http://localhost:4000/blog/page21/" />
+<meta property="og:url" content="http://localhost:4000/blog/page21/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<link rel="prev" href="http://localhost:4000/blog/page20/" />
+<link rel="next" href="http://localhost:4000/blog/page22/" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Чтобы не забыть" />
+<script type="application/ld+json">
+{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page21/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Чтобы не забыть</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <!-- This loops through the paginated posts -->
+
+  <h1><a href="/2014/11/30/%d0%b4%d0%b5%d0%bb%d0%b0%d0%b5%d0%bc-%d0%bf%d0%be%d0%b4%d1%81%d0%b2%d0%b5%d1%82%d0%ba%d1%83-%d1%81%d0%b8%d0%bd%d1%82%d0%b0%d0%ba%d1%81%d0%b8%d1%81%d0%b0-%d0%b4%d0%bb%d1%8f-less/">Делаем подсветку синтаксиса для less</a></h1>
+  <p class="author">
+    <span class="date">2014-11-30 23:51:38 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_138.png"><img src="/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_138.png?w=150" alt="Подсветка синтаксиса в less" /></a>Дефолтный вывод less  в консоли чрезвычайно скучный. И рассматривать километры одинаковых черно-белых листингов утомляет (или зеленых если у вас Ъ-хакерский терминал :)).</p>
+
+<p>Так привнесем же цветность в наши черно-белые терминал.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>python-pygments
+</code></pre></div></div>
+
+<p>А затем прописываем в .bashrc</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export LESS="-R"  
+export LESSOPEN="|pygmentize -g -O encoding=utf8 %s"
+</code></pre></div></div>
+
+<p>Кодировку ставим на выбор. Но если чаще всего работаем в юникоде, то и оставляем юникод.</p>
+
+<p>При этом будет подсвечиваться только вывод less, который вызван в дефолтной форме</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>less filename
+</code></pre></div></div>
+
+<p>Вывод же less, который работает с перенаправленным вводом подсвечиваться на будет. :)</p>
+
+<p><a href="http://pygments.org/" title="Python syntax highlighter">Проект pygments</a>.</p>
+
+
+  </div>
+
+  <h1><a href="/2014/11/16/kinect-%d0%b8%d0%b7%d0%b1%d0%b0%d0%b2%d0%bb%d1%8f%d0%b5%d0%bc%d1%81%d1%8f-%d0%be%d1%82-%d0%b8%d1%81%d0%ba%d0%b0%d0%b6%d0%b5%d0%bd%d0%b8%d0%b9-%d0%bf%d1%80%d0%b8-%d0%bf%d0%be%d0%bc%d0%be%d1%89%d0%b8/">Kinect: избавляемся от искажений при помощи потолка</a></h1>
+  <p class="author">
+    <span class="date">2014-11-16 21:22:20 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_125.png"><img src="/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_125.png?w=150" alt="Идеально плоский потолок" /></a>Давеча я <a href="http://russianpenguin.ru/2014/11/16/kinect-%D0%BE-%D0%B2%D0%BE%D1%81%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B8-%D0%BA%D0%BE%D0%BE%D1%80%D0%B4%D0%B8%D0%BD%D0%B0%D1%82-%D0%B8-%D0%B0%D0%B1%D0%B1%D0%B5%D1%80%D0%B0/" title="Kinect: о восстановлении координат и абберациях разного рода">писал</a> про то, как выглядят данные, которые приходят с сенсора. Такое поведение сенсора просто возмутительно и долго это продолжаться не может.</p>
+
+<p>Ок. А что нам потребуется? Нам потребуется потолок. Я внимательно его осмотрел и убедился, что в реальности он плоский. А вот на восстановленом изображении - нифига.</p>
+
+<p>Для начала нам нужно сохранить дамп глубин “идеального” потолка. Можно и стену если у вас есть достаточно плоской поверхности. :)</p>
+
+<p>В файл будет сохранена двумерная матрица из чисел разделенных пробелами. Строки по строкам и т.д. Позже поймем зачем именно так.</p>
+
+<p>Кусочек файла</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>888 889 890 890 890 890 890 891 890 891 891 892 892 892 892 892 892 892 892 892 891 893 892 892 892 892 892 ... 2047 2047 2047 2047 2047 2047 ...
+</code></pre></div></div>
+
+<p>Теперь посмотрим на картинку этой самой плоскости. Для этого запускаем <a href="http://maxima.sourceforge.net/" title="Maxima, a Computer Algebra System">maxima.</a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(%i1) load(numericalio);  
+(%i2) m: read\_matrix(&amp;quot;&amp;lt;путь к файлу с глубинами&amp;gt;&amp;quot;);  
+($i3) f(x, y) := float('m [round(x), round(y)]);  
+-- тут мы зададим функцию извлечения нужного значения из матрицы.  
+-- Так как матрица наши данные дискретны  
+-- и существуют только в определенных точках  
+(%i4) plot3d (f(x, y), [x, 1, 640], [y, 1, 480]);
+</code></pre></div></div>
+
+<p>О! Круто. Мы что-то видим.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_124.png"><img src="/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_124.png?w=300" alt="Потолок. Необработанная карта глубин" /></a></p>
+
+<p>Что-то не то :)</p>
+
+<p>Стоит заметить, что в режиме сырых данных FREENECT_DEPTH_11BIT самые правые 8 столбцов не используются и всегда возвращают значение FREENECT_DEPTH_RAW_MAX_VALUE. Об этом не стоит забывать при последующих действиях.</p>
+
+<p>Поэтому нам нужно посмотреть плоскость без правых столбцов (8 штук).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(%i4) plot3d (f(x, y), [x, 1, 632], [y, 1, 480]);
+</code></pre></div></div>
+
+<p>И тут уже то, что нам надо.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_123.png"><img src="/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_123.png?w=300" alt="Потолок: карта глубин после доработки" /></a>Это плоскость. Но не очень плоская. И таки да. Надо сделать ее обратно плоской. :)</p>
+
+<p>Мы знаем, что все точки данной поверхности равноудалены от плоскости, где расположен сенсор.</p>
+
+<p>Поэтому можно ввести коэффициент нормировки для каждой из точек (x, y). Который будет равен отношению реального расстояния к полученному.</p>
+
+<p>Зная этот коэффициент можно узнать, реальное расстояние до точки. Просто умножив полученное от кинекта значение на коэффициент нормировки в данной точке (x, y).</p>
+
+<p>Коэффициенты считаем один раз по калибровочному изображению. А затем загружаем в свое приложение и пользуемся.</p>
+
+<p>Минусы решения</p>
+
+<ul>
+  <li>Я предположил, что коэффициент нормировки зависит только от координат (x, y), но не зависит от глубины. Так это или нет - проверю. (пока датчик говорит, что я прав)</li>
+  <li>Плоскость по которой выполняется калибровка должна находится на расстоянии 2,5-3,5 метров от сенсора. Именно при таком положении коэффициенты нормировки будет точными.</li>
+  <li>Так как сенсор довольно чувствителен, то его положение должно быть параллельно плоскости калибровки (мне помогал обычный строительный уровень)</li>
+  <li>Так же перед калибровкой полученное изображение плоскости нужно сгладить для того, чтобы избавиться от шумов (это умеет делать матлабоский <a href="http://www.biomecardio.com/matlab/smoothn.html#11" title="Matlab: smoothn">smoothn</a>)</li>
+</ul>
+
+<p><strong>UPD</strong></p>
+
+<p><a href="https://github.com/RussianPenguin/kinectDepthView" title="Kinect depth view with Ogre3d">Код на гитхабе</a></p>
+
+
+  </div>
+
+  <h1><a href="/2014/11/16/kinect-%d0%be-%d0%b2%d0%be%d1%81%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b8-%d0%ba%d0%be%d0%be%d1%80%d0%b4%d0%b8%d0%bd%d0%b0%d1%82-%d0%b8-%d0%b0%d0%b1%d0%b1%d0%b5%d1%80%d0%b0/">Kinect: о восстановлении координат и абберациях разного рода</a></h1>
+  <p class="author">
+    <span class="date">2014-11-16 01:45:19 +0300</span>
+  </p>
+  <div class="content">
+   <p><a href="https://russianpenguin.files.wordpress.com/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_116.png"><img src="/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_116.png?w=300" alt="Вы не подумайте ничего - это плоскость." /></a>Нет. Вы не подцмайте ничего. это плоскость - вид сбоку. А точнее мой потолок. И не посмотри я на него через сенсоры кинета, то в жизни бы не узнал, насколько он “плоский”. :-D На самом деле потолок-то плоский. Но только разного рода нелинейные искажения, которые вносят сенсор и линзы не компенсируются ни встроенными калибровочными константами (которые зашиваются в каждую модель на заводе), ни функцией преобразования глубины кинекта в глубину реальную. Т.е. в метры/миллиметры.</p>
+
+<p>Так что же не так?</p>
+
+<p>Начнем с самого начала. Функция преобразования данных с датчика в глубину нелинейна по своей природе. Т.е. чем ближе объект наблюдения, чем с большей точностью мы можем мерять расстояние до объекта. Чем объект дальше, тем точность меньше. А это значит, что на 1 диницу шага датчика на ближнем расстоянии приходится меньше миллиметров.</p>
+
+<p>На сейчас ребята из openni <a href="http://openkinect.org/wiki/Imaging_Information" title="Color\Depth mapping">предлагают</a> новую версию функции преобразования сырых данных в метрические.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.1236 \* tan(rawDisparity / 2842.5 + 1.1863)
+</code></pre></div></div>
+
+<p>Эта формула даст нам значения в метрах. Есть еще одна формула (она предлагалась раньше).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1/(rawDisparity \* -0.0030711016 + 3.3309495161)
+</code></pre></div></div>
+
+<p>Теперь говорят, что она морально устарела. :)</p>
+
+<p>Посмотрим на обе формулы.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_120.png"><img src="/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_120.png?w=300" alt="Функция вычисления реальной глубины изображения" /></a>Тут мы видим, что обе дают практически одинаковый результат. Даже если их и увеличить, то расхождения будут заметны только на сильно высоких значениях датчика. Стоит заметить, что по иксу - это сырые данные. А по игреку - восстановленное расстояние (в миллиметрах. для удобства обе функции были домножены на 1000).</p>
+
+<p>Ок. Расстояние есть. Дальше нужно получать как-то координаты x и y. Так как с одной глубиной ничего интересного не получиться.</p>
+
+<p>Тут все интереснее.</p>
+
+<p>Мы знаем из спецификации сенсора (я говорю про первую версию если что):</p>
+
+<ul>
+  <li>угол обзора по горизонтали - 58 градусов</li>
+  <li>угол обзора по вертикали - 45 градусов</li>
+  <li>количество точек с датчика - 640х480</li>
+</ul>
+
+<p>И тут у нас должно появиться подозрение на эти спеки. Почему? Потому что ничего не говорится про относительный шаг между точками по горизонтали и по вертикали.</p>
+
+<p>Как мы можем предположить - расстояние измеренное от плоскости отображения до вируальной камеры должно быть всегда одинаковое, как бы мы его не мерили.</p>
+
+<p>Но что же получается. А получается следующее (изображение уперто <a href="http://stackoverflow.com/questions/17832238/kinect-intrinsic-parameters-from-field-of-view/18199938#18199938">отсюда</a>).</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/xk7pi.png"><img src="/assets/images/2014/11/xk7pi.png" alt="Поиск расстояния" /></a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tan(45/2)/tan(58/2) = 0,747261047
+</code></pre></div></div>
+
+<p>А это значит, что точка по вертикали будет 0,747261047, а точка по горизонтали - 1.</p>
+
+<p>Отлично. соотношение расстояний между точками по горизонтали и вертикали нашли.</p>
+
+<p>Тперь надо найти точки.</p>
+
+<p>После того, как данные глубины получены с кинекта формируем массив координат.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(x\_v, y\_v. raw\_depth)
+</code></pre></div></div>
+
+<p>Здесь x_v и y_v - это всего лишь индексы строки и столба в двумерном массиве глубин.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x\_v = [0, 639] y\_v = [0, 479]
+</code></pre></div></div>
+
+<p>дальше надо лишь превратить эту точку в точку с реальными координатами.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>z\_w = 123.6 \* tan(depth / 2842.5 + 1.1863)
+</code></pre></div></div>
+
+<p>Эм. А x_w и y_w? Тут все просто. По картинке выше мы знаем, что</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x\_v/f = x\_w/z\_w
+</code></pre></div></div>
+
+<p>Где f - это расстояние от камеры, то вьюпорта.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>f = MAX\_X/2 / tan(58/2) = 639/2 / tan(58/2)&amp;nbsp; = 319.5/tan(58/2)
+</code></pre></div></div>
+
+<p>Или аналогично для оси ординат. Но тут не стоит забывать про коэффициент отношения между расстоянием по горизонтали и вертикали.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>f = 0.747261047\*239.5/tan(45/2)
+</code></pre></div></div>
+
+<p>Теперь все просто</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>x\_w = (x\_v - 640/2) \* z\_w / f y\_w = (y\_v - 480/2) \* 0.747261047 \* z\_w / f
+</code></pre></div></div>
+
+<p>В случае с y_w не забываем про масштабный коэффициент.</p>
+
+<p>Но все эти вфводы позволяют нам лиш частично восстановить изображение. И все потому, что функция глубины - это фукция от трех переменных: x_v, y_v и depth, а не просто от depth. :) Так как влияние разного рода аббераций слишком велико (не то чтобы слишком +-10 самнтиметров по краям на растоянии 2 метра).</p>
+
+<p>Поэтому пока мой потолок будет зображать из себя часть поверхности сферы (или цилиндра) неопределенного радиуса.</p>
+
+<p><a href="https://russianpenguin.files.wordpress.com/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_115.png"><img src="/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_115.png" alt="Потолок (или часть сферы?)" /></a></p>
+
+<p><strong>UPD</strong></p>
+
+<p><a href="https://github.com/RussianPenguin/kinectDepthView" title="Kinect depth view with Ogre3d">Код на гитхабе</a></p>
+
+
+  </div>
+
+  <h1><a href="/2014/11/08/google-js-api-%d0%b4%d0%bb%d1%8f-angularjs/">Google JS API для AngularJS</a></h1>
+  <p class="author">
+    <span class="date">2014-11-08 17:00:46 +0300</span>
+  </p>
+  <div class="content">
+   <p>Написал небольшой враппер к гугловому апи для использования совместно с ангуляром. Взять можно на <a href="https://github.com/RussianPenguin/angularjs-gapi" title="angularjs-gapi">гитхабе</a>.</p>
+
+<p>Или в bower</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>bower <span class="nb">install </span>angularjs-gapi
+</code></pre></div></div>
+
+<h3 id="поключение">Поключение</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">]).</span><span class="nx">config</span><span class="p">([</span><span class="dl">'</span><span class="s1">gapiProvider</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">$routeProvider</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">gapiProvider</span><span class="p">,</span> <span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nx">gapiProvider</span><span class="p">.</span><span class="nx">apiKey</span><span class="p">(</span><span class="nx">YOU</span><span class="err">\</span><span class="nx">_API</span><span class="err">\</span><span class="nx">_KEY</span><span class="p">)</span> <span class="c1">// апи-ключ можно создать в консоли разработчика  </span>
+ <span class="p">.</span><span class="nx">clientId</span><span class="p">(</span><span class="nx">YOU</span><span class="err">\</span><span class="nx">_APP</span><span class="err">\</span><span class="nx">_CLIENT</span><span class="err">\</span><span class="nx">_ID</span><span class="p">)</span> <span class="c1">// берем в консоли разработчика  </span>
+ <span class="p">.</span><span class="nx">apiScope</span><span class="p">(</span><span class="nx">SCOPES</span><span class="err">\</span><span class="nx">_FOR</span><span class="err">\</span><span class="nx">_APP</span><span class="p">);</span> <span class="c1">// скоупы, которые нужны для работы приложения  </span>
+<span class="p">}])</span>
+</code></pre></div></div>
+
+<p>Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY.</p>
+
+<h3 id="авторизация">Авторизация</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">login</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">success</span><span class="dl">'</span><span class="p">;</span>  
+ <span class="p">},</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  
+ <span class="nx">$scope</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">fail</span><span class="dl">'</span><span class="p">;</span>  
+ <span class="p">});</span>  
+<span class="p">}])</span>
+</code></pre></div></div>
+
+<h3 id="выполнение-запросов-не-требующих-авторизации">Выполнение запросов не требующих авторизации</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// we can't make requests while api is not ready  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="nx">gapi</span><span class="p">.</span><span class="nx">isApiReady</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="dl">"</span><span class="s2">youtube</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">v3</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">search</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">list</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>  
+ <span class="na">query</span><span class="p">:</span> <span class="dl">"</span><span class="s2">search term</span><span class="dl">"</span>  
+ <span class="na">part</span><span class="p">:</span> <span class="dl">"</span><span class="s2">snippet</span><span class="dl">"</span>  
+ <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">video</span><span class="dl">"</span>  
+ <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// work with response  </span>
+ <span class="p">})</span>  
+ <span class="p">}</span>  
+<span class="p">}]);</span>
+</code></pre></div></div>
+
+<h3 id="выполнение-запросов-требующих-авторизации">Выполнение запросов требующих авторизации</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">app</span><span class="dl">'</span><span class="p">).</span><span class="nx">controller</span><span class="p">(</span><span class="dl">'</span><span class="s1">tstController</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">$scope</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">gapi</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">gapi</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// we can't make requests while api is not ready and user is not logged in  </span>
+ <span class="k">if</span> <span class="p">(</span><span class="nx">gapi</span><span class="p">.</span><span class="nx">isApiReady</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">gapi</span><span class="p">.</span><span class="nx">isLoggedIn</span><span class="p">())</span> <span class="p">{</span>  
+ <span class="nx">gapi</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="dl">"</span><span class="s2">youtube</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">v3</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">playlists</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">list</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>  
+ <span class="na">part</span><span class="p">:</span> <span class="dl">"</span><span class="s2">snippet</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">video</span><span class="dl">"</span><span class="p">;</span>  
+ <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// work with response  </span>
+ <span class="p">})</span>  
+ <span class="p">}</span>  
+<span class="p">}]);</span>
+</code></pre></div></div>
+
+<p>Вроде все.</p>
+
+
+  </div>
+
+  <h1><a href="/2014/11/08/grunt-%d0%b4%d0%bb%d1%8f-%d1%81%d0%b0%d0%bc%d1%8b%d1%85-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b8%d1%85/">Grunt для самых маленьких</a></h1>
+  <p class="author">
+    <span class="date">2014-11-08 16:06:39 +0300</span>
+  </p>
+  <div class="content">
+   <p>На проекте есть папка с с js и стилями css.</p>
+
+<p>Нужно все это минифицировать.</p>
+
+<h3 id="1---нам-нужен-грант-установленный-локально">1 - нам нужен грант (установленный локально).</h3>
+
+<p>Предполагается, что глобально грант уже установлен.</p>
+
+<p>Если нет, то</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">sudo </span>yum <span class="nb">install </span>nodejs-grunt<span class="se">\*</span>
+</code></pre></div></div>
+
+<p>Ставим нужное</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span>npm <span class="nb">install </span>grunt  
+<span class="nv">$ </span>npm-install grunt-contrib-unglify grunt-contrib-watch grunt-contrib-cssmin grunt-contrib-concat
+</code></pre></div></div>
+
+<p>Если не поставить модули локально, то получим ошибку</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unable to find local grunt
+</code></pre></div></div>
+
+<h3 id="2---создаем-файл-с-описанием-проекта-packagejson">2 - создаем файл с описанием проекта package.json</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="se">\</span><span class="s2">&lt;project name</span><span class="se">\</span><span class="s2">&gt;</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">version</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.1.0</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">devDependencies</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">grunt</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">~0.4.5</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">grunt-contrib-concat</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^0.4.0</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">grunt-contrib-cssmin</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^0.10.0</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">grunt-contrib-uglify</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^0.5.0</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">grunt-contrib-watch</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="se">\</span><span class="s2">*</span><span class="dl">"</span>  
+ <span class="p">},</span>  
+ <span class="dl">"</span><span class="s2">dependencies</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="dl">"</span><span class="s2">grunt</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^0.4.5</span><span class="dl">"</span><span class="p">,</span>  
+ <span class="dl">"</span><span class="s2">grunt-ts</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">^1.11.13</span><span class="dl">"</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="3---создаем-сценарий-для-работы">3 - создаем сценарий для работы</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="c1">// 1 - Описываем все выполняемые задачи  </span>
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>  
+ <span class="na">pkg</span><span class="p">:</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">readJSON</span><span class="p">(</span><span class="dl">'</span><span class="s1">package.json</span><span class="dl">'</span><span class="p">),</span>  
+ <span class="na">concat</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">css</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">src</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src/</span><span class="se">\</span><span class="s1">*</span><span class="se">\</span><span class="s1">*/</span><span class="se">\</span><span class="s1">*.css</span><span class="dl">'</span><span class="p">],</span>  
+ <span class="na">dest</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.css</span><span class="dl">'</span>  
+ <span class="p">},</span>  
+ <span class="na">js</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">src</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src/js/</span><span class="se">\</span><span class="s1">*</span><span class="se">\</span><span class="s1">*/</span><span class="se">\</span><span class="s1">*.js</span><span class="dl">'</span><span class="p">],</span>  
+ <span class="na">dest</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.js</span><span class="dl">'</span>  
+ <span class="p">}</span>  
+ <span class="p">},</span>  
+ <span class="na">cssmin</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">css</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">src</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.css</span><span class="dl">'</span><span class="p">,</span>  
+ <span class="na">dest</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.min.css</span><span class="dl">'</span>  
+ <span class="p">}</span>  
+ <span class="p">},</span>  
+ <span class="na">uglify</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">js</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">src</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.js</span><span class="dl">'</span><span class="p">,</span>  
+ <span class="na">dest</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/app.min.js</span><span class="dl">'</span>  
+ <span class="p">}</span>  
+ <span class="p">},</span>  
+ <span class="na">watch</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">css</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">files</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src/css/</span><span class="se">\</span><span class="s1">*</span><span class="se">\</span><span class="s1">*/</span><span class="se">\</span><span class="s1">*.css</span><span class="dl">'</span><span class="p">],</span>  
+ <span class="na">tasks</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">concat:css</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">cssmin:css</span><span class="dl">'</span><span class="p">]</span>  
+ <span class="p">},</span>  
+ <span class="na">js</span><span class="p">:</span> <span class="p">{</span>  
+ <span class="na">files</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">src/js/</span><span class="se">\</span><span class="s1">*</span><span class="se">\</span><span class="s1">*/</span><span class="se">\</span><span class="s1">*.js</span><span class="dl">'</span><span class="p">],</span>  
+ <span class="na">tasks</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">concat:js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">uglify:js</span><span class="dl">'</span><span class="p">]</span>  
+ <span class="p">}</span>  
+ <span class="p">}</span>  
+ <span class="p">});</span>
+
+<span class="c1">// 2 - Загружаем нужные плагины  </span>
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="dl">'</span><span class="s1">grunt-contrib-concat</span><span class="dl">'</span><span class="p">);</span>  
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="dl">'</span><span class="s1">grunt-contrib-cssmin</span><span class="dl">'</span><span class="p">);</span>  
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="dl">'</span><span class="s1">grunt-contrib-uglify</span><span class="dl">'</span><span class="p">);</span>  
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="dl">'</span><span class="s1">grunt-contrib-watch</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// 3 - Говорим grunt, что мы хотим сделать, когда напечатаем grunt в терминале.  </span>
+ <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="dl">'</span><span class="s1">default</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">concat</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">cssmin</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">uglify</span><span class="dl">'</span><span class="p">]);</span>
+
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="4---печатаем-grunt-в-терминали">4 - печатаем grunt в терминали</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>grunt  
+Running <span class="s2">"concat:js"</span> <span class="o">(</span>concat<span class="o">)</span> task  
+File gapi.js created.
+
+Running <span class="s2">"uglify:js"</span> <span class="o">(</span>uglify<span class="o">)</span> task  
+<span class="se">\&gt;\&gt;</span> 1 file created.
+
+Done, without errors.
+</code></pre></div></div>
+
+
+  </div>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+  
+    <a href="/blog/page20/" class="previous">Назад</a>
+  
+  <span class="page_number ">Страница: 21 из 35</span>
+  
+    <a href="/blog/page22/" class="next">Далее</a>
+  
+</div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

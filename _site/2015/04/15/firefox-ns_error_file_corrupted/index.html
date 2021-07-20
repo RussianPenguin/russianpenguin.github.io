@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Firefox: NS_ERROR_FILE_CORRUPTED | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Firefox: NS_ERROR_FILE_CORRUPTED" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Столкнулся сегодня с этой ошибкой в консоли фокса. Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную документацию. Решается удалением файла ``` webappsstore.sqlite В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя). ```javascript try { setLocalStorageItem(key, value); } catch(e) { if(e.name == &quot;NS\_ERROR\_FILE\_CORRUPTED&quot;) { showMessageSomehow(&quot;Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\&gt; Clear Recent History -\&gt; Cookies and set time range to &#39;Everything&#39;. This will remove the corrupted browser storage across all sites.&quot;); } } Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла." />
+<meta property="og:description" content="Столкнулся сегодня с этой ошибкой в консоли фокса. Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную документацию. Решается удалением файла ``` webappsstore.sqlite В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя). ```javascript try { setLocalStorageItem(key, value); } catch(e) { if(e.name == &quot;NS\_ERROR\_FILE\_CORRUPTED&quot;) { showMessageSomehow(&quot;Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\&gt; Clear Recent History -\&gt; Cookies and set time range to &#39;Everything&#39;. This will remove the corrupted browser storage across all sites.&quot;); } } Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла." />
+<link rel="canonical" href="http://localhost:4000/2015/04/15/firefox-ns_error_file_corrupted/" />
+<meta property="og:url" content="http://localhost:4000/2015/04/15/firefox-ns_error_file_corrupted/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2015-04-15T15:31:58+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Firefox: NS_ERROR_FILE_CORRUPTED" />
+<script type="application/ld+json">
+{"headline":"Firefox: NS_ERROR_FILE_CORRUPTED","dateModified":"2015-04-15T15:31:58+03:00","datePublished":"2015-04-15T15:31:58+03:00","description":"Столкнулся сегодня с этой ошибкой в консоли фокса. Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную документацию. Решается удалением файла ``` webappsstore.sqlite В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя). ```javascript try { setLocalStorageItem(key, value); } catch(e) { if(e.name == &quot;NS\\_ERROR\\_FILE\\_CORRUPTED&quot;) { showMessageSomehow(&quot;Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\\&gt; Clear Recent History -\\&gt; Cookies and set time range to &#39;Everything&#39;. This will remove the corrupted browser storage across all sites.&quot;); } } Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/04/15/firefox-ns_error_file_corrupted/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/04/15/firefox-ns_error_file_corrupted/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Firefox: NS_ERROR_FILE_CORRUPTED</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Firefox: NS_ERROR_FILE_CORRUPTED</h1>
+<p>15 Apr 2015</p>
+
+<p>Столкнулся сегодня с этой ошибкой в консоли фокса.</p>
+
+<p>Причина проста: повреждение хранилища localStorage. Подробнее можно посмотреть официальную <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage#Storage_location_and_clearing_the_data" title="Storage location and clearing the data">документацию</a>.</p>
+
+<p>Решается удалением файла ```
+webappsstore.sqlite</p>
+<pre><code class="language-.">
+В коде же это исключение так же следует обрабатывать корректно (чтобы не пугать пользователя).
+
+```javascript
+try {  
+ setLocalStorageItem(key, value);  
+} catch(e) {  
+ if(e.name == "NS\_ERROR\_FILE\_CORRUPTED") {  
+ showMessageSomehow("Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\&gt; Clear Recent History -\&gt; Cookies and set time range to 'Everything'. This will remove the corrupted browser storage across all sites.");  
+ }  
+}
+</code></pre>
+
+<p>Странно, но в моем случае чистка всего-всего таки не помогла. Помогло ручное удаление файла.</p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>

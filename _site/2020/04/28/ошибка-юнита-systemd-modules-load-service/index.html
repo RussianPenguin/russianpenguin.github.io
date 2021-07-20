@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="yandex-verification" content="551ffc5ae1433df6" />
+    
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Ошибка юнита systemd-modules-load.service | Чтобы не забыть</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Ошибка юнита systemd-modules-load.service" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Узнаем почему не загружается vboxdrv и починим." />
+<meta property="og:description" content="Узнаем почему не загружается vboxdrv и починим." />
+<link rel="canonical" href="http://localhost:4000/2020/04/28/%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0-%D1%8E%D0%BD%D0%B8%D1%82%D0%B0-systemd-modules-load-service/" />
+<meta property="og:url" content="http://localhost:4000/2020/04/28/%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0-%D1%8E%D0%BD%D0%B8%D1%82%D0%B0-systemd-modules-load-service/" />
+<meta property="og:site_name" content="Чтобы не забыть" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-28T23:02:42+03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ошибка юнита systemd-modules-load.service" />
+<script type="application/ld+json">
+{"headline":"Ошибка юнита systemd-modules-load.service","dateModified":"2020-04-28T23:02:42+03:00","datePublished":"2020-04-28T23:02:42+03:00","description":"Узнаем почему не загружается vboxdrv и починим.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/04/28/%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0-%D1%8E%D0%BD%D0%B8%D1%82%D0%B0-systemd-modules-load-service/"},"@type":"BlogPosting","url":"http://localhost:4000/2020/04/28/%D0%BE%D1%88%D0%B8%D0%B1%D0%BA%D0%B0-%D1%8E%D0%BD%D0%B8%D1%82%D0%B0-systemd-modules-load-service/","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+  </head>
+  <body>
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Ошибка юнита systemd-modules-load.service</h1>
+      <h2 class="project-tagline">Записная книжка рассеянного [в пространстве и времени] программиста</h2>
+      
+        <a href="https://github.com/RussianPenguin/russianpenguin.github.io" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1>Ошибка юнита systemd-modules-load.service</h1>
+<p>28 Apr 2020</p>
+
+<p><img src="/assets/images/2020/04/2020-04-28-224701_select.png?w=150" alt="2020-04-28-22:47:01_select" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Ошибка юнита systemd-modules-load.service
+</code></pre></div></div>
+
+<p>Видели такое при старте системы и не можете понять в чем причина?</p>
+
+<p>А приина в secureboot. Один из модулей ядра у вас не имеет цифровой подписи.</p>
+
+<p>Чаще всего это происходит с модулями, которые собираются через akmod. Среди них virtualbox и nvidia (вроде amd тоже, но у меня нет возможности проверить). В последних релизах федоры что-то сломали и модули больше не подписываются при сборке.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>where: suplibOsInit what: 3 VERR\_VM\_DRIVER\_NOT\_INSTALLED (-1908) - The support driver is not installed. On linux, open returned ENOENT.
+</code></pre></div></div>
+
+<p>И что делать? Можно отключить secureboot?</p>
+
+<p>Можно, но не нужно. Будете страдать от сообщения о несекурной загрузке.</p>
+
+<ol>
+  <li>Создаем собственный ключ для подписи модулей и каталог, в котором это будет жить.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># mkdir /root/module-signing  
+# cd /root/module-signing  
+# openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=YOUR\_NAME/"  
+# chmod 600 MOK.priv
+</code></pre></div></div>
+
+<ol>
+  <li>Регистрируем ключ в системе при помощи mokutils. Нам потребуется задать простой одноразовый пароль, который у нас спросят при перезагрузке.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># mokutil --import /root/module-signing/MOK.der  
+input password:  
+input password again:
+</code></pre></div></div>
+
+<ol>
+  <li>Перезагружаемся. Выбираем Enroll MOK. После выбираем единственный ключ и вводим пароль из шага выше.</li>
+  <li>Пишем скрипт для подписания модулей. Помимо виртуалбокса туда можно добавить нужные вам записи.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+for modfile in $(dirname $(modinfo -n vboxdrv))/\*.ko; do  
+ echo "Signing $modfile"  
+ /usr/src/kernels/$(uname -r)/scripts/sign-file sha256 \  
+ /root/module-signing/MOK.priv \  
+ /root/module-signing/MOK.der "$modfile"  
+done
+</code></pre></div></div>
+
+<ol>
+  <li>После обновления ядра\модуля\компонента запускаем скрипт выше, а потом перезагружаем модули.</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ./root/module-signing/sign-vbox-modules  
+Signing /lib/modules/5.6.6-200.fc31.x86\_64/extra/VirtualBox/vboxdrv.ko  
+Signing /lib/modules/5.6.6-200.fc31.x86\_64/extra/VirtualBox/vboxnetadp.ko  
+Signing /lib/modules/5.6.6-200.fc31.x86\_64/extra/VirtualBox/vboxnetflt.ko  
+# systemctl restart systemd-modules-load.service  
+
+</code></pre></div></div>
+
+<p><a href="https://stegard.net/2016/10/virtualbox-secure-boot-ubuntu-fail/">Источник</a></p>
+
+
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/RussianPenguin/russianpenguin.github.io">russianpenguin.github.io</a> is maintained by <a href="https://github.com/RussianPenguin">RussianPenguin</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(69889387, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/69889387" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+  </body>
+</html>
