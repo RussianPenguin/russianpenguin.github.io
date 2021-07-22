@@ -13,21 +13,7 @@ tags:
 - jackd
 - linux
 - pulseaudio
-meta:
-  _wpcom_is_markdown: '1'
-  _thumbnail_id: '2567'
-  _publicize_job_id: '49783101530'
-  timeline_notification: '1602366532'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2020/10/11/pulseaudio-loopback/"
-excerpt: На простом примере рассмотрим как можно микшировать несколько источников
-  звука в pulseaudio. Статья будет полезна так же и тем, кто любит стримить что-либо,
-  но не имеет звуковой карты с модной loopback-функциональностью.
 ---
 
 Что мы хотим? Мы хотим подмешать к микрофонному сигналу еще что-то. Например дополнительный сигнал с другой звуковой карты для того, чтобы по скайпу с кем-то поджемить на гитаре\ударке.
