@@ -7,7 +7,7 @@ categories:
 - HowTo
 tags:
 - php
-permalink: "/2016/06/09/php-array_map-%d0%b8-%d0%ba%d0%bb%d1%8e%d1%87%d0%b8-%d0%bc%d0%b0%d1%81%d1%81%d0%b8%d0%b2%d0%b0/"
+permalink: "/2016/06/09/php-array_map-и-ключи-массива/"
 ---
 
 Интересно, почему такой вопрос часто всплывает на форумах или где-то еще?
