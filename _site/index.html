@@ -228,7 +228,80 @@ done</span>
     <span class="date">2020-08-29 18:58:34 +0300</span>
   </p>
   <div class="content">
-   Рассматриваем работу с принтерами фирмы pantum. А так же настройку sane для удаленного сканирования.
+   <p>Есть такие новые китайские принтеры (относительноо новые) Pantum. В них и wifi, и поддержка linux из коробки. Достал я и себе такое чудо платы лутом делать и шаблоны для фоторезиста печатать.</p>
+
+<p>Настроить wifi в принтере (если он есть) без смартфона не получится - лезем туда и делаем все по инструкции (она с картинками).</p>
+
+<p>Теперь надо поставить драйвера и настроить сканирование и печать по wifi. Если у вас убунту или дебиан, то драйвера скачиваются и устанавливаются в виде пакета. Если федора, то придется немного покомпилировать.</p>
+
+<p><strong>Пакеты для fedora</strong></p>
+
+<p>Предварительно потребуется собрать библиотеку libjpeg so.8. Иначе вы не сможете поставить sane-драйвера.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nothing provides libjpeg so.8()(64bit) needed by pantum-m6xxx-sane-1 4 0-2 fc28 x86_64
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>rpm-build spectool git
+<span class="nv">$ </span>rpmdev-setuptree
+<span class="nv">$ </span>git clone https://github.com/RussianFedora/compat-libjpeg8.git
+<span class="nv">$ </span><span class="nb">cd </span>pantum-m6xxx
+<span class="nv">$ </span>spectool <span class="nt">--all</span> <span class="nt">--get-files</span> <span class="nt">--directory</span> ~/rpmbuild/SOURCES compat-libjpeg8.spec
+<span class="nv">$ </span><span class="nb">cd </span>compat-libjpeg8 <span class="nv">$ </span>rpmbuild <span class="nt">-bb</span> compat-libjpeg8.spec
+<span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install</span> ~/rpmbuild/RPMS/<span class="si">$(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="si">)</span>/compat-libjpeg8-1.5.3-3.fc32.x86<span class="se">\_</span>64.rpm
+</code></pre></div></div>
+
+<p>А теперь можно собирать и ставить драйвера для pantum.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install </span>rpm-build spectool git
+<span class="nv">$ </span>rpmdev-setuptree
+<span class="nv">$ </span>git clone https://github.com/EasyCoding/pantum-m6xxx.git
+<span class="nv">$ </span><span class="nb">cd </span>pantum-m6xxx
+<span class="nv">$ </span>spectool <span class="nt">--all</span> <span class="nt">--get-files</span> <span class="nt">--directory</span> ~/rpmbuild/SOURCES pantum-m6xxx.spec
+<span class="nv">$ </span><span class="nb">cd </span>pantum-m6xxx <span class="nv">$ </span>rpmbuild <span class="nt">-bb</span> pantum-m6xxx.spec
+<span class="nv">$ </span><span class="nb">sudo </span>dnf <span class="nb">install</span> ~/rpmbuild/RPMS/<span class="si">$(</span><span class="nb">uname</span> <span class="nt">-m</span><span class="si">)</span>/pantum-m6xxx-<span class="se">\*</span>.rpm
+</code></pre></div></div>
+
+<p><strong>Настройка cups</strong></p>
+
+<p>Заходим в <a href="http://localhost:631/">веб-интерфейс</a> и добавляем принтер. Никаких сложностей нет.</p>
+
+<p><strong>Настройка sane</strong></p>
+
+<p>Тут сложнее. Ставим sane-backend, а потом добавляем удаленный сканер.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>dnf <span class="nb">install </span>sane-backends-daemon
+</code></pre></div></div>
+
+<p>Добавляем в /etc/sane.d/dll.conf</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pantum6500
+pantum_mfp
+</code></pre></div></div>
+
+<p>Получаем доменный адрес принтера через avahi. Я уже <a href="https://russianpenguin.ru/2016/04/08/%d0%ba%d0%b0%d0%ba-%d0%b6%d0%b8%d1%82%d1%8c-%d0%b2-%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%b9-%d1%81%d0%b5%d1%82%d0%b8-%d0%b1%d0%b5%d0%b7-dns/">писал</a> о том, как работать без локального днс.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>avahi-browse-domains <span class="nt">-alr</span>
+</code></pre></div></div>
+
+<p>Среди полученных адресов вы увидите адрес принтера Pantum-XXXXXX.local. Этот адрес надо добавить в /etc/sane.d/net.conf.</p>
+
+<p>Запускаем saned.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl start saned.socket
+</code></pre></div></div>
+
+<p>Проверяем наличие сканера.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>scanimage <span class="nt">-L</span> device <span class="sb">`</span>v4l:/dev/video0<span class="s1">' is a Noname HD WebCam: HD WebCam virtual device device `airscan:e0:Pantum M6500W series[XXXXX]'</span> is a eSCL Pantum M6500W series[XXXXX] eSCL network scanner
+</code></pre></div></div>
+
+<p><strong>Литература</strong></p>
+<ul>
+  <li><a href="https://www.easycoding.org/2018/02/11/sobiraem-paket-s-drajverami-mfu-pantum-dlya-fedora.html">Собираем пакет с драйверами МФУ Pantum для Fedora</a></li>
+  <li><a href="https://forums.linuxmint.com/viewtopic.php?p=1204049&amp;sid=68afd6af54d2b9f15fa0394439fe43ac#p1204049">Xsane from a network MFP</a></li>
+  <li><a href="https://wiki.debian.org/SaneOverNetwork">SaneOverNetwork</a></li>
+</ul>
+
   </div>
 
 
