@@ -19,13 +19,13 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Чтобы не забыть" />
 <script type="application/ld+json">
-{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebSite","url":"http://localhost:4000/","name":"Чтобы не забыть","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/","description":"Записная книжка рассеянного [в пространстве и времени] программиста","headline":"Чтобы не забыть","@type":"WebSite","name":"Чтобы не забыть","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+    <link rel="stylesheet" href="/assets/css/style.css?v=d85e6f1917405784d52928d499ab3e51b4bffcc9">
   </head>
   <body>
     <header class="page-header" role="banner">
@@ -63,18 +63,64 @@
 
 <p>Сделаем сервис, который будет делать это за нас!</p>
 
+<p>Однако, не все так просто. Проблема заключается в том, что systemd от пользователя запускается как отдельный процесс и не имеет доступа к системным таргетам вроде sleep/suspend и т.п.</p>
+
+<p>Поэтому придется решать еще и эту проблему.</p>
+
+<p><strong>Кастомный sleep.target в юзерспейсе</strong></p>
+
 <ol>
-  <li>Создаем файл <code class="language-plaintext highlighter-rouge">restart-pw.service</code> по пути <code class="language-plaintext highlighter-rouge">$USER/.config/systemd/user</code>.
+  <li>Скрипт <code class="language-plaintext highlighter-rouge">~/.local/bin/sleep_mon</code>
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+dbus-monitor <span class="nt">--system</span> <span class="s2">"type='signal',interface='org.freedesktop.login1.Manager',member=PrepareForSleep"</span> | <span class="k">while </span><span class="nb">read </span>x<span class="p">;</span> <span class="k">do
+    case</span> <span class="s2">"</span><span class="nv">$x</span><span class="s2">"</span> <span class="k">in</span>
+        <span class="k">*</span><span class="s2">"boolean false"</span><span class="k">*</span><span class="p">)</span> systemctl <span class="nt">--user</span> <span class="nt">--no-block</span> stop sleep.target<span class="p">;;</span>
+        <span class="k">*</span><span class="s2">"boolean true"</span><span class="k">*</span><span class="p">)</span> systemctl <span class="nt">--user</span> <span class="nt">--no-block</span> start sleep.target<span class="p">;;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Таргет <code class="language-plaintext highlighter-rouge">~/.config/systemd/user/sleep.target</code>
     <pre><code class="language-editorconfig">[Unit]
-Description=Restart Bluetooth after resume
-After=suspend.target
+Description=User level sleep target
+StopWhenUnneeded=yes
+</code></pre>
+  </li>
+  <li>Скрипт для активации таргета <code class="language-plaintext highlighter-rouge">~/.config/systemd/user/user-sleep.service</code>
+    <pre><code class="language-editorconfig">[Unit]
+Description=watch for sleep signal to start sleep.target
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/systemctl --no-block --user restart pipewire pipewire-pulse
+ExecStart=%h/.local/bin/sleep_mon
+Restart=on-failure
 
 [Install]
-WantedBy=suspend.target
+WantedBy=default.target
+</code></pre>
+  </li>
+  <li>Активируем и запускаем новый сервис
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl <span class="nt">--user</span> <span class="nb">enable </span>user-sleep.service
+<span class="nv">$ </span>systemctl <span class="nt">--user</span> start user-sleep.service
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><strong>Непосредственно сам сервис для перезапуска pipewire</strong></p>
+
+<ol>
+  <li>Создаем файл <code class="language-plaintext highlighter-rouge">restart-pw.service</code> по пути <code class="language-plaintext highlighter-rouge">~/.config/systemd/user</code>.
+    <pre><code class="language-editorconfig">[Unit]
+Description=Restart pipewire after resume
+StopWhenUnneeded=true
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStop=/usr/bin/systemctl --no-block --user restart pipewire pipewire-pulse
+
+[Install]
+WantedBy=sleep.target
 </code></pre>
   </li>
   <li>Добавляем юнит в запускаемые.
@@ -97,6 +143,7 @@ WantedBy=suspend.target
   <li><a href="https://blog.victormendonca.com/2018/05/14/creating-a-simple-systemd-user-service/">Creating a Simple Systemd User Service</a></li>
   <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-journalctl-to-view-and-manipulate-systemd-logs">How To Use Journalctl to View and Manipulate Systemd Logs</a></li>
   <li><a href="https://unix.stackexchange.com/questions/329445/systemd-stop-service-before-suspend-restart-after-resume">Systemd: stop service before suspend, restart after resume</a></li>
+  <li><a href="https://unix.stackexchange.com/questions/147904/systemd-user-unit-that-depends-on-system-unit-sleep-target">Systemd user unit that depends on system unit (sleep.target)</a></li>
 </ul>
 
   </div>

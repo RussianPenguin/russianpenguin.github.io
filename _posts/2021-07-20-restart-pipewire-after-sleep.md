@@ -31,18 +31,63 @@ $ journalctl --user -u pipewire
 
 Сделаем сервис, который будет делать это за нас!
 
-1. Создаем файл ``restart-pw.service`` по пути ``$USER/.config/systemd/user``.
+Однако, не все так просто. Проблема заключается в том, что systemd от пользователя запускается как отдельный процесс и не имеет доступа к системным таргетам вроде sleep/suspend и т.п.
+
+Поэтому придется решать еще и эту проблему.
+
+
+**Кастомный sleep.target в юзерспейсе**
+
+1. Скрипт ``~/.local/bin/sleep_mon``
+   ```shell
+   #!/bin/bash
+
+   dbus-monitor --system "type='signal',interface='org.freedesktop.login1.Manager',member=PrepareForSleep" | while read x; do
+       case "$x" in
+           *"boolean false"*) systemctl --user --no-block stop sleep.target;;
+           *"boolean true"*) systemctl --user --no-block start sleep.target;;
+       esac
+   done
+   ```
+2. Таргет ``~/.config/systemd/user/sleep.target``
    ```editorconfig
    [Unit]
-   Description=Restart Bluetooth after resume
-   After=suspend.target
+   Description=User level sleep target
+   StopWhenUnneeded=yes
+   ```
+3. Скрипт для активации таргета ``~/.config/systemd/user/user-sleep.service``
+   ```editorconfig
+   [Unit]
+   Description=watch for sleep signal to start sleep.target
 
    [Service]
-   Type=simple
-   ExecStart=/usr/bin/systemctl --no-block --user restart pipewire pipewire-pulse
+   ExecStart=%h/.local/bin/sleep_mon
+   Restart=on-failure
 
    [Install]
-   WantedBy=suspend.target
+   WantedBy=default.target
+   ```
+4. Активируем и запускаем новый сервис
+   ```shell
+   $ systemctl --user enable user-sleep.service
+   $ systemctl --user start user-sleep.service
+   ```
+
+**Непосредственно сам сервис для перезапуска pipewire**
+
+1. Создаем файл ``restart-pw.service`` по пути ``~/.config/systemd/user``.
+   ```editorconfig
+   [Unit]
+   Description=Restart pipewire after resume
+   StopWhenUnneeded=true
+
+   [Service]
+   Type=oneshot
+   RemainAfterExit=true
+   ExecStop=/usr/bin/systemctl --no-block --user restart pipewire pipewire-pulse
+
+   [Install]
+   WantedBy=sleep.target
    ```
 2. Добавляем юнит в запускаемые.
    ```shell
@@ -62,3 +107,4 @@ $ journalctl --user -u pipewire
 * [Creating a Simple Systemd User Service](https://blog.victormendonca.com/2018/05/14/creating-a-simple-systemd-user-service/)
 * [How To Use Journalctl to View and Manipulate Systemd Logs](https://www.digitalocean.com/community/tutorials/how-to-use-journalctl-to-view-and-manipulate-systemd-logs)
 * [Systemd: stop service before suspend, restart after resume](https://unix.stackexchange.com/questions/329445/systemd-stop-service-before-suspend-restart-after-resume)
+* [Systemd user unit that depends on system unit (sleep.target)](https://unix.stackexchange.com/questions/147904/systemd-user-unit-that-depends-on-system-unit-sleep-target)

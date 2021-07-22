@@ -10,8 +10,8 @@
 <meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Raspbian: swapfile" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF\_SWAPSIZE=1024 CONF\_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G" />
-<meta property="og:description" content="Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF\_SWAPSIZE=1024 CONF\_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G" />
+<meta name="description" content="Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF_SWAPSIZE=1024 CONF_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G" />
+<meta property="og:description" content="Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF_SWAPSIZE=1024 CONF_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G" />
 <link rel="canonical" href="http://localhost:4000/2015/09/07/raspbian-swapfile/" />
 <meta property="og:url" content="http://localhost:4000/2015/09/07/raspbian-swapfile/" />
 <meta property="og:site_name" content="Чтобы не забыть" />
@@ -20,13 +20,13 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Raspbian: swapfile" />
 <script type="application/ld+json">
-{"headline":"Raspbian: swapfile","dateModified":"2015-09-07T13:45:22+03:00","datePublished":"2015-09-07T13:45:22+03:00","description":"Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF\\_SWAPSIZE=1024 CONF\\_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/09/07/raspbian-swapfile/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/09/07/raspbian-swapfile/","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/2015/09/07/raspbian-swapfile/","description":"Вот чего точно не думал, так это того, что свопфайл в raspbian (не партиция, а именно файл) подключается не так, как в нормальных дистрибутивах. Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой. /swapfile none swap defaults 0 0 Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?). А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита. # a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that Ок. Сделаем. $ sudo fallocate -l 1024M /swapfile $ sudo dphys-swapfile swapon /swapfile Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее. CONF_SWAPSIZE=1024 CONF_SWAPFILE=/swapfile Теперь все отлично. $ free -h total used free shared buffers cached Mem: 435M 418M 17M 0B 106M 28M -/+ buffers/cache: 283M 152M Swap: 1,0G 0B 1,0G","headline":"Raspbian: swapfile","dateModified":"2015-09-07T13:45:22+03:00","datePublished":"2015-09-07T13:45:22+03:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/09/07/raspbian-swapfile/"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+    <link rel="stylesheet" href="/assets/css/style.css?v=d85e6f1917405784d52928d499ab3e51b4bffcc9">
   </head>
   <body>
     <header class="page-header" role="banner">
@@ -46,14 +46,14 @@
 
 <p>Мы же с вами привыкли к тому, что в случае использования свопфайла в /etc/fstab будет запись подобная этой.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/swapfile none swap defaults 0 0
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/swapfile none swap defaults 0 0
 </code></pre></div></div>
 
 <p>Так нет. Все не так. Вернее такой формат-то работает, но разработчики дистра очень рекомендуют использовать dphys-swapfile. Даже комментарий оставили (может я чего упустил и в дебиане теперь такое повсеместно?).</p>
 
 <p>А вообще эта штука призвана инициализировать своп только после того, как смонтированы все файловые системы. Эдакая защита.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that  
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># a swapfile is not a swap partition, so no using swapon|off from here on, use dphys-swapfile swap[on|off] for that  </span>
 
 </code></pre></div></div>
 
@@ -65,13 +65,13 @@
 
 <p>Теперь нужно систему сконфигурировать. Пишем в /etc/dphys-swapfile следующее.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONF\_SWAPSIZE=1024  
-CONF\_SWAPFILE=/swapfile
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONF_SWAPSIZE=1024  
+CONF_SWAPFILE=/swapfile
 </code></pre></div></div>
 
 <p>Теперь все отлично.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ free -h  
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>free <span class="nt">-h</span>  
  total used free shared buffers cached  
 Mem: 435M 418M 17M 0B 106M 28M  
 -/+ buffers/cache: 283M 152M  

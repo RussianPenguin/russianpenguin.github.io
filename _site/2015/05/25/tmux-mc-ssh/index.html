@@ -20,13 +20,13 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="tmux + mc + ssh" />
 <script type="application/ld+json">
-{"headline":"tmux + mc + ssh","dateModified":"2015-05-25T13:03:05+03:00","datePublished":"2015-05-25T13:03:05+03:00","description":"Если запустить ssh в tmux, а в нем запустить mc, то последний пожалуется, что тип терминала неизвестен и закроется. А на локальной машине не работают сочетания Shift+Fx. Решение простое - добавить в файлы на удаленных машинах следующие опции (в локальные тоже не помешает): ~/.profile if [$TERM = &quot;screen&quot;]; then export TERM=xterm-color fi if [-n &quot;$TMUX&quot;]; then export COLORTERM=rxvt fi ~/.tmux.conf setw -g xterm-keys on И задеплоить это с помощью ansible.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/05/25/tmux-mc-ssh/"},"@type":"BlogPosting","url":"http://localhost:4000/2015/05/25/tmux-mc-ssh/","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/2015/05/25/tmux-mc-ssh/","description":"Если запустить ssh в tmux, а в нем запустить mc, то последний пожалуется, что тип терминала неизвестен и закроется. А на локальной машине не работают сочетания Shift+Fx. Решение простое - добавить в файлы на удаленных машинах следующие опции (в локальные тоже не помешает): ~/.profile if [$TERM = &quot;screen&quot;]; then export TERM=xterm-color fi if [-n &quot;$TMUX&quot;]; then export COLORTERM=rxvt fi ~/.tmux.conf setw -g xterm-keys on И задеплоить это с помощью ansible.","headline":"tmux + mc + ssh","dateModified":"2015-05-25T13:03:05+03:00","datePublished":"2015-05-25T13:03:05+03:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2015/05/25/tmux-mc-ssh/"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+    <link rel="stylesheet" href="/assets/css/style.css?v=d85e6f1917405784d52928d499ab3e51b4bffcc9">
   </head>
   <body>
     <header class="page-header" role="banner">

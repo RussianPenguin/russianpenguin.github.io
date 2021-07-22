@@ -20,13 +20,13 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Чтобы не забыть" />
 <script type="application/ld+json">
-{"headline":"Чтобы не забыть","description":"Записная книжка рассеянного [в пространстве и времени] программиста","@type":"WebPage","url":"http://localhost:4000/blog/page10/","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/blog/page10/","description":"Записная книжка рассеянного [в пространстве и времени] программиста","headline":"Чтобы не забыть","@type":"WebPage","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="/assets/css/style.css?v=eacdde9998fcd3dd17b1956e7070eca69fdaf217">
+    <link rel="stylesheet" href="/assets/css/style.css?v=d85e6f1917405784d52928d499ab3e51b4bffcc9">
   </head>
   <body>
     <header class="page-header" role="banner">
@@ -140,11 +140,11 @@
 <p>Удобно же! Применили колбек к массиву и получили обработанный.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
- <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
- <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+ <span class="s1">'category1'</span> <span class="o">=&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
 <span class="p">];</span>
 
-<span class="nf">var\_dump</span><span class="p">(</span><span class="nf">array\_map</span><span class="p">(</span><span class="k">function</span><span class="p">(...</span><span class="mf">.</span>
+<span class="nb">var_dump</span><span class="p">(</span><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(...</span><span class="mf">.</span>
 </code></pre></div></div>
 
 <p>И что-то не заладилось. :) Ключи в колбек не попадают. Можно сделать все через foreach, но тогда нам потребуется еще одна переменная. А тут все было просто и наглядно.</p>
@@ -154,13 +154,13 @@
 <p>А зачем гуглить-то?</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
- <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
- <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+ <span class="s1">'category1'</span> <span class="o">=&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
 <span class="p">];</span>
 
-<span class="nf">var\_dump</span><span class="p">(</span><span class="nf">array\_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
- <span class="k">return</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
-<span class="p">},</span> <span class="nf">array\_keys</span><span class="p">(</span><span class="nv">$array</span><span class="p">),</span> <span class="nv">$array</span><span class="p">));</span>
+<span class="nb">var_dump</span><span class="p">(</span><span class="nb">array_map</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="k">return</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="p">},</span> <span class="nb">array_keys</span><span class="p">(</span><span class="nv">$array</span><span class="p">),</span> <span class="nv">$array</span><span class="p">));</span>
 </code></pre></div></div>
 
 <p>И все отлично работает. И притом правильно. Относительно конечно же. И никаких вам лишних переменных.</p>
@@ -168,34 +168,34 @@
 <p>А тем временем в коде вновь и вновь появляются конструкции вида</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
- <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
- <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+ <span class="s1">'category1'</span> <span class="o">=&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
 <span class="p">];</span>
 
 <span class="nv">$description</span> <span class="o">=</span> <span class="p">[];</span>
 
-<span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
- <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$array</span> <span class="k">as</span> <span class="nv">$key</span> <span class="o">=&gt;</span> <span class="nv">$value</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
 <span class="p">}</span>
 </code></pre></div></div>
 
 <p>Или еще хуже.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$array</span> <span class="o">=</span> <span class="p">[</span>  
- <span class="s1">'category1'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
- <span class="s1">'category2'</span> <span class="o">=</span><span class="err">\</span><span class="o">&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
+ <span class="s1">'category1'</span> <span class="o">=&gt;</span> <span class="s1">'first category'</span><span class="p">,</span>  
+ <span class="s1">'category2'</span> <span class="o">=&gt;</span> <span class="s1">'second category'</span><span class="p">,</span>  
 <span class="p">];</span>
 
 <span class="nv">$description</span> <span class="o">=</span> <span class="p">[];</span>
 
-<span class="nf">array\_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>  
- <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =\&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
+<span class="nb">array_walk</span><span class="p">(</span><span class="nv">$array</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$value</span><span class="p">,</span> <span class="nv">$key</span><span class="p">)</span> <span class="p">{</span>  
+ <span class="nv">$description</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$key</span><span class="si">}</span><span class="s2"> =&gt; </span><span class="si">{</span><span class="nv">$value</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>  
 <span class="p">});</span>
 </code></pre></div></div>
 
 <p>Проблема кейса из статьи может быть и раздута, но при вчитывании в сотни строк кода более-менее понятными сходу являются только первые два варианта.</p>
 
-<p>Вариант же с array_walk на понятность никак не претендует (как и решение подобной задачи при помощи .each в jquery).</p>
+<p>Вариант же с <code class="language-plaintext highlighter-rouge">array_walk</code> на понятность никак не претендует (как и решение подобной задачи при помощи .each в jquery).</p>
 
 
   </div>

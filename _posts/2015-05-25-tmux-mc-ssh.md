@@ -11,18 +11,6 @@ categories:
 - HowTo
 tags:
 - linux
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _rest_api_published: '1'
-  _publicize_job_id: '10987472593'
-  _rest_api_client_id: "-1"
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/05/25/tmux-mc-ssh/"
 ---
 Если запустить ssh в tmux, а в нем запустить mc, то последний пожалуется, что тип терминала неизвестен и закроется. А на локальной машине не работают сочетания Shift+Fx.
