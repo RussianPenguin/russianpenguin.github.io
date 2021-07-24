@@ -15,16 +15,14 @@ title: Последние посты
 {% endfor %}
 
 <!-- Pagination links -->
-<div class="pagination">
-  {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path }}" class="previous">Назад</a>
-  {% else %}
-    <span class="previous">Назад</span>
-  {% endif %}
-  <span class="page_number ">Страница: {{ paginator.page }} из {{ paginator.total_pages }}</span>
-  {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path }}" class="next">Далее</a>
-  {% else %}
-    <span class="next ">Далее</span>
-  {% endif %}
-</div>
+{% if paginator.total_pages > 1 %}
+  <div class="pagination">
+    {% if paginator.previous_page %}
+      <a class="previous" href="{{ paginator.previous_page_path | relative_url }}">&laquo; Предыдущие посты</a>
+    {% endif %}
+
+    {% if paginator.next_page %}
+      <a class="next" href="{{ paginator.next_page_path | relative_url }}">Следующие посты &raquo;</a>
+    {% endif %}
+  </div>
+{% endif %}

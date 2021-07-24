@@ -4,6 +4,15 @@ description: Записная книжка рассеянного [в прост
 theme: jekyll-theme-cayman
 permalink: /:categories/:title/
 timezone: Europe/Moscow
-paginate: 5
-paginate_path: "/blog/page:num/"
+# paginate: 5
+# paginate_path: "/blog/page:num/"
 excerpt_separator: <!--more-->
+plugins:
+  - jekyll-paginate-v2
+pagination:
+  enabled: true
+  permalink: '/posts/page:num/'
+  sort_reverse: true
+  title: ':title - Посты. Страница :num'
+gems:
+  - jekyll-paginate-v2
