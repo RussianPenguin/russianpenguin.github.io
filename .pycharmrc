@@ -1,0 +1,2 @@
+source ~/.bashrc
+rvm use 2.7.3
