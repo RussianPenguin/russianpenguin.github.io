@@ -18,7 +18,7 @@ layout: default
     <p>
     Категории:
     {% for category in page.categories %}
-        <a href="/tag#{{ category | slugify }}"> {{ category }} </a>
+        <a href="/category#{{ category | slugify }}"> {{ category }} </a>
     {% endfor %}
     </p>
 {% endif %}
