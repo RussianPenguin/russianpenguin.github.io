@@ -7,14 +7,10 @@ timezone: Europe/Moscow
 excerpt_separator: <!--more-->
 lang: ru-RU
 plugins:
-  - jekyll-paginate-v2
-pagination:
-  enabled: true
-  permalink: '/posts/page/:num'
-  sort_reverse: true
-  title: ':title - Посты. Страница :num'
-gems:
-  - jekyll-paginate-v2
+  - jekyll-paginate
+  - jekyll-sass-converter
+paginate_path: "/posts/page/:num"
+paginate: 5
 sass:
     sass_dir: _sass
     style: compressed
