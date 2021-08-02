@@ -3,10 +3,6 @@ layout: post
 title: 'PHP: дело о загадачном пробеле'
 date: 2016-10-28 15:30:38.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 - HowTo
@@ -14,18 +10,6 @@ tags:
 - apache
 - ошибки
 - php
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '28323896694'
-  timeline_notification: '1477657840'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/10/28/php-%d0%b4%d0%b5%d0%bb%d0%be-%d0%be-%d0%b7%d0%b0%d0%b3%d0%b0%d0%b4%d0%b0%d1%87%d0%bd%d0%be%d0%bc-%d0%bf%d1%80%d0%be%d0%b1%d0%b5%d0%bb%d0%b5/"
 ---
 ![%d0%b2%d1%8b%d0%b4%d0%b5%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5_103]({{ site.baseurl }}/assets/images/2016/10/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_103.png?w=300)Или история о том, как побились картинки.
@@ -45,12 +29,12 @@ permalink: "/2016/10/28/php-%d0%b4%d0%b5%d0%bb%d0%be-%d0%be-%d0%b7%d0%b0%d0%b3%d
 Чтобы отключить буферизацию нужно прописать в конфигах php.ini
 
 ```
-output\_buffering=0
+output_buffering=0
 ```
 
 Или в конфигах апача или htaccess
 
 ```
-php\_flag "output\_buffering" Off
+php_flag "output_buffering" Off
 ```
 

@@ -14,21 +14,7 @@ tags:
 - консоль
 - linux
 - фотография
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  timeline_notification: '1564324875'
-  _publicize_job_id: '33364572634'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2019/07/28/linux-%d0%be%d0%b1%d1%80%d0%b0%d0%b1%d0%b0%d1%82%d1%8b%d0%b2%d0%b0%d0%b5%d0%bc-raw-%d0%b8%d0%b7%d0%be%d0%b1%d1%80%d0%b0%d0%b6%d0%b5%d0%bd%d0%b8%d1%8f/"
-excerpt: Рассмотрим основные инструменты для обработки raw-изображений. Так же посмотрим
-  на метод стекинга изображения для получения качественной картинки.
 ---
 ![resize_result]({{ site.baseurl }}/assets/images/2019/07/resize_result.jpg?w=150)Мы не будем говорить о том, как правильно\неправильно обрабатывать raw'ки. Мы поговорим об инструментах (конечно же консольных), которые можно применять для конвертирования, склейки и других операций.
 

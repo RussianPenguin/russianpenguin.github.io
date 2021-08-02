@@ -273,6 +273,7 @@ DEPENDENCIES
   github-pages
   jekyll-feed
   jekyll-paginate-v2
+  jekyll-sass-converter
 
 BUNDLED WITH
    2.1.4

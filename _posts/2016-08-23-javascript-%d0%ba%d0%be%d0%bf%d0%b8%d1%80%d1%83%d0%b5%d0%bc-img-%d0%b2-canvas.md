@@ -3,26 +3,11 @@ layout: post
 title: 'JavaScript: копируем img в canvas'
 date: 2016-08-23 22:28:03.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Обработка изображений
 - Разработка
 tags:
 - javascript
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '26077762883'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/08/23/javascript-%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d1%83%d0%b5%d0%bc-img-%d0%b2-canvas/"
 ---
 Существует несколько способов скопировать имеющееся на странице изображение (img) в canvas. Конечно все они сводятся к простейшему drawImage, но каждый из этих методов применим в своем контексте.
