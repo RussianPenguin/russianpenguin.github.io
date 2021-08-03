@@ -15,9 +15,3 @@ paginate: 5
 sass:
     sass_dir: _sass
     style: compressed
-defaults:
-  -
-    scope:
-      path:            "/posts/page/*"
-    values:
-      sitemap:         false
