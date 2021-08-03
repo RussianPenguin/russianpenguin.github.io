@@ -272,6 +272,7 @@ DEPENDENCIES
   jekyll-feed
   jekyll-paginate
   jekyll-sass-converter
+  jekyll-sitemap
 
 BUNDLED WITH
    2.1.4

@@ -7,10 +7,17 @@ timezone: Europe/Moscow
 excerpt_separator: <!--more-->
 lang: ru-RU
 plugins:
-  - jekyll-paginate
   - jekyll-sass-converter
+  - jekyll-paginate
+  - jekyll-sitemap
 paginate_path: "/posts/page/:num"
 paginate: 5
 sass:
     sass_dir: _sass
     style: compressed
+defaults:
+  -
+    scope:
+      path:            "/posts/page/*"
+    values:
+      sitemap:         false
