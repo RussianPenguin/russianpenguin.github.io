@@ -10,8 +10,11 @@ plugins:
   - jekyll-sass-converter
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-feed
 paginate_path: "/posts/page/:num"
 paginate: 5
 sass:
-    sass_dir: _sass
-    style: compressed
+  sass_dir: _sass
+  style: compressed
+feed:
+  path: atom.xml
