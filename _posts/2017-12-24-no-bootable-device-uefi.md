@@ -28,7 +28,7 @@ permalink: "/2017/12/24/no-bootable-device-uefi/"
 excerpt: Что делать когда после, казалось бы, удачного обновления система отказывается
   грузиться?
 ---
-![1 - no bootable device]({{ site.baseurl }}/assets/images/2017/12/1-no-bootable-device.jpg?w=150)Именно таким неприятным сообщением может встретить вас ноутбук или стационарный компьютер после казалось бы удачно прошедшего обновления дистрибутива.
+![1 - no bootable device]({{ site.baseurl }}/assets/images/2017/12/1-no-bootable-device.jpg)Именно таким неприятным сообщением может встретить вас ноутбук или стационарный компьютер после казалось бы удачно прошедшего обновления дистрибутива.
 
 Почему? Потому что обновился grub-efi, а скрипт, который добавит запись о новом образе для загрузки не записал должным образом.
 
@@ -37,11 +37,11 @@ $&nbsp;efibootmgr -v
 BootCurrent: 0001  
 Timeout: 0 seconds  
 BootOrder: 0001,2001,2002,2003  
-Boot0001\* Linux PciRoot(0x0)/Pci(0x1c,0x4)/Pci(0x0,0x0)/NVMe(0x1,00-00-00-00-00-00-00-00)/HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shimx64-fedora.efi)A01 ..  
-Boot0002\* Unknown Device: HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)RC  
-Boot2001\* EFI USB Device RC  
-Boot2002\* EFI DVD/CDROM RC  
-Boot2003\* EFI Network RC
+Boot0001* Linux PciRoot(0x0)/Pci(0x1c,0x4)/Pci(0x0,0x0)/NVMe(0x1,00-00-00-00-00-00-00-00)/HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shimx64-fedora.efi)A01 ..  
+Boot0002* Unknown Device: HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)RC  
+Boot2001* EFI USB Device RC  
+Boot2002* EFI DVD/CDROM RC  
+Boot2003* EFI Network RC
 ```
 
 Увы, снять показания я смог только после восстановления работоспособности системы, поэтому на листинге, который приведен выше, мы видим корректный образ под меткой Boot0001 и тот, который был перед обновлением под меткой Boot0002. На разных системах это может выглядеть совершенно различным образом.

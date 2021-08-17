@@ -26,7 +26,7 @@ author:
   last_name: Zubkov
 permalink: "/2015/08/01/fedora-server-%d0%bf%d0%be%d1%81%d0%bb%d0%b5%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%88%d0%b0%d0%b3%d0%b8/"
 ---
-[![]({{ site.baseurl }}/assets/images/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg?w=150)](https://russianpenguin.files.wordpress.com/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg)Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки.
+[![]({{ site.baseurl }}/assets/images/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg)](/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg)Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки.
 
 ## 0 - вам нужно сгенерировать ssh-ключ для работы с удаленной системой без ввода пароля
 
@@ -39,7 +39,7 @@ $ man ssh-keygen
 Логинимся на сервер, создаем пользователя и наделяем его нужными возможностью использовать sudo.
 
 ```shell
-$ ssh root@server\_ip  
+$ ssh root@server_ip  
 # adduser penguin  
 # passwd penguin  
 # usermod -a -G wheel penguin
@@ -48,18 +48,18 @@ $ ssh root@server\_ip
 Теперь можно скопировать ssh-ключ на сервер и вся дальнейшая работа будет осуществляться уже под аккаунтом нового пользователя
 
 ```shell
-$ ssh-copy-id penguin@server\_ip
+$ ssh-copy-id penguin@server_ip
 ```
 
 Можно войти.
 
 ```shell
-$ ssh penguin@server\_ip
+$ ssh penguin@server_ip
 ```
 
 ## 2 - настраиваем sshd: запрещаем удаленный логин root и авторизацию по паролям (только ключи), а так же меняем стандартный порт.
 
-Правим конфиг **/etc/ssh/sshd\_config**
+Правим конфиг **/etc/ssh/sshd_config**
 
 Выставляем следующие опции:
 
@@ -79,7 +79,7 @@ $ sudo systemctl reload sshd
 
 ```shell
 $ cat .ssh/config  
-Host server\_ip  
+Host server_ip  
  User penguin  
  Port 54862
 ```
@@ -87,7 +87,7 @@ Host server\_ip
 Тогда авторизоваться на сервере можно будет совсем просто
 
 ```shell
-$ ssh server\_ip
+$ ssh server_ip
 ```
 
 ## 3 - конфигурируем тайм-зону

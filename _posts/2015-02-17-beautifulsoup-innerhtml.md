@@ -38,6 +38,6 @@ permalink: "/2015/02/17/beautifulsoup-innerhtml/"
 
 ```python
 def innerHTML(element):  
- return element.decode\_contents(formatter="html")
+ return element.decode_contents(formatter="html")
 ```
 

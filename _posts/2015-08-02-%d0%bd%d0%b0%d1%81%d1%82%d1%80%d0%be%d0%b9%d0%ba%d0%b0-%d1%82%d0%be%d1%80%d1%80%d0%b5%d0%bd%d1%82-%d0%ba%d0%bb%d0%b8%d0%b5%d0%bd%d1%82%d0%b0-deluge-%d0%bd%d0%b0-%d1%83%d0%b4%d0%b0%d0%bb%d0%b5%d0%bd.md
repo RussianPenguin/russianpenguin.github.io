@@ -25,7 +25,7 @@ author:
   last_name: Zubkov
 permalink: "/2015/08/02/%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d1%82%d0%be%d1%80%d1%80%d0%b5%d0%bd%d1%82-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82%d0%b0-deluge-%d0%bd%d0%b0-%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd/"
 ---
-[![]({{ site.baseurl }}/assets/images/2015/08/deluge-bittorrent-client.jpg?w=150)](https://russianpenguin.files.wordpress.com/2015/08/deluge-bittorrent-client.jpg)Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.
+[![]({{ site.baseurl }}/assets/images/2015/08/deluge-bittorrent-client.jpg)](/2015/08/deluge-bittorrent-client.jpg)Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.
 
 ## Установка
 
@@ -61,7 +61,7 @@ $ sudo dnf install logrotate
 Сконфигурировать его для поддержки новых правил ротации. Для этого создадим файл **/etc/logrotate.d/deluge** примерно следующего содержания
 
 ```
-/var/log/deluge/\*.log {  
+/var/log/deluge/*.log {  
  rotate 4  
  weekly  
  missingok  
@@ -70,8 +70,8 @@ $ sudo dnf install logrotate
  delaycompress  
  sharedscripts  
  postrotate  
- initctl restart deluged \>/dev/null 2\>&1 || true  
- initctl restart deluge-web \>/dev/null 2\>&1 || true  
+ initctl restart deluged >/dev/null 2>&1 || true  
+ initctl restart deluge-web >/dev/null 2>&1 || true  
  endscript  
 }
 ```
@@ -145,13 +145,13 @@ $ sudo /usr/libexec/iptables/iptables.init save
 Т.е. должен быть файл ~/.config/deluge/auth содержащий строку логина-пароля
 
 ```
-localclient:тут\_длинный\_хеш:10
+localclient:тут_длинный_хеш:10
 ```
 
 Скопировать этот файл можно из каталога /var/lib/deluge/.config/deluge
 
 ```
-$ sudo cat /var/lib/deluge/.config/deluge/auth \>\> ~/.config/deluge/auth
+$ sudo cat /var/lib/deluge/.config/deluge/auth >> ~/.config/deluge/auth
 ```
 
 ## Запуск и гонфигурирование демона
@@ -173,11 +173,11 @@ $ deluge-console
 
 Заставляем deluge слушать только определенный диапазон портов (который был открыт ранее)  
 ```
-config -s listen\_ports (56881, 56891)
+config -s listen_ports (56881, 56891)
 ```  
 Принудительно заставляем демон выходить только через определенный набор портов  
 ```
-config -s outgoing\_ports (56890, 57200)
+config -s outgoing_ports (56890, 57200)
 ```
 
 ## Все

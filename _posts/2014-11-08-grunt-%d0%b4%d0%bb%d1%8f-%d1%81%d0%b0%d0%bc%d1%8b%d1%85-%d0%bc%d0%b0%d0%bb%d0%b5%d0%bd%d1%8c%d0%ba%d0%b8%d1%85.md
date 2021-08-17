@@ -45,7 +45,7 @@ permalink: "/2014/11/08/grunt-%d0%b4%d0%bb%d1%8f-%d1%81%d0%b0%d0%bc%d1%8b%d1%85-
 Если нет, то
 
 ```shell
- $ sudo yum install nodejs-grunt\*
+ $ sudo yum install nodejs-grunt*
 ```
 
 Ставим нужное
@@ -65,14 +65,14 @@ Unable to find local grunt
 
 ```javascript
 {  
- "name": "\<project name\>",  
+ "name": "<project name>",  
  "version": "0.1.0",  
  "devDependencies": {  
  "grunt": "~0.4.5",  
  "grunt-contrib-concat": "^0.4.0",  
  "grunt-contrib-cssmin": "^0.10.0",  
  "grunt-contrib-uglify": "^0.5.0",  
- "grunt-contrib-watch": "\*"  
+ "grunt-contrib-watch": "*"  
  },  
  "dependencies": {  
  "grunt": "^0.4.5",  
@@ -90,11 +90,11 @@ module.exports = function (grunt) {
  pkg: grunt.file.readJSON('package.json'),  
  concat: {  
  css: {  
- src: ['src/\*\*/\*.css'],  
+ src: ['src/**/*.css'],  
  dest: 'dist/app.css'  
  },  
  js: {  
- src: ['src/js/\*\*/\*.js'],  
+ src: ['src/js/**/*.js'],  
  dest: 'dist/app.js'  
  }  
  },  
@@ -112,11 +112,11 @@ module.exports = function (grunt) {
  },  
  watch: {  
  css: {  
- files: ['src/css/\*\*/\*.css'],  
+ files: ['src/css/**/*.css'],  
  tasks: ['concat:css', 'cssmin:css']  
  },  
  js: {  
- files: ['src/js/\*\*/\*.js'],  
+ files: ['src/js/**/*.js'],  
  tasks: ['concat:js', 'uglify:js']  
  }  
  }  
@@ -142,7 +142,7 @@ Running "concat:js" (concat) task
 File gapi.js created.
 
 Running "uglify:js" (uglify) task  
-\>\> 1 file created.
+>> 1 file created.
 
 Done, without errors.
 ```

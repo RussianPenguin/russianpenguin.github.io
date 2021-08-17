@@ -43,7 +43,7 @@ permalink: "/2015/02/07/ajax-%d0%b8-%d0%b7%d0%b0%d0%b3%d0%be%d0%bb%d0%be%d0%b2%d
 Казалось бы:
 
 ```javascript
-$.get('some\_url', function(data, status, request) {  
+$.get('some_url', function(data, status, request) {  
 console.log(request.getResponseHeader('location'))  
 })
 ```
@@ -53,7 +53,7 @@ console.log(request.getResponseHeader('location'))
 Если мы отдаем хидер стандартно для php.
 
 ```php
-header('location: to\_url');
+header('location: to_url');
 ```
 
 То видим. А что видим? А видим, что браузер взял на себя переход по редиректу. Почему? Потому что ответы с кодом 301 и 302 прозрачно обрабатываются самим браузером и в ответе придет уже конечная страница.
@@ -61,10 +61,10 @@ header('location: to\_url');
 Но как только ответ сервера будет 200, так сразу все становится хорошо. Этот код заставляет браузеры забыть об обработке хидера location и позволяет прочитать его на стороне js.
 
 ```php
-header('location: to\_url', true, 200);
+header('location: to_url', true, 200);
 ```
 
 В [примере](https://github.com/RussianPenguin/blogSamples/blob/master/location.php "Дружим location и js: пример к статье") можно наглядно посмотреть, как происходит обработка. Достаточно его запустить внутри встроенного сервера php.
 
-[![Дружим location и js]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png?w=300)](https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png)
+[![Дружим location и js]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png)](/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png)
 

@@ -9,7 +9,7 @@ tags:
 - xmonad
 permalink: "/2016/06/22/xmonad-%d1%84%d0%b8%d0%ba%d1%81%d0%b8%d0%bc-%d0%bc%d0%b5%d0%bd%d1%8e%d1%88%d0%ba%d0%b8-%d1%83-saleae-logic/"
 ---
-![2016-06-22-22:49:47_409x324]({{ site.baseurl }}/assets/images/2016/06/2016-06-22-224947_409x324.png?w=300) Есть довольно хороший бюджетный логический [анализатор](https://www.saleae.com/) от saleae (и масса совместимых китайских клонов).
+![2016-06-22-22:49:47_409x324]({{ site.baseurl }}/assets/images/2016/06/2016-06-22-224947_409x324.png) Есть довольно хороший бюджетный логический [анализатор](https://www.saleae.com/) от saleae (и масса совместимых китайских клонов).
 
 Что примечательно - это то, что ребята из этой конторы написали софт под все платформы (и не забыли линупс конечно же).
 
@@ -20,6 +20,6 @@ permalink: "/2016/06/22/xmonad-%d1%84%d0%b8%d0%ba%d1%81%d0%b8%d0%bc-%d0%bc%d0%b5
 Фикс проблемы [есть](http://support.saleae.com/hc/communities/public/questions/204345355-menus-aren-t-working-under-xmonad) у саппорта saleae - нужно заигнорить окна с определенным классом добавив соответствующее правило к оконным хукам.
 
 ```
-className =? "Logic" --\> doIgnore
+className =? "Logic" --> doIgnore
 ```
 

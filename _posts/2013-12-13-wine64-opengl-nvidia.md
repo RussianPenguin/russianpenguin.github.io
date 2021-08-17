@@ -29,7 +29,7 @@ permalink: "/2013/12/13/wine64-opengl-nvidia/"
 Некоторые получают ошибку в 64х битном окружении
 
 ```text; gutter: true; first-line: 1; highlight: []
-WineGL\_InitOpenglInfo Direct rendering is disabled, most likely your OpenGL drivers haven't been installed correctly
+WineGL_InitOpenglInfo Direct rendering is disabled, most likely your OpenGL drivers haven't been installed correctly
 ```
 
 Лечится это установкой 32х битных версий библиотек от вендора.

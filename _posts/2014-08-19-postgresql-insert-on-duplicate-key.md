@@ -35,7 +35,7 @@ permalink: "/2014/08/19/postgresql-insert-on-duplicate-key/"
 Да-да. Постгрес не умеет делать
 
 ```sql
-insert \* on duplicate key ...
+insert * on duplicate key ...
 ```
 
 Но это легко&nbsp;[эмулируется](http://stackoverflow.com/a/6527838/1216190) последовательностью запросов.

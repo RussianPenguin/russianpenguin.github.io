@@ -27,7 +27,7 @@ author:
 permalink: "/2018/05/19/fedora-%d1%81%d0%b1%d0%be%d1%80%d0%ba%d0%b0-%d0%bf%d0%b0%d0%ba%d0%b5%d1%82%d0%be%d0%b2-%d0%b8%d0%b7-src-rpm/"
 excerpt: Разбираемся, что это за пакеты src.rpm и как поставить софт из исходников.
 ---
-![2018-05-19-12:35:39_1076x631]({{ site.baseurl }}/assets/images/2018/05/2018-05-19-123539_1076x631.png?w=150)Чаще всего то не требуется обычному пользователю. Но бывает ситуации, когда пакет собран с поддержкой библиотеки исключенной из дистрибутива.
+![2018-05-19-12:35:39_1076x631]({{ site.baseurl }}/assets/images/2018/05/2018-05-19-123539_1076x631.png)Чаще всего то не требуется обычному пользователю. Но бывает ситуации, когда пакет собран с поддержкой библиотеки исключенной из дистрибутива.
 
 Недавно это случилось с chromium в centos, а с драйверами от epson случается постоянно.
 
@@ -38,16 +38,16 @@ $ ./install.sh
 Последняя проверка окончания срока действия метаданных: 2:53:00 назад, Сб 19 мая 2018 09:42:23.  
 Ошибка:  
  Проблема 1: conflicting requests  
- - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64  
- Проблема 2: package imagescan-plugin-networkscan-1.1.1-1epson4fedora27.x86\_64 requires imagescan \>= 3.9.0, but none of the providers can be installed  
+ - nothing provides libboost_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86_64  
+ Проблема 2: package imagescan-plugin-networkscan-1.1.1-1epson4fedora27.x86_64 requires imagescan >= 3.9.0, but none of the providers can be installed  
  - conflicting requests  
- - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64  
- Проблема 3: package imagescan-plugin-gt-s650-1.0.0-1epson4fedora27.x86\_64 requires imagescan \>= 3.28.0, but none of the providers can be installed  
+ - nothing provides libboost_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86_64  
+ Проблема 3: package imagescan-plugin-gt-s650-1.0.0-1epson4fedora27.x86_64 requires imagescan >= 3.28.0, but none of the providers can be installed  
  - conflicting requests  
- - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64  
- Проблема 4: package imagescan-plugin-ocr-engine-1.0.0-1epson4fedora27.x86\_64 requires imagescan \>= 3.14.0, but none of the providers can be installed  
+ - nothing provides libboost_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86_64  
+ Проблема 4: package imagescan-plugin-ocr-engine-1.0.0-1epson4fedora27.x86_64 requires imagescan >= 3.14.0, but none of the providers can be installed  
  - conflicting requests  
- - nothing provides libboost\_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86\_64
+ - nothing provides libboost_filesystem.so.1.64.0()(64bit) needed by imagescan-3.33.0-1epson4fedora27.x86_64
 ```
 
 А еще это может потребоваться если мы хотим поставить пакет, который распространяется только в src.rpm.
@@ -132,33 +132,33 @@ $ rpmbuild -bp --define "uversion 0.33.0" SPECS/imagescan.spec
 Дополнительная опция --define позволяет определять и переопределять макросы, которые будут использоваться тулчейном.
 
 ```
-/usr/include/gtk-2.0/gtk/gtkstatusicon.h:76:8: error: unnecessary parentheses in declaration of '\_\_gtk\_reserved1' [-Werror=parentheses]  
-void (\*\_\_gtk\_reserved1);  
+/usr/include/gtk-2.0/gtk/gtkstatusicon.h:76:8: error: unnecessary parentheses in declaration of '__gtk_reserved1' [-Werror=parentheses]  
+void (*__gtk_reserved1);  
 ^  
-/usr/include/gtk-2.0/gtk/gtkstatusicon.h:77:8: error: unnecessary parentheses in declaration of '\_\_gtk\_reserved2' [-Werror=parentheses]  
-void (\*\_\_gtk\_reserved2);  
+/usr/include/gtk-2.0/gtk/gtkstatusicon.h:77:8: error: unnecessary parentheses in declaration of '__gtk_reserved2' [-Werror=parentheses]  
+void (*__gtk_reserved2);  
 ^  
 cc1plus: all warnings being treated as errors  
-make[2]: \*\*\* [Makefile:573: dialog.lo] Error 1  
+make[2]: *** [Makefile:573: dialog.lo] Error 1  
 make[2]: Leaving directory '/home/penguin/rpmbuild/BUILD/utsushi-0.33.0/gtkmm'  
-make[1]: \*\*\* [Makefile:604: all-recursive] Error 1  
+make[1]: *** [Makefile:604: all-recursive] Error 1  
 make[1]: Leaving directory '/home/penguin/rpmbuild/BUILD/utsushi-0.33.0'  
-make: \*\*\* [Makefile:511: all] Error 2  
+make: *** [Makefile:511: all] Error 2  
 ошибка: Неверный код возврата из /var/tmp/rpm-tmp.hKyez0 (%build)
 ```
 
 Таких ошибок встретится превеликое множество из-за довольно старых исходников, которые не адаптированы под свежий стандарт c++. Решением будет установка целой группы флагов через глобальную переменную CXXFLAGS.
 
 ```shell
-CXXFLAGS="-fPIC -Wno-parentheses -Wno-sizeof-pointer-div" rpmbuild -bb --define "uversion 0.33.0" --define "debug\_package %{nil}" SPECS/imagescan.spec
+CXXFLAGS="-fPIC -Wno-parentheses -Wno-sizeof-pointer-div" rpmbuild -bb --define "uversion 0.33.0" --define "debug_package %{nil}" SPECS/imagescan.spec
 ```
 
-Флаг debug\_package добавлен из-за того, что попытка сборки пакета debugpackage приподит к ошибке из-за отсутствия нужных определений в файле спецификации.
+Флаг debug_package добавлен из-за того, что попытка сборки пакета debugpackage приподит к ошибке из-за отсутствия нужных определений в файле спецификации.
 
 ## Установка пакета
 
 ```shell
-$&nbsp;sudo dnf install RPMS/x86\_64/imagescan-3.33.0-1.fc28.x86\_64.rpm
+$&nbsp;sudo dnf install RPMS/x86_64/imagescan-3.33.0-1.fc28.x86_64.rpm
 ```
 
 ## Литература

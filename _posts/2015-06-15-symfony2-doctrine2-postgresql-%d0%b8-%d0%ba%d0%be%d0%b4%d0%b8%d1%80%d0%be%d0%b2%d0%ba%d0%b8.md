@@ -27,9 +27,9 @@ author:
   last_name: Zubkov
 permalink: "/2015/06/15/symfony2-doctrine2-postgresql-%d0%b8-%d0%ba%d0%be%d0%b4%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8/"
 ---
-Суть проблемы: в doctrine2 нет возможности выбрать кодировку подключения для драйвера pdo\_pgsql. Совсем никак. Нет. Даже не пытайтесь. У вас ничего не получится.
+Суть проблемы: в doctrine2 нет возможности выбрать кодировку подключения для драйвера pdo_pgsql. Совсем никак. Нет. Даже не пытайтесь. У вас ничего не получится.
 
-Вот незадача: в mysql есть опция драйвера pdo [PDO::MYSQL\_ATTR\_INIT\_COMMAND](http://php.net/manual/en/ref.pdo-mysql.php). Благодаря этой опции можно устанавливать кодировку подключения при помощи
+Вот незадача: в mysql есть опция драйвера pdo [PDO::MYSQL_ATTR_INIT_COMMAND](http://php.net/manual/en/ref.pdo-mysql.php). Благодаря этой опции можно устанавливать кодировку подключения при помощи
 
 ```sql
 set names 'utf8'
@@ -40,16 +40,16 @@ set names 'utf8'
 Если мы покопаемся в файле драйвера, то увидим, что кодировка исправно обрабатывается
 
 ```php
-\<b\>Doctrine\DBAL\Driver\PDOMySql\Driver\</b\>
+<b>Doctrine\DBAL\Driver\PDOMySql\Driver</b>
 
-/\*\*  
- \* Constructs the MySql PDO DSN.  
- \*  
- \* @param array $params  
- \*  
- \* @return string The DSN.  
- \*/  
- private function \_constructPdoDsn(array $params)  
+/**  
+ * Constructs the MySql PDO DSN.  
+ *  
+ * @param array $params  
+ *  
+ * @return string The DSN.  
+ */  
+ private function _constructPdoDsn(array $params)  
  {  
  $dsn = 'mysql:';  
  if (isset($params['host']) && $params['host'] != '') {  
@@ -61,8 +61,8 @@ set names 'utf8'
  if (isset($params['dbname'])) {  
  $dsn .= 'dbname=' . $params['dbname'] . ';';  
  }  
- if (isset($params['unix\_socket'])) {  
- $dsn .= 'unix\_socket=' . $params['unix\_socket'] . ';';  
+ if (isset($params['unix_socket'])) {  
+ $dsn .= 'unix_socket=' . $params['unix_socket'] . ';';  
  }  
  if (isset($params['charset'])) {  
  $dsn .= 'charset=' . $params['charset'] . ';';  
@@ -72,7 +72,7 @@ return $dsn;
  }
 ```
 
-Для драйвера pdo\_pgsql (Doctrine\DBAL\Driver\PDOPgSql\Driver) нет ничего подобного.
+Для драйвера pdo_pgsql (Doctrine\DBAL\Driver\PDOPgSql\Driver) нет ничего подобного.
 
 При этом сам [драйвер](http://www.postgresql.org/docs/8.4/static/multibyte.html) вполне успешно с кодировками работает.
 
@@ -87,42 +87,42 @@ use Doctrine\DBAL\Event\ConnectionEventArgs;
 use Doctrine\DBAL\Events;  
 use Doctrine\Common\EventSubscriber;
 
-/\*\*  
- \* Событие инициализации подключения pgsql.  
- \* Позволяет установить кодировку бд.  
- \*/  
+/**  
+ * Событие инициализации подключения pgsql.  
+ * Позволяет установить кодировку бд.  
+ */  
 class PgsqlConnectionInit implements EventSubscriber  
 {  
- /\*\*  
- \* Используемая кодировка  
- \*  
- \* @var string  
- \*/  
- private $\_charset;
+ /**  
+ * Используемая кодировка  
+ *  
+ * @var string  
+ */  
+ private $_charset;
 
-/\*\*  
- \* Конфигурирование кодировки при создании класса  
- \*  
- \* @param string $charset The charset.  
- \*/  
- public function \_\_construct($charset = 'utf8')  
+/**  
+ * Конфигурирование кодировки при создании класса  
+ *  
+ * @param string $charset The charset.  
+ */  
+ public function __construct($charset = 'utf8')  
  {  
- $this-\>\_charset = $charset;  
+ $this->_charset = $charset;  
  }
 
-/\*\*  
- \* @param \Doctrine\DBAL\Event\ConnectionEventArgs $args  
- \*  
- \* @return void  
- \*/  
+/**  
+ * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args  
+ *  
+ * @return void  
+ */  
  public function postConnect(ConnectionEventArgs $args)  
  {  
- $args-\>getConnection()-\>executeQuery("SET NAMES ?", array($this-\>\_charset));  
+ $args->getConnection()->executeQuery("SET NAMES ?", array($this->_charset));  
  }
 
-/\*\*  
- \* {@inheritdoc}  
- \*/  
+/**  
+ * {@inheritdoc}  
+ */  
  public function getSubscribedEvents()  
  {  
  return array(Events::postConnect);  
@@ -139,7 +139,7 @@ services:
  pgsql.connection.init:  
  class: DatabaseBundle\Event\Listeners\PgsqlConnectionInit  
  tags:  
- - { name: doctrine.event\_listener, event: postConnect }
+ - { name: doctrine.event_listener, event: postConnect }
 ```
 
 Теперь все ок :)

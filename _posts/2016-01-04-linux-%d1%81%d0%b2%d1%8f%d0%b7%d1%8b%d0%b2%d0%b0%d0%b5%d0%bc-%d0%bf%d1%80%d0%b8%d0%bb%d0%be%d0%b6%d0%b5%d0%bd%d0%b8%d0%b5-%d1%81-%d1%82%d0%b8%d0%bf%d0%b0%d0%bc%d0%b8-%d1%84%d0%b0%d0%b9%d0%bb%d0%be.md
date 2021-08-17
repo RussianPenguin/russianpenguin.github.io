@@ -38,7 +38,7 @@ permalink: "/2016/01/04/linux-%d1%81%d0%b2%d1%8f%d0%b7%d1%8b%d0%b2%d0%b0%d0%b5%d
 
 Но на самом деле не все так страшно.
 
-Современные [стандарты freedesktop](http://standards.freedesktop.org/desktop-entry-spec/latest/) указывают нам на то, что запуск приложений осуществляется с помощью \*.desktop файлов, которые описывают все, что необходимо для работы приложения.
+Современные [стандарты freedesktop](http://standards.freedesktop.org/desktop-entry-spec/latest/) указывают нам на то, что запуск приложений осуществляется с помощью *.desktop файлов, которые описывают все, что необходимо для работы приложения.
 
 А чтобы связать тип файла с приложением, которое будет запускаться введен стандарт [Association between MIME types and applications](http://standards.freedesktop.org/mime-apps-spec/mime-apps-spec-1.0.html).
 
@@ -67,7 +67,7 @@ mimetype1=default1.desktop;default2.desktop
 ```
 
 mimetype - описание формата. Что-то вроде audio/ogg. Стандарт описания mimetype можно глянуть в [соответствующих RFC](https://en.wikipedia.org/wiki/MIME).  
-\*.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла.
+*.desktop есть файл запуска вашего приложения. Обрабатывается список файлов последовательно до первого встреченного существующего приложения. Либо система перейдет к обработке следующего файла.
 
 Помимо основной секции стандарт оговаривает две дополнительных секции.
 
@@ -93,7 +93,7 @@ mimetype1=foo5.desktop
 Попробуем сделать в консоли
 
 ```
-$ xdg-open ~/some\_path\_to\_image.jpg
+$ xdg-open ~/some_path_to_image.jpg
 ```
 
 Вы увидите, что картинка откроется при помощи стандартного вьювера для вашего рабочего стола.
@@ -149,12 +149,12 @@ video/mp4=vlc.desktop
 Как видим - используется vlc. И если мы попробуем сделать
 
 ```
-$ xdg-open path\_to\_mp4\_file.mp4
+$ xdg-open path_to_mp4_file.mp4
 ```
 
 Файл откроется уже в vlc.
 
 Почитать:  
-[https://wiki.archlinux.org/index.php/Default\_applications](https://wiki.archlinux.org/index.php/Default_applications)  
-[https://wiki.archlinux.org/index.php/Desktop\_entries](https://wiki.archlinux.org/index.php/Desktop_entries)
+[https://wiki.archlinux.org/index.php/Default_applications](https://wiki.archlinux.org/index.php/Default_applications)  
+[https://wiki.archlinux.org/index.php/Desktop_entries](https://wiki.archlinux.org/index.php/Desktop_entries)
 

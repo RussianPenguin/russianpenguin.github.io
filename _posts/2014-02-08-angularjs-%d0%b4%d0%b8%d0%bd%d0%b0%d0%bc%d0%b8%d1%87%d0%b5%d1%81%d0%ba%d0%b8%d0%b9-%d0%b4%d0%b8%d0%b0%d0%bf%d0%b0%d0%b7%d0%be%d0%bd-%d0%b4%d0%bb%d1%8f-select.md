@@ -36,7 +36,7 @@ angular.module('app').filter('range', function() {
  return function(input, min, max) {  
  min = parseInt(min, 10);  
  max = parseInt(max, 10);  
- for (var i = min; i \< max; i++)  
+ for (var i = min; i < max; i++)  
  input.push(i);  
  return input;  
  };  
@@ -46,7 +46,7 @@ angular.module('app').filter('range', function() {
 И делаем динамический селект.
 
 ```html
-\<select ng-model="value" ng-options="item for item in [] | range:min:max"\>\</select\>
+<select ng-model="value" ng-options="item for item in [] | range:min:max"></select>
 ```
 
 [JSFiddle](http://jsfiddle.net/russianpenguin/bYUFb "Пример на JSFiddle")

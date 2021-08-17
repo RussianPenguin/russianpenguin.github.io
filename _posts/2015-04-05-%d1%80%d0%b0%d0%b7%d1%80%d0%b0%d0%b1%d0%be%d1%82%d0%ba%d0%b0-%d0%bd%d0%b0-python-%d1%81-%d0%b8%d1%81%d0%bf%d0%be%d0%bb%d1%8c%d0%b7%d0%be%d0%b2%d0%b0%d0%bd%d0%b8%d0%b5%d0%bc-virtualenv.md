@@ -40,24 +40,24 @@ $ sudo yum install python-virtualenv
 Создадим окружение
 
 ```shell
-$ cd project\_dir  
-$ virtualenv proj\_env
+$ cd project_dir  
+$ virtualenv proj_env
 ```
 
-Этими командами мы создадим папку proj\_env, которая будет содержать наше новое окружение. В этой папке будет набор скриптов и копия интерпретатора python, который будет использоваться в окружении (окружение использует свой интерпретатор, а не общесистемный).
+Этими командами мы создадим папку proj_env, которая будет содержать наше новое окружение. В этой папке будет набор скриптов и копия интерпретатора python, который будет использоваться в окружении (окружение использует свой интерпретатор, а не общесистемный).
 
 При создании окружения можно указать, какая версия python нам нужна.
 
 Возможно, что в системе параллельно стоит как python2, так и python3. Выбирать версию при создании окружения мы можем ключем -p. Если ключ не указан, то будет выбрана версия /usr/bin/python.
 
 ```shell
-$ virtualenv -p /usr/bin/python3.4 proj\_env
+$ virtualenv -p /usr/bin/python3.4 proj_env
 ```
 
 Для того, чтобы попасть в наше новое окружение используем
 
 ```shell
-$ source proj\_env/bin/activate
+$ source proj_env/bin/activate
 ```
 
 Теперь мы внутри окружения.
@@ -65,7 +65,7 @@ $ source proj\_env/bin/activate
 Определеить это можно по изменившемуся приглашению:
 
 ```
-(proj\_env)тут\_старое\_приглашение\_из\_$PS1
+(proj_env)тут_старое_приглашение_из_$PS1
 ```
 
 Все. Мы внутри окружения. Можно ставить зависимости для нашего приложения.
@@ -88,7 +88,7 @@ $ deactivate
 
 Хорошей идей будет сохранить информацию об установленных в окружении пакетов.
 
-{code lang="shell"]$ pip freeze \> requirements.txt
+{code lang="shell"]$ pip freeze > requirements.txt
 ```
 
 После развертывание окружения в новой системе можно поднять все пакеты сразу.
@@ -112,20 +112,20 @@ $ sudo yum install python-virtualenvwrapper
 Добавляем в .bashrc
 
 ```shell
-export WORKON\_HOME=~/.envs  
+export WORKON_HOME=~/.envs  
 source /usr/bin/virtualenvwrapper.sh
 ```
 
 Теперь можно создавать окружения.
 
 ```shell
-$ mkvirtualenv proj\_env
+$ mkvirtualenv proj_env
 ```
 
 Активировать окружения.
 
 ```shell
-$ workon proj\_env
+$ workon proj_env
 ```
 
 Выходить из окружения можно так же как это делалось в кготом virtualenv.
@@ -137,10 +137,10 @@ $ deactivate
 Удалять окружения.
 
 ```shell
-$ rmvirtualenv proj\_env
+$ rmvirtualenv proj_env
 ```
 
-При этом все папки окружений будет расположены в одном месте: папке, которая задана через $WORKON\_HOME.
+При этом все папки окружений будет расположены в одном месте: папке, которая задана через $WORKON_HOME.
 
 ### Дополнительные команды
 
@@ -159,6 +159,6 @@ $ rmvirtualenv proj\_env
 
 ```shell
 $ git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv  
-$ echo 'source ~/.autoenv/activate.sh' \>\> ~/.bashrc
+$ echo 'source ~/.autoenv/activate.sh' >> ~/.bashrc
 ```
 

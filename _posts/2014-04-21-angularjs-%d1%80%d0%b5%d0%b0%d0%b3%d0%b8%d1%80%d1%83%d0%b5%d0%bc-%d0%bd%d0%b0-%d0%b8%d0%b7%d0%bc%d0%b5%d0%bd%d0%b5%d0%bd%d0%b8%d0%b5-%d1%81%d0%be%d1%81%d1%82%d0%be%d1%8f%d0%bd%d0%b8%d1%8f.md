@@ -61,7 +61,7 @@ $scope.$watch(function() {
 Теперь мы можем следить за состоянием отображения любого элемента.
 
 ```html
-\<p ng-hide="hidden" watch-state\>some text\</p\>
+<p ng-hide="hidden" watch-state>some text</p>
 ```
 
 [Пример на jsFiddle](http://jsfiddle.net/russianpenguin/EgRrp/ "Фидл с примером")

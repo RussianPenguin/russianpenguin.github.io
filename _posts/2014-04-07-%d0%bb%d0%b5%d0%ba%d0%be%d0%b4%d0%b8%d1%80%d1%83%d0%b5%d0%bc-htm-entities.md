@@ -26,5 +26,5 @@ author:
 permalink: "/2014/04/07/%d0%bb%d0%b5%d0%ba%d0%be%d0%b4%d0%b8%d1%80%d1%83%d0%b5%d0%bc-htm-entities/"
 ---
 ```javascript; gutter: true; first-line: 1; highlight: []
-var decoded = $("\<div/\>").html(encodedStr).text();
+var decoded = $("<div/>").html(encodedStr).text();
 ```

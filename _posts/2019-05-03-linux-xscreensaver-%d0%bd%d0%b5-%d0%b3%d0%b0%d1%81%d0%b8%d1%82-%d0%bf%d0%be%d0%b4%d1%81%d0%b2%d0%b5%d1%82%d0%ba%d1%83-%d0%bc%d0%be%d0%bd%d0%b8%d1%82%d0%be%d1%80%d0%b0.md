@@ -26,7 +26,7 @@ author:
 permalink: "/2019/05/03/linux-xscreensaver-%d0%bd%d0%b5-%d0%b3%d0%b0%d1%81%d0%b8%d1%82-%d0%bf%d0%be%d0%b4%d1%81%d0%b2%d0%b5%d1%82%d0%ba%d1%83-%d0%bc%d0%be%d0%bd%d0%b8%d1%82%d0%be%d1%80%d0%b0/"
 excerpt: Немного о проблеме выключения подсветки монитора хранителями экрана в linux.
 ---
-![xscreensaver-settings-1]({{ site.baseurl }}/assets/images/2019/05/xscreensaver-settings-1.png?w=300)Начиная с какого-то обновления системы у меня перестал выключаться монитор. Xscreensaver настроен в режим "только пустой экран" и на вкладке энергосбережения выставлен флажок "быстрое отключение питания в режиме пустого экрана".
+![xscreensaver-settings-1]({{ site.baseurl }}/assets/images/2019/05/xscreensaver-settings-1.png)Начиная с какого-то обновления системы у меня перестал выключаться монитор. Xscreensaver настроен в режим "только пустой экран" и на вкладке энергосбережения выставлен флажок "быстрое отключение питания в режиме пустого экрана".
 
 Никакими комбинациями опций нельзя было заставить его гаснуть нормально.
 
@@ -66,7 +66,7 @@ xscreensaver: 20:03:19: 1: grabbing keyboard on 0x16a... GrabSuccess.
 xscreensaver: 20:03:19: 1: grabbing mouse on 0x16a... GrabSuccess.  
 xscreensaver: 20:03:19: LOCK ClientMessage received while already locked.  
 xscreensaver: 20:03:33: user is active (keyboard activity)  
-xscreensaver: 20:03:33: pam\_start ("xscreensaver", "penguin", ...) ==\> 0 (Succes  
+xscreensaver: 20:03:33: pam_start ("xscreensaver", "penguin", ...) ==> 0 (Succes  
 s)  
 ...
 ```
@@ -84,7 +84,7 @@ xscreensaver: 20:01:46: 1: grabbing mouse on 0x16a... GrabSuccess.
 xscreensaver: 20:01:48: DPMSForceLevel(dpy, DPMSModeOff) did not change monitor power state.  
 xscreensaver: 20:01:48: LOCK ClientMessage received while already locked.  
 xscreensaver: 20:02:05: user is active (keyboard activity)  
-xscreensaver: 20:02:05: pam\_start ("xscreensaver", "penguin", ...) ==\> 0 (Success)  
+xscreensaver: 20:02:05: pam_start ("xscreensaver", "penguin", ...) ==> 0 (Success)  
 ...
 ```
 

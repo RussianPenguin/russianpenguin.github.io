@@ -27,7 +27,7 @@ author:
 permalink: "/2019/05/10/openwrt-%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d0%bf%d0%be%d1%81%d0%bb%d0%b5-%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b8/"
 excerpt: Небольшой скетч про послеустановочную настройку OpenWRT.
 ---
-![openwrt]({{ site.baseurl }}/assets/images/2019/05/openwrt.png?w=150) Небольшой скетч про послеустановочную настройку OpenWRT.
+![openwrt]({{ site.baseurl }}/assets/images/2019/05/openwrt.png) Небольшой скетч про послеустановочную настройку OpenWRT.
 
 **Настройка флешки как overlayfs**
 

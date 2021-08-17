@@ -35,12 +35,12 @@ permalink: "/2014/04/17/php-%d0%bc%d0%b5%d1%82%d1%80%d0%b8%d0%ba%d0%b0-%d0%b2%d1
 ```php
 class Timer {  
  private $time = 0;  
- function \_\_construct() {  
- $this-\>time = microtime(true);  
+ function __construct() {  
+ $this->time = microtime(true);  
  }
 
-function \_\_destruct() {  
- $executionTime = microtime(true) - $this-\>time;  
+function __destruct() {  
+ $executionTime = microtime(true) - $this->time;  
  // делаем все, что нам надо: логгируем или еще чего  
  }  
 }
@@ -53,7 +53,7 @@ function foo() {
  $timer = new Timer();  
  // что-то делаем  
  sleep(5);  
- // на выходе будет вызван Time::\_\_destructor().  
+ // на выходе будет вызван Time::__destructor().  
  // Так как все объекты уничтожаются  
 }
 

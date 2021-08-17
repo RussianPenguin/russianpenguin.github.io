@@ -61,7 +61,7 @@ Chrome среагирует правильно и отправит нас по �
 
 Ниже иллюстрации.
 
-[![FF: window.location.pathname bug]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png?w=300)](https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png)[![Chrome: window.location.pathname]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png?w=300)](https://russianpenguin.files.wordpress.com/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png)Как видим FF с задачей не справился. И не перекодировал # автоматом.
+[![FF: window.location.pathname bug]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png)](/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_175.png)[![Chrome: window.location.pathname]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png)](/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_177.png)Как видим FF с задачей не справился. И не перекодировал # автоматом.
 
 [Баг](https://bugzilla.mozilla.org/show_bug.cgi?id=483304 "FF: window.location.hash bug") этот давний - аж 2009го года.
 

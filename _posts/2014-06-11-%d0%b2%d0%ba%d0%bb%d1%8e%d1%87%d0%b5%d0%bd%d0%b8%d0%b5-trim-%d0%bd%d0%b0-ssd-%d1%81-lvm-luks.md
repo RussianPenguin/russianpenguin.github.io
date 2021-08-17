@@ -42,10 +42,10 @@ UUID=397b890a-c661-47f4-bd2a-2260379f8c6f /boot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 
 Для lvm надо сначала разрешить проброс команды trim к дискам (он запрещен по дефолту).
 
-Правим /etc/lvm/lvm.conf и меняем опцию issue\_discards с 0 на 1.
+Правим /etc/lvm/lvm.conf и меняем опцию issue_discards с 0 на 1.
 
 ```
-issue\_discards = 1
+issue_discards = 1
 ```
 
 Проверяем
@@ -93,7 +93,7 @@ $ sudo lsinitrd |grep crypttab
 Теперь нужно заставить систему отправлять trim для томов.
 
 ```
-# echo -e "fstrim /\nfstrim /home\nfstrim /boot" \> /etc/cron.hourly/fstrim
+# echo -e "fstrim /\nfstrim /home\nfstrim /boot" > /etc/cron.hourly/fstrim
 ```
 
 &nbsp;

@@ -41,8 +41,8 @@ webappsstore.sqlite
 try {  
  setLocalStorageItem(key, value);  
 } catch(e) {  
- if(e.name == "NS\_ERROR\_FILE\_CORRUPTED") {  
- showMessageSomehow("Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -\> Clear Recent History -\> Cookies and set time range to 'Everything'. This will remove the corrupted browser storage across all sites.");  
+ if(e.name == "NS_ERROR_FILE_CORRUPTED") {  
+ showMessageSomehow("Sorry, it looks like your browser storage has been corrupted. Please clear your storage by going to Tools -> Clear Recent History -> Cookies and set time range to 'Everything'. This will remove the corrupted browser storage across all sites.");  
  }  
 }
 ```

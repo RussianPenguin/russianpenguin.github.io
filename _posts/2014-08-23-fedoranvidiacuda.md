@@ -81,18 +81,18 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 Замечу, что делать это надо под рутом или проставив соотвествующие права на папки. Так как мейкфайлы сильно завязаны на относительные пути.
 
 ```shell
-# cd /usr/local/cuda-6.5/samples/5\_Simulations/fluidsGL  
+# cd /usr/local/cuda-6.5/samples/5_Simulations/fluidsGL  
 # make
 ```
 
 **7 - А вот тут нас поджидает облом (RFRemix)**
 
 ```shell
-\>\>\> WARNING - libGL.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
-\>\>\> WARNING - libGLU.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
-\>\>\> WARNING - libX11.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
-\>\>\> WARNING - libXi.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<  
-\>\>\> WARNING - libXmu.so not found, refer to CUDA Samples release notes for how to find and install them. \<\<\<
+>>> WARNING - libGL.so not found, refer to CUDA Samples release notes for how to find and install them. <<<  
+>>> WARNING - libGLU.so not found, refer to CUDA Samples release notes for how to find and install them. <<<  
+>>> WARNING - libX11.so not found, refer to CUDA Samples release notes for how to find and install them. <<<  
+>>> WARNING - libXi.so not found, refer to CUDA Samples release notes for how to find and install them. <<<  
+>>> WARNING - libXmu.so not found, refer to CUDA Samples release notes for how to find and install them. <<<
 ```
 
 Ага!
@@ -101,30 +101,30 @@ permalink: "/2014/08/23/fedoranvidiacuda/"
 
 ```shell
 ifeq ("$(OSLOWER)","linux")  
- # first search lsb\_release  
- DISTRO = $(shell lsb\_release -i -s 2\>/dev/null | tr "[:upper:]" "[:lower:]")  
- DISTVER = $(shell lsb\_release -r -s 2\>/dev/null)  
+ # first search lsb_release  
+ DISTRO = $(shell lsb_release -i -s 2>/dev/null | tr "[:upper:]" "[:lower:]")  
+ DISTVER = $(shell lsb_release -r -s 2>/dev/null)  
  ifeq ("$(DISTRO)","")  
  # second search and parse /etc/issue  
- DISTRO = $(shell more /etc/issue | awk '{print $$1}' | sed '1!d' | sed -e "/^$$/d" 2\>/dev/null | tr "[:upper:]" "[:lower:]")  
- DISTVER= $(shell more /etc/issue | awk '{print $$2}' | sed '1!d' 2\>/dev/null  
+ DISTRO = $(shell more /etc/issue | awk '{print $$1}' | sed '1!d' | sed -e "/^$$/d" 2>/dev/null | tr "[:upper:]" "[:lower:]")  
+ DISTVER= $(shell more /etc/issue | awk '{print $$2}' | sed '1!d' 2>/dev/null  
  endif  
  ifeq ("$(DISTRO)","")  
  # third, we can search in /etc/os-release or /etc/{distro}-release  
- DISTRO = $(shell awk '/ID/' /etc/\*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB")  
- DISTVER= $(shell awk '/DISTRIB\_RELEASE/' /etc/\*-release | sed 's/DISTRIB\_RELEASE=//' | grep -v "DISTRIB\_RELEASE")  
+ DISTRO = $(shell awk '/ID/' /etc/*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB")  
+ DISTVER= $(shell awk '/DISTRIB_RELEASE/' /etc/*-release | sed 's/DISTRIB_RELEASE=//' | grep -v "DISTRIB_RELEASE")  
  endif  
 endif
 
 ifeq ("$(OSUPPER)","LINUX")  
- # $(info) \>\> findgllib.mk -\> LINUX path \<\<\<)  
+ # $(info) >> findgllib.mk -> LINUX path <<<)  
  # Each set of Linux Distros have different paths for where to find their OpenGL libraries reside  
- UBUNTU\_PKG\_NAME = "nvidia-340"  
- UBUNTU = $(shell echo $(DISTRO) | grep -i ubuntu \>/dev/null 2\>&1; echo $$?)  
- FEDORA = $(shell echo $(DISTRO) | grep -i rfremix \>/dev/null 2\>&1; echo $$?)  
- RHEL = $(shell echo $(DISTRO) | grep -i red \>/dev/null 2\>&1; echo $$?)  
- CENTOS = $(shell echo $(DISTRO) | grep -i centos \>/dev/null 2\>&1; echo $$?)  
- SUSE = $(shell echo $(DISTRO) | grep -i suse \>/dev/null 2\>&1; echo $$?)
+ UBUNTU_PKG_NAME = "nvidia-340"  
+ UBUNTU = $(shell echo $(DISTRO) | grep -i ubuntu >/dev/null 2>&1; echo $$?)  
+ FEDORA = $(shell echo $(DISTRO) | grep -i rfremix >/dev/null 2>&1; echo $$?)  
+ RHEL = $(shell echo $(DISTRO) | grep -i red >/dev/null 2>&1; echo $$?)  
+ CENTOS = $(shell echo $(DISTRO) | grep -i centos >/dev/null 2>&1; echo $$?)  
+ SUSE = $(shell echo $(DISTRO) | grep -i suse >/dev/null 2>&1; echo $$?)
 ```
 
 Еще раз ага!
@@ -134,7 +134,7 @@ ifeq ("$(OSUPPER)","LINUX")
 Это команда
 
 ```shell
-awk '/ID/' /etc/\*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB"
+awk '/ID/' /etc/*-release | sed 's/ID=//' | grep -v "VERSION" | grep -v "ID" | grep -v "DISTRIB"
 ```
 
 А у меня она выдает _rfremix_. А значит такого таргета ни разу нет в списке. :)  
@@ -152,21 +152,21 @@ $ ./fluidsGL
 
 ```shell
 $ find /usr/ -name libcufft.so.6.5  
-/usr/local/cuda-6.5/targets/x86\_64-linux/lib/libcufft.so.6.5
+/usr/local/cuda-6.5/targets/x86_64-linux/lib/libcufft.so.6.5
 ```
 
 ```shell
-$ grep -R /usr/local/cuda-6.5/targets/x86\_64-linux/lib /etc/ld.so.conf.d/
+$ grep -R /usr/local/cuda-6.5/targets/x86_64-linux/lib /etc/ld.so.conf.d/
 ```
 
 Пусто.
 
 ```shell
-# echo "/usr/local/cuda-6.5/targets/x86\_64-linux/lib" \> /etc/ld.so.conf.d/cuda-lib64.conf  
+# echo "/usr/local/cuda-6.5/targets/x86_64-linux/lib" > /etc/ld.so.conf.d/cuda-lib64.conf  
 # ldconfig
 ```
 
 **9 - Наслаждаемся**
 
-[![fluidsGL]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png?w=300)](https://russianpenguin.files.wordpress.com/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)
+[![fluidsGL]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)](/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)
 

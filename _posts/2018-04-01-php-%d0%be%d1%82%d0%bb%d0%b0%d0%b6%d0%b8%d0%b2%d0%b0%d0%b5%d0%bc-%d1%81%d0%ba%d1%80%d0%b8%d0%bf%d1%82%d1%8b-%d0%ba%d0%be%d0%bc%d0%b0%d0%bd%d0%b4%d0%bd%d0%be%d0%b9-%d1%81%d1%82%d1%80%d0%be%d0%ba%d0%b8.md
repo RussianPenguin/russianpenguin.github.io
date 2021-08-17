@@ -32,14 +32,14 @@ excerpt: Отлаживать бэкенд-составляющую проект
 ---
 ![01-Превью]({{ site.baseurl }}/assets/images/2018/04/01-d0bfd180d0b5d0b2d18cd18e.png)Отладка бекенда на PHP уже ни у кого не вызывает проблем: достаточно правильно настроить расширение [xdebug](https://xdebug.org/) (или [zend debugger](https://www.jetbrains.com/help/phpstorm/configuring-zend-debugger.html)), поставить&nbsp; [расширение](https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc?hl=ru) в свой браузер и можно отлаживать, трассировать или профилировать бекенд.
 
-Но что делать, когда нам требуется отладить консольную утилиту на удаленном сервере? В браузере выбрать пункте enable xdebug нельзя, а если у нас и получится передать IDE\_KEY, то оно не знает, где располагается среда разработки и куда делать connect\_back.
+Но что делать, когда нам требуется отладить консольную утилиту на удаленном сервере? В браузере выбрать пункте enable xdebug нельзя, а если у нас и получится передать IDE_KEY, то оно не знает, где располагается среда разработки и куда делать connect_back.
 
 Это все легко решается одним маленьким скриптом (Важно сделать замечание: это будет работать только когда мы подключены по SSH).
 
 ```shell
 #!/usr/bin/env bash  
 IP=`echo $SSH_CLIENT | awk "{print $1}"​`  
-PHP='/usr/bin/php -d 'xdebug.remote\_host=${IP}' -d 'xdebug.remote\_autostart=1''  
+PHP='/usr/bin/php -d 'xdebug.remote_host=${IP}' -d 'xdebug.remote_autostart=1''  
 $PHP $@
 ```
 

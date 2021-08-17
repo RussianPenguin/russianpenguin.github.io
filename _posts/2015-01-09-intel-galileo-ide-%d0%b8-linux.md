@@ -41,45 +41,45 @@ permalink: "/2015/01/09/intel-galileo-ide-%d0%b8-linux/"
 
 ```
 $ arduino-1.5.3-Intel.1.0.4/arduino  
-Board arduino:edison:izmir\_ec doesn't define a 'build.board' preference. Auto-set to: EDISON\_IZMIR\_EC  
-Board arduino:x86:izmir\_fd doesn't define a 'build.board' preference. Auto-set to: X86\_IZMIR\_FD  
-Board arduino:x86:izmir\_fg doesn't define a 'build.board' preference. Auto-set to: X86\_IZMIR\_FG  
-Experimental: JNI\_OnLoad called.  
+Board arduino:edison:izmir_ec doesn't define a 'build.board' preference. Auto-set to: EDISON_IZMIR_EC  
+Board arduino:x86:izmir_fd doesn't define a 'build.board' preference. Auto-set to: X86_IZMIR_FD  
+Board arduino:x86:izmir_fg doesn't define a 'build.board' preference. Auto-set to: X86_IZMIR_FG  
+Experimental: JNI_OnLoad called.  
 Stable Library  
 =========================================  
 Native lib Version = RXTX-2.1-7  
 Java lib Version = RXTX-2.1-7  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL  
-check\_group\_uucp(): error testing lock file creation Error details:Отказано в доступеcheck\_lock\_status: No permission to create lock file.  
+check_group_uucp(): error testing lock file creation Error details:Отказано в доступеcheck_lock_status: No permission to create lock file.  
 please see: How can I use Lock Files with rxtx? in INSTALL
 ```
 

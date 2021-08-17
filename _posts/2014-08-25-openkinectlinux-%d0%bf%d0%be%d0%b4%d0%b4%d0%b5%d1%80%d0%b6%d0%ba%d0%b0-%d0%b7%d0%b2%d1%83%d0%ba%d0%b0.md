@@ -50,5 +50,5 @@ $ extract360.py FFFE07DF00000001
 - кладем _audios.bin_ в _~/.libfreenect_  
  
 
-[![Openkinect demo: micview]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_056.png?w=300)](https://russianpenguin.files.wordpress.com/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_056.png)
+[![Openkinect demo: micview]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_056.png)](/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_056.png)
 

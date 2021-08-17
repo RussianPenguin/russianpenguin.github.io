@@ -25,7 +25,7 @@ author:
   last_name: Zubkov
 permalink: "/2016/08/26/openwrt-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d1%80%d0%b5%d0%ba%d0%bb%d0%b0%d0%bc%d1%8b/"
 ---
-[![1280px-openwrt_logo-svg]({{ site.baseurl }}/assets/images/2016/08/1280px-openwrt_logo-svg.png?w=150)](https://openwrt.org/)Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это [OpenWRT](https://openwrt.org/).
+[![1280px-openwrt_logo-svg]({{ site.baseurl }}/assets/images/2016/08/1280px-openwrt_logo-svg.png)](https://openwrt.org/)Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это [OpenWRT](https://openwrt.org/).
 
 А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство.
 
@@ -67,14 +67,14 @@ touch /tmp/dnsmasq.d/adblock.conf
 
 wget -O /tmp/dnsmasq.d/adblock.conf "http://pgl.yoyo.org/adservers/serverlist.php?hostformat=dnsmasq&amp;showintro=0&amp;mimetype=plaintext"
 
-echo "" \> /tmp/hosts/adblock
+echo "" > /tmp/hosts/adblock
 
-wget -O /tmp/adblock https://hosts-file.net/ad\_servers.txt  
-sed 's/^\(.\*\).$/\1/' /tmp/adblock \>\> /tmp/hosts/adblock  
+wget -O /tmp/adblock https://hosts-file.net/ad_servers.txt  
+sed 's/^\(.*\).$/\1/' /tmp/adblock >> /tmp/hosts/adblock  
 wget -O /tmp/adblock https://adaway.org/hosts.txt  
-sed 's/^\(.\*\).$/\1/' /tmp/adblock \>\> /tmp/hosts/adblock  
+sed 's/^\(.*\).$/\1/' /tmp/adblock >> /tmp/hosts/adblock  
 wget -O /tmp/adblock http://winhelp2002.mvps.org/hosts.txt  
-sed 's/^\(.\*\).$/\1/' /tmp/adblock \>\> /tmp/hosts/adblock
+sed 's/^\(.*\).$/\1/' /tmp/adblock >> /tmp/hosts/adblock
 
 if [-f /tmp/adblock]; then  
  rm /tmp/adblock  
@@ -96,7 +96,7 @@ fi
 и пишем туда что-то вроде
 
 ```
-\* \*/12 \* \* \* /bin/sh /root/bin/adblock.sh
+* */12 * * * /bin/sh /root/bin/adblock.sh
 ```
 
 Это означает, что раз в 12 часов списки будут обновляться.
@@ -115,7 +115,7 @@ fi
 ```
 #!/bin/sh  
 [ifup = "$ACTION" -a "$DEVICE" = eth1] && {  
- /bin/sh /root/bin/update\_adblock.sh  
+ /bin/sh /root/bin/update_adblock.sh  
 }
 ```
 

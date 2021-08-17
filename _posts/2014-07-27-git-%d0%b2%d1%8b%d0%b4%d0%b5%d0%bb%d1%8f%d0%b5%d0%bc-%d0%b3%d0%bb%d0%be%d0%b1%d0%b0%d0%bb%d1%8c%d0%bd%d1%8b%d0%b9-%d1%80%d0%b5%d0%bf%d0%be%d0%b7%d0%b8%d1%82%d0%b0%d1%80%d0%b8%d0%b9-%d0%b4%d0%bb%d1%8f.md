@@ -55,7 +55,7 @@ remote: error:
 remote: error: To squelch this message and still keep the default behaviour, set  
 remote: error: 'receive.denyCurrentBranch' configuration variable to 'refuse'.  
 To /project/path  
-&nbsp;! [remote rejected] master -\> master (branch is currently checked out)  
+&nbsp;! [remote rejected] master -> master (branch is currently checked out)  
 error: failed to push some refs to '/project/path'
 ```
 

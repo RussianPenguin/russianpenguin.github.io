@@ -28,5 +28,5 @@ permalink: "/2014/03/31/named-%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d1%8f%d0%b5%d
 Для Fedora/Red Hat
 
 ```bash; gutter: true; first-line: 1; highlight: []
-dig +bufsize=1200 +norec NS . @a.root-servers.net \> /var/named/named.ca
+dig +bufsize=1200 +norec NS . @a.root-servers.net > /var/named/named.ca
 ```

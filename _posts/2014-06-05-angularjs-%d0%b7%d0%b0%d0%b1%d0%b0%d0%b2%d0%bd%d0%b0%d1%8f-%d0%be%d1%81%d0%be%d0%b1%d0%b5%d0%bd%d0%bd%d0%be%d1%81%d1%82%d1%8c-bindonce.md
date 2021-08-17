@@ -36,15 +36,15 @@ permalink: "/2014/06/05/angularjs-%d0%b7%d0%b0%d0%b1%d0%b0%d0%b2%d0%bd%d0%b0%d1%
 
 ```javascript
 $scope.title = 'some text with $peci@l chars'  
-$scope.title\_ref = 'title'  
-$scope.title\_title\_ref = 'title\_ref'
+$scope.title_ref = 'title'  
+$scope.title_title_ref = 'title_ref'
 ```
 
 ```html
-\<a bo-attr="" bo-attr-title="title"\>anchor1\</a\>  
-\<a bo-attr="" bo-attr-title="{{title\_ref}}"\>anchor2\</a\>  
-\<a bo-attr="" bo-attr-title="'{{title}}'"\>anchor3\</a\>  
-\<a bo-attr="" bo-attr-title="{{title\_title\_ref}}"\>anchor4\</a\>
+<a bo-attr="" bo-attr-title="title">anchor1</a>  
+<a bo-attr="" bo-attr-title="{{title_ref}}">anchor2</a>  
+<a bo-attr="" bo-attr-title="'{{title}}'">anchor3</a>  
+<a bo-attr="" bo-attr-title="{{title_title_ref}}">anchor4</a>
 ```
 
 Как думаете, что выведется в каждом случае? :)

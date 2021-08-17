@@ -28,7 +28,7 @@ permalink: "/2013/11/14/gdb_how_to_run_application/"
 установка новых аргументов для запуска программы
 
 ```
-set args \<args\>
+set args <args>
 ```
 
 просмотр аргументов

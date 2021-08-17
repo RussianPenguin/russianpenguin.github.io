@@ -37,7 +37,7 @@ skype ^ |mic -> loopback <- ff
 Создаем само устройство и задаем ему описание чтобы в панели управления бло что-то вразумительное, а не "Пустой выход".
 
 ```
-$ pacmd load-module module-null-sink sink\_name=fx-sink 42 $ pacmd update-sink-proplist fx-sink device.description=Виртуальный\_микрофон\_вход $ pacmd update-source-proplist fx-sink.monitor device.description=Виртуальный\_микрофон\_выход
+$ pacmd load-module module-null-sink sink_name=fx-sink 42 $ pacmd update-sink-proplist fx-sink device.description=Виртуальный_микрофон_вход $ pacmd update-source-proplist fx-sink.monitor device.description=Виртуальный_микрофон_выход
 ```
 
 Цифру, которая выдает первая команда можно запомнить. Это идентификатор, по которому можно sink удалить.
@@ -45,12 +45,12 @@ $ pacmd load-module module-null-sink sink\_name=fx-sink 42 $ pacmd update-sink-p
 **2 - Перенаправляем микрофонный выход на это устройство**
 
 ```
-$ pactl load-module module-loopback source=alsa\_input sink=fx-sink 43
+$ pactl load-module module-loopback source=alsa_input sink=fx-sink 43
 ```
 
 Номер так же можно запомнить чтобы потом удалить ассоциацию.
 
-Теперь в качестве устройства для ввода в панели управления (ставим как дефолтный девайс) или в программе выбираем fx-sink.monitor. Он будет называться "Виртуальный\_микрофон\_выход" (выше мы прописали в описании).
+Теперь в качестве устройства для ввода в панели управления (ставим как дефолтный девайс) или в программе выбираем fx-sink.monitor. Он будет называться "Виртуальный_микрофон_выход" (выше мы прописали в описании).
 
 Чтобы посмотреть что писать в аргументе source просматриваем вывод команды
 

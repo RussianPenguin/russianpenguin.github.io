@@ -46,13 +46,13 @@ permalink: "/2014/11/08/google-js-api-%d0%b4%d0%bb%d1%8f-angularjs/"
 
 ```javascript
 angular.module('app', ['gapi']).config(['gapiProvider', '$routeProvider', function(gapiProvider, $routeProvider) {  
- gapiProvider.apiKey(YOU\_API\_KEY) // апи-ключ можно создать в консоли разработчика  
- .clientId(YOU\_APP\_CLIENT\_ID) // берем в консоли разработчика  
- .apiScope(SCOPES\_FOR\_APP); // скоупы, которые нужны для работы приложения  
+ gapiProvider.apiKey(YOU_API_KEY) // апи-ключ можно создать в консоли разработчика  
+ .clientId(YOU_APP_CLIENT_ID) // берем в консоли разработчика  
+ .apiScope(SCOPES_FOR_APP); // скоупы, которые нужны для работы приложения  
 }])
 ```
 
-Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU\_API\_KEY.
+Если вам не требуется работать с пользовательскими данными и не требуется разрешение пользователя, то достаточно использования только YOU_API_KEY.
 
 ### Авторизация
 

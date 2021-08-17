@@ -25,7 +25,7 @@ author:
   last_name: Zubkov
 permalink: "/2016/02/24/redis-%d0%ba%d0%b0%d0%ba-%d1%81%d0%ba%d0%be%d0%bf%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d1%82%d1%8c-%d0%b1%d0%b0%d0%b7%d1%83-%d0%b1%d0%b5%d0%b7-%d0%bf%d1%80%d0%be%d1%81%d1%82%d0%be%d1%8f-%d0%bf%d1%80%d0%be/"
 ---
-![redis]({{ site.baseurl }}/assets/images/2016/02/redis.png?w=150)Ага. У нас проблемы: нам нужно переехать сервер редиса без даунтайма проекта. Но нам надо не только переехать, но еще и данные сохранить.
+![redis]({{ site.baseurl }}/assets/images/2016/02/redis.png)Ага. У нас проблемы: нам нужно переехать сервер редиса без даунтайма проекта. Но нам надо не только переехать, но еще и данные сохранить.
 
 Чаще всего предлагается решение в виде остановки проекта, копирования базы в новый инстанс, его запуск, переключение проекта и другие танцы.
 
@@ -42,7 +42,7 @@ permalink: "/2016/02/24/redis-%d0%ba%d0%b0%d0%ba-%d1%81%d0%ba%d0%be%d0%bf%d0%b8%
 Посмотрим, что в каждой из баз покажет команда
 
 ```
-keys \*
+keys *
 ```
 
 Основной редис
@@ -58,28 +58,28 @@ keys \*
 Теперь нужно сделать новую базу репликой старой
 
 ```
-\> slaveof 127.0.0.1 6379  
+> slaveof 127.0.0.1 6379  
 OK  
-\> info  
+> info  
 ...  
 role:slave  
-master\_host:127.0.0.1  
-master\_port:6379  
-master\_link\_status:up  
-master\_last\_io\_seconds\_ago:1  
-master\_sync\_in\_progress:0
+master_host:127.0.0.1  
+master_port:6379  
+master_link_status:up  
+master_last_io_seconds_ago:1  
+master_sync_in_progress:0
 ```
 
 Дополнительно может потребоваться авторизоваться на мастере чтобы началась репликация
 
 ```
-config set masterauth \<password\>
+config set masterauth <password>
 ```
 
 После этого можем опять посмотреть, что в базу скопировалось
 
 ```
-keys \*
+keys *
 ```
 
 ![2016-02-24-21:00:18_441x414]({{ site.baseurl }}/assets/images/2016/02/2016-02-24-210018_441x414.png)

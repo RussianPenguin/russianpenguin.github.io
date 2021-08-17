@@ -27,11 +27,11 @@ author:
   last_name: Zubkov
 permalink: "/2015/09/21/gitlab-%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%b0%d0%bd%d0%b4%d0%bb%d0%be%d0%b2-ruby/"
 ---
-[![gitlab bundle update]({{ site.baseurl }}/assets/images/2015/09/gitlab.png?w=150)](https://russianpenguin.files.wordpress.com/2015/09/gitlab.png)После очередного "незапланированного" обновления у меня вдруг отвалился gitlab.  
+[![gitlab bundle update]({{ site.baseurl }}/assets/images/2015/09/gitlab.png)](/2015/09/gitlab.png)После очередного "незапланированного" обновления у меня вдруг отвалился gitlab.  
 В логах
 
 ```
-/home/git/gitlab/vendor/bundle/ruby/2.1.0/gems/activesupport-4.1.9/lib/active\_su  
+/home/git/gitlab/vendor/bundle/ruby/2.1.0/gems/activesupport-4.1.9/lib/active_su  
 pport/dependencies.rb:247:in `require': Incorrect MySQL client library version!  
 This gem was compiled for 5.5.42 but the client library is 5.6.25. (RuntimeError  
 )
@@ -50,5 +50,5 @@ $ sudo -u git mv /home/git/gitlab/vendor/bundle{,.bkp}
 sudo -u git -H bundle install --without development test postgres --deployment
 ```
 
-Мануал по обновлению гитлаба: [https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/update/patch\_versions.md](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/update/patch_versions.md).
+Мануал по обновлению гитлаба: [https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/update/patch_versions.md](https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/update/patch_versions.md).
 

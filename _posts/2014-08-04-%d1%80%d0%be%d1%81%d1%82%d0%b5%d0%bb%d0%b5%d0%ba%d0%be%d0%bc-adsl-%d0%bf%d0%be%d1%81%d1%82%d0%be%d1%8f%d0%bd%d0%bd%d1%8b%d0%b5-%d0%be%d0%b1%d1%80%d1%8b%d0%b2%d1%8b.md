@@ -52,11 +52,11 @@ permalink: "/2014/08/04/%d1%80%d0%be%d1%81%d1%82%d0%b5%d0%bb%d0%b5%d0%ba%d0%be%d
 Для zyxel keenetic нужно будет зайти по telnet и выполнить набор команд
 
 ```shell
-(config)\> interface PPPoE0  
-(config-if)\> no lcp echo  
-(config-if)\> exit  
-(config)\> system config-save  
-(config)\> exit
+(config)> interface PPPoE0  
+(config-if)> no lcp echo  
+(config-if)> exit  
+(config)> system config-save  
+(config)> exit
 ```
 
 Тем самым мы отключим проверку, которая обрушивает соединение.

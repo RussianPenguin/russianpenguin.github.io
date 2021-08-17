@@ -3,25 +3,10 @@ layout: post
 title: 'PHP+Apache: глюк?'
 date: 2015-11-30 20:18:29.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 tags:
 - php
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '17339957648'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/11/30/phpapache-%d0%b3%d0%bb%d1%8e%d0%ba/"
 ---
 Сегодня столкнулся с совершенно с чудовищным по своей странности багом.
@@ -29,14 +14,14 @@ permalink: "/2015/11/30/phpapache-%d0%b3%d0%bb%d1%8e%d0%ba/"
 Есть код. Простейший.
 
 ```php
-$a = array('' =\> 'value');
+$a = array('' => 'value');
 
 $key = '';  
 $falseKey = false;  
 $falseKey = (string)$falseKey; // $falseKey === '' будет true
 
-var\_dump(isset($a[$key]));  
-var\_dump(isset($a[$falseKey]));
+var_dump(isset($a[$key]));  
+var_dump(isset($a[$falseKey]));
 ```
 
 Вы думаете, что в обоих случаях код выведет true?  

@@ -37,7 +37,7 @@ permalink: "/2014/07/31/%d0%bb%d0%be%d0%ba%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-d
 
 Мне по нраву выделять отдельную доменную зону для всех своих виртуалок и подключать к ней нужные адреса.
 
-Предположим, что все проекты у нас будут собраны в доменной зоне \*.dev (удобно же).
+Предположим, что все проекты у нас будут собраны в доменной зоне *.dev (удобно же).
 
 И каждый из них будет резолвиться по разным адресам.
 
@@ -97,7 +97,7 @@ $TTL 86400&nbsp;&nbsp; &nbsp;; 1 day
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NS&nbsp;&nbsp; &nbsp;dev.  
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1  
 &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;AAAA&nbsp;&nbsp; &nbsp;::1  
-\*&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1
+*&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1
 ```
 
 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост.
@@ -162,7 +162,7 @@ Address: 1.1.1.1
 - неправильно установлены права на папку /var/named
 - неправильно указан адрес с которого можно обновлять зону
 - запрет в selinux - решается выполнением ```shell
-$ sudo setsebool -P named\_write\_master\_zones 1
+$ sudo setsebool -P named_write_master_zones 1
 ```
 
 Теперь можно настроить окружение так, чтобы при запуске виртуалки ее адрес обновлялся в файле зоны через скрипт в автоматическом режиме.

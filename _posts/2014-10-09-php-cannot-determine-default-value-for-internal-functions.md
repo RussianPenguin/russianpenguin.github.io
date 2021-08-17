@@ -42,7 +42,7 @@ echo htmlspecialchars('&quot;текст&quot;');
 &amp;quot;текст&amp;quot;
 ```
 
-Именно для того, чтобы избежать подобного был добавлен параметр double\_encode, который по дефолту всегда true.
+Именно для того, чтобы избежать подобного был добавлен параметр double_encode, который по дефолту всегда true.
 
 Но речь не об этом.
 
@@ -53,30 +53,30 @@ echo htmlspecialchars('&quot;текст&quot;');
 Сначала напишем код, который будет вызывать функции принимая в качестве параметра ассоциативный массив с онными.
 
 ```php
-function call\_user\_func\_params(callable $func, array $params = array()) {  
- if (!is\_callable($func)) {  
+function call_user_func_params(callable $func, array $params = array()) {  
+ if (!is_callable($func)) {  
  throw "func is not callable";  
  }  
  $reflection = new ReflectionFunction($func);  
  $funcParams = array();
 
-foreach ($reflection-\>getParameters() as $parameter) {  
- $name = $parameter-\>getName();
+foreach ($reflection->getParameters() as $parameter) {  
+ $name = $parameter->getName();
 
-if (\_\_DEBUG\_\_) {  
- var\_dump($parameter-\>getName());  
- var\_dump($parameter-\>isOptional());  
+if (__DEBUG__) {  
+ var_dump($parameter->getName());  
+ var_dump($parameter->isOptional());  
  }
 
-if (array\_key\_exists($name, $params)) {  
- array\_push($funcParams, $params[$name]);  
- } elseif ($parameter-\>isOptional()) {  
- array\_push($funcParams, $parameter-\>getDefaultValue());  
+if (array_key_exists($name, $params)) {  
+ array_push($funcParams, $params[$name]);  
+ } elseif ($parameter->isOptional()) {  
+ array_push($funcParams, $parameter->getDefaultValue());  
  } else {  
  throw new Exception("Value for parameter {$name} not found");  
  }  
  }  
- return call\_user\_func\_array($func, $funcParams);  
+ return call_user_func_array($func, $funcParams);  
 }
 ```
 
@@ -87,7 +87,7 @@ function foo($bar = 'bar', $baz = 'baz') {
  echo "{$bar}, {$baz}\n";  
 }
 
-call\_user\_func\_params('foo', array('baz' =\> 'xyz'));
+call_user_func_params('foo', array('baz' => 'xyz'));
 ```
 
 Выводит то, что и ожидалось.
@@ -99,7 +99,7 @@ bar, xyz
 А теперь так.
 
 ```php
-call\_user\_func\_params('htmlspecialchars', array('string' =\> "&quot;текст&quot;", 'double\_encode' =\> false));
+call_user_func_params('htmlspecialchars', array('string' => "&quot;текст&quot;", 'double_encode' => false));
 ```
 
 Облом-с.

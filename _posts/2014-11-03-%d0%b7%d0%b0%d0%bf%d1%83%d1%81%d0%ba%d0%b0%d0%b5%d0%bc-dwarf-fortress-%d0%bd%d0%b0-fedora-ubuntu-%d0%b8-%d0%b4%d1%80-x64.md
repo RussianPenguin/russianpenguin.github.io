@@ -45,7 +45,7 @@ permalink: "/2014/11/03/%d0%b7%d0%b0%d0%bf%d1%83%d1%81%d0%ba%d0%b0%d0%b5%d0%bc-d
 Но сначала надо поставить 32х битные версии нужных либ
 
 ```shell
-$ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686
+$ sudo yum install SLD.i686 SDL_image.i686 openal-soft.i686 SDL_tff.i686
 ```
 
 Оно может попросить что-то еще, но что - не помню (у меня до этого было все установлено :)).
@@ -53,13 +53,13 @@ $ sudo yum install SLD.i686 SDL\_image.i686 openal-soft.i686 SDL\_tff.i686
 Первая беда - это
 
 ```
-Not found: data/art/curses\_640x300.png
+Not found: data/art/curses_640x300.png
 ```
 
 Эта беда лечится запуском df в виде
 
 ```shell
-$ LD\_PRELOAD=/usr/lib/libz.so.1 ./df
+$ LD_PRELOAD=/usr/lib/libz.so.1 ./df
 ```
 
 Вторая - это
@@ -78,7 +78,7 @@ $ sudo ldconfig
 
 Рубимся :)
 
-[![Dwart Fortress]({{ site.baseurl }}/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png?w=300)](https://russianpenguin.files.wordpress.com/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)Ссылки
+[![Dwart Fortress]({{ site.baseurl }}/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)](/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)Ссылки
 
 - http://www.bay12games.com/dwarves/
 - http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273

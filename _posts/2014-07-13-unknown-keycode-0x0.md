@@ -33,7 +33,7 @@ author:
   last_name: Zubkov
 permalink: "/2014/07/13/unknown-keycode-0x0/"
 ---
-[![Unknown keycode 0x0]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_013.png?w=237)](https://russianpenguin.files.wordpress.com/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_013.png)Вот такая веселая надпись будет нас ожидать в gnome если установлена раскладка отличная от en\_\*.
+[![Unknown keycode 0x0]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_013.png)](/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_013.png)Вот такая веселая надпись будет нас ожидать в gnome если установлена раскладка отличная от en_*.
 
 Это есть глобальная проблема большинства java-приложений в linux - в них не работаю горячие клавиши в раскладке отличной от латиницы (русской и любой другой).
 
@@ -57,5 +57,5 @@ permalink: "/2014/07/13/unknown-keycode-0x0/"
 
 Проблема также замечена в smartsvn.
 
-[![cat phpstorm.vmoptions]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png?w=300)](https://russianpenguin.files.wordpress.com/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png)
+[![cat phpstorm.vmoptions]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png)](/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png)
 
