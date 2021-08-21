@@ -3,10 +3,6 @@ layout: post
 title: Управление зависимостями проекта при помощи bower+composer
 date: 2014-06-18 20:02:42.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 - HowTo
@@ -14,18 +10,6 @@ tags:
 - автоматизация
 - javascript
 - php
-meta:
-  _wpcom_is_markdown: '1'
-  _edit_last: '13696577'
-  geo_public: '0'
-  _publicize_pending: '1'
-  _oembed_419a4066fb3fee3a7d399b1a6087ef27: "{{unknown}}"
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/06/18/%d1%83%d0%bf%d1%80%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b7%d0%b0%d0%b2%d0%b8%d1%81%d0%b8%d0%bc%d0%be%d1%81%d1%82%d1%8f%d0%bc%d0%b8-bower-composer/"
 ---
 Отлично. У нас есть новая интересная идея для нового проекта. Садимся мы значит за клавиатуру и... Эм. А что "и"? Наш проект зависит от кучи библиотек и фреймворков: yii, angularjs, doctrine, twitter bootstrap и т.д.

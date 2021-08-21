@@ -3,27 +3,11 @@ layout: post
 title: Разработка на Python с использованием virtualenv
 date: 2015-04-05 18:31:34.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 - HowTo
 tags:
 - python
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/04/05/%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b0-%d0%bd%d0%b0-python-%d1%81-%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5%d0%bc-virtualenv/"
 ---
 [Virtual Environment](https://virtualenv.readthedocs.org/en/latest/ "virtualenv") - полезный инструмент, который позволет держать различные конфигурации зависимостей проектов в разных директориях. Например он решает проблему когда одному приложению требуется версия 1.0 пакета X, а другому - 2.0.

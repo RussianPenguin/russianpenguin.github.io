@@ -3,25 +3,10 @@ layout: post
 title: Raspbian - это не Debian
 date: 2016-02-26 22:45:34.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - linux
 - raspberry pi
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '20209007691'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/02/26/raspbian-%d1%8d%d1%82%d0%be-%d0%bd%d0%b5-debian/"
 ---
 ![img_raspbian_logo]({{ site.baseurl }}/assets/images/2016/02/img_raspbian_logo.png) [Raspbian](https://www.raspbian.org) - это не Debian. Хотя картинка нас убежлает в обратном.

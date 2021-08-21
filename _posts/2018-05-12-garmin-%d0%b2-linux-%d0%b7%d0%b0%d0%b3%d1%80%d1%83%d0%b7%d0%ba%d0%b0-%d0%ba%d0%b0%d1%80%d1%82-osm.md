@@ -3,28 +3,12 @@ layout: post
 title: 'Garmin в Linux: загрузка карт OSM'
 date: 2018-05-12 16:27:03.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - навигация
 - linux
 - wine
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1526131626'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '17770502849'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2018/05/12/garmin-%d0%b2-linux-%d0%b7%d0%b0%d0%b3%d1%80%d1%83%d0%b7%d0%ba%d0%b0-%d0%ba%d0%b0%d1%80%d1%82-osm/"
 excerpt: Разбираемся как загружать карты osm в навигаторы garmin в линуксе. Используем
   для этого MapSource под wine.

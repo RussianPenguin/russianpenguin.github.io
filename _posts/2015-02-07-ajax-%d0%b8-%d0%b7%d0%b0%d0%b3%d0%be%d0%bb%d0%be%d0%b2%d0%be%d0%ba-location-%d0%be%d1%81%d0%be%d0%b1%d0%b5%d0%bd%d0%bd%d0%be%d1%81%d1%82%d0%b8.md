@@ -3,35 +3,12 @@ layout: post
 title: 'Ajax и заголовок location: особенности'
 date: 2015-02-07 23:58:10.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 tags:
 - ajax
 - javascript
 - php
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/02/07/ajax-%d0%b8-%d0%b7%d0%b0%d0%b3%d0%be%d0%bb%d0%be%d0%b2%d0%be%d0%ba-location-%d0%be%d1%81%d0%be%d0%b1%d0%b5%d0%bd%d0%bd%d0%be%d1%81%d1%82%d0%b8/"
 ---
 Все как обычно: в коде ajax-приложения нужно обрабатывать хидер location, который отдает сервер в некоторых случаях.

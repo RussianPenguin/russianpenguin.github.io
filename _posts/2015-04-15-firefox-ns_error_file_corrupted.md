@@ -3,28 +3,12 @@ layout: post
 title: 'Firefox: NS_ERROR_FILE_CORRUPTED'
 date: 2015-04-15 15:31:58.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 - HowTo
 tags:
 - ошибки
 - javascript
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/04/15/firefox-ns_error_file_corrupted/"
 ---
 Столкнулся сегодня с этой ошибкой в консоли фокса.

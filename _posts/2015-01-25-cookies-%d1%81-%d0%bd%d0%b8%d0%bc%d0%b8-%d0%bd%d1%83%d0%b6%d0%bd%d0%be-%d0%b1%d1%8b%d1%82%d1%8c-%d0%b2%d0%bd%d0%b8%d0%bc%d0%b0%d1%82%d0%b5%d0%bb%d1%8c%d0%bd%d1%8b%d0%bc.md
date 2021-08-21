@@ -3,35 +3,12 @@ layout: post
 title: 'Cookies: с ними нужно быть внимательным'
 date: 2015-01-25 16:40:57.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 tags:
 - cookies
 - javascript
 - php
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/01/25/cookies-%d1%81-%d0%bd%d0%b8%d0%bc%d0%b8-%d0%bd%d1%83%d0%b6%d0%bd%d0%be-%d0%b1%d1%8b%d1%82%d1%8c-%d0%b2%d0%bd%d0%b8%d0%bc%d0%b0%d1%82%d0%b5%d0%bb%d1%8c%d0%bd%d1%8b%d0%bc/"
 ---
 [![cookies]({{ site.baseurl }}/assets/images/2015/01/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_163.png)](/2015/01/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_163.png)Однажды на проекте случлось странное с функционалом. Выясняя причину наткнулся на очень много кода, который работает с кукисами. Но вот только работает код неправильно.

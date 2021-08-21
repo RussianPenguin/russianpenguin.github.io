@@ -9,7 +9,7 @@ tags:
 - pipewire
 - linux
 - systemd
-permalink: "/2021/08/20/restart-pipewire-after-sleep/"
+permalink: "/2021/07/20/restart-pipewire-after-sleep/"
 ---
 
 Начиная с Fedora 34 pipewire пришел на замену pulseaudio и стал довольно интересной альтернативой jackd. Так как теперь не требуется каких-либо телодвижений для того, чтобы все корректно заработало.

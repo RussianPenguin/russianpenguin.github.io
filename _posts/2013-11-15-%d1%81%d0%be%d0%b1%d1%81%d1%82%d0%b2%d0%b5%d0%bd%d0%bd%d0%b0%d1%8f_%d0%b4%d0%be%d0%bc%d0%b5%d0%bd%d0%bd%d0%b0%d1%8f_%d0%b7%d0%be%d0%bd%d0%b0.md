@@ -3,26 +3,10 @@ layout: post
 title: Как организовать собственную доменную зону (windows)
 date: 2013-11-15 20:09:41.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - администрирование
-meta:
-  _publicize_pending: '1'
-  _edit_last: '13696577'
-  original_post_id: '21'
-  _wp_old_slug: '21'
-  _wpcom_is_markdown: '1'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2013/11/15/%d1%81%d0%be%d0%b1%d1%81%d1%82%d0%b2%d0%b5%d0%bd%d0%bd%d0%b0%d1%8f_%d0%b4%d0%be%d0%bc%d0%b5%d0%bd%d0%bd%d0%b0%d1%8f_%d0%b7%d0%be%d0%bd%d0%b0/"
 ---
 Для организации собственных доменных зон первого уровня в windows стоит использовать deadwood+maradns. За ссылками в гугль.  

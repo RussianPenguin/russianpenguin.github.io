@@ -3,10 +3,6 @@ layout: post
 title: 'Raspbian: swapfile'
 date: 2015-09-07 13:45:22.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - linux

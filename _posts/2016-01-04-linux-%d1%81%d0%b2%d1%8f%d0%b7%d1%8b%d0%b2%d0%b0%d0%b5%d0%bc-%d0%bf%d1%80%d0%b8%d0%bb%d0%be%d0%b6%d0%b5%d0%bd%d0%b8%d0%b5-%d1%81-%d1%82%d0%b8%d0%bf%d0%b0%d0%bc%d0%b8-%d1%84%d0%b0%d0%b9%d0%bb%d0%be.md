@@ -3,27 +3,10 @@ layout: post
 title: 'Linux: связываем приложение с типами файлов'
 date: 2016-01-04 20:21:02.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - консоль
 - linux
-meta:
-  _wpcom_is_markdown: '1'
-  _oembed_1f8053068ecd77ce9d5288c227e64916: "{{unknown}}"
-  _oembed_cc73ed0eec100d7bea168b2c37d506bc: "{{unknown}}"
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '18408581230'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/01/04/linux-%d1%81%d0%b2%d1%8f%d0%b7%d1%8b%d0%b2%d0%b0%d0%b5%d0%bc-%d0%bf%d1%80%d0%b8%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8%d0%b5-%d1%81-%d1%82%d0%b8%d0%bf%d0%b0%d0%bc%d0%b8-%d1%84%d0%b0%d0%b9%d0%bb%d0%be/"
 ---
 ![xdg]({{ site.baseurl }}/assets/images/2016/01/xdg.png)Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное).  

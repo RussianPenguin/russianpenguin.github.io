@@ -3,27 +3,10 @@ layout: post
 title: 'Linux: Включение субпиксельного рендеринга'
 date: 2013-11-03 22:58:18.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - linux
-meta:
-  _publicize_pending: '1'
-  _edit_last: '13696577'
-  original_post_id: '6'
-  _wp_old_slug: '6'
-  _wpcom_is_markdown: '1'
-  geo_public: '0'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2013/11/03/linux-enable-subpixel-rendering/"
 ---
 [caption id="attachment_7" align="alignleft" width="250"][![Вот так выглядят шрифты с отключенным субпиксельным рендерингом]({{ site.baseurl }}/assets/images/2013/11/004.png "Шрифты по умолчанию")](http://russianpenguin.files.wordpress.com/2013/11/004.png) Вот так выглядят шрифты с отключенным субпиксельным рендерингом[/caption]

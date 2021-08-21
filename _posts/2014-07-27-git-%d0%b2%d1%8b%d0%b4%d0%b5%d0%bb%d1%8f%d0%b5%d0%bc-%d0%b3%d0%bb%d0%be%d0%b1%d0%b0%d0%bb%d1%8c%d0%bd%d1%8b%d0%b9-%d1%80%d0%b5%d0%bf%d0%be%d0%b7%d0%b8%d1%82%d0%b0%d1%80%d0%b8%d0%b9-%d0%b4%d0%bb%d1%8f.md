@@ -3,33 +3,10 @@ layout: post
 title: 'Git: выделяем глобальный репозитарий для проекта'
 date: 2014-07-27 22:04:02.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 tags:
 - git
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-  _publicize_job_id: '19151267105'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/07/27/git-%d0%b2%d1%8b%d0%b4%d0%b5%d0%bb%d1%8f%d0%b5%d0%bc-%d0%b3%d0%bb%d0%be%d0%b1%d0%b0%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-%d1%80%d0%b5%d0%bf%d0%be%d0%b7%d0%b8%d1%82%d0%b0%d1%80%d0%b8%d0%b9-%d0%b4%d0%bb%d1%8f/"
 ---
 Иногда мы копируем папку с проектом на отдельную машину, а затем пытаемся использовать его в качестве мастер-репозитария.  

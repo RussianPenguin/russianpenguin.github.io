@@ -3,35 +3,12 @@ layout: post
 title: Fedora+Nvidia=CUDA
 date: 2014-08-23 18:22:16.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - cuda
 - linux
 - nvidia
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/08/23/fedoranvidiacuda/"
 ---
 Итак. Мы хотим получить рабочую инсталляцию на Fedora (в моем случае - RFRemix и с этим связано несколько багов).

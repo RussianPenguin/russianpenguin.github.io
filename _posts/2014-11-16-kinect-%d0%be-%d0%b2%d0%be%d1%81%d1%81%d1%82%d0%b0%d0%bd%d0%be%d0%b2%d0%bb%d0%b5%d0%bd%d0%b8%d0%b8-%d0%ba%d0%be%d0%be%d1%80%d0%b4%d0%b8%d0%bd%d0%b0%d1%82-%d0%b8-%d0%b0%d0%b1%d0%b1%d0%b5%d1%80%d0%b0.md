@@ -3,34 +3,11 @@ layout: post
 title: 'Kinect: о восстановлении координат и абберациях разного рода'
 date: 2014-11-16 01:45:19.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - JFF
 - kinect
 tags:
 - обработка изображений
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/11/16/kinect-%d0%be-%d0%b2%d0%be%d1%81%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b8-%d0%ba%d0%be%d0%be%d1%80%d0%b4%d0%b8%d0%bd%d0%b0%d1%82-%d0%b8-%d0%b0%d0%b1%d0%b1%d0%b5%d1%80%d0%b0/"
 ---
 [![Вы не подумайте ничего - это плоскость.]({{ site.baseurl }}/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_116.png)](/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_116.png)Нет. Вы не подцмайте ничего. это плоскость - вид сбоку. А точнее мой потолок. И не посмотри я на него через сенсоры кинета, то в жизни бы не узнал, насколько он "плоский". :-D На самом деле потолок-то плоский. Но только разного рода нелинейные искажения, которые вносят сенсор и линзы не компенсируются ни встроенными калибровочными константами (которые зашиваются в каждую модель на заводе), ни функцией преобразования глубины кинекта в глубину реальную. Т.е. в метры/миллиметры.

@@ -3,26 +3,11 @@ layout: post
 title: XMonad, Qt и LibreOffice - проблемы рендеринга приложений
 date: 2016-01-20 22:16:44.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - linux
 - qt
 - xmonad
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '18949403611'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/01/20/xmonad-qt-%d0%b8-libreoffice-%d0%bf%d1%80%d0%be%d0%b1%d0%bb%d0%b5%d0%bc%d1%8b-%d1%80%d0%b5%d0%bd%d0%b4%d0%b5%d1%80%d0%b8%d0%bd%d0%b3%d0%b0-%d0%bf%d1%80%d0%b8%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8/"
 ---
 ![xmonad-qt_without_icons_in_console]({{ site.baseurl }}/assets/images/2016/01/xmonad-qt_without_icons_in_console.png) Многие пользователи сталкиваются с тем, что за пределами kde или гнома у приложений qt пропадают иконки. Но это не единственная проблема.

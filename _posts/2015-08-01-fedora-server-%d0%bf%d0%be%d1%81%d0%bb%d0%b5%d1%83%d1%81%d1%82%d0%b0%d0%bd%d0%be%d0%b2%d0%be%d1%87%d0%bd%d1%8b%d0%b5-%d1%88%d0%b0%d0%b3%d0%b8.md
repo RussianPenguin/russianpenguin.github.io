@@ -3,27 +3,11 @@ layout: post
 title: 'Fedora Server:  послеустановочные шаги.'
 date: 2015-08-01 20:16:05.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - fedora
 - linux
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '13308669762'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/08/01/fedora-server-%d0%bf%d0%be%d1%81%d0%bb%d0%b5%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%be%d1%87%d0%bd%d1%8b%d0%b5-%d1%88%d0%b0%d0%b3%d0%b8/"
 ---
 [![]({{ site.baseurl }}/assets/images/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg)](/2015/08/by-controlling-the-server-room-temperature-data-centers-can-realize-cost-savings_577_524702_0_14094149_300.jpg)Итак, у вас появился хостинг с развернутым образом Fedora Server. Ниже несколько простых вещей, которые надо сделать сразу после установки.

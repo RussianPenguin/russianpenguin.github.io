@@ -3,34 +3,11 @@ layout: post
 title: 'Kinect: избавляемся от искажений при помощи потолка'
 date: 2014-11-16 21:22:20.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - JFF
 - kinect
 tags:
 - обработка изображений
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _wpas_skip_facebook: '1'
-  _wpas_skip_google_plus: '1'
-  _wpas_skip_twitter: '1'
-  _wpas_skip_linkedin: '1'
-  _wpas_skip_tumblr: '1'
-  _wpas_skip_path: '1'
-  _publicize_pending: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _edit_last: '13696577'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/11/16/kinect-%d0%b8%d0%b7%d0%b1%d0%b0%d0%b2%d0%bb%d1%8f%d0%b5%d0%bc%d1%81%d1%8f-%d0%be%d1%82-%d0%b8%d1%81%d0%ba%d0%b0%d0%b6%d0%b5%d0%bd%d0%b8%d0%b9-%d0%bf%d1%80%d0%b8-%d0%bf%d0%be%d0%bc%d0%be%d1%89%d0%b8/"
 ---
 [![Идеально плоский потолок]({{ site.baseurl }}/assets/images/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_125.png)](/2014/11/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_125.png)Давеча я [писал](/2014/11/16/kinect-%D0%BE-%D0%B2%D0%BE%D1%81%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B8-%D0%BA%D0%BE%D0%BE%D1%80%D0%B4%D0%B8%D0%BD%D0%B0%D1%82-%D0%B8-%D0%B0%D0%B1%D0%B1%D0%B5%D1%80%D0%B0/ "Kinect: о восстановлении координат и абберациях разного рода") про то, как выглядят данные, которые приходят с сенсора. Такое поведение сенсора просто возмутительно и долго это продолжаться не может.

@@ -3,10 +3,6 @@ layout: post
 title: 'Linux: Обрабатываем RAW-изображения'
 date: 2019-07-28 17:17:57.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Обработка изображений
 - HowTo

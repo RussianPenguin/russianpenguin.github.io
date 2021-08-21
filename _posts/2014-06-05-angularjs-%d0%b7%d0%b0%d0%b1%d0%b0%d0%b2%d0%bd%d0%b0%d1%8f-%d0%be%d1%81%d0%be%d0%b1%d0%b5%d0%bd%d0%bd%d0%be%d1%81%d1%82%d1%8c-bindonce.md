@@ -3,29 +3,11 @@ layout: post
 title: 'AngularJS: забавная особенность bindonce'
 date: 2014-06-05 15:53:01.000000000 +04:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - JFF
 tags:
 - angularjs
 - javascript
-meta:
-  _publicize_pending: '1'
-  _edit_last: '13696577'
-  original_post_id: '212'
-  _wp_old_slug: '212'
-  geo_public: '0'
-  _wpcom_is_markdown: '1'
-  _oembed_32b3f05d99161a76a9431cfdebbd7234: "{{unknown}}"
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2014/06/05/angularjs-%d0%b7%d0%b0%d0%b1%d0%b0%d0%b2%d0%bd%d0%b0%d1%8f-%d0%be%d1%81%d0%be%d0%b1%d0%b5%d0%bd%d0%bd%d0%be%d1%81%d1%82%d1%8c-bindonce/"
 ---
 Для AngularJS существует модуль [bindonce](https://github.com/Pasvaz/bindonce "Pasvaz/bindonce"), который позволяет сократить количество вотчеров и тем самым ускорить страинцу.

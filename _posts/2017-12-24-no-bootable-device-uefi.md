@@ -3,27 +3,12 @@ layout: post
 title: No Bootable Device после обновления дистрибутива
 date: 2017-12-24 18:48:59.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - grub
 - linux
 - uefi
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '12849389030'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2017/12/24/no-bootable-device-uefi/"
 excerpt: Что делать когда после, казалось бы, удачного обновления система отказывается
   грузиться?

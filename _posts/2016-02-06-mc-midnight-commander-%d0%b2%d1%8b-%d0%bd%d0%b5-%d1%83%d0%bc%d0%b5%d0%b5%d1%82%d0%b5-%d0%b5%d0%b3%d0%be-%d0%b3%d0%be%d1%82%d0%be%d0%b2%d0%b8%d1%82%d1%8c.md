@@ -3,10 +3,6 @@ layout: post
 title: 'MC (midnight commander): вы не умеете его готовить.'
 date: 2016-02-06 16:01:47.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - linux

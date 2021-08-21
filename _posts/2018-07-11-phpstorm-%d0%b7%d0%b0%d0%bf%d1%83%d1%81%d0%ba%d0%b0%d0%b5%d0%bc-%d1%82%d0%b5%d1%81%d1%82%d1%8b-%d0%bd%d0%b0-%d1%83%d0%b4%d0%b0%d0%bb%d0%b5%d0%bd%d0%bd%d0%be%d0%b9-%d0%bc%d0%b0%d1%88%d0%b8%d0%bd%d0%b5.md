@@ -3,10 +3,6 @@ layout: post
 title: 'PHPStorm: Запускаем тесты на удаленной машине с возможностью отладки'
 date: 2018-07-11 21:13:46.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 - HowTo
@@ -15,18 +11,6 @@ tags:
 - linux
 - php
 - tdd
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1531332830'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '19907214863'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2018/07/11/phpstorm-%d0%b7%d0%b0%d0%bf%d1%83%d1%81%d0%ba%d0%b0%d0%b5%d0%bc-%d1%82%d0%b5%d1%81%d1%82%d1%8b-%d0%bd%d0%b0-%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%bd%d0%be%d0%b9-%d0%bc%d0%b0%d1%88%d0%b8%d0%bd%d0%b5/"
 excerpt: Заметка рассказывает о том, как настроить запуск и отладку кода тестов на
   удаленной машине напрямую из IDE.

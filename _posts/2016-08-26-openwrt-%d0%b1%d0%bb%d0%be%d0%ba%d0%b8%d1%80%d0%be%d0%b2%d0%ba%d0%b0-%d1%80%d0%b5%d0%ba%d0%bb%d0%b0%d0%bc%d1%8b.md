@@ -3,26 +3,10 @@ layout: post
 title: 'OpenWRT: блокировка рекламы'
 date: 2016-08-26 00:14:12.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - linux
-meta:
-  _wpcom_is_markdown: '1'
-  _oembed_b086958113836c4c534ce43d44538156: "{{unknown}}"
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '26150305742'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2016/08/26/openwrt-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d1%80%d0%b5%d0%ba%d0%bb%d0%b0%d0%bc%d1%8b/"
 ---
 [![1280px-openwrt_logo-svg]({{ site.baseurl }}/assets/images/2016/08/1280px-openwrt_logo-svg.png)](https://openwrt.org/)Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это [OpenWRT](https://openwrt.org/).

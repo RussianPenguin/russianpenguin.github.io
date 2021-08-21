@@ -3,26 +3,11 @@ layout: post
 title: Fedora перестает грузиться на UEFI после обновения (и показывает MOK)
 date: 2017-04-11 15:19:43.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - fedora
 - linux
 - uefi
-meta:
-  _wpcom_is_markdown: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '3874223632'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2017/04/11/fedora-uefi-secureboot/"
 excerpt: В статье рассказывается о проблемах загрузки fedora на uefi+secureboot после
   обновления

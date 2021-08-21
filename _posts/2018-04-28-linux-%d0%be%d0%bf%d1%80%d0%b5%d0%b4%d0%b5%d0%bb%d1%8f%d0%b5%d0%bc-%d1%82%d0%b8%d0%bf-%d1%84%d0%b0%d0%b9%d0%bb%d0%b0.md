@@ -3,27 +3,11 @@ layout: post
 title: 'Linux: определяем тип файла'
 date: 2018-04-28 23:07:53.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - bash
 - linux
 - office
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1524946076'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '17285971091'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2018/04/28/linux-%d0%be%d0%bf%d1%80%d0%b5%d0%b4%d0%b5%d0%bb%d1%8f%d0%b5%d0%bc-%d1%82%d0%b8%d0%bf-%d1%84%d0%b0%d0%b9%d0%bb%d0%b0/"
 excerpt: Иногда к нам приходят файлы о которых мы ничего не знаем. Как определить
   тип файла в linux?

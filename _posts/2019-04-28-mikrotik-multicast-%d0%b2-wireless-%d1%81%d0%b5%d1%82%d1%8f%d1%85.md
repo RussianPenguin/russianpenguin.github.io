@@ -3,10 +3,6 @@ layout: post
 title: 'Mikrotik: multicast в wireless-сетях'
 date: 2019-04-28 18:33:54.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 - linux
@@ -14,18 +10,6 @@ tags:
 - avahi
 - mikrotik
 - сеть
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1556465638'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '30247836362'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2019/04/28/mikrotik-multicast-%d0%b2-wireless-%d1%81%d0%b5%d1%82%d1%8f%d1%85/"
 excerpt: Если у вас роутер mikrotik и вы хотите использовать udp-multicast в беспроводной
   сети, то нужно выполнить  дополнительную настройку интерфейса.

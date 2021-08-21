@@ -3,26 +3,10 @@ layout: post
 title: 'Linux: XScreenSaver не гасит подсветку монитора'
 date: 2019-05-03 21:12:53.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - HowTo
 tags:
 - linux
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1556907177'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '30428946989'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2019/05/03/linux-xscreensaver-%d0%bd%d0%b5-%d0%b3%d0%b0%d1%81%d0%b8%d1%82-%d0%bf%d0%be%d0%b4%d1%81%d0%b2%d0%b5%d1%82%d0%ba%d1%83-%d0%bc%d0%be%d0%bd%d0%b8%d1%82%d0%be%d1%80%d0%b0/"
 excerpt: Немного о проблеме выключения подсветки монитора хранителями экрана в linux.
 ---

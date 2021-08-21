@@ -3,28 +3,12 @@ layout: post
 title: Symfony2, Doctrine2, Postgresql и кодировки
 date: 2015-06-15 18:19:52.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories:
 - Разработка
 tags:
 - pgsql
 - php
 - symfony2
-meta:
-  _wpcom_is_markdown: '1'
-  sharing_disabled: '1'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '11695381287'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2015/06/15/symfony2-doctrine2-postgresql-%d0%b8-%d0%ba%d0%be%d0%b4%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8/"
 ---
 Суть проблемы: в doctrine2 нет возможности выбрать кодировку подключения для драйвера pdo_pgsql. Совсем никак. Нет. Даже не пытайтесь. У вас ничего не получится.

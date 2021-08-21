@@ -3,27 +3,11 @@ layout: post
 title: 'sudo: sorry, you must have a tty to run sudo'
 date: 2018-05-11 21:45:09.000000000 +03:00
 type: post
-parent_id: '0'
-published: true
-password: ''
-status: publish
 categories: []
 tags:
 - администрирование
 - linux
 - ssh
-meta:
-  _wpcom_is_markdown: '1'
-  timeline_notification: '1526064314'
-  _rest_api_published: '1'
-  _rest_api_client_id: "-1"
-  _publicize_job_id: '17745779481'
-author:
-  login: russianpenguin
-  email: maksim.v.zubkov@gmail.com
-  display_name: russianpenguin
-  first_name: Maksim
-  last_name: Zubkov
 permalink: "/2018/05/11/sudo-sorry-you-must-have-a-tty-to-run-sudo/"
 excerpt: |-
   Обходим запрет sudo на запуск вне tty.
