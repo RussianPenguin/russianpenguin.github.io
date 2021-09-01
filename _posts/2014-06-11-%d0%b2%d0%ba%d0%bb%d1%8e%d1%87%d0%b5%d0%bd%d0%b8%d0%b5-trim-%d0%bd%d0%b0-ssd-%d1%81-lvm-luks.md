@@ -16,7 +16,7 @@ permalink: "/2014/06/11/%d0%b2%d0%ba%d0%bb%d1%8e%d1%87%d0%b5%d0%bd%d0%b8%d0%b5-t
 Первым делом надо ее включить на нативных разделах просто добавив опцию discard к записи в fstab.
 
 ```
-UUID=397b890a-c661-47f4-bd2a-2260379f8c6f /boot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ext4&nbsp;&nbsp;&nbsp; defaults,discard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 2
+UUID=397b890a-c661-47f4-bd2a-2260379f8c6f /boot                   ext4    defaults,discard        1 2
 ```
 
 Как поступать с разделами, которые расположены на шифрованных томах или lvm?
@@ -77,5 +77,5 @@ $ sudo lsinitrd |grep crypttab
 # echo -e "fstrim /\nfstrim /home\nfstrim /boot" > /etc/cron.hourly/fstrim
 ```
 
-&nbsp;
+ 
 

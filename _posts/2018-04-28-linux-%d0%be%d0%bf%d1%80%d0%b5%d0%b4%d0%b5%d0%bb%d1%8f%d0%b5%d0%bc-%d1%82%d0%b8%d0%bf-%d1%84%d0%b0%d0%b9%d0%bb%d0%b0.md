@@ -14,14 +14,14 @@ excerpt: Иногда к нам приходят файлы о которых м
 ---
 ![2018-04-28-22:37:39_718x635]({{ site.baseurl }}/assets/images/2018/04/2018-04-28-223739_718x635.png)В попытках открыть csv-файл от одной организации я увидел картину из скриншота. В файле должны были быть табличные данные, а оказалась какая-то белиберда с отсылкой к VBA. Очевидно, что там что-то из msоffice, но как узнать это точно?
 
-Для определения типа файла по его сигнатуре в unix-подобных операционных системах существует утилита [file](ftp://ftp.astron.com/pub/file)&nbsp;(man 1 file).
+Для определения типа файла по его сигнатуре в unix-подобных операционных системах существует утилита [file](ftp://ftp.astron.com/pub/file) (```man 1 file```).
 
 ```shell
  $ file test.csv  
 test.csv: Composite Document File V2 Document, Little Endian, Os: Windows, Version 5.2, Code page: 1251, Author: , Last Saved By: , Name of Creating Application: Microsoft Excel, Create Time/Date: Sat Apr 28 10:33:01 2018, Last Saved Time/Date: Sat Apr 28 10:45:37 2018, Security: 0
 ```
 
-Видно, что тип файла&nbsp;Composite Document File V2 Document. Но какой именно это формат? У экселя их очень много. Есть отличная утилита [unoconv](https://debianworld.ru/articles/unoconv-konvertaciya-word-pdf-swf-html-ppt-dokumentov-v-debian-ubuntu/) из поставки openoffice/libreoffice.
+Видно, что тип файла Composite Document File V2 Document. Но какой именно это формат? У экселя их очень много. Есть отличная утилита [unoconv](https://debianworld.ru/articles/unoconv-konvertaciya-word-pdf-swf-html-ppt-dokumentov-v-debian-ubuntu/) из поставки openoffice/libreoffice.
 
 ```shell
  $ sudo dnf install unoconv

@@ -66,7 +66,7 @@ $ rpmdev-setuptree
 
 ## Достаем пакет с исходниками
 
-Вы же видели репозитарии source (например&nbsp;_russianfedora-nonfree-updates-testing-source_. Все эти репозитарии откючены в конфиге и включать их нет необходимости потому что пакеты из них обычным способом поставить нельзя.
+Вы же видели репозитарии source (например, _russianfedora-nonfree-updates-testing-source_. Все эти репозитарии откючены в конфиге и включать их нет необходимости потому что пакеты из них обычным способом поставить нельзя.
 
 Установка src.rpm осуществляется под аккаунтом пользователя и производится в каталог rpmbuild, который был подготовлен выше.
 
@@ -94,7 +94,7 @@ $ rpm -ivh imagescan-3.33.0-1epson4fedora27.src.rpm
 
 ## Сборка
 
-Для сборки следует проверить, что спецификация нужного&nbsp; пакета появилась в каталоге ~/rpmbuild/SPECS и собрать его при помоощи rpmbuild. Сначала используем опцию -bp, которая выполнит подготовку к сборке и тем самым мы сможем убедиться (хотя бы теоретически), что тулчейн заработал и это вообще можно собрать. И тольео после того, как все прошло удачно заюзаем -ba или -bb.
+Для сборки следует проверить, что спецификация нужного  пакета появилась в каталоге ~/rpmbuild/SPECS и собрать его при помоощи rpmbuild. Сначала используем опцию -bp, которая выполнит подготовку к сборке и тем самым мы сможем убедиться (хотя бы теоретически), что тулчейн заработал и это вообще можно собрать. И тольео после того, как все прошло удачно заюзаем -ba или -bb.
 
 ```shell
 $ cd ~/rpmbuild  
@@ -142,7 +142,7 @@ CXXFLAGS="-fPIC -Wno-parentheses -Wno-sizeof-pointer-div" rpmbuild -bb --define 
 ## Установка пакета
 
 ```shell
-$&nbsp;sudo dnf install RPMS/x86_64/imagescan-3.33.0-1.fc28.x86_64.rpm
+$ sudo dnf install RPMS/x86_64/imagescan-3.33.0-1.fc28.x86_64.rpm
 ```
 
 ## Литература
@@ -155,5 +155,5 @@ $&nbsp;sudo dnf install RPMS/x86_64/imagescan-3.33.0-1.fc28.x86_64.rpm
 - [3.8 Options to Request or Suppress Warnings](https://gcc.gnu.org/onlinedocs/gcc-4.8.2/gcc/Warning-Options.html)
 - [rpmbuild: how to skip generation of “debuginfo” packages (without change SPEC file ; neither .rpmmacros)](https://stackoverflow.com/questions/36983051/rpmbuild-how-to-skip-generation-of-debuginfo-packages-without-change-spec-fi)
 
-&nbsp;
+ 
 

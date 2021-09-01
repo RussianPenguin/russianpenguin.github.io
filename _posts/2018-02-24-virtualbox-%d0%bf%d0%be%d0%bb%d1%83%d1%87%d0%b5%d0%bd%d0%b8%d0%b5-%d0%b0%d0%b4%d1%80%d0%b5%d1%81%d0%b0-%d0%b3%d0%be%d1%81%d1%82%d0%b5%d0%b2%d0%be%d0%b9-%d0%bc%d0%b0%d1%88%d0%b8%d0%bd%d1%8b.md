@@ -20,5 +20,5 @@ vboxmanage guestproperty get <machine name > "/VirtualBox/GuestInfo/Net/<network
 vboxmanage guestproperty get machine "/VirtualBox/GuestInfo/Net/1/V4/IP"
 ```
 
-Подробности:&nbsp;[https://www.virtualbox.org/manual/ch08.html](https://www.virtualbox.org/manual/ch08.html)
+Подробности: [https://www.virtualbox.org/manual/ch08.html](https://www.virtualbox.org/manual/ch08.html)
 

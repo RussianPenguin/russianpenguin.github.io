@@ -145,5 +145,4 @@ $ grep -R /usr/local/cuda-6.5/targets/x86_64-linux/lib /etc/ld.so.conf.d/
 
 **9 - Наслаждаемся**
 
-[![fluidsGL]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)](/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)
-
+![fluidsGL]({{ site.baseurl }}/assets/images/2014/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_055.png)

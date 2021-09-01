@@ -47,7 +47,7 @@ $ sudo ldconfig
 
 Рубимся :)
 
-[![Dwart Fortress]({{ site.baseurl }}/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)](/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)Ссылки
+![Dwart Fortress]({{ site.baseurl }}/assets/images/2014/11/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_107.png)
 
 - http://www.bay12games.com/dwarves/
 - http://www.bay12forums.com/smf/index.php?topic=62159.msg1469273#msg1469273

@@ -29,7 +29,9 @@ echo Hello, world! > named_pipe
 $ zcat out.gz Hello, world!
 ```
 
-[caption id="attachment_200" align="aligncenter" width="300"][![Пример использования именованных каналов в linux]({{ site.baseurl }}/assets/images/2014/05/073.png)](http://russianpenguin.files.wordpress.com/2014/05/073.png) Пример использования именованных каналов в linux[/caption]
+![Пример использования именованных каналов в linux]({{ site.baseurl }}/assets/images/2014/05/073.png)
+
+Пример использования именованных каналов в linux
 
 И удалить именованный канал
 

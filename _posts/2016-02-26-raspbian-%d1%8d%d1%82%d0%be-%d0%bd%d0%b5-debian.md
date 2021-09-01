@@ -9,7 +9,9 @@ tags:
 - raspberry pi
 permalink: "/2016/02/26/raspbian-%d1%8d%d1%82%d0%be-%d0%bd%d0%b5-debian/"
 ---
-![img_raspbian_logo]({{ site.baseurl }}/assets/images/2016/02/img_raspbian_logo.png) [Raspbian](https://www.raspbian.org) - это не Debian. Хотя картинка нас убежлает в обратном.
+![img_raspbian_logo]({{ site.baseurl }}/assets/images/2016/02/img_raspbian_logo.png)
+
+[Raspbian](https://www.raspbian.org) - это не Debian. Хотя картинка нас убежлает в обратном.
 
 В чем проблема? Проблема в обозначении архитектуры.
 

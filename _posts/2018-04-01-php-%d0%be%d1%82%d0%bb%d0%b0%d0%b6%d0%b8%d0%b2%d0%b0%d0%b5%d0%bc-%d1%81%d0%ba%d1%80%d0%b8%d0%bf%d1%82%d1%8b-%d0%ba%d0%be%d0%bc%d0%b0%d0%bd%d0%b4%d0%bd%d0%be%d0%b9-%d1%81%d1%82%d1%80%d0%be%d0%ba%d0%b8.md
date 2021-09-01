@@ -14,7 +14,7 @@ permalink: "/2018/04/01/php-%d0%be%d1%82%d0%bb%d0%b0%d0%b6%d0%b8%d0%b2%d0%b0%d0%
 excerpt: Отлаживать бэкенд-составляющую проектов не составляет труда, но что делать
   когда требуется отлаживать консольные скрипты?
 ---
-![01-Превью]({{ site.baseurl }}/assets/images/2018/04/01-d0bfd180d0b5d0b2d18cd18e.png)Отладка бекенда на PHP уже ни у кого не вызывает проблем: достаточно правильно настроить расширение [xdebug](https://xdebug.org/) (или [zend debugger](https://www.jetbrains.com/help/phpstorm/configuring-zend-debugger.html)), поставить&nbsp; [расширение](https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc?hl=ru) в свой браузер и можно отлаживать, трассировать или профилировать бекенд.
+![01-Превью]({{ site.baseurl }}/assets/images/2018/04/01-d0bfd180d0b5d0b2d18cd18e.png)Отладка бекенда на PHP уже ни у кого не вызывает проблем: достаточно правильно настроить расширение [xdebug](https://xdebug.org/) (или [zend debugger](https://www.jetbrains.com/help/phpstorm/configuring-zend-debugger.html)), поставить  [расширение](https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc?hl=ru) в свой браузер и можно отлаживать, трассировать или профилировать бекенд.
 
 Но что делать, когда нам требуется отладить консольную утилиту на удаленном сервере? В браузере выбрать пункте enable xdebug нельзя, а если у нас и получится передать IDE_KEY, то оно не знает, где располагается среда разработки и куда делать connect_back.
 

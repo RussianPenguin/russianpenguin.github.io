@@ -32,5 +32,5 @@ export XDG_CURRENT_DESKTOP=KDE
 
 ![xmonad-qt_without_icons_with_fix]({{ site.baseurl }}/assets/images/2016/01/xmonad-qt_without_icons_with_fix.png)
 
-&nbsp;
+ 
 

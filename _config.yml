@@ -5,7 +5,7 @@ theme: jekyll-theme-cayman
 permalink: /:categories/:title/
 timezone: Europe/Moscow
 excerpt_separator: <!--more-->
-lang: ru-RU
+lang: ru
 plugins:
   - jekyll-sass-converter
   - jekyll-paginate
@@ -16,16 +16,8 @@ paginate: 5
 sass:
   sass_dir: _sass
   style: compressed
-months:
-  - Январь
-  - Февраль
-  - Март
-  - Апрель
-  - Май
-  - Июнь
-  - Июль
-  - Август
-  - Сентярь
-  - Октябрь
-  - Ноябрь
-  - Декабрь
+defaults:
+  - scope:
+      path: 'src/**'
+    values:
+      sitemap: false

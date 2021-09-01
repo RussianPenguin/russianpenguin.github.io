@@ -9,7 +9,7 @@ tags:
 - linux
 permalink: "/2015/08/02/%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0-%d1%82%d0%be%d1%80%d1%80%d0%b5%d0%bd%d1%82-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82%d0%b0-deluge-%d0%bd%d0%b0-%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd/"
 ---
-[![]({{ site.baseurl }}/assets/images/2015/08/deluge-bittorrent-client.jpg)](/2015/08/deluge-bittorrent-client.jpg)Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.
+[![]({{ site.baseurl }}/assets/images/2015/08/deluge-bittorrent-client.jpg)]({{ site.baseurl }}/2015/08/deluge-bittorrent-client.jpg)Все последующие шаги описываются на примере Fedora, но могут быть адаптированы под любой другой дистрибутив.
 
 ## Установка
 

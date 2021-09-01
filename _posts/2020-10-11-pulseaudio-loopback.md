@@ -57,7 +57,7 @@ $ pactl list-sinks
 Тут нам нужно найти содержимое поля name системного микрофона.
 
 
-![](/assets/images/2020/10/2020-10-11-004003_select-1.png)
+![]({{ site.baseurl }}/assets/images/2020/10/2020-10-11-004003_select-1.png)
 
 **Источники:**
 

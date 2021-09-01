@@ -16,12 +16,12 @@ permalink: "/2014/08/19/postgresql-insert-on-duplicate-key/"
 insert * on duplicate key ...
 ```
 
-Но это легко&nbsp;[эмулируется](http://stackoverflow.com/a/6527838/1216190) последовательностью запросов.
+Но это легко [эмулируется](http://stackoverflow.com/a/6527838/1216190) последовательностью запросов.
 
 ```sql
 UPDATE table SET field='C', field2='Z' WHERE id=3;  
 INSERT INTO table (id, field, field2)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SELECT 3, 'C', 'Z'  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);
+       SELECT 3, 'C', 'Z'  
+       WHERE NOT EXISTS (SELECT 1 FROM table WHERE id=3);
 ```
 

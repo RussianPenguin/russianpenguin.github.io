@@ -15,7 +15,7 @@ excerpt: Небольшой скетч про послеустановочную
 
 **Настройка флешки как overlayfs**
 
-Большинство роутеров имеют у себя usb-порт куда можно воткнуть флешку и использовать ее для swap-файла (вдруг что) и для overlayfs.&nbsp;[https://wiki.openwrt.org/ru/doc/howto/extroot](https://wiki.openwrt.org/ru/doc/howto/extroot)
+Большинство роутеров имеют у себя usb-порт куда можно воткнуть флешку и использовать ее для swap-файла (вдруг что) и для overlayfs. [https://wiki.openwrt.org/ru/doc/howto/extroot](https://wiki.openwrt.org/ru/doc/howto/extroot)
 
 **Настройка dropbear**
 

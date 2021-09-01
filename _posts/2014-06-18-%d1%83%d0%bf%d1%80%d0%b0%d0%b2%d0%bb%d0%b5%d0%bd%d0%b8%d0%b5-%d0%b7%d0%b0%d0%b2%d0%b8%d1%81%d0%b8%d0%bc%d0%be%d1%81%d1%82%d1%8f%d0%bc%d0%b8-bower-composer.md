@@ -51,7 +51,7 @@ $ sudo npm install -g bower
 
 ```javascript
 {  
-&nbsp;&nbsp;&nbsp; "directory" : "web/vendor/"  
+    "directory" : "web/vendor/"  
 }
 ```
 

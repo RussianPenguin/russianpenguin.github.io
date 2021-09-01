@@ -79,119 +79,119 @@ To completely disable this security protection add
 set auto-load safe-path /  
 line to your configuration file "/home/penguin/.gdbinit".  
 For more information about this security protection see the  
-"Auto-loading safe path" section in the GDB manual.&nbsp; E.g., run from the shell:  
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:  
 info "(gdb)Auto-loading safe path"  
 warning: File "/usr/bin/mono-sgen-gdb.py" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".  
 [Thread debugging using libthread_db enabled]  
 Using host libthread_db library "/lib64/libthread_db.so.1".  
 0x00007f4b23ce9fdb in waitpid () from /lib64/libpthread.so.0  
-Id&nbsp;&nbsp; Target Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frame  
-* 1&nbsp;&nbsp;&nbsp; Thread 0x7f4b247fa780 (LWP 5104) "mono" 0x00007f4b23ce9fdb in waitpid () from /lib64/libpthread.so.0  
-2&nbsp;&nbsp;&nbsp; Thread 0x7f4b1c3ff700 (LWP 5108) "mono" 0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-3&nbsp;&nbsp;&nbsp; Thread 0x7f4b1cb62700 (LWP 5112) "Finalizer" 0x00007f4b23ce8957 in do_futex_wait.constprop () from /lib64/libpthread.so.0  
-4&nbsp;&nbsp;&nbsp; Thread 0x7f4b0c301700 (LWP 5116) "Timer-Scheduler" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-5&nbsp;&nbsp;&nbsp; Thread 0x7f4b18044700 (LWP 5117) "Timer-Scheduler" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-6&nbsp;&nbsp;&nbsp; Thread 0x7f4b06eef700 (LWP 5118) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-7&nbsp;&nbsp;&nbsp; Thread 0x7f4b06cee700 (LWP 5119) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-8&nbsp;&nbsp;&nbsp; Thread 0x7f4b05af4700 (LWP 5121) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
-9&nbsp;&nbsp;&nbsp; Thread 0x7f4b06241700 (LWP 5122) "Threadpool work" 0x00007f4b237f801d in poll () from /lib64/libc.so.6  
-10&nbsp;&nbsp; Thread 0x7f4b04c93700 (LWP 5123) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+Id   Target Id         Frame  
+* 1    Thread 0x7f4b247fa780 (LWP 5104) "mono" 0x00007f4b23ce9fdb in waitpid () from /lib64/libpthread.so.0  
+2    Thread 0x7f4b1c3ff700 (LWP 5108) "mono" 0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+3    Thread 0x7f4b1cb62700 (LWP 5112) "Finalizer" 0x00007f4b23ce8957 in do_futex_wait.constprop () from /lib64/libpthread.so.0  
+4    Thread 0x7f4b0c301700 (LWP 5116) "Timer-Scheduler" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+5    Thread 0x7f4b18044700 (LWP 5117) "Timer-Scheduler" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+6    Thread 0x7f4b06eef700 (LWP 5118) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+7    Thread 0x7f4b06cee700 (LWP 5119) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+8    Thread 0x7f4b05af4700 (LWP 5121) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0  
+9    Thread 0x7f4b06241700 (LWP 5122) "Threadpool work" 0x00007f4b237f801d in poll () from /lib64/libc.so.6  
+10   Thread 0x7f4b04c93700 (LWP 5123) "Threadpool work" 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
 
 Thread 10 (Thread 0x7f4b04c93700 (LWP 5123)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cd6b9ab in worker_thread ()  
-#2&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#3&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#4&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#5&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cd6b9ab in worker_thread ()  
+#2  0x000055d10cd661d6 in start_wrapper ()  
+#3  0x000055d10ce1af4a in inner_start_thread ()  
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 9 (Thread 0x7f4b06241700 (LWP 5122)):  
-#0&nbsp; 0x00007f4b237f801d in poll () at /lib64/libc.so.6  
-#1&nbsp; 0x000055d10cd6d2f2 in poll_event_wait ()  
-#2&nbsp; 0x000055d10cd6e136 in selector_thread ()  
-#3&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#4&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#5&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#6&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b237f801d in poll () at /lib64/libc.so.6  
+#1  0x000055d10cd6d2f2 in poll_event_wait ()  
+#2  0x000055d10cd6e136 in selector_thread ()  
+#3  0x000055d10cd661d6 in start_wrapper ()  
+#4  0x000055d10ce1af4a in inner_start_thread ()  
+#5  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#6  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 8 (Thread 0x7f4b05af4700 (LWP 5121)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cd6b9ab in worker_thread ()  
-#2&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#3&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#4&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#5&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cd6b9ab in worker_thread ()  
+#2  0x000055d10cd661d6 in start_wrapper ()  
+#3  0x000055d10ce1af4a in inner_start_thread ()  
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 7 (Thread 0x7f4b06cee700 (LWP 5119)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cd6b9ab in worker_thread ()  
-#2&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#3&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#4&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#5&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cd6b9ab in worker_thread ()  
+#2  0x000055d10cd661d6 in start_wrapper ()  
+#3  0x000055d10ce1af4a in inner_start_thread ()  
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 6 (Thread 0x7f4b06eef700 (LWP 5118)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cd6b9ab in worker_thread ()  
-#2&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#3&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#4&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#5&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cd6b9ab in worker_thread ()  
+#2  0x000055d10cd661d6 in start_wrapper ()  
+#3  0x000055d10ce1af4a in inner_start_thread ()  
+#4  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#5  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 5 (Thread 0x7f4b18044700 (LWP 5117)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10ce19a7d in mono_thread_info_sleep ()  
-#2&nbsp; 0x000055d10cd6a91e in monitor_thread ()  
-#3&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#4&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#5&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#6&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10ce19a7d in mono_thread_info_sleep ()  
+#2  0x000055d10cd6a91e in monitor_thread ()  
+#3  0x000055d10cd661d6 in start_wrapper ()  
+#4  0x000055d10ce1af4a in inner_start_thread ()  
+#5  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#6  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 4 (Thread 0x7f4b0c301700 (LWP 5116)):  
-#0&nbsp; 0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cdefb3f in _wapi_handle_timedwait_signal_handle ()  
-#2&nbsp; 0x000055d10ce06304 in wapi_WaitForSingleObjectEx ()  
-#3&nbsp; 0x000055d10cd659d8 in mono_wait_uninterrupted.isra.18.constprop ()  
-#4&nbsp; 0x000055d10cd65aa3 in ves_icall_System_Threading_WaitHandle_WaitOne_internal ()  
-#5&nbsp; 0x00000000420b2604 in&nbsp; ()  
-#6&nbsp; 0x0000000000000002 in&nbsp; ()  
-#7&nbsp; 0x0000000000000001 in&nbsp; ()  
-#8&nbsp; 0x0000000000000064 in&nbsp; ()  
-#9&nbsp; 0x00007f4b1c6a7bb0 in&nbsp; ()  
-#10 0x0000000000000063 in&nbsp; ()  
-#11 0x00007f4b08001960 in&nbsp; ()  
-#12 0x00007f4b1c6a7bb0 in&nbsp; ()  
-#13 0x00007f4b0c300660 in&nbsp; ()  
-#14 0x00007f4b0c3005d0 in&nbsp; ()  
-#15 0x00000000420b23d0 in&nbsp; ()  
-#16 0x0000000000000000 in&nbsp; ()
+#0  0x00007f4b23ce6809 in pthread_cond_timedwait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cdefb3f in _wapi_handle_timedwait_signal_handle ()  
+#2  0x000055d10ce06304 in wapi_WaitForSingleObjectEx ()  
+#3  0x000055d10cd659d8 in mono_wait_uninterrupted.isra.18.constprop ()  
+#4  0x000055d10cd65aa3 in ves_icall_System_Threading_WaitHandle_WaitOne_internal ()  
+#5  0x00000000420b2604 in  ()  
+#6  0x0000000000000002 in  ()  
+#7  0x0000000000000001 in  ()  
+#8  0x0000000000000064 in  ()  
+#9  0x00007f4b1c6a7bb0 in  ()  
+#10 0x0000000000000063 in  ()  
+#11 0x00007f4b08001960 in  ()  
+#12 0x00007f4b1c6a7bb0 in  ()  
+#13 0x00007f4b0c300660 in  ()  
+#14 0x00007f4b0c3005d0 in  ()  
+#15 0x00000000420b23d0 in  ()  
+#16 0x0000000000000000 in  ()
 
 Thread 3 (Thread 0x7f4b1cb62700 (LWP 5112)):  
-#0&nbsp; 0x00007f4b23ce8957 in do_futex_wait.constprop () at /lib64/libpthread.so.0  
-#1&nbsp; 0x00007f4b23ce8a04 in __new_sem_wait_slow.constprop.0 () at /lib64/libpthread.so.0  
-#2&nbsp; 0x00007f4b23ce8aaa in sem_wait@@GLIBC_2.2.5 () at /lib64/libpthread.so.0  
-#3&nbsp; 0x000055d10cd877bb in finalizer_thread ()  
-#4&nbsp; 0x000055d10cd661d6 in start_wrapper ()  
-#5&nbsp; 0x000055d10ce1af4a in inner_start_thread ()  
-#6&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#7&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce8957 in do_futex_wait.constprop () at /lib64/libpthread.so.0  
+#1  0x00007f4b23ce8a04 in __new_sem_wait_slow.constprop.0 () at /lib64/libpthread.so.0  
+#2  0x00007f4b23ce8aaa in sem_wait@@GLIBC_2.2.5 () at /lib64/libpthread.so.0  
+#3  0x000055d10cd877bb in finalizer_thread ()  
+#4  0x000055d10cd661d6 in start_wrapper ()  
+#5  0x000055d10ce1af4a in inner_start_thread ()  
+#6  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#7  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 2 (Thread 0x7f4b1c3ff700 (LWP 5108)):  
-#0&nbsp; 0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cde963f in thread_func ()  
-#2&nbsp; 0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
-#3&nbsp; 0x00007f4b23803f7f in clone () at /lib64/libc.so.6
+#0  0x00007f4b23ce6460 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libpthread.so.0  
+#1  0x000055d10cde963f in thread_func ()  
+#2  0x00007f4b23ce06ca in start_thread () at /lib64/libpthread.so.0  
+#3  0x00007f4b23803f7f in clone () at /lib64/libc.so.6
 
 Thread 1 (Thread 0x7f4b247fa780 (LWP 5104)):  
-#0&nbsp; 0x00007f4b23ce9fdb in waitpid () at /lib64/libpthread.so.0  
-#1&nbsp; 0x000055d10cc73870 in mono_handle_native_sigsegv ()  
-#2&nbsp; 0x000055d10ccca8ce in mono_arch_handle_altstack_exception ()  
-#3&nbsp; 0x000055d10cbec633 in mono_sigsegv_signal_handler ()  
-#4&nbsp; 0x00007f4b23cea5c0 in <signal handler called> () at /lib64/libpthread.so.0  
-#5&nbsp; 0x00007f4b23788fe6 in strlen () at /lib64/libc.so.6  
-#6&nbsp; 0x00007f4b1870b8fe in _XimLocalUtf8LookupString () at /lib64/libX11.so.6  
-#7&nbsp; 0x000000004249f8b5 in&nbsp; ()  
-#8&nbsp; 0x0000000000000000 in&nbsp; ()
+#0  0x00007f4b23ce9fdb in waitpid () at /lib64/libpthread.so.0  
+#1  0x000055d10cc73870 in mono_handle_native_sigsegv ()  
+#2  0x000055d10ccca8ce in mono_arch_handle_altstack_exception ()  
+#3  0x000055d10cbec633 in mono_sigsegv_signal_handler ()  
+#4  0x00007f4b23cea5c0 in <signal handler called> () at /lib64/libpthread.so.0  
+#5  0x00007f4b23788fe6 in strlen () at /lib64/libc.so.6  
+#6  0x00007f4b1870b8fe in _XimLocalUtf8LookupString () at /lib64/libX11.so.6  
+#7  0x000000004249f8b5 in  ()  
+#8  0x0000000000000000 in  ()
 
 =================================================================  
 Got a SIGSEGV while executing native code. This usually indicates  

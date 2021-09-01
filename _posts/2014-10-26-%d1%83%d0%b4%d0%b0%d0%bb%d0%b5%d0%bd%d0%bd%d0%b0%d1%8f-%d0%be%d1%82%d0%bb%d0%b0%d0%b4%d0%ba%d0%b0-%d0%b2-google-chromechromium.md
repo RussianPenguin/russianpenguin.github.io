@@ -30,5 +30,5 @@ http://target-machine:9999
 
 Еще можно добавить параметр --user-data-dir=<тут путь>. Эта опция нужна если для отладки вы хотите пользовать как-то особым образом сконфигурированный профиль.
 
-[![Удаленная отладка с Chrome]({{ site.baseurl }}/assets/images/2014/10/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_098.png)](/2014/10/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_098.png)
+![Удаленная отладка с Chrome]({{ site.baseurl }}/assets/images/2014/10/d180d0b0d0b1d0bed187d0b5d0b5-d0bcd0b5d181d182d0be-2_098.png)
 

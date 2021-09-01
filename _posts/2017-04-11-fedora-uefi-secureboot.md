@@ -21,17 +21,17 @@ $ efibootmgr -v
 BootCurrent: 0002  
 Timeout: 0 seconds  
 BootOrder: 0007,0002,2001,2002,2003  
-Boot0000* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\Fedora\shim.efi)  
-Boot0001* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot0002* Linux&nbsp;&nbsp; &nbsp;PciRoot(0x0)/Pci(0x1c,0x4)/Pci(0x0,0x0)/NVMe(0x1,00-00-00-00-00-00-00-00)/HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\BOOT\BOOTX64.EFI)A01 ..  
-Boot0003* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot0004* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot0005* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot0006* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot0007* Fedora&nbsp;&nbsp; &nbsp;HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
-Boot2001* EFI USB Device&nbsp;&nbsp; &nbsp;RC  
-Boot2002* EFI DVD/CDROM&nbsp;&nbsp; &nbsp;RC  
-Boot2003* EFI Network&nbsp;&nbsp; &nbsp;RC  
+Boot0000* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\Fedora\shim.efi)  
+Boot0001* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot0002* Linux    PciRoot(0x0)/Pci(0x1c,0x4)/Pci(0x0,0x0)/NVMe(0x1,00-00-00-00-00-00-00-00)/HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\BOOT\BOOTX64.EFI)A01 ..  
+Boot0003* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot0004* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot0005* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot0006* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot0007* Fedora    HD(1,GPT,f627bf87-5440-4997-8310-aa80dba7e383,0x800,0x64000)/File(\EFI\fedora\shim.efi)  
+Boot2001* EFI USB Device    RC  
+Boot2002* EFI DVD/CDROM    RC  
+Boot2003* EFI Network    RC  
 
 ```
 

@@ -37,8 +37,8 @@ $ sudo yum install named
 Для этого редактируем named.conf и добавляем в раздел options
 
 ```
-&nbsp;&nbsp;&nbsp; listen-on port 53 { 127.0.0.1; };  
-&nbsp;&nbsp;&nbsp; listen-on-v6 port 53 { ::1; };
+    listen-on port 53 { 127.0.0.1; };  
+    listen-on-v6 port 53 { ::1; };
 ```
 
 Теперь нам надо подключить нашу новую зону.
@@ -47,13 +47,13 @@ $ sudo yum install named
 
 ```
 zone "dev" IN {  
-&nbsp;&nbsp;&nbsp; type master;  
-&nbsp;&nbsp;&nbsp; file "named.dev";  
-&nbsp;&nbsp;&nbsp; allow-query {any;};  
-&nbsp;&nbsp;&nbsp; allow-update {  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 127.0.0.1;  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::1;  
-&nbsp;&nbsp;&nbsp; };  
+    type master;  
+    file "named.dev";  
+    allow-query {any;};  
+    allow-update {  
+        127.0.0.1;  
+        ::1;  
+    };  
 };
 ```
 
@@ -63,18 +63,18 @@ zone "dev" IN {
 
 ```
 $ORIGIN dev.  
-$TTL 86400&nbsp;&nbsp; &nbsp;; 1 day  
-@&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN SOA&nbsp;&nbsp; &nbsp;dev. rname.invalid. (  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; serial  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;86400&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; refresh (1 day)  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;3600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; retry (1 hour)  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;604800&nbsp;&nbsp;&nbsp;&nbsp; ; expire (1 week)  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;10800&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; minimum (3 hours)  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;)  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;NS&nbsp;&nbsp; &nbsp;dev.  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1  
-&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;AAAA&nbsp;&nbsp; &nbsp;::1  
-*&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;IN&nbsp;&nbsp; &nbsp;A&nbsp;&nbsp; &nbsp;127.0.0.1
+$TTL 86400    ; 1 day  
+@            IN SOA    dev. rname.invalid. (  
+                4          ; serial  
+                86400      ; refresh (1 day)  
+                3600       ; retry (1 hour)  
+                604800     ; expire (1 week)  
+                10800      ; minimum (3 hours)  
+                )  
+            NS    dev.  
+            A    127.0.0.1  
+            AAAA    ::1  
+*        IN    A    127.0.0.1
 ```
 
 Последняя строчка нам нужна для того, чтобы все домены, для которых не прописан адрес резолвились на локалхост.
@@ -89,16 +89,16 @@ $ sudo service named restart
 
 ```shell
 $ nslookup test.dev 127.0.0.1  
-Server:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;127.0.0.1  
-Address:&nbsp;&nbsp; &nbsp;127.0.0.1#53
+Server:        127.0.0.1  
+Address:    127.0.0.1#53
 
-Name:&nbsp;&nbsp; &nbsp;test.dev  
+Name:    test.dev  
 Address: 127.0.0.1
 ```
 
-&nbsp;
+ 
 
-&nbsp;
+ 
 
 Кдасс. А как нам связывать домен с адресом?
 
@@ -110,16 +110,16 @@ TTL=86400
 RECORD=$1  
 IP=$2  
 (  
-&nbsp;echo "server dev."  
-&nbsp;echo "zone dev"
+ echo "server dev."  
+ echo "zone dev"
 
-&nbsp;echo "update delete ${RECORD} A"  
-&nbsp;echo "update add ${RECORD} ${TTL} A ${IP}"  
-&nbsp;echo "send"  
+ echo "update delete ${RECORD} A"  
+ echo "update add ${RECORD} ${TTL} A ${IP}"  
+ echo "send"  
 ) | /usr/bin/nsupdate
 ```
 
-&nbsp;
+ 
 
 Пробуем
 

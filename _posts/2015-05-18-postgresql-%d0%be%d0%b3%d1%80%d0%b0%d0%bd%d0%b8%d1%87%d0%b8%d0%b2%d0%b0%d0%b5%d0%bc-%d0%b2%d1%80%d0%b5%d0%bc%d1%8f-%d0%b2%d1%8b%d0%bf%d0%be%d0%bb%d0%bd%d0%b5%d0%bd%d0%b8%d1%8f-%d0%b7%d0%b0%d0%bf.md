@@ -13,7 +13,7 @@ permalink: "/2015/05/18/postgresql-%d0%be%d0%b3%d1%80%d0%b0%d0%bd%d0%b8%d1%87%d0
 db=> set statement_timeout to 100;  
 SET  
 db=> select pg_sleep(110);  
-ERROR:&nbsp; canceling statement due to statement timeout  
+ERROR:  canceling statement due to statement timeout  
 db=> set statement_timeout to 0;  
 SET  
 db=> 
