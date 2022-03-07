@@ -9,6 +9,9 @@ tags:
 - linux
 permalink: "/2016/01/04/linux-%d1%81%d0%b2%d1%8f%d0%b7%d1%8b%d0%b2%d0%b0%d0%b5%d0%bc-%d0%bf%d1%80%d0%b8%d0%bb%d0%be%d0%b6%d0%b5%d0%bd%d0%b8%d0%b5-%d1%81-%d1%82%d0%b8%d0%bf%d0%b0%d0%bc%d0%b8-%d1%84%d0%b0%d0%b9%d0%bb%d0%be/"
 ---
+
+**Статья дополнена 2022-03-08**
+
 ![xdg]({{ site.baseurl }}/assets/images/2016/01/xdg.png)Не секрет, что для новичков в никсах существует лишь один путь для выбора приложения, которым будет открываться какой-либо тип файлов: конфигуратор его рабочей среды (кеды, гном, xfce или иное).  
 Однако то, что происходит за кадром пользователю остается неизвесным. И как только юный падаван попадает в голые иксы с запущенным xterm или голым, но от этого не менее дружелюбным, оконным менеджером (openbox, fluxbox, xmonad и т.д.) - у него сразу возникает куча проблема.
 
@@ -107,9 +110,17 @@ xdg-mime - инструмент, который входит в комплект
 image/jpeg
 ```
 
-А теперь самое главное - привязываем приложения к своим типам файлов. И заодно посмотрим, что происходит под капотом.
+**Shared MIME database**
 
-Допустим, что у нас свежевыкращенныйзаведенный профиль.
+Это спецификация, которая позволяет приложениям легче прописывать в систему информацию о том, какими расширениями файлов они могут манипулирвать.
+
+Для целей статьи это неинтересно, но почитать можно [тут](https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-latest.html).
+
+**Как работает привязка файлов в ручном режиме**
+
+Посмотрим, что происходит под капотом. Сейчас это не самый лучший способ. О более простом варианте речь пойдет чуть дальше.
+
+Допустим, что у нас свежезаведенный профиль.
 
 ```
 $ cat ~/.local/share/applications/mimeapps.list  
@@ -137,7 +148,51 @@ $ xdg-open path_to_mp4_file.mp4
 
 Файл откроется уже в vlc.
 
-Почитать:  
-[https://wiki.archlinux.org/index.php/Default_applications](https://wiki.archlinux.org/index.php/Default_applications)  
-[https://wiki.archlinux.org/index.php/Desktop_entries](https://wiki.archlinux.org/index.php/Desktop_entries)
+**Автоматизированный способ привязки**
+
+Сначала нам нужно понять, какие приложения поддерживают нужный mime.
+
+Каждый *.desktop-файл содержит записи mime-типов, которые он поддерживает.
+
+```shell
+$ cat /usr/share/applications/pcmanfm.desktop | grep -i mime
+MimeType=inode/directory;
+```
+
+Теперь нам нужно лишь грепнуть все desktop чтобы найти, что нам надо.
+
+Допустим, что нам хочется переопределить приложение для открытия папок. Найдем, кто их может открывать.
+
+```shell
+$ rgrep "inode/directory" /usr/share/applications
+/usr/share/applications/mimeinfo.cache:inode/directory=org.gnome.baobab.desktop;pcmanfm.desktop;ranger.desktop;
+/usr/share/applications/org.gnome.baobab.desktop:MimeType=inode/directory;
+/usr/share/applications/mimeapps.list:inode/directory=org.gnome.Nautilus.desktop
+/usr/share/applications/pcmanfm.desktop:MimeType=inode/directory;
+/usr/share/applications/gnome-mimeapps.list:inode/directory=org.gnome.Nautilus.desktop
+/usr/share/applications/ranger.desktop:MimeType=inode/directory;
+```
+
+Тут мы видим, что папками манипулируют ranger, baobab и pcmanfm.
+
+Для привязки приложения и типа нам так же поможет xdg-mime.
+
+```
+xdg-mime default application mimetype(s)
+```
+
+```shell
+$ xdg-mime default pcmanfm.desktop inode/directory
+```
+
+Тем самым мы связали тип ```inode/directory``` с приложением pcmanfm. Стоит заметить, что указывать путь до *.desktop не надо. Он будет разыскиваться по стандартным путям, которые мы обсудили выше.
+
+**Замечания**
+
+Искать кто может открыть какой-то файл долго и сложно. Можно воспользоваться утилитой [lsdesktopf](https://github.com/AndyCrowd/list-desktop-files).
+
+**Литература**:
+* [XDG MIME Applications](https://wiki.archlinux.org/title/XDG_MIME_Applications)
+* [https://wiki.archlinux.org/index.php/Default_applications](https://wiki.archlinux.org/index.php/Default_applications)  
+* [https://wiki.archlinux.org/index.php/Desktop_entries](https://wiki.archlinux.org/index.php/Desktop_entries)
 
