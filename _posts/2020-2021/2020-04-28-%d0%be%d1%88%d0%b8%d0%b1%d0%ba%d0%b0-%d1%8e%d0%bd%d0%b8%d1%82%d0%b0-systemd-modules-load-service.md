@@ -12,7 +12,7 @@ tags:
 permalink: "/2020/04/28/%d0%be%d1%88%d0%b8%d0%b1%d0%ba%d0%b0-%d1%8e%d0%bd%d0%b8%d1%82%d0%b0-systemd-modules-load-service/"
 excerpt: Узнаем почему не загружается vboxdrv и починим.
 ---
-![2020-04-28-22:47:01_select]({{ site.baseurl }}/assets/images/2020/04/2020-04-28-224701_select.png)
+![2020-04-28-22:47:01_select]({{ site.baseurl }}/assets/images/2020/04/2020-04-28-224701_select.png){:.img-fluid}
 
 ```
 Ошибка юнита systemd-modules-load.service

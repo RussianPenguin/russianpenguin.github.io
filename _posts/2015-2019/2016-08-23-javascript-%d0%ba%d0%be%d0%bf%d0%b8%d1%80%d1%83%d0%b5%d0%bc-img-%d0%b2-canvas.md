@@ -52,7 +52,7 @@ backCtx.drawImage(srcImg, 0,0);
 
 Как на иллюстрации ниже (картинка там имеет разрешение в десять раз больше нежели физические размеры img и масштабируется).
 
-![Выделение_001]({{ site.baseurl }}/assets/images/2016/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_001.png)
+![Выделение_001]({{ site.baseurl }}/assets/images/2016/08/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_001.png){:.img-fluid}
 
 А свойства naturalWidth/naturalHeight не поддерживаются в ряде браузеров. поэтому способ универсальным назвать нельзя.
 

@@ -13,7 +13,7 @@ tags:
 permalink: "/2022/02/27/xorg_двигаем-мышку"
 ---
 
-<img class="kdpv left" src="{{ site.baseurl }}/assets/images/2022/mouse-pointer.png" alt="mouse pointer" title="mouse pointer" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2022/mouse-pointer.png" alt="mouse pointer" title="mouse pointer" />
 
 Это какая-то напасть. Мониторы стаповятся больше, мониторов становится больше. А курсор мыши так и остался крохотным.
 

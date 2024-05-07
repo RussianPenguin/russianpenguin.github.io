@@ -12,7 +12,7 @@ tags:
 permalink: "/2024/01/09/no-markdown-preview-in-idea"
 ---
 
-<img class="kdpv" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/1.png" alt="There are no available preview providers" title="There are no available preview providers" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/1.png" alt="There are no available preview providers" title="There are no available preview providers" />
 
 Есть вероятность, что возможность смотреть превью markdown-файлов в соответствующем [плагине](https://www.jetbrains.com/help/idea/markdown.html) отсутствует.
 
@@ -25,8 +25,8 @@ permalink: "/2024/01/09/no-markdown-preview-in-idea"
 - плагин должен заработать корректно
 - если не случилось - повторяем (можно использовать системный jre)
 
-<img class="center" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/2.png" alt="Choose JRE" title="Choose JRD" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/2.png" alt="Choose JRE" title="Choose JRD" />
 
-<img class="center" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/3.png" alt="Choose new version" title="Choose new version" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/3.png" alt="Choose new version" title="Choose new version" />
 
-<img class="center" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/4.png" alt="Done" title="Done" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2024/markdown_idea/4.png" alt="Done" title="Done" />

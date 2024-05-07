@@ -21,7 +21,7 @@ sudo yum install devilspie
 
 **Кладем в каталог ~/.devilspie скрипт с именем flash-fullscreen-firefox.ds**
 
-```text; gutter: true; first-line: 1; highlight: []
+```
 (if (is (application_name) "plugin-container") (begin (focus) ) )
 ```
 

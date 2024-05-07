@@ -10,7 +10,7 @@ tags: []
 permalink: "/2019/09/11/python-чем-плох-datetime-replace/"
 ---
 
-<img src="{{ site.baseurl }}/assets/images/2019/09/d187d0b0d181d18b.jpeg" title="Чем плох datetime.replace?" alt="Чем плох datetime.replace?" class="kdpv left" />
+<img src="{{ site.baseurl }}/assets/images/2019/09/d187d0b0d181d18b.jpeg" title="Чем плох datetime.replace?" alt="Чем плох datetime.replace?" class="img-fluid" />
 
 Поговорим сегодня про даты и часовые пояса. А именно о том, почему не стоит использовать datetime.replace совместно с таймзонами из pytz если вы не уверены (вообще не стоит).
 

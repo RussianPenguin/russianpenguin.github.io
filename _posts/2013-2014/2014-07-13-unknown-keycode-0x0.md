@@ -36,5 +36,5 @@ permalink: "/2014/07/13/unknown-keycode-0x0/"
 
 Проблема также замечена в smartsvn.
 
-![cat phpstorm.vmoptions]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png)
+![cat phpstorm.vmoptions]({{ site.baseurl }}/assets/images/2014/07/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_014.png){:.img-fluid}
 

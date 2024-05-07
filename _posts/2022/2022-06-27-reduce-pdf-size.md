@@ -12,7 +12,7 @@ tags:
 permalink: "/2022/06/27/redude_pdf_size"
 ---
 
-<img class="kdpv" src="{{ site.baseurl }}/assets/images/2022/pdf-sizes.png" alt="сравнение занимаемого места" title="Сравнение размеров файлов" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2022/pdf-sizes.png" alt="сравнение занимаемого места" title="Сравнение размеров файлов" />
 
 ```shell
 gs \

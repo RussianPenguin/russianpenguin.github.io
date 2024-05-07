@@ -12,19 +12,19 @@ permalink: "/2013/12/13/wine64-opengl-nvidia/"
 ---
 Некоторые получают ошибку в 64х битном окружении
 
-```text; gutter: true; first-line: 1; highlight: []
+```
 WineGL_InitOpenglInfo Direct rendering is disabled, most likely your OpenGL drivers haven't been installed correctly
 ```
 
 Лечится это установкой 32х битных версий библиотек от вендора.
 
-```shell; gutter: true; first-line: 1; highlight: []
+```shell
 yum install xorg-x11-drv-catalyst-libs.i686
 ```
 
 или
 
-```shell; gutter: true; first-line: 1; highlight: []
+```shell
 yum install xorg-x11-drv-nvidia-libs.i686
 ```
 

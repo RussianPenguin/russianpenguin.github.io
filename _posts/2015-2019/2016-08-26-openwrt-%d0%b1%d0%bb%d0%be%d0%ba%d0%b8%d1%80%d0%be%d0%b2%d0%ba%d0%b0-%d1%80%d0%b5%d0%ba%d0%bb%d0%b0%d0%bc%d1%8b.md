@@ -9,7 +9,9 @@ tags:
 - linux
 permalink: "/2016/08/26/openwrt-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d1%80%d0%b5%d0%ba%d0%bb%d0%b0%d0%bc%d1%8b/"
 ---
-![1280px-openwrt_logo-svg]({{ site.baseurl }}/assets/images/2016/08/1280px-openwrt_logo-svg.png)Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это [OpenWRT](https://openwrt.org/).
+![1280px-openwrt_logo-svg]({{ site.baseurl }}/assets/images/2016/08/1280px-openwrt_logo-svg.png){:.img-fluid}
+
+Есть отличная прошивка на базе всеми любимого линупса для всякой разной техники вроде роутеров и микрокомпьютеров - это [OpenWRT](https://openwrt.org/).
 
 А поскольку эта штука работает в качестве локального днс-сервера, то грех не научить ее блокировать на корню всякие даблклик.нет и другое непотребство.
 

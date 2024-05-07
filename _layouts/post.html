@@ -1,24 +1,25 @@
 ---
 layout: default
 ---
-<h1>{{ page.title }}</h1>
-<p>{{ page.date | date_to_string }}</p>
+<div>
+    <h1>{{ page.title }}</h1>
+    {% if page.tags != empty %}
+    <ul class="list-group list-group-horizontal">
+        {% for tag in page.tags %}
+        <li class="list-group-item"><a class="tag" href="/tag#{{ tag | slugify }}"> {{ tag }} </a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div>
+        {{ content }}
+    </div>
 
-{{ content }}
-
-{% if page.tags != empty %}
+    {% if page.categories != empty %}
     <p>
-    Теги: {% for tag in page.tags %}
-        <a class="tag" href="/tag#{{ tag | slugify }}"> {{ tag }} </a>
-    {% endfor %}
-    </p>
-{% endif %}
-
-{% if page.categories != empty %}
-    <p>
-    Категории:
-    {% for category in page.categories %}
+        Категории:
+        {% for category in page.categories %}
         <a href="/category#{{ category | slugify }}"> {{ category }} </a>
-    {% endfor %}
+        {% endfor %}
     </p>
-{% endif %}
+    {% endif %}
+</div>
