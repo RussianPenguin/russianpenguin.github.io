@@ -43,5 +43,5 @@ header('location: to_url', true, 200);
 
 В [примере](https://github.com/RussianPenguin/blogSamples/blob/master/location.php "Дружим location и js: пример к статье") можно наглядно посмотреть, как происходит обработка. Достаточно его запустить внутри встроенного сервера php.
 
-![Дружим location и js]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png)
+![Дружим location и js]({{ site.baseurl }}/assets/images/2015/02/d0b2d18bd0b4d0b5d0bbd0b5d0bdd0b8d0b5_171.png){:.img-fluid}
 

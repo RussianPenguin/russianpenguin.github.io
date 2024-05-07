@@ -12,7 +12,7 @@ tags:
 permalink: "/2024/01/02/mutiple-ways-to-mount-loopback-device"
 ---
 
-<img class="kdpv" src="{{ site.baseurl }}/assets/images/2024/multiple-ways-to-mount-loopback.png" alt="Монтирование образа с несколькими разделами" title="Монтирование образа с несколькими разделами" />
+<img class="img-fluid" src="{{ site.baseurl }}/assets/images/2024/multiple-ways-to-mount-loopback.png" alt="Монтирование образа с несколькими разделами" title="Монтирование образа с несколькими разделами" />
 
 ### Образ с одним разделом
 

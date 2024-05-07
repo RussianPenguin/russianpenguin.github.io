@@ -11,7 +11,8 @@ tags:
 - ruby
 permalink: "/2015/09/21/gitlab-%d0%be%d0%b1%d0%bd%d0%be%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%b0%d0%bd%d0%b4%d0%bb%d0%be%d0%b2-ruby/"
 ---
-![gitlab bundle update]({{ site.baseurl }}/assets/images/2015/09/gitlab.png)
+![gitlab bundle update]({{ site.baseurl }}/assets/images/2015/09/gitlab.png){:.img-fluid}
+
 После очередного "незапланированного" обновления у меня вдруг отвалился gitlab.  
 В логах
 

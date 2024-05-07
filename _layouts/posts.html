@@ -5,39 +5,44 @@ title: Последние посты
 
 <!-- This loops through the paginated posts -->
 {% for post in paginator.posts %}
-<h1><a href="{{ post.url }}">{{ post.title }}</a></h1>
-<p class="author">
-    <span class="date">{{ post.date | date_to_string }}</span>
-</p>
-<div class="content">
-    {% if post.tags != empty %}
-    <p>
-        Теги: {% for tag in post.tags %}
-        <a class="tag" href="/tag#{{ tag | slugify }}"> {{ tag }} </a>
-        {% endfor %}
-    </p>
-    {% endif %}
-    {% if post.categories != empty %}
-    <p>
-        Категории:
-        {% for category in post.categories %}
-        <a href="/category#{{ category | slugify }}"> {{ category }} </a>
-        {% endfor %}
-    </p>
-    {% endif %}
-    {{ post.excerpt }}
+<div class="row">
+    <div class="col">
+        <h1>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+        </h1>
+        {% if post.tags != empty %}
+        <ul class="list-group list-group-horizontal">
+            {% for tag in post.tags %}
+            <li class="list-group-item"><a class="tag" href="/tag#{{ tag | slugify }}"> {{ tag }} </a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if post.categories != empty %}
+        <div>
+            Категории:
+            {% for category in post.categories %}
+            <a href="/category#{{ category | slugify }}"> {{ category }} </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div>
+            {{ post.excerpt }}
+        </div>
+    </div>
 </div>
 {% endfor %}
 
 <!-- Pagination links -->
 {% if paginator.total_pages > 1 %}
-<div class="pagination">
+<ul class="pagination">
     {% if paginator.previous_page %}
-    <a class="previous" href="{{ paginator.previous_page_path | relative_url }}">&laquo; Предыдущие посты</a>
+    <li class="page-item"><a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">&laquo;
+        Предыдущие посты</a></li>
     {% endif %}
 
     {% if paginator.next_page %}
-    <a class="next" href="{{ paginator.next_page_path | relative_url }}">Следующие посты &raquo;</a>
+    <li class="page-item"><a class="page-link" href="{{ paginator.next_page_path | relative_url }}">Следующие посты
+        &raquo;</a></li>
     {% endif %}
-</div>
+</ul>
 {% endif %}

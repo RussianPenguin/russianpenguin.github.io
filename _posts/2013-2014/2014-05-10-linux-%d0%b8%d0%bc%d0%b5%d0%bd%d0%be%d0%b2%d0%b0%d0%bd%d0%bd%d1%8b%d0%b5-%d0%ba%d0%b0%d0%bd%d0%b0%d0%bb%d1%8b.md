@@ -29,7 +29,7 @@ echo Hello, world! > named_pipe
 $ zcat out.gz Hello, world!
 ```
 
-![Пример использования именованных каналов в linux]({{ site.baseurl }}/assets/images/2014/05/073.png)
+![Пример использования именованных каналов в linux]({{ site.baseurl }}/assets/images/2014/05/073.png){:.img-fluid}
 
 Пример использования именованных каналов в linux
 
