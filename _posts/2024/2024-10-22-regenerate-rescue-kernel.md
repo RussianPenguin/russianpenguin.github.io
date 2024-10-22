@@ -14,7 +14,7 @@ permalink: "/2024/10/22/regenerate-rescue-kernel"
 
 А так как механизма обновления ядра в дефолте нет, то стоит производить его руками хотя бы раз в несколько версий дистрибутива.
 
-```bash
+```shell
 $ sudo rm /boot/*rescue*
 $ sudo /usr/lib/kernel/install.d/51-dracut-rescue.install add "$(uname -r)" /boot "/boot/vmlinuz-$(uname -r)"
 ```
