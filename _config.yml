@@ -21,3 +21,7 @@ defaults:
       path: 'src/**'
     values:
       sitemap: false
+exclude:
+  - src
+  - README.md
+  - run.sh
