@@ -16,11 +16,6 @@ paginate: 5
 sass:
   sass_dir: _sass
   style: compressed
-defaults:
-  - scope:
-      path: 'src/**'
-    values:
-      sitemap: false
 exclude:
   - src
   - README.md
