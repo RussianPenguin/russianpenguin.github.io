@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Настройка торрент-клиента deluge на удаленном сервере
-date: 2015-08-02 20:13:12.000000000 +03:00
 type: post
 categories:
 - HowTo

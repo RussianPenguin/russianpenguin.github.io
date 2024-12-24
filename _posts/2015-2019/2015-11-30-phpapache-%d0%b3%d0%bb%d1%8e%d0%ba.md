@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP+Apache: глюк?'
-date: 2015-11-30 20:18:29.000000000 +03:00
 type: post
 categories:
 - Разработка

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PostgreSQL: bytea в varchar'
-date: 2015-07-14 15:14:43.000000000 +03:00
 type: post
 categories:
 - Разработка

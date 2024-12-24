@@ -1,7 +1,6 @@
 ---
 layout: post
 title: tc-play. Небольшая памятка про криптоконтейнеры
-date: 2014-06-03 00:02:48.000000000 +04:00
 type: post
 categories:
 - HowTo

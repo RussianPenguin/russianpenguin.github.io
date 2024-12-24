@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'psql: перенаправляем вывод в файл'
-date: 2015-07-14 15:22:14.000000000 +03:00
 type: post
 categories:
 - Разработка

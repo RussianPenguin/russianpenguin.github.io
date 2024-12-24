@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Подсчет количества вхождений регэкспа в файле
-date: 2013-11-27 23:50:10.000000000 +04:00
 type: post
 categories:
 - HowTo

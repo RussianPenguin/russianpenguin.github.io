@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Firefox, Linux, Gnome: флеш-плеер в полноэкранном режиме не отображается'
-date: 2013-12-09 12:26:06.000000000 +04:00
 type: post
 categories:
 - HowTo

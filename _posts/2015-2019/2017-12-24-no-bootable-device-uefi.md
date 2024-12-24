@@ -1,7 +1,6 @@
 ---
 layout: post
 title: No Bootable Device после обновления дистрибутива
-date: 2017-12-24 18:48:59.000000000 +03:00
 type: post
 categories:
 - HowTo

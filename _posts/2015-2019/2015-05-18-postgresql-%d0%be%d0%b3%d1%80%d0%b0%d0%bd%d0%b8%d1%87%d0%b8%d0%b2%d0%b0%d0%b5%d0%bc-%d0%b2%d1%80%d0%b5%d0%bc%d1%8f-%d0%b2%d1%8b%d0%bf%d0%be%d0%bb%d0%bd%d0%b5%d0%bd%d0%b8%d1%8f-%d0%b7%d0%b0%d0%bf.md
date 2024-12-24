@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PostgreSQL: ограничиваем время выполнения запроса'
-date: 2015-05-18 16:23:48.000000000 +03:00
 type: post
 categories:
 - Разработка

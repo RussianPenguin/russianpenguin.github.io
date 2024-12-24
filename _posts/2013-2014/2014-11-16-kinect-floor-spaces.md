@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Kinect: избавляемся от искажений при помощи потолка'
-date: 2014-11-16 21:22:20.000000000 +03:00
 type: post
 categories:
 - JFF

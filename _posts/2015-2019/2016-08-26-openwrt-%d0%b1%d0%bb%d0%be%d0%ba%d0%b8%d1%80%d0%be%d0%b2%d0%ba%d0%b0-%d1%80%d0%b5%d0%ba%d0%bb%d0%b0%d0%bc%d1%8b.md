@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'OpenWRT: блокировка рекламы'
-date: 2016-08-26 00:14:12.000000000 +03:00
 type: post
 categories:
 - HowTo

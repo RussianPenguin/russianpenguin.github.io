@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Bash: копирование файлов из списка'
-date: 2015-10-07 18:12:49.000000000 +03:00
 type: post
 categories:
 - Разработка

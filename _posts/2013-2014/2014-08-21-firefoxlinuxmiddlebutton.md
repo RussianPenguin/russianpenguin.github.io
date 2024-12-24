@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Firefox+Linux+MiddleButton
-date: 2014-08-21 14:36:13.000000000 +04:00
 type: post
 categories:
 - HowTo

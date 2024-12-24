@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Центрировать абсолютный div
-date: 2014-01-10 18:27:14.000000000 +04:00
 type: post
 categories:
 - HowTo

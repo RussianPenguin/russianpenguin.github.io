@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Python: Backreferences в re'
-date: 2013-12-24 23:29:08.000000000 +04:00
 type: post
 categories:
 - HowTo

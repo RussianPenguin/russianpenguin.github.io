@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Р? (Декодируем html-entities при помощи jQuery)
-date: 2014-04-07 22:00:00.000000000 +04:00
 type: post
 categories:
 - HowTo

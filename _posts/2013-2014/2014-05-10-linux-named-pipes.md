@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: именованные каналы'
-date: 2014-05-10 21:22:07.000000000 +04:00
 type: post
 categories:
 - HowTo

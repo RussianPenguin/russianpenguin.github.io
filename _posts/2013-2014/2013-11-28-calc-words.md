@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Подсчет вхождений слов в файле
-date: 2013-11-28 01:58:09.000000000 +04:00
 type: post
 categories:
 - HowTo

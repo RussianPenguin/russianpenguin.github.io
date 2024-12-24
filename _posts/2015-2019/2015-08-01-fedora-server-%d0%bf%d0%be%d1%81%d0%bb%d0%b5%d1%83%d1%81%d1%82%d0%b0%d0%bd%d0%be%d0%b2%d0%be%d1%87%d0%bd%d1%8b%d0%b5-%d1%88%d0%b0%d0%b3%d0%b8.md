@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Fedora Server:  послеустановочные шаги.'
-date: 2015-08-01 20:16:05.000000000 +03:00
 type: post
 categories:
 - HowTo

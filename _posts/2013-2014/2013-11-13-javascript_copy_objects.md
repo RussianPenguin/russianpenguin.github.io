@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'JavaScript: копирование объектов'
-date: 2013-11-13 15:26:42.000000000 +04:00
 type: post
 categories:
 - HowTo

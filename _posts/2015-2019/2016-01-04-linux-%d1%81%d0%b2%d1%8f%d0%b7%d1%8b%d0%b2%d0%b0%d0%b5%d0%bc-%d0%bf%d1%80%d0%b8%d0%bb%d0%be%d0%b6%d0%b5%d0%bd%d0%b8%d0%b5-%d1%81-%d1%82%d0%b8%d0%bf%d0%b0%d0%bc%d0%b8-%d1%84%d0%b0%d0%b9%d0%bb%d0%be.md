@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: связываем приложение с типами файлов'
-date: 2016-01-04 20:21:02.000000000 +03:00
 type: post
 categories: []
 tags:

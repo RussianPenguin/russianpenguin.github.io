@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Полезные ссылки
-date: 2014-07-29 13:17:38.000000000 +04:00
 type: post
 categories:
 - Найдено в сети

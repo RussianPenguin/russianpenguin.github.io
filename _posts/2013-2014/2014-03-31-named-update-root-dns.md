@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Named: обновляем список корневых dns'
-date: 2014-03-31 13:15:59.000000000 +04:00
 type: post
 categories:
 - HowTo

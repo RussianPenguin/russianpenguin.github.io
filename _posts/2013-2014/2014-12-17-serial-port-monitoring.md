@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Мониторинг обмена данными с serial-портом
-date: 2014-12-17 22:02:07.000000000 +03:00
 type: post
 categories:
 - Разработка

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'sudo: sorry, you must have a tty to run sudo'
-date: 2018-05-11 21:45:09.000000000 +03:00
 type: post
 categories: []
 tags:

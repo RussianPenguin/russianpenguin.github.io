@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'VirtualBox: получение адреса гостевой машины'
-date: 2018-02-24 17:15:10.000000000 +03:00
 type: post
 categories:
 - HowTo

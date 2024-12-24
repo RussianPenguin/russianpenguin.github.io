@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Python: Чем плох datetime.replace?'
-date: 2019-09-11 22:46:08.000000000 +03:00
 type: post
 categories:
 - Разработка

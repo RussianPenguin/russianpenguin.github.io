@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'JavaScript: копируем img в canvas'
-date: 2016-08-23 22:28:03.000000000 +03:00
 type: post
 categories:
 - Обработка изображений

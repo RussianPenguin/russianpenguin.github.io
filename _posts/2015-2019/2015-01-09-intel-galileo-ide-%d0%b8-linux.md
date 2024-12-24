@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Intel Galileo IDE и Linux
-date: 2015-01-09 19:27:17.000000000 +03:00
 type: post
 categories:
 - HowTo

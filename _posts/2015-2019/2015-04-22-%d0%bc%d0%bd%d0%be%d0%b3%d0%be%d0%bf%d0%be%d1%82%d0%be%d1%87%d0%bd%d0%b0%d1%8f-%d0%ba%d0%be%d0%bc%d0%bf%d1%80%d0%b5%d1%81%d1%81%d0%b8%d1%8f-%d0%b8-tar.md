@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Многопоточная компрессия и tar
-date: 2015-04-22 21:00:57.000000000 +03:00
 type: post
 categories:
 - HowTo

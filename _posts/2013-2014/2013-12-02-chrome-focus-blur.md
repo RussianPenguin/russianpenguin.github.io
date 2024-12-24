@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Chrome: события focus и blur'
-date: 2013-12-02 18:49:42.000000000 +04:00
 type: post
 categories:
 - Разработка

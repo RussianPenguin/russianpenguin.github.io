@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Cookies: с ними нужно быть внимательным'
-date: 2015-01-25 16:40:57.000000000 +03:00
 type: post
 categories:
 - Разработка

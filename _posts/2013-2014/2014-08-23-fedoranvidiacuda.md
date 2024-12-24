@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Fedora+Nvidia=CUDA
-date: 2014-08-23 18:22:16.000000000 +04:00
 type: post
 categories:
 - HowTo

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Google JS API для AngularJS
-date: 2014-11-08 17:00:46.000000000 +03:00
 type: post
 categories:
 - Разработка

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Raspbian - это не Debian
-date: 2016-02-26 22:45:34.000000000 +03:00
 type: post
 categories: []
 tags:

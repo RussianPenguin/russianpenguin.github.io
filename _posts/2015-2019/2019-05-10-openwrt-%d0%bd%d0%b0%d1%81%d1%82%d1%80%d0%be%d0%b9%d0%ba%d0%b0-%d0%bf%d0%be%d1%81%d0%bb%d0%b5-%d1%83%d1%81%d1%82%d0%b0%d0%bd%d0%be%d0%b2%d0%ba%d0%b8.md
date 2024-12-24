@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'OpenWRT: Настройка после установки'
-date: 2019-05-10 16:24:26.000000000 +03:00
 type: post
 categories:
 - HowTo

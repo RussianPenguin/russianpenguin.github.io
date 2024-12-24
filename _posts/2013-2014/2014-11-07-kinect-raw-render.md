@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Kinect: Приведение координат сенсора в метрические'
-date: 2014-11-07 22:13:02.000000000 +03:00
 type: post
 categories:
 - JFF

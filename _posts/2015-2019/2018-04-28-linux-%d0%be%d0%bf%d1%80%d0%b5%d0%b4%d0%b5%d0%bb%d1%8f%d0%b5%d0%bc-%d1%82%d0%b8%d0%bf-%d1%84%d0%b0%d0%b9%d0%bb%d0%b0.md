@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: определяем тип файла'
-date: 2018-04-28 23:07:53.000000000 +03:00
 type: post
 categories: []
 tags:

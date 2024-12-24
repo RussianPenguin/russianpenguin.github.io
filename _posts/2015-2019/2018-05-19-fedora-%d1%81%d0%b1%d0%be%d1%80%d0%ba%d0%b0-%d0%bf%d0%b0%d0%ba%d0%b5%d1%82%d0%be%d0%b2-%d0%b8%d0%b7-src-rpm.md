@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Fedora: сборка пакетов из src.rpm'
-date: 2018-05-19 14:44:23.000000000 +03:00
 type: post
 categories:
 - HowTo

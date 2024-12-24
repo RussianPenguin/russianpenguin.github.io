@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: Включение субпиксельного рендеринга'
-date: 2013-11-03 22:58:18.000000000 +04:00
 type: post
 categories:
 - HowTo

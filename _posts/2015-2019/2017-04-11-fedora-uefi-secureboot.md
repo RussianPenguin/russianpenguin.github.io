@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Fedora перестает грузиться на UEFI после обновения (и показывает MOK)
-date: 2017-04-11 15:19:43.000000000 +03:00
 type: post
 categories: []
 tags:

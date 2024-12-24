@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Firefox: NS_ERROR_FILE_CORRUPTED'
-date: 2015-04-15 15:31:58.000000000 +03:00
 type: post
 categories:
 - Разработка

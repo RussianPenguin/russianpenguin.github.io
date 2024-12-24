@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Ajax и заголовок location: особенности'
-date: 2015-02-07 23:58:10.000000000 +03:00
 type: post
 categories:
 - Разработка

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: window.location - не всегда оно работает как надо
-date: 2015-02-15 16:01:40.000000000 +03:00
 type: post
 categories:
 - Разработка

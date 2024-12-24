@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Запускаем Dwarf Fortress на Fedora, Ubuntu и др. x64
-date: 2014-11-03 16:42:31.000000000 +03:00
 type: post
 categories:
 - JFF

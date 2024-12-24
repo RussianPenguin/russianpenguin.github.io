@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Xmonad: Фиксим менюшки у saleae logic'
-date: 2016-06-22 23:00:40.000000000 +03:00
 type: post
 categories:
 - linux

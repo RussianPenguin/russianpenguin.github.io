@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Kinect: о восстановлении координат и абберациях разного рода'
-date: 2014-11-16 01:45:19.000000000 +03:00
 type: post
 categories:
 - JFF
