@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Управление зависимостями проекта при помощи bower+composer
-date: 2014-06-18 20:02:42.000000000 +04:00
 type: post
 categories:
 - Разработка

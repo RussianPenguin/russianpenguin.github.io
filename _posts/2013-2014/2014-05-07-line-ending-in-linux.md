@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Пакетное конвертирование line-ending в linux
-date: 2014-05-07 14:35:45.000000000 +04:00
 type: post
 categories:
 - HowTo

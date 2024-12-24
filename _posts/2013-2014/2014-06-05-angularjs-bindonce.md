@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'AngularJS: забавная особенность bindonce'
-date: 2014-06-05 15:53:01.000000000 +04:00
 type: post
 categories:
 - JFF

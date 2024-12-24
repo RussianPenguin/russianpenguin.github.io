@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Ogre3D: работа с вертексным буфером'
-date: 2014-11-04 19:14:24.000000000 +03:00
 type: post
 categories:
 - JFF

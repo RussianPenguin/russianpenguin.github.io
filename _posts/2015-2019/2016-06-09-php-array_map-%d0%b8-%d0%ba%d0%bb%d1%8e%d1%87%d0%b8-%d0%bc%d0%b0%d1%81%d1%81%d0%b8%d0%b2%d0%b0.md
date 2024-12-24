@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP: array_map и ключи массива'
-date: 2016-06-09 21:29:30.000000000 +03:00
 categories:
 - Разработка
 - HowTo

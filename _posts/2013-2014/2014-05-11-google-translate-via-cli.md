@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Google translate via cli
-date: 2014-05-11 01:44:25.000000000 +04:00
 type: post
 categories:
 - HowTo

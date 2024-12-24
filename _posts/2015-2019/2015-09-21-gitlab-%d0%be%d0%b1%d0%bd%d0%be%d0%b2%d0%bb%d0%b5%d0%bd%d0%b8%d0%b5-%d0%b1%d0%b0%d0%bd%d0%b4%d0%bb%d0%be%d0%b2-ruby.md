@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'GitLab: обновление бандлов ruby'
-date: 2015-09-21 20:58:56.000000000 +03:00
 type: post
 categories:
 - HowTo

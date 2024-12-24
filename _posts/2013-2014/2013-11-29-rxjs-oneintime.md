@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'RxJS: oneInTime'
-date: 2013-11-29 18:41:48.000000000 +04:00
 type: post
 categories:
 - Разработка

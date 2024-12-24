@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP: дело о загадачном пробеле'
-date: 2016-10-28 15:30:38.000000000 +03:00
 type: post
 categories:
 - Разработка

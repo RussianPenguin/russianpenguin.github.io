@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Очень медленная загрузка Fedora
-date: 2013-11-16 13:40:15.000000000 +04:00
 type: post
 categories:
 - HowTo

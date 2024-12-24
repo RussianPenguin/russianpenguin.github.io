@@ -1,7 +1,6 @@
 ---
 layout: post
 title: XMonad, Qt и LibreOffice - проблемы рендеринга приложений
-date: 2016-01-20 22:16:44.000000000 +03:00
 type: post
 categories: []
 tags:

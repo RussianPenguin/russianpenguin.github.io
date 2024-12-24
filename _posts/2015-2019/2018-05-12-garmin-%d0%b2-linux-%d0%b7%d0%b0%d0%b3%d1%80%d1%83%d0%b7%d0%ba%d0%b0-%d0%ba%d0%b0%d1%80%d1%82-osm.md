@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Garmin в Linux: загрузка карт OSM'
-date: 2018-05-12 16:27:03.000000000 +03:00
 type: post
 categories:
 - HowTo

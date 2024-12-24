@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'AngularJS: Динамический диапазон для select'
-date: 2014-02-08 15:01:22.000000000 +04:00
 type: post
 categories:
 - HowTo

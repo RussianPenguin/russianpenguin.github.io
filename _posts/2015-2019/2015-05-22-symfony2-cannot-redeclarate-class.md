@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Symfony2: cannot redeclarate class'
-date: 2015-05-22 17:42:54.000000000 +03:00
 type: post
 categories:
 - Разработка

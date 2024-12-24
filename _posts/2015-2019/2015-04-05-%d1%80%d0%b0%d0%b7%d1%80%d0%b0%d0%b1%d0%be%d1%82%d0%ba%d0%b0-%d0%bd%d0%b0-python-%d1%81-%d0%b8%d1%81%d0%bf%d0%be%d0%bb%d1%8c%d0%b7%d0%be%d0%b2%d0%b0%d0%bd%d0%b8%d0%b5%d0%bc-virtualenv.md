@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Разработка на Python с использованием virtualenv
-date: 2015-04-05 18:31:34.000000000 +03:00
 type: post
 categories:
 - Разработка

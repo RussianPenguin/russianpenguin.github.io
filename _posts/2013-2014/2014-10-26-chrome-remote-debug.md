@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Удаленная отладка в Google Chrome/Chromium
-date: 2014-10-26 13:23:06.000000000 +03:00
 type: post
 categories:
 - Разработка

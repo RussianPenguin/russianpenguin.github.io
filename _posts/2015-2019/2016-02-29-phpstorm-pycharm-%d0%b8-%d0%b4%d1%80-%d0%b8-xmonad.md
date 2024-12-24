@@ -1,7 +1,6 @@
 ---
 layout: post
 title: PHPStorm (PyCharm и др.) и XMonad
-date: 2016-02-29 00:24:26.000000000 +03:00
 type: post
 categories:
 - Jff

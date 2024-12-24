@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'WINE: создание 32х битного префикса'
-date: 2014-05-09 16:41:28.000000000 +04:00
 type: post
 categories:
 - HowTo

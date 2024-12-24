@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Фичи IE: date invalid'
-date: 2014-05-07 14:51:33.000000000 +04:00
 type: post
 categories:
 - Разработка

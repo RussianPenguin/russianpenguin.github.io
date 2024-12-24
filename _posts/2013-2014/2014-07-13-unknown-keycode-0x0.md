@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Unknown keycode 0x0
-date: 2014-07-13 17:56:40.000000000 +04:00
 type: post
 categories:
 - HowTo

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: PyCharm заставляем terminal работать с virtualenv
-date: 2015-09-08 23:00:36.000000000 +03:00
 type: post
 categories:
 - HowTo

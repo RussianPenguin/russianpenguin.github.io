@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Mikrotik: multicast в wireless-сетях'
-date: 2019-04-28 18:33:54.000000000 +03:00
 type: post
 categories:
 - HowTo

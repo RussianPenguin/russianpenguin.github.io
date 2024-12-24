@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Python3: feedparser unicode error'
-date: 2015-01-28 00:15:51.000000000 +03:00
 type: post
 categories:
 - Разработка

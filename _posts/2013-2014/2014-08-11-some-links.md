@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Интересное в сети
-date: 2014-08-11 01:11:13.000000000 +04:00
 type: post
 categories:
 - Найдено в сети

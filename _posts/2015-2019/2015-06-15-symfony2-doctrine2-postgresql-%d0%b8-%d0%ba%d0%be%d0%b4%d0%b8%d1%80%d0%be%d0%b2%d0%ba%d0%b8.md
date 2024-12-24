@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Symfony2, Doctrine2, Postgresql и кодировки
-date: 2015-06-15 18:19:52.000000000 +03:00
 type: post
 categories:
 - Разработка

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Включение TRIM на SSD с LVM/LUKS
-date: 2014-06-11 12:14:58.000000000 +04:00
 type: post
 categories:
 - HowTo

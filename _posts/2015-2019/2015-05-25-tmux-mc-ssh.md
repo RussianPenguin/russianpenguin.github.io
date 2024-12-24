@@ -1,7 +1,6 @@
 ---
 layout: post
 title: tmux + mc + ssh
-date: 2015-05-25 13:03:05.000000000 +03:00
 type: post
 categories:
 - HowTo

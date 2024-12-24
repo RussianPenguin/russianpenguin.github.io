@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'AngularJS: простой прогресс-бар'
-date: 2014-06-06 23:56:25.000000000 +04:00
 type: post
 categories:
 - Разработка

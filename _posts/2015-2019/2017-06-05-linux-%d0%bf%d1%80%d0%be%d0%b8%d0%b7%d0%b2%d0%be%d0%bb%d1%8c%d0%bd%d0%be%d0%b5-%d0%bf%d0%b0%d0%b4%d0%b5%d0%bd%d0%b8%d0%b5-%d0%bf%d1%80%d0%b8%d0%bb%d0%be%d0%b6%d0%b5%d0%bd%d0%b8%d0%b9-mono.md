@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: произвольное падение приложений на mono'
-date: 2017-06-05 14:57:33.000000000 +03:00
 type: post
 categories: []
 tags:

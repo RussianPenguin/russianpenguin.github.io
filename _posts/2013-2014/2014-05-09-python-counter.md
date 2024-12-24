@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Python: Подсчет уникальных объектов в коллекции'
-date: 2014-05-09 15:34:13.000000000 +04:00
 type: post
 categories:
 - HowTo

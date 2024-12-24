@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Fedora/CentOS: Не работает vpn подключение по pptp'
-date: 2018-05-06 19:18:04.000000000 +03:00
 type: post
 categories:
 - HowTo

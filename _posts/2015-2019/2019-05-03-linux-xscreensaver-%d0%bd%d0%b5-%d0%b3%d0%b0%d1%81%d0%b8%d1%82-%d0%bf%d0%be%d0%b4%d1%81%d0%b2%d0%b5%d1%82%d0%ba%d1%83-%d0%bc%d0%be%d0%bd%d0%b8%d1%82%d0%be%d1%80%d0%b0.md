@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: XScreenSaver не гасит подсветку монитора'
-date: 2019-05-03 21:12:53.000000000 +03:00
 type: post
 categories:
 - HowTo

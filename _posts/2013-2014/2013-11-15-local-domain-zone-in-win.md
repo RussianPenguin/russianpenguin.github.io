@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Как организовать собственную доменную зону (windows)
-date: 2013-11-15 20:09:41.000000000 +04:00
 type: post
 categories:
 - HowTo

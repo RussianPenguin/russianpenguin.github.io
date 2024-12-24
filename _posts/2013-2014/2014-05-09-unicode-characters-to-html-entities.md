@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Unicode characters to html entities
-date: 2014-05-09 19:27:25.000000000 +04:00
 type: post
 categories:
 - Разработка

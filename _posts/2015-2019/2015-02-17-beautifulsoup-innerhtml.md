@@ -1,7 +1,6 @@
 ---
 layout: post
 title: BeautifulSoup innerHTML
-date: 2015-02-17 21:54:08.000000000 +03:00
 type: post
 categories:
 - Обработка текста

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'AngularJS: пример автоматического скролла'
-date: 2014-05-09 16:36:25.000000000 +04:00
 type: post
 categories:
 - Разработка

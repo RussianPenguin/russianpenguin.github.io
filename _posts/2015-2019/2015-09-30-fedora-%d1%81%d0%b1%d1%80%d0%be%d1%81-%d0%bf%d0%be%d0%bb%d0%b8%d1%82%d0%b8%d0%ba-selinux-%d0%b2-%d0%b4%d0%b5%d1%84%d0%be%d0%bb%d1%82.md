@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Fedora: сброс политик SELinux в дефолт'
-date: 2015-09-30 21:11:06.000000000 +03:00
 type: post
 categories: []
 tags:

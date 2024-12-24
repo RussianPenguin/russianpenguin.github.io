@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'JS: аналог str_repeat'
-date: 2014-04-03 20:43:18.000000000 +04:00
 type: post
 categories:
 - Разработка

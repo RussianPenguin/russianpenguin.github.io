@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP: указываем include_path в качестве аргумента'
-date: 2014-05-16 13:07:25.000000000 +04:00
 type: post
 categories:
 - Разработка

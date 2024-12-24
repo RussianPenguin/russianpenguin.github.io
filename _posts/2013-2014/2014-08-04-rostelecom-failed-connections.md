@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Ростелеком: постоянные обрывы соединения'
-date: 2014-08-04 11:00:07.000000000 +04:00
 type: post
 categories:
 - HowTo

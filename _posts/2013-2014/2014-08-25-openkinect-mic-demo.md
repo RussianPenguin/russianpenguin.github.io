@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Openkinect+linux: поддержка звука'
-date: 2014-08-25 21:32:45.000000000 +04:00
 type: post
 categories:
 - HowTo

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'KDE: обновление меню после установки пакетов'
-date: 2015-08-16 19:33:47.000000000 +03:00
 type: post
 categories:
 - HowTo

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'Linux: wine64, opengl, nvidia'
-date: 2013-12-13 22:53:05.000000000 +04:00
 type: post
 categories:
 - Найдено в сети

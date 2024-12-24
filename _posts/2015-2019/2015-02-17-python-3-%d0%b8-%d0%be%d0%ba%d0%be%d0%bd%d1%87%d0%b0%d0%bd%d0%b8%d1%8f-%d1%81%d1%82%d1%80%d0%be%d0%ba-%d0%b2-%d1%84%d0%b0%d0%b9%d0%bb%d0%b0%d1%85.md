@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Python 3+ и окончания строк в файлах
-date: 2015-02-17 23:53:18.000000000 +03:00
 type: post
 categories:
 - Обработка текста

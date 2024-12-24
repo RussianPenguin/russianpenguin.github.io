@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PostgreSQL: insert on duplicate key'
-date: 2014-08-19 15:24:36.000000000 +04:00
 type: post
 categories:
 - Найдено в сети

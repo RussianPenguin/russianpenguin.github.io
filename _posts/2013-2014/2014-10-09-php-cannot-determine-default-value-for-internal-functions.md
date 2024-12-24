@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP: Cannot determine default value for internal functions'
-date: 2014-10-09 13:43:26.000000000 +04:00
 type: post
 categories:
 - JFF

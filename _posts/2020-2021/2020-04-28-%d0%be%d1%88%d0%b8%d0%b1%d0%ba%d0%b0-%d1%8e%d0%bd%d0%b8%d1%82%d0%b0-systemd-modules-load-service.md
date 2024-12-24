@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Ошибка юнита systemd-modules-load.service
-date: 2020-04-28 23:02:42.000000000 +03:00
 type: post
 categories:
 - linux

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'AngularJS: реагируем на изменение состояния объекта'
-date: 2014-04-21 23:15:11.000000000 +04:00
 type: post
 categories:
 - Разработка

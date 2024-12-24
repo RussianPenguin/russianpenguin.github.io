@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PHP: дизассемблирование'
-date: 2014-05-09 18:28:32.000000000 +04:00
 type: post
 categories:
 - HowTo

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: JavaScript и области видимости
-date: 2015-04-29 21:10:25.000000000 +03:00
 type: post
 categories:
 - Разработка

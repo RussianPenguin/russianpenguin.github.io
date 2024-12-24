@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'gcc: защита от переполнения стека'
-date: 2013-11-14 08:01:25.000000000 +04:00
 type: post
 categories:
 - HowTo

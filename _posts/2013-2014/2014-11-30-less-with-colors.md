@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Делаем подсветку синтаксиса для less
-date: 2014-11-30 23:51:38.000000000 +03:00
 type: post
 categories:
 - HowTo

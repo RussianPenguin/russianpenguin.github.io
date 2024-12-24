@@ -1,7 +1,6 @@
 ---
 layout: post
 title: 'PulseAudio: Перенаправление потоков аля jackd'
-date: 2020-10-11 00:48:48.000000000 +03:00
 type: post
 categories:
 - HowTo
