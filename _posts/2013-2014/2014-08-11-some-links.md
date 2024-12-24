@@ -30,7 +30,7 @@ permalink: "/2014/08/11/%d0%b8%d0%bd%d1%82%d0%b5%d1%80%d0%b5%d1%81%d0%bd%d0%be%d
 - [Синтезируем молнию](http://blog.kaistale.com/?p=1340 "Synthesizing thunder using JavaScript")
 - [Реализация методов для симуляции стохастических процессов](https://github.com/NathanEpstein/stochastic "stochastic")
 - [Поиск кода по JavaScript библиотекам](http://www.jsdb.io/ "The definitive source of the best JavaScript libraries, frameworks, and plugins.")
-- [Детектируем темп аудио при помощи Web Audio ](http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/ "Beat Detection Using JavaScript and the Web Audio API")API
+- [Детектируем темп аудио при помощи Web Audio API](http://tech.beatport.com/2014/web-audio/beat-detection-using-web-audio/ "Beat Detection Using JavaScript and the Web Audio API")
 
 **Ruby**
 

@@ -15,8 +15,9 @@ permalink: "/2014/05/16/php-%d1%83%d0%ba%d0%b0%d0%b7%d1%8b%d0%b2%d0%b0%d0%b5%d0%
 
 Делаем алиас и не заморачиваемся :)
 
-```
-$ alias "php=/usr/bin/php -d ""include_path='.:/usr/share/pear:/another/include/path'""" $ php -r "print ini_get('include_path');" .:/usr/share/pear:/another/include/path
+```shell
+$ alias "php=/usr/bin/php -d ""include_path='.:/usr/share/pear:/another/include/path'"""
+$ php -r "print ini_get('include_path');" .:/usr/share/pear:/another/include/path
 ```
 
 И можно заставлять работать таким образом разные комманд-лайн утилиты, которым позарез нужен include_path с нашими локальными либами.
