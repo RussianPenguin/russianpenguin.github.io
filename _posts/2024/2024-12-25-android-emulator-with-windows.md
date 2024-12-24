@@ -6,10 +6,10 @@ status: publish
 categories:
 - HowTo
 tags:
-- Windows
-- Android
-- Virtualization
-- Bug
+- windows
+- android
+- virtualization
+- bug
 permalink: "/2024/12/25/android-emulator-with-windows"
 ---
 
