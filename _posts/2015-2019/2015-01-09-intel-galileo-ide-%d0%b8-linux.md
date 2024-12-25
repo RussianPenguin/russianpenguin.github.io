@@ -61,4 +61,4 @@ please see: How can I use Lock Files with rxtx? in INSTALL
 Ага. А решается все очень просто.
 
 1. Наш пользователь должен быть в группе lock
-2. Для папки /run/lock (/var/lock в некоторых дистрибах) должны стоять права root:lock (776)
+2. Для папки /run/lock (/var/lock в некоторых дистрибах) должны стоять права `root:lock (776)`
