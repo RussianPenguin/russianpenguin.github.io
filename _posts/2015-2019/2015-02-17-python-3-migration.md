@@ -34,8 +34,8 @@ if response.code == 200:
 
 А дело все в том, что в python 3+ было введено [соглашение](https://docs.python.org/release/3.2/library/functions.html#open "Python 3+ - open function") на обработку символов перевода строки. И управление работой осуществляется манипулированием параметром newline.
 
-- On input, if newline is None, universal newlines mode is enabled. Lines in the input can end in '\n', '\r', or '\r\n', and these are translated into '\n' before being returned to the caller. If it is '', universal newline mode is enabled, but line endings are returned to the caller untranslated. If it has any of the other legal values, input lines are only terminated by the given string, and the line ending is returned to the caller untranslated.
-- On output, if newline is None, any '\n' characters written are translated to the system default line separator, os.linesep. If newline is '', no translation takes place. If newline is any of the other legal values, any '\n' characters written are translated to the given string.
+- On input, if newline is None, universal newlines mode is enabled. Lines in the input can end in `\n`, `\r`, or `\r\n`, and these are translated into `\n` before being returned to the caller. If it is '', universal newline mode is enabled, but line endings are returned to the caller untranslated. If it has any of the other legal values, input lines are only terminated by the given string, and the line ending is returned to the caller untranslated.
+- On output, if newline is None, any `\n` characters written are translated to the system default line separator, os.linesep. If newline is '', no translation takes place. If newline is any of the other legal values, any '\n' characters written are translated to the given string.
 
 В итоге достаточно было указать newline='' как CRLF появились.
 
