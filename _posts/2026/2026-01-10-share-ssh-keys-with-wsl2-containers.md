@@ -31,13 +31,16 @@ C:\Users\<your Windows username>\.ssh\ /home/<your Linux username>/.ssh drvfs rw
 
 1. `mkdir -p ~/bin`
 2. Загрузить
+
 ```
 # Для x86-64
 curl -L -O https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent
 # Или для ARM64
 curl -L -O https://github.com/mame/wsl2-ssh-agent/releases/latest/download/wsl2-ssh-agent-arm64
 ```
-3. Добавить юнит для systemd `~/.config/systemd/user/wsl2-ssh-agent.service` (я предпочитаю править исходный конфиг потому что бинарник лежит в хомяке, а не в обшем `/bin`).
+
+4. Добавить юнит для systemd `~/.config/systemd/user/wsl2-ssh-agent.service` (я предпочитаю править исходный конфиг потому что бинарник лежит в хомяке, а не в обшем `/bin`).
+
 ```
 [Unit]
 Description=WSL2 SSH Agent Bridge
@@ -51,7 +54,8 @@ Restart=on-failure
 [Install]
 WantedBy=default.target
 ```
-4. `systemctl --user enable --now wsl2-ssh-agent`
+
+5. `systemctl --user enable --now wsl2-ssh-agent`
 5. Добавить путь к сокету в .bashrc: `export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/wsl2-ssh-agent.sock`
 6. `source .bashrc`
 7. `ssh -T git@github.com`
